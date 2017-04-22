@@ -1,0 +1,181 @@
+<?php
+
+namespace Translate\Test\TestCase\Lib;
+
+use Cake\Filesystem\Folder;
+use Cake\TestSuite\TestCase;
+use Translate\Lib\TranslationLib;
+
+/**
+ */
+class TranslationLibTest extends TestCase {
+
+	/**
+	 * @var \Translate\Lib\TranslationLib
+	 */
+	protected $TranslationLib;
+
+	public function setUp() {
+		parent::setUp();
+		$this->TranslationLib = new TranslationLib();
+
+		$folder = new Folder();
+		$folder->copy([
+			'from' => ROOT . DS . 'tests' . DS . 'test_files' . DS . 'Locale' . DS,
+			'to' => LOCALE,
+		]);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testGetPotFiles() {
+		$is = $this->TranslationLib->getPotFiles();
+		$this->assertTrue(!empty($is));
+		$expected = [
+			'cake' => 'cake',
+			'default' => 'default',
+		];
+		$this->assertSame($expected, $is);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testExtractPoFileLanguages() {
+		$is = $this->TranslationLib->getPoFileLanguages();
+		$expected = [
+			'de',
+		];
+		$this->assertSame($expected, $is);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testGetPoFiles() {
+		$is = $this->TranslationLib->getPoFiles('de');
+
+		$this->assertTrue(!empty($is));
+		$expected = [
+			'de_cake' => 'cake',
+			'de_default' => 'default',
+		];
+		$this->assertSame($expected, $is);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testExtractPotFile() {
+		$is = $this->TranslationLib->getPotFiles();
+		$file = array_shift($is);
+		$is = $this->TranslationLib->extractPotFile($file);
+
+		$this->assertTrue(!empty($is));
+
+		$lastTranslation = array_pop($is);
+
+		$expected = ['name', 'content', 'comment', 'occurances'];
+		$this->assertSame($expected, array_keys($lastTranslation));
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testExtractPoFile() {
+		$is = $this->TranslationLib->getPoFiles('de');
+		$file = array_pop($is);
+		//$file = array_shift($is);
+		$is = $this->TranslationLib->extractPoFile($file, 'de');
+
+		$this->assertTrue(!empty($is));
+
+		$expected = [
+			'name' => '{0} tree',
+			'content' => '{0} Baum',
+			'comment' => '#, fuzzy,special',
+			'plural' => '{0} trees',
+			'plural_2' => '{0} Bäume',
+			'context' => 'context',
+		];
+		$this->assertSame($expected, $is[6]);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testParsePotFile() {
+		$is = $this->TranslationLib->getPotFiles();
+		$file = array_shift($is);
+		$is = $this->TranslationLib->parseFile(LOCALE . $file . '.pot');
+
+		$this->assertTrue(!empty($is));
+		$this->assertArrayHasKey('December', $is);
+		$expected = [
+			0 => '',
+			1 => ''
+		];
+		$this->assertSame($expected, $is['{0} years']);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testParsePoFile() {
+		$is = $this->TranslationLib->getPoFiles('de');
+		$file = array_pop($is);
+		$is = $this->TranslationLib->parseFile(LOCALE . 'de' . DS . $file . '.po');
+
+		$this->assertTrue(!empty($is));
+		$this->assertArrayHasKey('Your {0}.', $is);
+
+		$expected  = [
+			'_context' => [
+				'context' => 'translated-string'
+			],
+		];
+		$this->assertSame($expected, $is['untranslated-string']);
+
+		$expected  = [
+			'_context' => [
+				'context' => [
+					'{0} Baum',
+					'{0} Bäume',
+				]
+			],
+		];
+		$this->assertSame($expected, $is['{0} trees']);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testParsePoFilePlural() {
+		$is = $this->TranslationLib->getPoFiles('de');
+		$file = array_shift($is);
+		$is = $this->TranslationLib->parseFile(LOCALE . 'de' . DS . $file . '.po');
+
+		$this->assertTrue(!empty($is));
+		$expected = [
+			'Error' => 'Fehler',
+			'The requested address {0} was not found on this server.' => 'Die Adresse {0} wurde nicht gefunden.',
+			'{0} year' => '{0} Jahr',
+			'{0} years' => [
+				0 => '{0} Jahr',
+				1 => '{0} Jahre'
+			]
+		];
+		$this->assertSame($expected, $is);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testResourceNames() {
+		$is = $this->TranslationLib->getResourceNames();
+
+		//$this->assertTrue(!empty($is));
+	}
+
+}

@@ -1,0 +1,48 @@
+{
+	"name": "dereuromark/cakephp-translate",
+	"type": "cakephp-plugin",
+	"description": "A CakePHP plugin for managing translations",
+	"keywords": ["cakephp", "plugin", "i18n"],
+	"homepage": "https://github.com/dereuromark/cakephp-translate",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Mark Scherer",
+			"role": "Author",
+			"homepage": "http://www.dereuromark.de"
+		}
+	],
+	"require": {
+		"php": ">=5.6",
+		"cakephp/cakephp": "^3.4",
+		"dereuromark/cakephp-tools": "dev-master as 1.4",
+		"friendsofcake/search": "^2.0",
+		"sepia/po-parser": "^4.2"
+	},
+	"require-dev": {
+		"fig-r/psr2r-sniffer": "dev-master"
+	},
+	"autoload": {
+		"psr-4": {
+			"Translate\\": "src",
+			"Translate\\Test\\Fixture\\": "tests/Fixture"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"Translate\\Test\\": "tests",
+			"Cake\\Test\\": "vendor/cakephp/cakephp/tests",
+			"App\\": "tests/test_app/src"
+		}
+	},
+	"support":{
+		"source": "https://github.com/dereuromark/cakephp-translate"
+	},
+	"scripts": {
+		"test": "php phpunit.phar",
+		"test-coverage" : "php phpunit.phar --log-junit tmp/coverage/unitreport.xml --coverage-html tmp/coverage --coverage-clover tmp/coverage/coverage.xml",
+		"test-setup": "[ ! -f phpunit.phar ] && wget https://phar.phpunit.de/phpunit-5.7.phar && mv phpunit-5.7.phar phpunit.phar || true",
+		"cs-check": "phpcs -p --standard=vendor/fig-r/psr2r-sniffer/PSR2R/ruleset.xml --ignore=/cakephp-translate/vendor/,/tmp/,/logs/ --extensions=php ./",
+		"cs-fix": "phpcbf -f --standard=vendor/fig-r/psr2r-sniffer/PSR2R/ruleset.xml --ignore=/cakephp-translate/vendor/,/tmp/,/logs/ --extensions=php ./"
+	}
+}

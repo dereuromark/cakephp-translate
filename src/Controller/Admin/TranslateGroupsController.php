@@ -10,7 +10,6 @@ use Translate\Controller\TranslateAppController;
  */
 class TranslateGroupsController extends TranslateAppController {
 
-
 	/**
 	 * @var array
 	 */
@@ -109,8 +108,7 @@ class TranslateGroupsController extends TranslateAppController {
 	 *
 	 * @return \Cake\Http\Response|null
 	 */
-	public function index()
-	{
+	public function index() {
 		$this->paginate = [
 			'contain' => ['TranslateProjects']
 		];
@@ -127,8 +125,7 @@ class TranslateGroupsController extends TranslateAppController {
 	 * @return \Cake\Http\Response|null
 	 * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
 	 */
-	public function view($id = null)
-	{
+	public function view($id = null) {
 		$translateGroup = $this->TranslateGroups->get($id, [
 			'contain' => ['TranslateProjects', 'TranslateStrings']
 		]);
@@ -142,8 +139,7 @@ class TranslateGroupsController extends TranslateAppController {
 	 *
 	 * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
 	 */
-	public function add()
-	{
+	public function add() {
 		$translateGroup = $this->TranslateGroups->newEntity();
 		if ($this->request->is('post')) {
 			$this->request->data['translate_project_id'] = $this->Translation->currentProjectId();
@@ -152,9 +148,9 @@ class TranslateGroupsController extends TranslateAppController {
 			if ($this->TranslateGroups->save($translateGroup)) {
 				$this->Flash->success(__('The translate group has been saved.'));
 				return $this->redirect(['action' => 'index']);
-			} else {
-				$this->Flash->error(__('The translate group could not be saved. Please, try again.'));
 			}
+
+			$this->Flash->error(__('The translate group could not be saved. Please, try again.'));
 		} else {
 			$this->request->data['active'] = true;
 		}
@@ -169,8 +165,7 @@ class TranslateGroupsController extends TranslateAppController {
 	 * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
 	 * @throws \Cake\Network\Exception\NotFoundException When record not found.
 	 */
-	public function edit($id = null)
-	{
+	public function edit($id = null) {
 		$translateGroup = $this->TranslateGroups->get($id, [
 			'contain' => ['TranslateStrings']
 		]);
@@ -179,9 +174,9 @@ class TranslateGroupsController extends TranslateAppController {
 			if ($this->TranslateGroups->save($translateGroup)) {
 				$this->Flash->success(__('The translate group has been saved.'));
 				return $this->redirect(['action' => 'index']);
-			} else {
-				$this->Flash->error(__('The translate group could not be saved. Please, try again.'));
 			}
+
+			$this->Flash->error(__('The translate group could not be saved. Please, try again.'));
 		}
 		$translateProjects = $this->TranslateGroups->TranslateProjects->find('list', ['limit' => 200]);
 		$translateStrings = $this->TranslateGroups->TranslateStrings->find('list', ['limit' => 200]);
@@ -197,8 +192,7 @@ class TranslateGroupsController extends TranslateAppController {
 	 * @return \Cake\Http\Response|null Redirects to index.
 	 * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
 	 */
-	public function delete($id = null)
-	{
+	public function delete($id = null) {
 		$this->request->allowMethod(['post', 'delete']);
 		$translateGroup = $this->TranslateGroups->get($id);
 		if ($this->TranslateGroups->delete($translateGroup)) {
@@ -208,4 +202,5 @@ class TranslateGroupsController extends TranslateAppController {
 		}
 		return $this->redirect(['action' => 'index']);
 	}
+
 }

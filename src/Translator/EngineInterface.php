@@ -2,9 +2,7 @@
 
 namespace Translate\Translator;
 
-
-interface EngineInterface
-{
+interface EngineInterface {
 
 	/**
 	 * @param string $text Text up to 5000 chars

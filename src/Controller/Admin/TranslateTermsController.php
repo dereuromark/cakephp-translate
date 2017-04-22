@@ -1,7 +1,6 @@
 <?php
 namespace Translate\Controller\Admin;
 
-use App\Controller\AppController;
 use Translate\Controller\TranslateAppController;
 
 /**
@@ -10,7 +9,6 @@ use Translate\Controller\TranslateAppController;
  * @property \Translate\Model\Table\TranslateTermsTable $TranslateTerms
  */
 class TranslateTermsController extends TranslateAppController {
-
 
 	/**
 	 * @var array
@@ -22,8 +20,7 @@ class TranslateTermsController extends TranslateAppController {
 	 *
 	 * @return \Cake\Http\Response|null
 	 */
-	public function index()
-	{
+	public function index() {
 		$this->paginate = [
 			'contain' => ['TranslateStrings', 'TranslateLanguages']
 		];
@@ -40,8 +37,7 @@ class TranslateTermsController extends TranslateAppController {
 	 * @return \Cake\Http\Response|null
 	 * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
 	 */
-	public function view($id = null)
-	{
+	public function view($id = null) {
 		$translateTerm = $this->TranslateTerms->get($id, [
 			'contain' => ['TranslateStrings', 'TranslateLanguages']
 		]);
@@ -57,8 +53,7 @@ class TranslateTermsController extends TranslateAppController {
 	 * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
 	 * @throws \Cake\Network\Exception\NotFoundException When record not found.
 	 */
-	public function edit($id = null)
-	{
+	public function edit($id = null) {
 		$translateTerm = $this->TranslateTerms->get($id, [
 			'contain' => []
 		]);
@@ -67,9 +62,9 @@ class TranslateTermsController extends TranslateAppController {
 			if ($this->TranslateTerms->save($translateTerm)) {
 				$this->Flash->success(__('The translate term has been saved.'));
 				return $this->redirect(['action' => 'index']);
-			} else {
-				$this->Flash->error(__('The translate term could not be saved. Please, try again.'));
 			}
+
+			$this->Flash->error(__('The translate term could not be saved. Please, try again.'));
 		}
 		$translateStrings = $this->TranslateTerms->TranslateStrings->find('list', ['limit' => 200]);
 		$translateLanguages = $this->TranslateTerms->TranslateLanguages->find('list', ['limit' => 200]);
@@ -85,8 +80,7 @@ class TranslateTermsController extends TranslateAppController {
 	 * @return \Cake\Http\Response|null Redirects to index.
 	 * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
 	 */
-	public function delete($id = null)
-	{
+	public function delete($id = null) {
 		$this->request->allowMethod(['post', 'delete']);
 		$translateTerm = $this->TranslateTerms->get($id);
 		if ($this->TranslateTerms->delete($translateTerm)) {

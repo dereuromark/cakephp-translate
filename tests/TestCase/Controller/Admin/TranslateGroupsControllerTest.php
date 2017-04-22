@@ -2,13 +2,11 @@
 namespace Translate\Test\TestCase\Controller\Admin;
 
 use Cake\TestSuite\IntegrationTestCase;
-use Translate\Controller\Admin\TranslateGroupsController;
 
 /**
  * Translate\Controller\Admin\TranslateGroupsController Test Case
  */
-class TranslateGroupsControllerTest extends IntegrationTestCase
-{
+class TranslateGroupsControllerTest extends IntegrationTestCase {
 
 	/**
 	 * Fixtures
@@ -26,8 +24,7 @@ class TranslateGroupsControllerTest extends IntegrationTestCase
 	 *
 	 * @return void
 	 */
-	public function testIndex()
-	{
+	public function testIndex() {
 		$this->get(['prefix' => 'admin', 'plugin' => 'Translate', 'controller' => 'TranslateGroups', 'action' => 'index']);
 
 		$this->assertResponseCode(200);
@@ -39,8 +36,7 @@ class TranslateGroupsControllerTest extends IntegrationTestCase
 	 *
 	 * @return void
 	 */
-	public function testView()
-	{
+	public function testView() {
 		$id = 1;
 		$this->get(['prefix' => 'admin', 'plugin' => 'Translate', 'controller' => 'TranslateGroups', 'action' => 'view', $id]);
 
@@ -53,8 +49,7 @@ class TranslateGroupsControllerTest extends IntegrationTestCase
 	 *
 	 * @return void
 	 */
-	public function testAdd()
-	{
+	public function testAdd() {
 		$this->get(['prefix' => 'admin', 'plugin' => 'Translate', 'controller' => 'TranslateGroups', 'action' => 'add']);
 
 		$this->assertResponseCode(200);
@@ -66,8 +61,7 @@ class TranslateGroupsControllerTest extends IntegrationTestCase
 	 *
 	 * @return void
 	 */
-	public function testEdit()
-	{
+	public function testEdit() {
 		$id = 1;
 		$this->get(['prefix' => 'admin', 'plugin' => 'Translate', 'controller' => 'TranslateGroups', 'action' => 'edit', $id]);
 
@@ -80,12 +74,12 @@ class TranslateGroupsControllerTest extends IntegrationTestCase
 	 *
 	 * @return void
 	 */
-	public function testDelete()
-	{
+	public function testDelete() {
 		$id = 1;
 		$this->post(['prefix' => 'admin', 'plugin' => 'Translate', 'controller' => 'TranslateGroups', 'action' => 'delete', $id]);
 
 		$this->assertResponseCode(302);
 		$this->assertRedirect();
 	}
+
 }

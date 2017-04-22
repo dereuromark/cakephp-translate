@@ -2,6 +2,7 @@
 namespace Translate\View\Helper;
 
 use Cake\View\Helper;
+use RuntimeException;
 
 /**
  * @property \Cake\View\Helper\HtmlHelper $Html
@@ -77,7 +78,7 @@ class TranslationHelper extends Helper {
 			return $this->_rgb2hex($color);
 		}
 
-		throw new \RuntimeException('Invalid type');
+		throw new RuntimeException('Invalid type');
 	}
 
 	/**

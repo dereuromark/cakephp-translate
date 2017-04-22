@@ -4,7 +4,6 @@ namespace Translate\Controller;
 use App\Controller\AppController;
 use Cake\Core\Configure;
 use Cake\Event\Event;
-use Cake\ORM\TableRegistry;
 
 # fix for internal routing (sticky plugin name in url)
 Configure::write('Plugin.name', 'Translate');

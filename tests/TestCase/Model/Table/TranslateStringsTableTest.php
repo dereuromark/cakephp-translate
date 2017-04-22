@@ -104,7 +104,6 @@ class TranslateStringsTableTest extends TestCase {
 		$this->assertTrue($translateString->is_html);
 	}
 
-
 	/**
 	 * Test coverage method
 	 *

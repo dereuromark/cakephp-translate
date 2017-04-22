@@ -2,7 +2,6 @@
 namespace Setup\Test\TestCase\Shell;
 
 use Cake\Console\ConsoleIo;
-use Cake\Datasource\ConnectionManager;
 use Cake\TestSuite\TestCase;
 use Tools\TestSuite\ConsoleOutput;
 use Translate\Shell\TranslateShell;
@@ -37,7 +36,6 @@ class TranslateShellTest extends TestCase {
 			->setMethods(['in', 'err', '_stop'])
 			->setConstructorArgs([$io])
 			->getMock();
-
 	}
 
 	/**

@@ -6,8 +6,7 @@ namespace App\Translator\Engine;
 
 use Translate\Translator\EngineInterface;
 
-class Test implements EngineInterface
-{
+class Test implements EngineInterface {
 
 	/**
 	 * @param string $text Text up to 5000 chars
@@ -16,8 +15,7 @@ class Test implements EngineInterface
 	 *
 	 * @return string|null
 	 */
-	public function translate($text, $to, $from)
-	{
+	public function translate($text, $to, $from) {
 		if ($text === '') {
 			return null;
 		}
@@ -25,4 +23,5 @@ class Test implements EngineInterface
 
 		return $result;
 	}
+
 }

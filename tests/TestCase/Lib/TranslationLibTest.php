@@ -130,14 +130,14 @@ class TranslationLibTest extends TestCase {
 		$this->assertTrue(!empty($is));
 		$this->assertArrayHasKey('Your {0}.', $is);
 
-		$expected  = [
+		$expected = [
 			'_context' => [
 				'context' => 'translated-string'
 			],
 		];
 		$this->assertSame($expected, $is['untranslated-string']);
 
-		$expected  = [
+		$expected = [
 			'_context' => [
 				'context' => [
 					'{0} Baum',

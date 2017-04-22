@@ -2,13 +2,11 @@
 namespace Translate\Test\TestCase\Controller\Admin;
 
 use Cake\TestSuite\IntegrationTestCase;
-use Translate\Controller\Admin\TranslateTermsController;
 
 /**
  * Translate\Controller\Admin\TranslateTermsController Test Case
  */
-class TranslateTermsControllerTest extends IntegrationTestCase
-{
+class TranslateTermsControllerTest extends IntegrationTestCase {
 
 	/**
 	 * Fixtures
@@ -25,8 +23,7 @@ class TranslateTermsControllerTest extends IntegrationTestCase
 	 *
 	 * @return void
 	 */
-	public function testIndex()
-	{
+	public function testIndex() {
 		$this->get(['prefix' => 'admin', 'plugin' => 'Translate', 'controller' => 'TranslateTerms', 'action' => 'index']);
 
 		$this->assertResponseCode(200);
@@ -38,8 +35,7 @@ class TranslateTermsControllerTest extends IntegrationTestCase
 	 *
 	 * @return void
 	 */
-	public function testView()
-	{
+	public function testView() {
 		$this->markTestIncomplete('Not implemented yet.');
 	}
 
@@ -48,8 +44,7 @@ class TranslateTermsControllerTest extends IntegrationTestCase
 	 *
 	 * @return void
 	 */
-	public function testEdit()
-	{
+	public function testEdit() {
 		$id = 1;
 		$this->get(['prefix' => 'admin', 'plugin' => 'Translate', 'controller' => 'TranslateTerms', 'action' => 'edit', $id]);
 
@@ -62,12 +57,12 @@ class TranslateTermsControllerTest extends IntegrationTestCase
 	 *
 	 * @return void
 	 */
-	public function testDelete()
-	{
+	public function testDelete() {
 		$id = 1;
 		$this->post(['prefix' => 'admin', 'plugin' => 'Translate', 'controller' => 'TranslateTerms', 'action' => 'delete', $id]);
 
 		$this->assertResponseCode(302);
 		$this->assertRedirect();
 	}
+
 }

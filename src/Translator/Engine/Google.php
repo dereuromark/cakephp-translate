@@ -6,8 +6,7 @@ namespace Translate\Translator\Engine;
 
 use Translate\Translator\EngineInterface;
 
-class Google implements EngineInterface
-{
+class Google implements EngineInterface {
 
 	/**
 	 * @param string $text Text up to 5000 chars
@@ -16,8 +15,7 @@ class Google implements EngineInterface
 	 *
 	 * @return string|null
 	 */
-	public function translate($text, $to, $from)
-	{
+	public function translate($text, $to, $from) {
 		$result = GoogleTranslate::translate($from, $to, $text);
 		if ($result === '') {
 			return null;
@@ -25,4 +23,5 @@ class Google implements EngineInterface
 
 		return $result;
 	}
+
 }

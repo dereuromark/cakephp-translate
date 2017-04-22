@@ -4,6 +4,8 @@ namespace Translate\Lib;
 use Cake\Filesystem\Folder;
 use Cake\I18n\Parser\PoFileParser;
 use Cake\Utility\Inflector;
+use Sepia\FileHandler;
+use Sepia\PoParser;
 
 class TranslationLib {
 
@@ -95,10 +97,10 @@ class TranslationLib {
 		$content = [];
 
 		if (file_exists($file)) {
-			$fileHandler = new \Sepia\FileHandler($file);
+			$fileHandler = new FileHandler($file);
 
-			$poParser = new \Sepia\PoParser($fileHandler);
-			$entries  = $poParser->parse();
+			$poParser = new PoParser($fileHandler);
+			$entries = $poParser->parse();
 
 			$content = $this->_map($entries);
 		}
@@ -120,10 +122,10 @@ class TranslationLib {
 		$content = [];
 
 		if (file_exists($file)) {
-			$fileHandler = new \Sepia\FileHandler($file);
+			$fileHandler = new FileHandler($file);
 
-			$poParser = new \Sepia\PoParser($fileHandler);
-			$entries  = $poParser->parse();
+			$poParser = new PoParser($fileHandler);
+			$entries = $poParser->parse();
 
 			$content = $this->_map($entries);
 		}
@@ -139,8 +141,7 @@ class TranslationLib {
 	 *
 	 * @return array
 	 */
-	protected function _map(array $entries)
-	{
+	protected function _map(array $entries) {
 		$translations = [];
 
 		foreach ($entries as $entry) {
@@ -193,8 +194,7 @@ class TranslationLib {
 	 *
 	 * @return null|string
 	 */
-	protected function _comment(array $entry)
-	{
+	protected function _comment(array $entry) {
 		$rows = [];
 
 		$keys = ['ccomment', 'tcomment', 'flags'];
@@ -231,8 +231,7 @@ class TranslationLib {
 	 *
 	 * @return null|string
 	 */
-	protected function _content(array $entry)
-	{
+	protected function _content(array $entry) {
 		if (isset($entry['msgstr'])) {
 			return implode('', $entry['msgstr']);
 		}

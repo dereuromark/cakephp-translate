@@ -153,8 +153,7 @@ class TranslateTermsTable extends Table {
 	 * @param int $translateLanguageId
 	 * @return \Translate\Model\Entity\TranslateTerm
 	 */
-	public function import(array $translation, $translateStringId, $translateLanguageId)
-	{
+	public function import(array $translation, $translateStringId, $translateLanguageId) {
 		$translation += [
 			//'user_id' => null,
 			'translate_string_id' => $translateStringId,

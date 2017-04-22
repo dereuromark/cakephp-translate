@@ -1,13 +1,11 @@
 <?php
 namespace Translate\Controller\Admin;
 
-use App\Controller\AppController;
 use Cake\Core\Configure;
 use Sepia\FileHandler;
 use Sepia\PoParser;
 use Translate\Controller\TranslateAppController;
 use Translate\Lib\TranslationLib;
-use Translate\Model\Entity\TranslateTerm;
 
 /**
  * TranslateStrings Controller
@@ -178,7 +176,7 @@ class TranslateStringsController extends TranslateAppController {
 				if (!in_array($domain, $potFiles)) {
 					continue;
 				}
-				$translations =  $translationLib->extractPotFile($domain);
+				$translations = $translationLib->extractPotFile($domain);
 
 				$translationGroup = $this->TranslateStrings->TranslateGroups->getGroup($this->Translation->currentProjectId(), $domain);
 
@@ -373,7 +371,7 @@ class TranslateStringsController extends TranslateAppController {
 	}
 
 	/**
-	 * @param TranslateTerm[] $translations
+	 * @param \Translate\Model\Entity\TranslateTerm[] $translations
 	 * @param $domain
 	 * @param $lang
 	 *
@@ -393,7 +391,7 @@ class TranslateStringsController extends TranslateAppController {
 		$pluralExpression = Configure::read('Translate.pluralExpression') ?: 'n != 1';
 
 		$po = new PoParser(new FileHandler($file));
-		$newHeaders = array(
+		$newHeaders = [
 			'"Project-Id-Version: \n"',
 			'"POT-Creation-Date: \n"',
 			'"PO-Revision-Date: \n"',
@@ -403,7 +401,7 @@ class TranslateStringsController extends TranslateAppController {
 			'"Content-Type: text/plain; charset=utf-8\n"',
 			'"Content-Transfer-Encoding: 8bit\n"',
 			'"Plural-Forms: nplurals=' . $max . '; plural=' . $pluralExpression . ';\n"'
-		);
+		];
 
 		$po->setHeaders($newHeaders);
 
@@ -439,6 +437,8 @@ class TranslateStringsController extends TranslateAppController {
 
 	/**
 	 * Dumps the language array into /locale/{LANG}/LC_MESSAGES/ss.po
+	 *
+	 * @return void
 	 */
 	protected function ___dump($languageArray, $type = null, $verbose = false) {	// todo: adding $simulate=false
 

@@ -96,7 +96,7 @@ class TranslateStringsTable extends Table {
 		$search
 			->value('translate_group_id', [
 			])
-			->callback('missing_translation' , [
+			->callback('missing_translation', [
 				'callback' => function (Query $query, array $args, $filter) {
 					if (empty($args['missing_translation'])) {
 						return false;
@@ -216,8 +216,7 @@ class TranslateStringsTable extends Table {
 	 * @param int $groupId
 	 * @return \Translate\Model\Entity\TranslateString|null
 	 */
-	public function import(array $translation, $groupId)
-	{
+	public function import(array $translation, $groupId) {
 		$translation += [
 			//'user_id' => null,
 			'last_imported' => new Time(),
@@ -252,8 +251,7 @@ class TranslateStringsTable extends Table {
 	 *
 	 * @return bool
 	 */
-	protected function containsHtml(array $translation)
-	{
+	protected function containsHtml(array $translation) {
 		if (strpos($translation['name'], '<') !== false || strpos($translation['name'], '>') !== false) {
 			return true;
 		}

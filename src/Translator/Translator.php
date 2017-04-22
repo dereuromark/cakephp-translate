@@ -4,14 +4,12 @@
 
 namespace Translate\Translator;
 
-
 use Cake\Core\Configure;
 use Cake\Core\InstanceConfigTrait;
 use RuntimeException;
 use Translate\Translator\Engine\Google;
 
-class Translator
-{
+class Translator {
 
 	use InstanceConfigTrait;
 
@@ -19,8 +17,7 @@ class Translator
 		'engine' => Google::class,
 	];
 
-	public function __construct(array $config = [])
-	{
+	public function __construct(array $config = []) {
 		$config += (array)Configure::read('Translate');
 		$this->setConfig($config);
 
@@ -43,8 +40,7 @@ class Translator
 	/**
 	 * @return \Translate\Translator\EngineInterface
 	 */
-	protected function _getEngine()
-	{
+	protected function _getEngine() {
 		$engineClass = $this->getConfig('engine');
 		$engine = new $engineClass($this->getConfig());
 		if (!($engine instanceof EngineInterface)) {

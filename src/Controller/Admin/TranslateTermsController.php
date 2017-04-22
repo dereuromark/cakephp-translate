@@ -60,11 +60,11 @@ class TranslateTermsController extends TranslateAppController {
 		if ($this->request->is(['patch', 'post', 'put'])) {
 			$translateTerm = $this->TranslateTerms->patchEntity($translateTerm, $this->request->data);
 			if ($this->TranslateTerms->save($translateTerm)) {
-				$this->Flash->success(__('The translate term has been saved.'));
+				$this->Flash->success(__d('translate', 'The translate term has been saved.'));
 				return $this->redirect(['action' => 'index']);
 			}
 
-			$this->Flash->error(__('The translate term could not be saved. Please, try again.'));
+			$this->Flash->error(__d('translate', 'The translate term could not be saved. Please, try again.'));
 		}
 		$translateStrings = $this->TranslateTerms->TranslateStrings->find('list', ['limit' => 200]);
 		$translateLanguages = $this->TranslateTerms->TranslateLanguages->find('list', ['limit' => 200]);
@@ -84,9 +84,9 @@ class TranslateTermsController extends TranslateAppController {
 		$this->request->allowMethod(['post', 'delete']);
 		$translateTerm = $this->TranslateTerms->get($id);
 		if ($this->TranslateTerms->delete($translateTerm)) {
-			$this->Flash->success(__('The translate term has been deleted.'));
+			$this->Flash->success(__d('translate', 'The translate term has been deleted.'));
 		} else {
-			$this->Flash->error(__('The translate term could not be deleted. Please, try again.'));
+			$this->Flash->error(__d('translate', 'The translate term could not be deleted. Please, try again.'));
 		}
 		return $this->redirect(['action' => 'index']);
 	}

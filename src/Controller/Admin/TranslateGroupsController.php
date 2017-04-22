@@ -146,11 +146,11 @@ class TranslateGroupsController extends TranslateAppController {
 
 			$translateGroup = $this->TranslateGroups->patchEntity($translateGroup, $this->request->data);
 			if ($this->TranslateGroups->save($translateGroup)) {
-				$this->Flash->success(__('The translate group has been saved.'));
+				$this->Flash->success(__d('translate', 'The translate group has been saved.'));
 				return $this->redirect(['action' => 'index']);
 			}
 
-			$this->Flash->error(__('The translate group could not be saved. Please, try again.'));
+			$this->Flash->error(__d('translate', 'The translate group could not be saved. Please, try again.'));
 		} else {
 			$this->request->data['active'] = true;
 		}
@@ -172,11 +172,11 @@ class TranslateGroupsController extends TranslateAppController {
 		if ($this->request->is(['patch', 'post', 'put'])) {
 			$translateGroup = $this->TranslateGroups->patchEntity($translateGroup, $this->request->data);
 			if ($this->TranslateGroups->save($translateGroup)) {
-				$this->Flash->success(__('The translate group has been saved.'));
+				$this->Flash->success(__d('translate', 'The translate group has been saved.'));
 				return $this->redirect(['action' => 'index']);
 			}
 
-			$this->Flash->error(__('The translate group could not be saved. Please, try again.'));
+			$this->Flash->error(__d('translate', 'The translate group could not be saved. Please, try again.'));
 		}
 		$translateProjects = $this->TranslateGroups->TranslateProjects->find('list', ['limit' => 200]);
 		$translateStrings = $this->TranslateGroups->TranslateStrings->find('list', ['limit' => 200]);
@@ -196,9 +196,9 @@ class TranslateGroupsController extends TranslateAppController {
 		$this->request->allowMethod(['post', 'delete']);
 		$translateGroup = $this->TranslateGroups->get($id);
 		if ($this->TranslateGroups->delete($translateGroup)) {
-			$this->Flash->success(__('The translate group has been deleted.'));
+			$this->Flash->success(__d('translate', 'The translate group has been deleted.'));
 		} else {
-			$this->Flash->error(__('The translate group could not be deleted. Please, try again.'));
+			$this->Flash->error(__d('translate', 'The translate group could not be deleted. Please, try again.'));
 		}
 		return $this->redirect(['action' => 'index']);
 	}

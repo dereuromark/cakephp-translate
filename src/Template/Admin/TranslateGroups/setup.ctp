@@ -7,7 +7,7 @@
 <div class="page form">
 <?php echo $this->Form->create($translateGroup);?>
 	<fieldset>
-		<legend><?php echo __('Setup Default Translate Groups');?></legend>
+		<legend><?php echo __d('translate', 'Setup Default Translate Groups');?></legend>
 
 	<?php
 	$count = 0;
@@ -27,10 +27,10 @@
 	}
 	?>
 	</fieldset>
-<?php echo $this->Form->submit(__('Submit')); echo $this->Form->end();?>
+<?php echo $this->Form->submit(__d('translate', 'Submit')); echo $this->Form->end();?>
 </div>
 <div class="actions">
 	<ul>
-		<li><?php echo $this->Html->link(__('List Translate Groups'), ['action'=>'index']);?></li>
+		<li><?php echo $this->Html->link(__d('translate', 'List Translate Groups'), ['action'=>'index']);?></li>
 	</ul>
 </div>

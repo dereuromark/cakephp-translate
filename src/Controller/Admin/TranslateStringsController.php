@@ -77,7 +77,7 @@ class TranslateStringsController extends TranslateAppController {
 		if ($this->request->is('post')) {
 			$translateString = $this->TranslateStrings->patchEntity($translateString, $this->request->data);
 			if ($this->TranslateStrings->save($translateString)) {
-				$this->Flash->success(__('The translate string has been saved.'));
+				$this->Flash->success(__d('translate', 'The translate string has been saved.'));
 
 				if ($this->request->data('translate_afterwards')) {
 					return $this->redirect(['action' => 'translate', $translateString->id]);
@@ -85,7 +85,7 @@ class TranslateStringsController extends TranslateAppController {
 				return $this->redirect(['action' => 'index']);
 			}
 
-			$this->Flash->error(__('The translate string could not be saved. Please, try again.'));
+			$this->Flash->error(__d('translate', 'The translate string could not be saved. Please, try again.'));
 		}
 		$translateGroups = $this->TranslateStrings->TranslateGroups->find('list', ['limit' => 200]);
 
@@ -107,7 +107,7 @@ class TranslateStringsController extends TranslateAppController {
 		if ($this->request->is(['patch', 'post', 'put'])) {
 			$translateString = $this->TranslateStrings->patchEntity($translateString, $this->request->data);
 			if ($this->TranslateStrings->save($translateString)) {
-				$this->Flash->success(__('The translate string has been saved.'));
+				$this->Flash->success(__d('translate', 'The translate string has been saved.'));
 
 				if ($this->request->data('translate_afterwards')) {
 					return $this->redirect(['action' => 'translate', $id]);
@@ -116,7 +116,7 @@ class TranslateStringsController extends TranslateAppController {
 				return $this->redirect(['action' => 'index']);
 			}
 
-			$this->Flash->error(__('The translate string could not be saved. Please, try again.'));
+			$this->Flash->error(__d('translate', 'The translate string could not be saved. Please, try again.'));
 		} else {
 			$this->request->data = $this->request->query;
 		}
@@ -138,9 +138,9 @@ class TranslateStringsController extends TranslateAppController {
 		$this->request->allowMethod(['post', 'delete']);
 		$translateString = $this->TranslateStrings->get($id);
 		if ($this->TranslateStrings->delete($translateString)) {
-			$this->Flash->success(__('The translate string has been deleted.'));
+			$this->Flash->success(__d('translate', 'The translate string has been deleted.'));
 		} else {
-			$this->Flash->error(__('The translate string could not be deleted. Please, try again.'));
+			$this->Flash->error(__d('translate', 'The translate string could not be deleted. Please, try again.'));
 		}
 		return $this->redirect(['action' => 'index']);
 	}

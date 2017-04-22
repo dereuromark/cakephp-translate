@@ -5,20 +5,20 @@
  */
 ?><nav class="col-sm-4 col-xs-12">
 	<ul class="side-nav nav nav-pills nav-stacked">
-		<li class="heading"><?= __('Actions') ?></li>
+		<li class="heading"><?= __d('translate', 'Actions') ?></li>
 		<li><?= $this->Form->postLink(
-				__('Delete'),
+				__d('translate', 'Delete'),
 				['action' => 'delete', $translateString->id],
-				['confirm' => __('Are you sure you want to delete # {0}?', $translateString->id)]
+				['confirm' => __d('translate', 'Are you sure you want to delete # {0}?', $translateString->id)]
 			)
 		?></li>
-		<li><?= $this->Html->link(__('List Translate Strings'), ['action' => 'index']) ?></li>
+		<li><?= $this->Html->link(__d('translate', 'List Translate Strings'), ['action' => 'index']) ?></li>
 	</ul>
 </nav>
 <div class="translateStrings form col-sm-8 col-xs-12">
 	<?= $this->Form->create($translateString) ?>
 	<fieldset>
-		<legend><?= __('Edit Translate String') ?></legend>
+		<legend><?= __d('translate', 'Edit Translate String') ?></legend>
 		<?php
 		//echo $this->Form->input('id');
 		echo $this->Form->input('translate_group_id');
@@ -38,6 +38,6 @@
 		//echo $this->Form->input('translate_groups._ids', ['options' => $translateGroups]);
 		?>
 	</fieldset>
-	<?= $this->Form->button(__('Submit')) ?>
+	<?= $this->Form->button(__d('translate', 'Submit')) ?>
 	<?= $this->Form->end() ?>
 </div>

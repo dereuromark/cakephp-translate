@@ -4,7 +4,7 @@
  */
 ?>
 <table class="table table-striped">
-<tr><th><?php echo __('Language'); ?></th><th><?php echo __('Coverage'); ?></th><th><?php echo __('Active'); ?></th></tr>
+<tr><th><?php echo __d('translate', 'Language'); ?></th><th><?php echo __d('translate', 'Coverage'); ?></th><th><?php echo __d('translate', 'Active'); ?></th></tr>
 <?php foreach ($languages as $language) {
 
 $currentCoverage = $coverage[$language['locale']];

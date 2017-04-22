@@ -53,11 +53,11 @@ class TranslateProjectsController extends TranslateAppController {
 		if ($this->request->is('post')) {
 			$translateProject = $this->TranslateProjects->patchEntity($translateProject, $this->request->data);
 			if ($this->TranslateProjects->save($translateProject)) {
-				$this->Flash->success(__('The translate project has been saved.'));
+				$this->Flash->success(__d('translate', 'The translate project has been saved.'));
 				return $this->redirect(['action' => 'index']);
 			}
 
-			$this->Flash->error(__('The translate project could not be saved. Please, try again.'));
+			$this->Flash->error(__d('translate', 'The translate project could not be saved. Please, try again.'));
 		}
 
 		$this->set(compact('translateProject'));
@@ -78,11 +78,11 @@ class TranslateProjectsController extends TranslateAppController {
 		if ($this->request->is(['patch', 'post', 'put'])) {
 			$translateProject = $this->TranslateProjects->patchEntity($translateProject, $this->request->data);
 			if ($this->TranslateProjects->save($translateProject)) {
-				$this->Flash->success(__('The translate project has been saved.'));
+				$this->Flash->success(__d('translate', 'The translate project has been saved.'));
 				return $this->redirect(['action' => 'index']);
 			}
 
-			$this->Flash->error(__('The translate project could not be saved. Please, try again.'));
+			$this->Flash->error(__d('translate', 'The translate project could not be saved. Please, try again.'));
 		}
 
 		$this->set(compact('translateProject'));
@@ -100,9 +100,9 @@ class TranslateProjectsController extends TranslateAppController {
 		$this->request->allowMethod(['post', 'delete']);
 		$translateProject = $this->TranslateProjects->get($id);
 		if ($this->TranslateProjects->delete($translateProject)) {
-			$this->Flash->success(__('The translate project has been deleted.'));
+			$this->Flash->success(__d('translate', 'The translate project has been deleted.'));
 		} else {
-			$this->Flash->error(__('The translate project could not be deleted. Please, try again.'));
+			$this->Flash->error(__d('translate', 'The translate project could not be deleted. Please, try again.'));
 		}
 		return $this->redirect(['action' => 'index']);
 	}
@@ -114,7 +114,7 @@ class TranslateProjectsController extends TranslateAppController {
 		$projectId = !empty($this->request->data['project_switch']) ? (int)$this->request->data['project_switch'] : 0;
 		if ($projectId && ($project = $this->TranslateProjects->get($projectId))) {
 			$this->request->session()->write('TranslateProject.id', $project->translateProject['id']);
-			$this->Flash->success(__('Project switched'));
+			$this->Flash->success(__d('translate', 'Project switched'));
 		}
 
 		return $this->Common->autoRedirect(['controller' => 'translate', 'action' => 'index']);
@@ -125,9 +125,9 @@ class TranslateProjectsController extends TranslateAppController {
 	 */
 	public function reset() {
 		$removeOptions = [
-			'terms' => __('Translate Terms'),
-			'strings' => __('Translate Strings'),
-			'groups' => __('Translate Groups'),
+			'terms' => __d('translate', 'Translate Terms'),
+			'strings' => __d('translate', 'Translate Strings'),
+			'groups' => __d('translate', 'Translate Groups'),
 		];
 		$this->TranslateLanguage = TableRegistry::get('Translate.TranslateLanguage');
 		$languages = $this->TranslateLanguages->find('list');
@@ -136,7 +136,7 @@ class TranslateProjectsController extends TranslateAppController {
 		if ($this->Common->isPosted()) {
 			$this->TranslateProjects->reset($id, $this->request->data['Form']['reset'], $this->request->data['Form']['language']);
 
-			$this->Flash->success(__('Done'));
+			$this->Flash->success(__d('translate', 'Done'));
 			//$this->Common->autoRedirect(array('controller'=>'translate', 'action'=>'index'));
 
 		} else {

@@ -6,14 +6,14 @@
 ?>
 <nav class="col-sm-4 col-xs-12">
 	<ul class="side-nav nav nav-pills nav-stacked">
-		<li class="heading"><?= __('Actions') ?></li>
-		<li><?= $this->Html->link(__('List Translate Strings'), ['action' => 'index']) ?></li>
+		<li class="heading"><?= __d('translate', 'Actions') ?></li>
+		<li><?= $this->Html->link(__d('translate', 'List Translate Strings'), ['action' => 'index']) ?></li>
 	</ul>
 </nav>
 <div class="translateStrings form col-sm-8 col-xs-12">
 	<?= $this->Form->create($translateString) ?>
 	<fieldset>
-		<legend><?= __('Add Translate String') ?></legend>
+		<legend><?= __d('translate', 'Add Translate String') ?></legend>
 		<?php
 			echo $this->Form->input('translate_group_id');
 
@@ -29,6 +29,6 @@
 			echo $this->Form->input('translate_afterwards', ['type'=>'checkbox']);
 		?>
 	</fieldset>
-	<?= $this->Form->button(__('Submit')) ?>
+	<?= $this->Form->button(__d('translate', 'Submit')) ?>
 	<?= $this->Form->end() ?>
 </div>

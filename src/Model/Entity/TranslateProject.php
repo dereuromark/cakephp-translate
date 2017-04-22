@@ -39,9 +39,9 @@ class TranslateProject extends Entity {
 	 */
 	public static function statuses($value = null) {
 		$options = [
-			static::STATUS_INACTIVE => __('Inactive Project'),
-			static::STATUS_HIDDEN => __('Hidden Project'),
-			static::STATUS_PUBLIC => __('Public Project'),
+			static::STATUS_INACTIVE => __d('translate', 'Inactive Project'),
+			static::STATUS_HIDDEN => __d('translate', 'Hidden Project'),
+			static::STATUS_PUBLIC => __d('translate', 'Public Project'),
 		];
 		return parent::enum($value, $options);
 	}
@@ -57,9 +57,9 @@ class TranslateProject extends Entity {
 	 */
 	public static function types($value = null) {
 		$options = [
-			static::TYPE_APP => __('CakePHP App'),
-			static::TYPE_PLUGIN => __('CakePHP Plugin'),
-			static::TYPE_OTHER => __('Other Project'),
+			static::TYPE_APP => __d('translate', 'CakePHP App'),
+			static::TYPE_PLUGIN => __d('translate', 'CakePHP Plugin'),
+			static::TYPE_OTHER => __d('translate', 'Other Project'),
 		];
 		return parent::enum($value, $options);
 	}

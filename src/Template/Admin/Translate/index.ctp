@@ -12,7 +12,7 @@ $totalColor = $this->Translation->getColor($totalCoverage);
 <?php echo $this->element('project_switch', [])?>
 </div>
 
-<h2><?php echo __('Translate Plugin');?></h2>
+<h2><?php echo __d('translate', 'Translate Plugin');?></h2>
 	<p>
 Easily manage i18n/translations from your backend.
 	</p>
@@ -39,7 +39,7 @@ Easily manage i18n/translations from your backend.
 <li>Guests/Visitors can help, too (translations need approval from admins)</li>
 <li>Extract from source code directly (triggering cake i18n internally)</li>
 <li>Change strings in the source code directly from the plugin and correct spelling errors etc with this (all occurances will be translated ).</li>
-<li>Plugin support __d() and for other __() methods</li>
+<li>Plugin support __d() and for other __d('translate', ) methods</li>
 </ul>
 </td>
 
@@ -56,13 +56,13 @@ Current Translation-Coverage: <span style="color:#<?php echo $totalColor;?>;font
 
 <?php echo $this->element('coverage_table', [])?>
 		<p>
-<?php echo $count['groups']?> <?php echo $this->Html->link(__('Groups'), ['controller'=>'TranslateGroups']);?> with <?php echo $count['strings']?> <?php echo $this->Html->link(__('Strings'), ['controller'=>'TranslateStrings']);?> in <?php echo $count['languages']?> different <?php echo $this->Html->link(__('Languages'), ['controller'=>'TranslateLanguages']);?> = <?php echo $count['translations']?> <?php echo __('Translations');?>
+<?php echo $count['groups']?> <?php echo $this->Html->link(__d('translate', 'Groups'), ['controller'=>'TranslateGroups']);?> with <?php echo $count['strings']?> <?php echo $this->Html->link(__d('translate', 'Strings'), ['controller'=>'TranslateStrings']);?> in <?php echo $count['languages']?> different <?php echo $this->Html->link(__d('translate', 'Languages'), ['controller'=>'TranslateLanguages']);?> = <?php echo $count['translations']?> <?php echo __d('translate', 'Translations');?>
 		</p>
 
 <?php } else { ?>
 
 	<p>
-<?php echo __('Please create a project first'); ?>: <?php echo $this->Html->link('Project Index', ['prefix' => 'admin', 'controller' => 'TranslateProjects']); ?>
+<?php echo __d('translate', 'Please create a project first'); ?>: <?php echo $this->Html->link('Project Index', ['prefix' => 'admin', 'controller' => 'TranslateProjects']); ?>
 	</p>
 
 <?php } ?>
@@ -86,9 +86,9 @@ Current Translation-Coverage: <span style="color:#<?php echo $totalColor;?>;font
 <br/><br/>
 
 <ul>
-<li><?php echo $this->Html->link(__('Best Practice'), ['action' => 'bestPractice']);?> </li>
-<li><?php echo $this->Html->link(__('Extract'), ['controller' => 'TranslateStrings', 'action' => 'extract']);?> </li>
-	<li><?php echo $this->Html->link(__('Dump'), ['controller' => 'TranslateStrings', 'action' => 'dump']);?> </li>
+<li><?php echo $this->Html->link(__d('translate', 'Best Practice'), ['action' => 'bestPractice']);?> </li>
+<li><?php echo $this->Html->link(__d('translate', 'Extract'), ['controller' => 'TranslateStrings', 'action' => 'extract']);?> </li>
+	<li><?php echo $this->Html->link(__d('translate', 'Dump'), ['controller' => 'TranslateStrings', 'action' => 'dump']);?> </li>
 </ul>
 
 </td>

@@ -1,0 +1,678 @@
+# LANGUAGE translation of CakePHP Application
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2017-04-22 19:40+0000\n"
+"PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: Controller/Admin/TranslateGroupsController.php:149;175
+msgid "The translate group has been saved."
+msgstr ""
+
+#: Controller/Admin/TranslateGroupsController.php:153;179
+msgid "The translate group could not be saved. Please, try again."
+msgstr ""
+
+#: Controller/Admin/TranslateGroupsController.php:199
+msgid "The translate group has been deleted."
+msgstr ""
+
+#: Controller/Admin/TranslateGroupsController.php:201
+msgid "The translate group could not be deleted. Please, try again."
+msgstr ""
+
+#: Controller/Admin/TranslateLanguagesController.php:138;163
+msgid "The translate language has been saved."
+msgstr ""
+
+#: Controller/Admin/TranslateLanguagesController.php:142;167
+msgid "The translate language could not be saved. Please, try again."
+msgstr ""
+
+#: Controller/Admin/TranslateLanguagesController.php:185
+msgid "The translate language has been deleted."
+msgstr ""
+
+#: Controller/Admin/TranslateLanguagesController.php:187
+msgid "The translate language could not be deleted. Please, try again."
+msgstr ""
+
+#: Controller/Admin/TranslateProjectsController.php:56;81
+msgid "The translate project has been saved."
+msgstr ""
+
+#: Controller/Admin/TranslateProjectsController.php:60;85
+msgid "The translate project could not be saved. Please, try again."
+msgstr ""
+
+#: Controller/Admin/TranslateProjectsController.php:103
+msgid "The translate project has been deleted."
+msgstr ""
+
+#: Controller/Admin/TranslateProjectsController.php:105
+msgid "The translate project could not be deleted. Please, try again."
+msgstr ""
+
+#: Controller/Admin/TranslateProjectsController.php:117
+msgid "Project switched"
+msgstr ""
+
+#: Controller/Admin/TranslateProjectsController.php:128
+#: Template/Admin/TranslateTerms/index.ctp:18
+msgid "Translate Terms"
+msgstr ""
+
+#: Controller/Admin/TranslateProjectsController.php:129
+#: Template/Admin/TranslateStrings/index.ctp:14
+msgid "Translate Strings"
+msgstr ""
+
+#: Controller/Admin/TranslateProjectsController.php:130
+#: Template/Admin/TranslateGroups/index.ctp:18
+msgid "Translate Groups"
+msgstr ""
+
+#: Controller/Admin/TranslateProjectsController.php:139
+msgid "Done"
+msgstr ""
+
+#: Controller/Admin/TranslateStringsController.php:80;110
+msgid "The translate string has been saved."
+msgstr ""
+
+#: Controller/Admin/TranslateStringsController.php:88;119
+msgid "The translate string could not be saved. Please, try again."
+msgstr ""
+
+#: Controller/Admin/TranslateStringsController.php:141
+msgid "The translate string has been deleted."
+msgstr ""
+
+#: Controller/Admin/TranslateStringsController.php:143
+msgid "The translate string could not be deleted. Please, try again."
+msgstr ""
+
+#: Controller/Admin/TranslateStringsController.php:316
+msgid "You need at least one language to translate"
+msgstr ""
+
+#: Controller/Admin/TranslateTermsController.php:63
+msgid "The translate term has been saved."
+msgstr ""
+
+#: Controller/Admin/TranslateTermsController.php:67
+msgid "The translate term could not be saved. Please, try again."
+msgstr ""
+
+#: Controller/Admin/TranslateTermsController.php:87
+msgid "The translate term has been deleted."
+msgstr ""
+
+#: Controller/Admin/TranslateTermsController.php:89
+msgid "The translate term could not be deleted. Please, try again."
+msgstr ""
+
+#: Model/Entity/TranslateProject.php:42
+msgid "Inactive Project"
+msgstr ""
+
+#: Model/Entity/TranslateProject.php:43
+msgid "Hidden Project"
+msgstr ""
+
+#: Model/Entity/TranslateProject.php:44
+msgid "Public Project"
+msgstr ""
+
+#: Model/Entity/TranslateProject.php:60
+msgid "CakePHP App"
+msgstr ""
+
+#: Model/Entity/TranslateProject.php:61
+msgid "CakePHP Plugin"
+msgstr ""
+
+#: Model/Entity/TranslateProject.php:62
+msgid "Other Project"
+msgstr ""
+
+#: Template/Admin/Translate/best_practice.ctp:9
+#: Template/Admin/Translate/convert.ctp:9
+#: Template/Admin/Translate/reset.ctp:9
+#: Template/Admin/TranslateGroups/add.ctp:9
+#: Template/Admin/TranslateGroups/edit.ctp:8
+#: Template/Admin/TranslateGroups/index.ctp:9;27
+#: Template/Admin/TranslateGroups/view.ctp:9
+#: Template/Admin/TranslateLanguages/add.ctp:9
+#: Template/Admin/TranslateLanguages/edit.ctp:8
+#: Template/Admin/TranslateLanguages/index.ctp:9;23
+#: Template/Admin/TranslateLanguages/view.ctp:9
+#: Template/Admin/TranslateProjects/add.ctp:9
+#: Template/Admin/TranslateProjects/edit.ctp:8
+#: Template/Admin/TranslateProjects/index.ctp:9;28
+#: Template/Admin/TranslateProjects/view.ctp:9;63
+#: Template/Admin/TranslateStrings/add.ctp:9
+#: Template/Admin/TranslateStrings/dump.ctp:9
+#: Template/Admin/TranslateStrings/edit.ctp:8
+#: Template/Admin/TranslateStrings/extract.ctp:9
+#: Template/Admin/TranslateStrings/index.ctp:9;47
+#: Template/Admin/TranslateStrings/translate.ctp:11
+#: Template/Admin/TranslateStrings/view.ctp:9;73
+#: Template/Admin/TranslateTerms/edit.ctp:8
+#: Template/Admin/TranslateTerms/index.ctp:9;30
+#: Template/Admin/TranslateTerms/view.ctp:9
+msgid "Actions"
+msgstr ""
+
+#: Template/Admin/Translate/best_practice.ctp:10
+#: Template/Admin/Translate/convert.ctp:10
+#: Template/Admin/Translate/reset.ctp:10
+#: Template/Admin/TranslateLanguages/index.ctp:10
+#: Template/Admin/TranslateProjects/index.ctp:10
+#: Template/Admin/TranslateStrings/translate.ctp:12
+msgid "Overview"
+msgstr ""
+
+#: Template/Admin/Translate/best_practice.ctp:14
+msgid "bestPractice"
+msgstr ""
+
+#: Template/Admin/Translate/convert.ctp:28
+msgid "Convert text"
+msgstr ""
+
+#: Template/Admin/Translate/convert.ctp:37
+#: Template/Admin/TranslateGroups/add.ctp:26
+#: Template/Admin/TranslateGroups/edit.ctp:31
+#: Template/Admin/TranslateGroups/extract.ctp:40
+#: Template/Admin/TranslateGroups/setup.ctp:30
+#: Template/Admin/TranslateLanguages/add.ctp:29
+#: Template/Admin/TranslateLanguages/edit.ctp:34
+#: Template/Admin/TranslateLanguages/from_locale.ctp:27
+#: Template/Admin/TranslateLanguages/to_locale.ctp:33
+#: Template/Admin/TranslateProjects/add.ctp:24
+#: Template/Admin/TranslateProjects/edit.ctp:31
+#: Template/Admin/TranslateProjects/reset.ctp:20
+#: Template/Admin/TranslateStrings/add.ctp:32
+#: Template/Admin/TranslateStrings/dump.ctp:32
+#: Template/Admin/TranslateStrings/edit.ctp:41
+#: Template/Admin/TranslateStrings/extract.ctp:34
+#: Template/Admin/TranslateTerms/edit.ctp:33
+msgid "Submit"
+msgstr ""
+
+#: Template/Admin/Translate/index.ctp:15
+msgid "Translate Plugin"
+msgstr ""
+
+#: Template/Admin/Translate/index.ctp:59
+msgid "Groups"
+msgstr ""
+
+#: Template/Admin/Translate/index.ctp:59
+msgid "Strings"
+msgstr ""
+
+#: Template/Admin/Translate/index.ctp:59
+msgid "Languages"
+msgstr ""
+
+#: Template/Admin/Translate/index.ctp:59
+msgid "Translations"
+msgstr ""
+
+#: Template/Admin/Translate/index.ctp:65
+msgid "Please create a project first"
+msgstr ""
+
+#: Template/Admin/Translate/index.ctp:89
+msgid "Best Practice"
+msgstr ""
+
+#: Template/Admin/Translate/index.ctp:90
+msgid "Extract"
+msgstr ""
+
+#: Template/Admin/Translate/index.ctp:91
+msgid "Dump"
+msgstr ""
+
+#: Template/Admin/Translate/reset.ctp:16;29
+#: Template/Admin/TranslateStrings/index.ctp:28
+msgid "Reset"
+msgstr ""
+
+#: Template/Admin/Translate/reset.ctp:24
+#: Template/Admin/TranslateStrings/dump.ctp:28
+#: Template/Admin/TranslateStrings/extract.ctp:20;30
+msgid "Selection"
+msgstr ""
+
+#: Template/Admin/TranslateGroups/add.ctp:10
+#: Template/Admin/TranslateGroups/edit.ctp:15
+#: Template/Admin/TranslateGroups/extract.ctp:44
+#: Template/Admin/TranslateGroups/setup.ctp:34
+#: Template/Admin/TranslateGroups/view.ctp:12
+#: Template/Admin/TranslateProjects/edit.ctp:16
+#: Template/Admin/TranslateProjects/index.ctp:13
+#: Template/Admin/TranslateProjects/view.ctp:14
+msgid "List Translate Groups"
+msgstr ""
+
+#: Template/Admin/TranslateGroups/add.ctp:11
+#: Template/Admin/TranslateGroups/edit.ctp:16
+#: Template/Admin/TranslateGroups/index.ctp:11
+#: Template/Admin/TranslateGroups/view.ctp:14
+#: Template/Admin/TranslateProjects/add.ctp:10
+#: Template/Admin/TranslateProjects/edit.ctp:15
+#: Template/Admin/TranslateProjects/view.ctp:12
+msgid "List Translate Projects"
+msgstr ""
+
+#: Template/Admin/TranslateGroups/add.ctp:12
+#: Template/Admin/TranslateGroups/edit.ctp:17
+#: Template/Admin/TranslateGroups/index.ctp:12
+#: Template/Admin/TranslateGroups/view.ctp:15
+#: Template/Admin/TranslateProjects/index.ctp:11
+#: Template/Admin/TranslateProjects/view.ctp:13
+msgid "New Translate Project"
+msgstr ""
+
+#: Template/Admin/TranslateGroups/add.ctp:13
+#: Template/Admin/TranslateGroups/edit.ctp:18
+#: Template/Admin/TranslateGroups/index.ctp:13
+#: Template/Admin/TranslateGroups/view.ctp:16
+#: Template/Admin/TranslateProjects/index.ctp:14
+#: Template/Admin/TranslateStrings/add.ctp:10
+#: Template/Admin/TranslateStrings/dump.ctp:10
+#: Template/Admin/TranslateStrings/edit.ctp:15
+#: Template/Admin/TranslateStrings/extract.ctp:10
+#: Template/Admin/TranslateStrings/translate.ctp:13
+#: Template/Admin/TranslateStrings/view.ctp:12
+#: Template/Admin/TranslateTerms/edit.ctp:15
+#: Template/Admin/TranslateTerms/index.ctp:11
+#: Template/Admin/TranslateTerms/view.ctp:12
+msgid "List Translate Strings"
+msgstr ""
+
+#: Template/Admin/TranslateGroups/add.ctp:14
+#: Template/Admin/TranslateGroups/edit.ctp:19
+#: Template/Admin/TranslateGroups/index.ctp:14
+#: Template/Admin/TranslateGroups/view.ctp:17
+#: Template/Admin/TranslateStrings/index.ctp:10
+#: Template/Admin/TranslateStrings/view.ctp:13
+#: Template/Admin/TranslateTerms/edit.ctp:16
+#: Template/Admin/TranslateTerms/index.ctp:12
+#: Template/Admin/TranslateTerms/view.ctp:13
+msgid "New Translate String"
+msgstr ""
+
+#: Template/Admin/TranslateGroups/add.ctp:20
+msgid "Add Translate Group"
+msgstr ""
+
+#: Template/Admin/TranslateGroups/edit.ctp:10
+#: Template/Admin/TranslateLanguages/edit.ctp:10
+#: Template/Admin/TranslateProjects/edit.ctp:10
+#: Template/Admin/TranslateProjects/view.ctp:79
+#: Template/Admin/TranslateStrings/edit.ctp:10
+#: Template/Admin/TranslateStrings/view.ctp:89
+#: Template/Admin/TranslateTerms/edit.ctp:10
+msgid "Delete"
+msgstr ""
+
+#: Template/Admin/TranslateGroups/edit.ctp:12
+#: Template/Admin/TranslateGroups/index.ctp:41
+#: Template/Admin/TranslateGroups/view.ctp:11
+#: Template/Admin/TranslateLanguages/edit.ctp:12
+#: Template/Admin/TranslateLanguages/index.ctp:41
+#: Template/Admin/TranslateLanguages/view.ctp:11
+#: Template/Admin/TranslateProjects/edit.ctp:12
+#: Template/Admin/TranslateProjects/index.ctp:43
+#: Template/Admin/TranslateProjects/view.ctp:11;79
+#: Template/Admin/TranslateStrings/edit.ctp:12
+#: Template/Admin/TranslateStrings/index.ctp:67
+#: Template/Admin/TranslateStrings/view.ctp:11;89
+#: Template/Admin/TranslateTerms/edit.ctp:12
+#: Template/Admin/TranslateTerms/index.ctp:47
+#: Template/Admin/TranslateTerms/view.ctp:11
+msgid "Are you sure you want to delete # {0}?"
+msgstr ""
+
+#: Template/Admin/TranslateGroups/edit.ctp:25
+#: Template/Admin/TranslateGroups/view.ctp:10
+msgid "Edit Translate Group"
+msgstr ""
+
+#: Template/Admin/TranslateGroups/extract.ctp:9
+#: Template/Admin/TranslateStrings/extract.ctp:17
+msgid "From POT File"
+msgstr ""
+
+#: Template/Admin/TranslateGroups/extract.ctp:19
+#: Template/Admin/TranslateStrings/extract.ctp:27
+msgid "From PO File"
+msgstr ""
+
+#: Template/Admin/TranslateGroups/extract.ctp:27
+msgid "From Source Code"
+msgstr ""
+
+#: Template/Admin/TranslateGroups/extract.ctp:34
+msgid "Controller Names"
+msgstr ""
+
+#: Template/Admin/TranslateGroups/index.ctp:10
+#: Template/Admin/TranslateGroups/view.ctp:13
+#: Template/Admin/TranslateProjects/edit.ctp:17
+#: Template/Admin/TranslateProjects/view.ctp:15
+msgid "New Translate Group"
+msgstr ""
+
+#: Template/Admin/TranslateGroups/setup.ctp:10
+msgid "Setup Default Translate Groups"
+msgstr ""
+
+#: Template/Admin/TranslateGroups/view.ctp:11
+msgid "Delete Translate Group"
+msgstr ""
+
+#: Template/Admin/TranslateGroups/view.ctp:24
+#: Template/Admin/TranslateLanguages/view.ctp:24
+#: Template/Admin/TranslateProjects/view.ctp:22;52
+#: Template/Admin/TranslateStrings/view.ctp:45;62
+msgid "Name"
+msgstr ""
+
+#: Template/Admin/TranslateGroups/view.ctp:28
+#: Template/Admin/TranslateProjects/reset.ctp:7;11
+msgid "Translate Project"
+msgstr ""
+
+#: Template/Admin/TranslateGroups/view.ctp:32
+#: Template/Admin/TranslateLanguages/view.ctp:36
+#: Template/Admin/TranslateProjects/view.ctp:56
+#: Template/Admin/TranslateStrings/view.ctp:24;66
+#: Template/Element/coverage_table.ctp:7
+msgid "Active"
+msgstr ""
+
+#: Template/Admin/TranslateGroups/view.ctp:36
+#: Template/Admin/TranslateProjects/view.ctp:58
+#: Template/Admin/TranslateStrings/view.ctp:68
+msgid "Prio"
+msgstr ""
+
+#: Template/Admin/TranslateGroups/view.ctp:40
+#: Template/Admin/TranslateProjects/view.ctp:38;60
+#: Template/Admin/TranslateStrings/view.ctp:36;70
+#: Template/Admin/TranslateTerms/view.ctp:44
+msgid "Created"
+msgstr ""
+
+#: Template/Admin/TranslateGroups/view.ctp:44
+#: Template/Admin/TranslateProjects/view.ctp:42;62
+#: Template/Admin/TranslateStrings/view.ctp:40;72
+#: Template/Admin/TranslateTerms/view.ctp:48
+msgid "Modified"
+msgstr ""
+
+#: Template/Admin/TranslateLanguages/add.ctp:10
+#: Template/Admin/TranslateLanguages/edit.ctp:15
+#: Template/Admin/TranslateLanguages/from_locale.ctp:33
+#: Template/Admin/TranslateLanguages/to_locale.ctp:39
+#: Template/Admin/TranslateLanguages/view.ctp:12
+#: Template/Admin/TranslateProjects/index.ctp:12
+#: Template/Admin/TranslateTerms/index.ctp:13
+msgid "List Translate Languages"
+msgstr ""
+
+#: Template/Admin/TranslateLanguages/add.ctp:16
+msgid "Add Translate Language"
+msgstr ""
+
+#: Template/Admin/TranslateLanguages/edit.ctp:21
+#: Template/Admin/TranslateLanguages/view.ctp:10
+msgid "Edit Translate Language"
+msgstr ""
+
+#: Template/Admin/TranslateLanguages/from_locale.ctp:8
+msgid "Import Translate Languages"
+msgstr ""
+
+#: Template/Admin/TranslateLanguages/from_locale.ctp:12
+msgid "Find"
+msgstr ""
+
+#: Template/Admin/TranslateLanguages/from_locale.ctp:21
+msgid "languageName"
+msgstr ""
+
+#: Template/Admin/TranslateLanguages/index.ctp:11
+#: Template/Admin/TranslateLanguages/view.ctp:13
+#: Template/Admin/TranslateTerms/index.ctp:14
+msgid "New Translate Language"
+msgstr ""
+
+#: Template/Admin/TranslateLanguages/index.ctp:15
+msgid "Translate Languages"
+msgstr ""
+
+#: Template/Admin/TranslateLanguages/to_locale.ctp:8
+msgid "Export Translate Languages"
+msgstr ""
+
+#: Template/Admin/TranslateLanguages/to_locale.ctp:13
+msgid "Create"
+msgstr ""
+
+#: Template/Admin/TranslateLanguages/view.ctp:11
+msgid "Delete Translate Language"
+msgstr ""
+
+#: Template/Admin/TranslateLanguages/view.ctp:20
+msgid "Language Id"
+msgstr ""
+
+#: Template/Admin/TranslateLanguages/view.ctp:28
+msgid "Iso2"
+msgstr ""
+
+#: Template/Admin/TranslateLanguages/view.ctp:32
+msgid "Locale"
+msgstr ""
+
+#: Template/Admin/TranslateProjects/add.ctp:16
+msgid "Add Translate Project"
+msgstr ""
+
+#: Template/Admin/TranslateProjects/edit.ctp:23
+#: Template/Admin/TranslateProjects/view.ctp:10
+msgid "Edit Translate Project"
+msgstr ""
+
+#: Template/Admin/TranslateProjects/index.ctp:18
+#: Template/Admin/TranslateProjects/reset.ctp:26
+msgid "Translate Projects"
+msgstr ""
+
+#: Template/Admin/TranslateProjects/reset.ctp:7;11
+msgid "Reset {0}"
+msgstr ""
+
+#: Template/Admin/TranslateProjects/reset.ctp:17
+msgid "only relevant for resetting terms"
+msgstr ""
+
+#: Template/Admin/TranslateProjects/reset.ctp:26
+msgid "List {0}"
+msgstr ""
+
+#: Template/Admin/TranslateProjects/view.ctp:11
+msgid "Delete Translate Project"
+msgstr ""
+
+#: Template/Admin/TranslateProjects/view.ctp:26
+msgid "Type"
+msgstr ""
+
+#: Template/Admin/TranslateProjects/view.ctp:30
+msgid "Default"
+msgstr ""
+
+#: Template/Admin/TranslateProjects/view.ctp:34
+msgid "Status"
+msgstr ""
+
+#: Template/Admin/TranslateProjects/view.ctp:48
+#: Template/Admin/TranslateStrings/view.ctp:58
+msgid "Related Translate Groups"
+msgstr ""
+
+#: Template/Admin/TranslateProjects/view.ctp:54
+#: Template/Admin/TranslateStrings/view.ctp:64
+msgid "Project Id"
+msgstr ""
+
+#: Template/Admin/TranslateProjects/view.ctp:75
+#: Template/Admin/TranslateStrings/view.ctp:85
+msgid "View"
+msgstr ""
+
+#: Template/Admin/TranslateProjects/view.ctp:77
+#: Template/Admin/TranslateStrings/view.ctp:87
+msgid "Edit"
+msgstr ""
+
+#: Template/Admin/TranslateStrings/add.ctp:16
+msgid "Add Translate String"
+msgstr ""
+
+#: Template/Admin/TranslateStrings/dump.ctp:25
+msgid "Languages and domains"
+msgstr ""
+
+#: Template/Admin/TranslateStrings/edit.ctp:21
+#: Template/Admin/TranslateStrings/translate.ctp:14
+#: Template/Admin/TranslateStrings/view.ctp:10
+msgid "Edit Translate String"
+msgstr ""
+
+#: Template/Admin/TranslateStrings/index.ctp:19
+msgid "noLimitation"
+msgstr ""
+
+#: Template/Admin/TranslateStrings/index.ctp:26
+msgid "Filter"
+msgstr ""
+
+#: Template/Admin/TranslateStrings/translate.ctp:39
+msgid "Translate This String"
+msgstr ""
+
+#: Template/Admin/TranslateStrings/translate.ctp:47
+msgid "Singular"
+msgstr ""
+
+#: Template/Admin/TranslateStrings/translate.ctp:53
+msgid "Plural"
+msgstr ""
+
+#: Template/Admin/TranslateStrings/translate.ctp:70;72
+msgid "Save"
+msgstr ""
+
+#: Template/Admin/TranslateStrings/translate.ctp:72
+msgid "Next"
+msgstr ""
+
+#: Template/Admin/TranslateStrings/translate.ctp:88
+msgid "textExcerpt"
+msgstr ""
+
+#: Template/Admin/TranslateStrings/view.ctp:11
+msgid "Delete Translate String"
+msgstr ""
+
+#: Template/Admin/TranslateStrings/view.ctp:20
+msgid "User"
+msgstr ""
+
+#: Template/Admin/TranslateStrings/view.ctp:28
+msgid "Is Html"
+msgstr ""
+
+#: Template/Admin/TranslateStrings/view.ctp:32
+msgid "Last Import"
+msgstr ""
+
+#: Template/Admin/TranslateStrings/view.ctp:49
+msgid "Description"
+msgstr ""
+
+#: Template/Admin/TranslateStrings/view.ctp:53
+msgid "Occurrences"
+msgstr ""
+
+#: Template/Admin/TranslateTerms/edit.ctp:22
+#: Template/Admin/TranslateTerms/view.ctp:10
+msgid "Edit Translate Term"
+msgstr ""
+
+#: Template/Admin/TranslateTerms/index.ctp:10
+msgid "New Translate Term"
+msgstr ""
+
+#: Template/Admin/TranslateTerms/view.ctp:11
+msgid "Delete Translate Term"
+msgstr ""
+
+#: Template/Admin/TranslateTerms/view.ctp:20
+msgid "Translate String"
+msgstr ""
+
+#: Template/Admin/TranslateTerms/view.ctp:24
+msgid "Comment"
+msgstr ""
+
+#: Template/Admin/TranslateTerms/view.ctp:28
+msgid "Translate Language"
+msgstr ""
+
+#: Template/Admin/TranslateTerms/view.ctp:32
+msgid "User Id"
+msgstr ""
+
+#: Template/Admin/TranslateTerms/view.ctp:36
+msgid "Confirmed"
+msgstr ""
+
+#: Template/Admin/TranslateTerms/view.ctp:40
+msgid "Confirmed By"
+msgstr ""
+
+#: Template/Admin/TranslateTerms/view.ctp:53
+msgid "Content"
+msgstr ""
+
+#: Template/Element/coverage_table.ctp:7
+msgid "Language"
+msgstr ""
+
+#: Template/Element/coverage_table.ctp:7
+msgid "Coverage"
+msgstr ""
+
+#: Template/Element/project_switch.ctp:16
+msgid "pleaseSelect"
+msgstr ""
+

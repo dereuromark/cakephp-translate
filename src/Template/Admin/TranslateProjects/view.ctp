@@ -6,61 +6,61 @@
 ?>
 <nav class="actions col-sm-4 col-xs-12">
 	<ul class="side-nav nav nav-pills nav-stacked">
-		<li class="heading"><?= __('Actions') ?></li>
-		<li><?= $this->Html->link(__('Edit Translate Project'), ['action' => 'edit', $translateProject->id]) ?> </li>
-		<li><?= $this->Form->postLink(__('Delete Translate Project'), ['action' => 'delete', $translateProject->id], ['confirm' => __('Are you sure you want to delete # {0}?', $translateProject->id)]) ?> </li>
-		<li><?= $this->Html->link(__('List Translate Projects'), ['action' => 'index']) ?> </li>
-		<li><?= $this->Html->link(__('New Translate Project'), ['action' => 'add']) ?> </li>
-		<li><?= $this->Html->link(__('List Translate Groups'), ['controller' => 'TranslateGroups', 'action' => 'index']) ?> </li>
-		<li><?= $this->Html->link(__('New Translate Group'), ['controller' => 'TranslateGroups', 'action' => 'add']) ?> </li>
+		<li class="heading"><?= __d('translate', 'Actions') ?></li>
+		<li><?= $this->Html->link(__d('translate', 'Edit Translate Project'), ['action' => 'edit', $translateProject->id]) ?> </li>
+		<li><?= $this->Form->postLink(__d('translate', 'Delete Translate Project'), ['action' => 'delete', $translateProject->id], ['confirm' => __d('translate', 'Are you sure you want to delete # {0}?', $translateProject->id)]) ?> </li>
+		<li><?= $this->Html->link(__d('translate', 'List Translate Projects'), ['action' => 'index']) ?> </li>
+		<li><?= $this->Html->link(__d('translate', 'New Translate Project'), ['action' => 'add']) ?> </li>
+		<li><?= $this->Html->link(__d('translate', 'List Translate Groups'), ['controller' => 'TranslateGroups', 'action' => 'index']) ?> </li>
+		<li><?= $this->Html->link(__d('translate', 'New Translate Group'), ['controller' => 'TranslateGroups', 'action' => 'add']) ?> </li>
 	</ul>
 </nav>
 <div class="translateProjects view col-sm-8 col-xs-12">
 	<h2><?= h($translateProject->name) ?></h2>
 	<table class="table vertical-table">
 		<tr>
-			<th><?= __('Name') ?></th>
+			<th><?= __d('translate', 'Name') ?></th>
 			<td><?= h($translateProject->name) ?></td>
 		</tr>
 		<tr>
-			<th><?= __('Type') ?></th>
+			<th><?= __d('translate', 'Type') ?></th>
 			<td><?= $this->Number->format($translateProject->type) ?></td>
 		</tr>
 		<tr>
-			<th><?= __('Default') ?></th>
+			<th><?= __d('translate', 'Default') ?></th>
 			<td><?= $this->Format->yesNo($translateProject->default) ?></td>
 		</tr>
 		<tr>
-			<th><?= __('Status') ?></th>
+			<th><?= __d('translate', 'Status') ?></th>
 			<td><?= $this->Number->format($translateProject->status) ?></td>
 		</tr>
 		<tr>
-			<th><?= __('Created') ?></th>
+			<th><?= __d('translate', 'Created') ?></th>
 			<td><?= $this->Time->nice($translateProject->created) ?></td>
 		</tr>
 		<tr>
-			<th><?= __('Modified') ?></th>
+			<th><?= __d('translate', 'Modified') ?></th>
 			<td><?= $this->Time->nice($translateProject->modified) ?></td>
 		</tr>
 	</table>
 
 	<div class="related">
-		<h3><?= __('Related Translate Groups') ?></h3>
+		<h3><?= __d('translate', 'Related Translate Groups') ?></h3>
 		<?php if (!empty($translateProject->translate_groups)): ?>
 		<table class="table table-horizontal">
 									<tr>
-			<th><?= __('Name') ?></th>
+			<th><?= __d('translate', 'Name') ?></th>
 						<tr>
-			<th><?= __('Project Id') ?></th>
+			<th><?= __d('translate', 'Project Id') ?></th>
 						<tr>
-			<th><?= __('Active') ?></th>
+			<th><?= __d('translate', 'Active') ?></th>
 						<tr>
-			<th><?= __('Prio') ?></th>
+			<th><?= __d('translate', 'Prio') ?></th>
 						<tr>
-			<th><?= __('Created') ?></th>
+			<th><?= __d('translate', 'Created') ?></th>
 						<tr>
-			<th><?= __('Modified') ?></th>
-				<th class="actions"><?= __('Actions') ?></th>
+			<th><?= __d('translate', 'Modified') ?></th>
+				<th class="actions"><?= __d('translate', 'Actions') ?></th>
 			</tr>
 			<?php foreach ($translateProject->translate_groups as $translateGroups): ?>
 			<tr>
@@ -72,11 +72,11 @@
 				<td><?= h($translateGroups->created) ?></td>
 				<td><?= h($translateGroups->modified) ?></td>
 				<td class="actions">
-					<?= $this->Html->link(__('View'), ['controller' => 'TranslateGroups', 'action' => 'view', $translateGroups->id]) ?>
+					<?= $this->Html->link(__d('translate', 'View'), ['controller' => 'TranslateGroups', 'action' => 'view', $translateGroups->id]) ?>
 
-					<?= $this->Html->link(__('Edit'), ['controller' => 'TranslateGroups', 'action' => 'edit', $translateGroups->id]) ?>
+					<?= $this->Html->link(__d('translate', 'Edit'), ['controller' => 'TranslateGroups', 'action' => 'edit', $translateGroups->id]) ?>
 
-					<?= $this->Form->postLink(__('Delete'), ['controller' => 'TranslateGroups', 'action' => 'delete', $translateGroups->id], ['confirm' => __('Are you sure you want to delete # {0}?', $translateGroups->id)]) ?>
+					<?= $this->Form->postLink(__d('translate', 'Delete'), ['controller' => 'TranslateGroups', 'action' => 'delete', $translateGroups->id], ['confirm' => __d('translate', 'Are you sure you want to delete # {0}?', $translateGroups->id)]) ?>
 
 				</td>
 			</tr>

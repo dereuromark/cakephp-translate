@@ -135,11 +135,11 @@ class TranslateLanguagesController extends TranslateAppController {
 		if ($this->request->is('post')) {
 			$translateLanguage = $this->TranslateLanguages->patchEntity($translateLanguage, $this->request->data);
 			if ($this->TranslateLanguages->save($translateLanguage)) {
-				$this->Flash->success(__('The translate language has been saved.'));
+				$this->Flash->success(__d('translate', 'The translate language has been saved.'));
 				return $this->redirect(['action' => 'index']);
 			}
 
-			$this->Flash->error(__('The translate language could not be saved. Please, try again.'));
+			$this->Flash->error(__d('translate', 'The translate language could not be saved. Please, try again.'));
 		}
 
 		$this->set(compact('translateLanguage'));
@@ -160,11 +160,11 @@ class TranslateLanguagesController extends TranslateAppController {
 		if ($this->request->is(['patch', 'post', 'put'])) {
 			$translateLanguage = $this->TranslateLanguages->patchEntity($translateLanguage, $this->request->data);
 			if ($this->TranslateLanguages->save($translateLanguage)) {
-				$this->Flash->success(__('The translate language has been saved.'));
+				$this->Flash->success(__d('translate', 'The translate language has been saved.'));
 				return $this->redirect(['action' => 'index']);
 			}
 
-			$this->Flash->error(__('The translate language could not be saved. Please, try again.'));
+			$this->Flash->error(__d('translate', 'The translate language could not be saved. Please, try again.'));
 		}
 
 		$this->set(compact('translateLanguage'));
@@ -182,9 +182,9 @@ class TranslateLanguagesController extends TranslateAppController {
 		$this->request->allowMethod(['post', 'delete']);
 		$translateLanguage = $this->TranslateLanguages->get($id);
 		if ($this->TranslateLanguages->delete($translateLanguage)) {
-			$this->Flash->success(__('The translate language has been deleted.'));
+			$this->Flash->success(__d('translate', 'The translate language has been deleted.'));
 		} else {
-			$this->Flash->error(__('The translate language could not be deleted. Please, try again.'));
+			$this->Flash->error(__d('translate', 'The translate language could not be deleted. Please, try again.'));
 		}
 		return $this->redirect(['action' => 'index']);
 	}

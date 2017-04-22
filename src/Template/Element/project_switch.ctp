@@ -13,7 +13,7 @@ if ($s = $this->request->session()->read('TranslateProject.id')) {
 	$selected = $s;
 }
 
-echo $this->Form->input('project_switch', ['value'=>$selected, 'options'=>$projectSwitchArray, 'empty'=>['-1'=>'- '.__('pleaseSelect').' -'], 'div'=>false, 'label'=>false, 'onchange'=>'submit();']);
+echo $this->Form->input('project_switch', ['value'=>$selected, 'options'=>$projectSwitchArray, 'empty'=>['-1'=>'- '.__d('translate', 'pleaseSelect').' -'], 'div'=>false, 'label'=>false, 'onchange'=>'submit();']);
 echo $this->Form->end();
 ?>
 </div>

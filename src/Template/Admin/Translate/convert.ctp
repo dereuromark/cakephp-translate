@@ -6,8 +6,8 @@
 
 <nav class="col-sm-4 col-xs-12">
 	<ul class="side-nav nav nav-pills nav-stacked">
-		<li class="heading"><?= __('Actions') ?></li>
-		<li><?= $this->Html->link(__('Overview'), ['action' => 'index']) ?></li>
+		<li class="heading"><?= __d('translate', 'Actions') ?></li>
+		<li><?= $this->Html->link(__d('translate', 'Overview'), ['action' => 'index']) ?></li>
 	</ul>
 </nav>
 <div class="translateStrings form col-sm-8 col-xs-12">
@@ -25,7 +25,7 @@
 
 <?php echo $this->Form->create($translate);?>
 	<fieldset>
-		<legend><?php echo __('Convert text');?></legend>
+		<legend><?php echo __d('translate', 'Convert text');?></legend>
 	<?php
 		echo $this->Form->input('direction', ['type'=>'select', 'options' => ['From Text to PO content', 'From PO content to text']]);
 		echo $this->Form->input('quotes', ['type'=>'select', 'options' => ['Do nothing', 'Remove smart quotes', 'Add smart quotes']]);
@@ -34,5 +34,5 @@
 	?>
 	</fieldset>
 
-<?php echo $this->Form->submit(__('Submit')); echo $this->Form->end();?>
+<?php echo $this->Form->submit(__d('translate', 'Submit')); echo $this->Form->end();?>
 </div>

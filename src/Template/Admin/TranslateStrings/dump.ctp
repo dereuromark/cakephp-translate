@@ -6,8 +6,8 @@
 
 <nav class="col-sm-4 col-xs-12">
 	<ul class="side-nav nav nav-pills nav-stacked">
-		<li class="heading"><?= __('Actions') ?></li>
-		<li><?php echo $this->Html->link(__('List Translate Strings'), ['action'=>'index']);?></li>
+		<li class="heading"><?= __d('translate', 'Actions') ?></li>
+		<li><?php echo $this->Html->link(__d('translate', 'List Translate Strings'), ['action'=>'index']);?></li>
 	</ul>
 </nav>
 
@@ -22,12 +22,12 @@ Files are stored in
 <?php echo $this->Form->create(null);?>
 
 	<fieldset>
-		<legend><?php echo __('Languages and domains');?></legend>
+		<legend><?php echo __d('translate', 'Languages and domains');?></legend>
 
 	<?php
-		echo $this->Form->input('domains', ['multiple'=>'checkbox', 'label' => __('Selection'), 'options' => $map]);
+		echo $this->Form->input('domains', ['multiple'=>'checkbox', 'label' => __d('translate', 'Selection'), 'options' => $map]);
 	?>
 	</fieldset>
 
-<?php echo $this->Form->submit(__('Submit')); echo $this->Form->end();?>
+<?php echo $this->Form->submit(__d('translate', 'Submit')); echo $this->Form->end();?>
 </div>

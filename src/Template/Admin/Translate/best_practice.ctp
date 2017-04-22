@@ -6,12 +6,12 @@
 
 <nav class="col-sm-4 col-xs-12">
 	<ul class="side-nav nav nav-pills nav-stacked">
-		<li class="heading"><?= __('Actions') ?></li>
-		<li><?= $this->Html->link(__('Overview'), ['action' => 'index']) ?></li>
+		<li class="heading"><?= __d('translate', 'Actions') ?></li>
+		<li><?= $this->Html->link(__d('translate', 'Overview'), ['action' => 'index']) ?></li>
 	</ul>
 </nav>
 <div class="translateStrings form col-sm-8 col-xs-12">
-<h2><?php echo __('bestPractice');?></h2>
+<h2><?php echo __d('translate', 'bestPractice');?></h2>
 
 <h3>Common things</h3>
 <ul>

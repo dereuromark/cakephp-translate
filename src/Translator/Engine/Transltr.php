@@ -4,10 +4,8 @@
 
 namespace Translate\Translator\Engine;
 
-use Cake\Core\Configure;
 use Translate\Translator\EngineInterface;
 use Yandex\Translate\Exception;
-use Yandex\Translate\Translator;
 
 class Transltr implements EngineInterface {
 

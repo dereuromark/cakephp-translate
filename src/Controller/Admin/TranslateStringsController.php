@@ -1,9 +1,6 @@
 <?php
 namespace Translate\Controller\Admin;
 
-use Cake\Core\Configure;
-use Sepia\FileHandler;
-use Sepia\PoParser;
 use Translate\Controller\TranslateAppController;
 use Translate\Filesystem\Dumper;
 use Translate\Lib\TranslationLib;

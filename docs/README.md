@@ -29,6 +29,7 @@ So if you want to workaround this, you could set up a staging server, that serve
 Here you extract, translate and export into a (free) translation online storage, or translation tool like [weblate](https://docs.weblate.org/en/latest/about.html).
 The live server would then pull those new translations right on deployment.
 
+
 ## Configuration
 Adjust your app.php and add Translate configuration: 
 ```php
@@ -44,6 +45,7 @@ They usually are already in the POT files anyway - and then inside Translate, as
 
 If you need to use more than 2 plurals (for some languages), make sure you extend the database table, as well.
 Add `plural_3` up to `plural_6` if needed to the "translation_terms".
+
 
 ## Translation Auto-Suggest
 
@@ -67,7 +69,7 @@ Daily request limit is 1,000,000 characters. The monthly limit is 10,000,000 cha
 ### Translator
 [transltr.org](http://transltr.org/Developers): Free
 
-### Your own
+### Your own implementation
 Create a class in your project as `src/Translator/Engine/MyClassName.php`:
 ```php
 namespace App\Translator\Engine;
@@ -92,3 +94,29 @@ class MyClassName implements EngineInterface {
 }
 ```
 It should not throw exceptions, instead use try/catch if needed and log the message away, for example.
+
+
+## Layout adjustments
+The default layout is based on Twitter Bootstrap v3.
+You can customize templates by moving them into the right folder in project level.
+See [CakePHP docs](https://book.cakephp.org/3.0/en/plugins.html#overriding-plugin-templates-from-inside-your-application).
+
+
+## Helping out
+Your help is greatly appreciated. Only with more developers from different language backgrounds can this plugin become more sophisticated.
+
+Please try to provide your changes as pull request, ideally with some test cases.
+
+### Running tests
+From with in the plugin:
+- `composer test-setup`
+- `composer test`
+- `composer test-coverage`
+- `composer cs-check`
+- `composer cs-fix`
+- `composer phpstan-setup`
+- `composer phpstan`
+
+### Updating POT translations file
+This needs to be run from your application:
+- `bin cake i18n extract --plugin Translate --overwrite --merge no --extract-core no`

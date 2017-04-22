@@ -2,7 +2,7 @@
 
 return [
 	'Translate' => [
-		'noLocation' => true, // Do not output locations into PO files
+		'noComments' => true, // Do not output comments/references into PO files
 		'plurals' => 2,
 	],
 ];

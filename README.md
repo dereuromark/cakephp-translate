@@ -26,6 +26,12 @@ Note: **Plugin in BETA version**
 - Manage in Groups (=Domains) and export/enable/disable them.
 - Creates clean PO files with all translations in usage to easier diff changes.
 
+## Included translation services via APIs
+
+- Google (free, limited)
+- Yandex (free, limited)
+- Transltr (free)
+
 ## Installation
 Including the plugin is pretty much as with every other CakePHP plugin:
 
@@ -65,4 +71,3 @@ CLI
 
 ## Configuration and documentation
 - [Documentation](docs/README.md)
-

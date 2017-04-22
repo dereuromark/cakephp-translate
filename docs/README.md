@@ -54,6 +54,41 @@ You can use any [other translation service](https://www.programmableweb.com/news
 Provide a class name to an engine that extends the `Translate\Translator\EngineInterface`.
 
 You can provide an array if you want to leverage multiple engines at once.
+For auto-translating it would take the first engine result it finds, for suggest it will ask all engines for a suggestion and provide all results in the view to pick.
+
+### Google
+Has a rate limit, so use it sparely.
+Better to implement a pay version of it.
 
 ### Yandex
+[translate.yandex.com](http://translate.yandex.com/):
+Daily request limit is 1,000,000 characters. The monthly limit is 10,000,000 characters. 
 
+### Translator
+[transltr.org](http://transltr.org/Developers): Free
+
+### Your own
+Create a class in your project as `src/Translator/Engine/MyClassName.php`:
+```php
+namespace App\Translator\Engine;
+
+use Translate\Translator\EngineInterface;
+
+class MyClassName implements EngineInterface {
+
+	/**
+	 * @param string $text Text
+	 * @param string $to Iso2 code (e.g.: de)
+	 * @param string $from Iso2 code (e.g.: en)
+	 *
+	 * @return string|null
+	 */
+	public function translate($text, $to, $from) {
+		...
+
+		return $result;
+	}
+
+}
+```
+It should not throw exceptions, instead use try/catch if needed and log the message away, for example.

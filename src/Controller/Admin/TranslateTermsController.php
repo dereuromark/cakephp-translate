@@ -91,18 +91,4 @@ class TranslateTermsController extends TranslateAppController {
 		return $this->redirect(['action' => 'index']);
 	}
 
-	/**
-	 * Reload page every x seconds for google translate timeout avoidance
-	 */
-	public function autoTranslate() {
-		$timeout = 10; # seconds
-		$amount = (int)$this->request->session()->read('AutoTranslate.amount');
-		if ($amount <= 0) {
-			$this->Flash->success(__('{0} done', 'Auto Translation'));
-			return $this->redirect(['action' => 'index']);
-		}
-
-		$this->set(compact('timeout'));
-	}
-
 }

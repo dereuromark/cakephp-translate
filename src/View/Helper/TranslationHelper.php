@@ -9,20 +9,23 @@ use RuntimeException;
  */
 class TranslationHelper extends Helper {
 
+	/**
+	 * @var array
+	 */
 	public $helpers = ['Html'];
 
 	/**
 	 * Flag icon
 	 *
-	 * @param string|null $identifierCode (iso2 right now: de, en, ...)
+	 * @param string|null $iso2Code identifierCode (iso2 right now: de, en, ...)
 	 * @param array $attr for imageTag [optional]
-	 * @param bool $checkExistance (defaults to FALSE)
+	 * @param bool $checkExistence (defaults to FALSE)
 	 * @return string imageTag or empty string on failure
 	 */
-	public function flag($iso2Code = null, $attr = [], $checkExistance = false) {
+	public function flag($iso2Code = null, array $attr = [], $checkExistence = false) {
 		if (!empty($iso2Code)) {
 			$icon = 'language_flags' . DS . $iso2Code . '.gif';
-			if ($checkExistance === false || file_exists(IMAGES . $icon)) {
+			if ($checkExistence === false || file_exists(WWW_ROOT . 'img' . DS . $icon)) {
 				$options = ['alt' => strtoupper($iso2Code), 'title' => strtoupper($iso2Code), 'class' => 'languageFlag'];
 				if (!empty($attr) && is_array($attr)) {
 					$options = array_merge($options, $attr);
@@ -35,7 +38,7 @@ class TranslationHelper extends Helper {
 	}
 
 	/**
-	 * = average over all languages
+	 * Average over all languages
 	 *
 	 * @param array $coverage
 	 *
@@ -64,8 +67,8 @@ class TranslationHelper extends Helper {
 	public $end = ['r' => 0, 'g' => 255, 'b' => 0];
 
 	/**
-	 * @param int/float $value (between $first, $second!)
-	 * @param string $type: hex, rgb, ... (defaults to hex) [optional]
+	 * @param int|float $value (between $first, $second!)
+	 * @param string $type hex, rgb, ... (defaults to hex) [optional]
 	 * @return string color
 	 */
 	public function getColor($value, $type = 'hex') {

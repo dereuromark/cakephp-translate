@@ -17,8 +17,14 @@ use Tools\Model\Table\Table;
  */
 class TranslateGroupsTable extends Table {
 
+	/**
+	 * @var array
+	 */
 	public $order = ['prio' => 'DESC'];
 
+	/**
+	 * @var array
+	 */
 	public $validate = [
 		'name' => [
 			'notEmpty',
@@ -31,6 +37,9 @@ class TranslateGroupsTable extends Table {
 		'active' => ['numeric']
 	];
 
+	/**
+	 * @var array
+	 */
 	public $belongsTo = [
 		'TranslateProject' => [
 			'className' => 'Translate.TranslateProject',
@@ -56,8 +65,6 @@ class TranslateGroupsTable extends Table {
 	}
 
 	/**
-	 * @param array $translateLanguages
-	 *
 	 * @return \Cake\ORM\Query
 	 */
 	public function getActive() {

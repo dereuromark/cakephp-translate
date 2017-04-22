@@ -372,8 +372,8 @@ class TranslateStringsController extends TranslateAppController {
 
 	/**
 	 * @param \Translate\Model\Entity\TranslateTerm[] $translations
-	 * @param $domain
-	 * @param $lang
+	 * @param string $domain
+	 * @param string $lang
 	 *
 	 * @return bool
 	 */
@@ -430,28 +430,8 @@ class TranslateStringsController extends TranslateAppController {
 		}
 
 		$content = $po->compile();
-		//dd($content);
 
 		return (bool)file_put_contents($file, $content);
-	}
-
-	/**
-	 * Dumps the language array into /locale/{LANG}/LC_MESSAGES/ss.po
-	 *
-	 * @return void
-	 */
-	protected function ___dump($languageArray, $type = null, $verbose = false) {	// todo: adding $simulate=false
-
-		$id = $languageArray->translateLanguage['id'];
-		$language = $languageArray->translateLanguage['name'];
-		$abbreviation = $languageArray->translateLanguage['abbreviation'];
-
-		$folder = APP . 'locale' . DS . $abbreviation;
-		$subfolder = $folder . DS . 'LC_MESSAGES';
-
-		$dump = '<?php' . "\n" . '# /* Highlite as JAVASCRIPT to edit it (in PHP-Designer 2007/2008)! */' . "\n\n";
-		$dump .= '# LANGUAGE \'' . $language . '\' | FOLDER \'' . $abbreviation . '\'' . "\n";
-		$dump .= '# created automatically via \'translate_words dump()\' - @ ' . date('d.m.Y H:i:s') . ' - by XXX' . "\n\n";
 	}
 
 }

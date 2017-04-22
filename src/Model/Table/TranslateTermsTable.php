@@ -23,8 +23,14 @@ class TranslateTermsTable extends Table {
 	 */
 	public $order = ['modified' => 'DESC'];
 
+	/**
+	 * @var string
+	 */
 	public $displayField = 'content';
 
+	/**
+	 * @var array
+	 */
 	public $validate = [
 		'string_id' => ['numeric'],
 		'comment' => [
@@ -68,18 +74,15 @@ class TranslateTermsTable extends Table {
 		'confirmed_by' => ['notEmpty']
 	];
 
+	/**
+	 * @var array
+	 */
 	public $belongsTo = [
 		'TranslateString' => [
 			'className' => 'Translate.TranslateString',
-			'conditions' => '',
-			'fields' => '',
-			'order' => ''
 		],
 		'TranslateLanguage' => [
 			'className' => 'Translate.TranslateLanguage',
-			'conditions' => '',
-			'fields' => '',
-			'order' => ''
 		],
 		/*
 		'User' => array(

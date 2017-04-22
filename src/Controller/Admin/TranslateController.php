@@ -39,12 +39,17 @@ class TranslateController extends TranslateAppController {
 		$this->set(compact('coverage', 'languages', 'count', 'projectSwitchArray'));
 	}
 
+	/**
+	 * @return void
+	 */
 	public function bestPractice() {
 	}
 
 	/**
 	 * Reset terms and strings
 	 * - optional: groups and languages
+	 *
+	 * @return \Cake\Http\Response|null
 	 */
 	public function reset() {
 		if ($this->Common->isPosted()) {

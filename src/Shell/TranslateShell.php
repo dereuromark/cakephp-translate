@@ -5,6 +5,9 @@ use Cake\Console\Shell;
 
 class TranslateShell extends Shell {
 
+	/**
+	 * @var string
+	 */
 	public $modelClass = 'Translate.TranslateStrings';
 
 	/**

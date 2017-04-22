@@ -5,6 +5,7 @@
  */
 namespace Translate\Model\Table;
 
+use Cake\Core\Plugin;
 use Tools\Model\Table\Table;
 
 /**
@@ -20,8 +21,14 @@ use Tools\Model\Table\Table;
  */
 class TranslateLanguagesTable extends Table {
 
+	/**
+	 * @var array
+	 */
 	public $order = ['name' => 'ASC'];
 
+	/**
+	 * @var array
+	 */
 	public $validate = [
 		'name' => [
 			'minLength' => [
@@ -65,24 +72,23 @@ class TranslateLanguagesTable extends Table {
 		'active' => ['numeric']
 	];
 
+	/**
+	 * @var array
+	 */
 	public $hasMany = [
 		'TranslateTerm' => [
 			'className' => 'Translate.TranslateTerm',
-			'dependent' => true, /** !!! */
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
+			'dependent' => true,
 		],
 	];
 
+	/**
+	 * @var array
+	 */
 	public $belongsTo = [
 		'Language' => [
 			'className' => 'Data.Language',
 			'foreignKey' => 'language_id',
-			'conditions' => '',
-			'fields' => '',
-			'order' => ''
 		],
 	];
 
@@ -92,7 +98,7 @@ class TranslateLanguagesTable extends Table {
 	 * @param array $config
 	 */
 	public function __construct(array $config = []) {
-		if (true) {
+		if (!Plugin::loaded('Data')) {
 			unset($this->belongsTo['Language']);
 		}
 

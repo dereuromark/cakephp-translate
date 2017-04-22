@@ -23,8 +23,14 @@ use Tools\Model\Table\Table;
  */
 class TranslateStringsTable extends Table {
 
-	public $order = [];
+	/**
+	 * @var array
+	 */
+	public $order = ['name' => 'ASC'];
 
+	/**
+	 * @var array
+	 */
 	public $validate = [
 		'name' => [
 			'unique' => [
@@ -51,25 +57,24 @@ class TranslateStringsTable extends Table {
 		],
 	];
 
+	/**
+	 * @var array
+	 */
 	public $belongsTo = [
 		'User' => [
 			'className' => 'User',
 			'foreignKey' => 'user_id',
-			'conditions' => '',
-			'fields' => ['id', 'username'],
-			'order' => ''
 		],
 
 	];
 
+	/**
+	 * @var array
+	 */
 	public $hasMany = [
 		'TranslateTerm' => [
 			'className' => 'Translate.TranslateTerm',
-			'dependent' => true, /** !!! */
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
+			'dependent' => true,
 		]
 	];
 
@@ -117,6 +122,7 @@ class TranslateStringsTable extends Table {
 	}
 
 	/**
+	 * @param int $id
 	 * @param array|null $languages Languages list: [id => ...]
 	 *   (defaults to ALL languages)
 	 * @return array coverage

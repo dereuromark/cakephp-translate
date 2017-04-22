@@ -11,6 +11,9 @@ use Translate\Controller\TranslateAppController;
  */
 class TranslateLanguagesController extends TranslateAppController {
 
+	/**
+	 * @var array
+	 */
 	public $paginate = ['order' => ['TranslateLanguages.name' => 'ASC']];
 
 	/**
@@ -18,7 +21,7 @@ class TranslateLanguagesController extends TranslateAppController {
 	 */
 	public function toLocale() {
 		$existingFolders = $this->_findLocaleFolders();
-		$languages = $this->TranslateLanguages->getList(true);
+		$languages = $this->TranslateLanguages->find('list');
 
 		if ($this->Common->isPosted()) {
 			$data = [];
@@ -27,11 +30,11 @@ class TranslateLanguagesController extends TranslateAppController {
 					$data[] = $lang['folder'];
 				}
 			}
-			if (!empty($data) && $res = $this->_createLocaleFolders($data) === true) {
+			if (!empty($data) && $this->_createLocaleFolders($data) === true) {
 				$this->Flash->success('new locale folders created');
 				//$this->redirect(array('action'=>'index'));
 			} else {
-				pr($res);
+				$this->Flash->error('Sth went wrong');
 			}
 		}
 
@@ -39,10 +42,11 @@ class TranslateLanguagesController extends TranslateAppController {
 	}
 
 	/**
+	 * @return \Cake\Http\Response|null
 	 */
 	public function fromLocale() {
 		$folders = $this->_findLocaleFolders();
-		$existingLanguages = $this->TranslateLanguages->getList(true);
+		$existingLanguages = $this->TranslateLanguages->find('list');
 
 		if ($this->Common->isPosted()) {
 			$data = $this->request->data;
@@ -75,7 +79,9 @@ class TranslateLanguagesController extends TranslateAppController {
 	}
 
 	/**
-	 * @return mixed: bool TRUE on sucess, array $errors on failure
+	 * @param array $folders
+	 *
+	 * @return mixed Bool TRUE on sucess, array $errors on failure
 	 */
 	public function _createLocaleFolders($folders = []) {
 		$basepath = LOCALE;

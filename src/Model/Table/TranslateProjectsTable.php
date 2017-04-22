@@ -16,8 +16,14 @@ use Translate\Model\Entity\TranslateProject;
  */
 class TranslateProjectsTable extends Table {
 
-	public $order = [];
+	/**
+	 * @var array
+	 */
+	public $order = ['status' => 'DESC', 'default' => 'DESC', 'name' => 'ASC'];
 
+	/**
+	 * @var array
+	 */
 	public $validate = [
 		'name' => [
 			'notEmpty' => [
@@ -51,13 +57,13 @@ class TranslateProjectsTable extends Table {
 		],
 	];
 
+	/**
+	 * @var array
+	 */
 	public $hasMany = [
 		'TranslateGroup' => [
 			'className' => 'TranslateGroup',
 			'dependent' => true,
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
 		]
 	];
 

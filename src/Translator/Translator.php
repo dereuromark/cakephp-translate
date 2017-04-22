@@ -13,10 +13,18 @@ class Translator {
 
 	use InstanceConfigTrait;
 
+	/**
+	 * @var array
+	 */
 	protected $_defaultConfig = [
 		'engine' => Google::class,
 	];
 
+	/**
+	 * Translator constructor.
+	 *
+	 * @param array $config
+	 */
 	public function __construct(array $config = []) {
 		$config += (array)Configure::read('Translate');
 		$this->setConfig($config);

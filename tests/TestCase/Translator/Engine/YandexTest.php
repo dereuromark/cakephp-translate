@@ -20,7 +20,6 @@ class YandexTest extends TestCase {
 
 		$this->skipIf(!Configure::read('Yandex.key'), 'Requires API key');
 
-		//Configure::write('Translate.engine', Yandex::class);
 		$this->Yandex = new Yandex();
 	}
 
@@ -28,10 +27,10 @@ class YandexTest extends TestCase {
 	 * @return void
 	 */
 	public function testTranslate() {
-		$text = 'Vater';
+		$text = 'Father';
 		$is = $this->Yandex->translate($text, 'de', 'en');
 
-		$expected = 'Father';
+		$expected = 'Vater';
 		$this->assertSame($expected, $is);
 	}
 

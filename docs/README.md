@@ -26,7 +26,7 @@ The problem is, however, that upon deployment this would not have translations f
 or you would need to import from a different source that pre-translated.
 
 So if you want to workaround this, you could set up a staging server, that serves as main translation base.
-Here you extract, translate and export into a translation online storage.
+Here you extract, translate and export into a (free) translation online storage, or translation tool like [weblate](https://docs.weblate.org/en/latest/about.html).
 The live server would then pull those new translations right on deployment.
 
 ## Configuration
@@ -50,7 +50,10 @@ Add `plural_3` up to `plural_6` if needed to the "translation_terms".
 By default it uses a simple Google API translation.
 This has a few limitations, however.
 
-You can use any other translation service by just switching out the `'engine'` config. 
+You can use any [other translation service](https://www.programmableweb.com/news/63-translation-apis-bing-google-translate-and-google-ajax-language/2013/01/15) by just switching out the `'engine'` config. 
 Provide a class name to an engine that extends the `Translate\Translator\EngineInterface`.
 
+You can provide an array if you want to leverage multiple engines at once.
+
+### Yandex
 

@@ -20,7 +20,11 @@
 		"sepia/po-parser": "^4.2"
 	},
 	"require-dev": {
+		"yandex/translate-api": "dev-master",
 		"fig-r/psr2r-sniffer": "dev-master"
+	},
+	"suggest": {
+		"yandex/translate-api": "Free Translation API Alternative"
 	},
 	"autoload": {
 		"psr-4": {
@@ -35,6 +39,12 @@
 			"App\\": "tests/test_app/src"
 		}
 	},
+	"repositories": [
+		{
+			"type": "git",
+			"url": "git@github.com:dereuromark/translate-api.git"
+		}
+	],
 	"support":{
 		"source": "https://github.com/dereuromark/cakephp-translate"
 	},

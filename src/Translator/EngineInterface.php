@@ -5,7 +5,7 @@ namespace Translate\Translator;
 interface EngineInterface {
 
 	/**
-	 * @param string $text Text up to 5000 chars
+	 * @param string $text Text
 	 * @param string $to Iso2 code (e.g.: de)
 	 * @param string $from Iso2 code (e.g.: en)
 	 *

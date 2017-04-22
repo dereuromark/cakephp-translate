@@ -33,6 +33,35 @@ class Translator {
 	}
 
 	/**
+	 * Returns an array of all suggestions.
+	 * It will use all provided engines.
+	 *
+	 * @param string $text Text up to 5000 chars
+	 * @param string $to Iso2 code (e.g.: de)
+	 * @param string $from Iso2 code (e.g.: en)
+	 *
+	 * @return array
+	 */
+	public function suggest($text, $to, $from) {
+		$engines = $this->_getEngines();
+
+		$results = [];
+		foreach ($engines as $engine) {
+			$result = $engine->translate($text, $to, $from);
+			if ($result === null) {
+				continue;
+			}
+
+			$results[get_class($engine)] = $result;
+		}
+
+		return $results;
+	}
+
+	/**
+	 * Uses the engines in order, and returns a result
+	 * as soon as the first engine provides one.
+	 *
 	 * @param string $text Text up to 5000 chars
 	 * @param string $to Iso2 code (e.g.: de)
 	 * @param string $from Iso2 code (e.g.: en)
@@ -40,22 +69,34 @@ class Translator {
 	 * @return string|null
 	 */
 	public function translate($text, $to, $from) {
-		$engine = $this->_getEngine();
+		$engines = $this->_getEngines();
 
-		return $engine->translate($text, $to, $from);
+		foreach ($engines as $engine) {
+			$result = $engine->translate($text, $to, $from);
+			if ($result !== null) {
+				return $result;
+			}
+		}
+
+		return null;
 	}
 
 	/**
-	 * @return \Translate\Translator\EngineInterface
+	 * @return \Translate\Translator\EngineInterface[]
 	 */
-	protected function _getEngine() {
-		$engineClass = $this->getConfig('engine');
-		$engine = new $engineClass($this->getConfig());
-		if (!($engine instanceof EngineInterface)) {
-			throw new RuntimeException('Not a valid engine: ' . $engine);
+	protected function _getEngines() {
+		$engineClasses = (array)$this->getConfig('engine');
+
+		$engines = [];
+		foreach ($engineClasses as $engineClass) {
+			$engine = new $engineClass($this->getConfig());
+			if (!($engine instanceof EngineInterface)) {
+				throw new RuntimeException('Not a valid engine: ' . $engine);
+			}
+			$engines[] = $engine;
 		}
 
-		return $engine;
+		return $engines;
 	}
 
 }

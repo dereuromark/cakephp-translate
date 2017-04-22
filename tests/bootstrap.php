@@ -37,6 +37,7 @@ Cake\Core\Configure::write('App', [
 ]);
 
 Cake\Core\Configure::write('debug', true);
+Cake\Core\Configure::write('Yandex.key', env('YANDEX_KEY'));
 
 $cache = [
 	'default' => [

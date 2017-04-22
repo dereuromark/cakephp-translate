@@ -16,7 +16,7 @@ Note: **Plugin in BETA version**
 - Web-based and without external dependencies.
 - Translate strings in all languages simultaneously.
 - Allow others to help translating without having to know technical details.
-- Auto-Translate and Auto-Suggest with Translate APIs (e.g. Google Translate PHP/JS) for performance.
+- Auto-Translate and Auto-Suggest with Translate APIs (e.g. Google Translate PHP/JS, Yandex, ...) for performance.
 
 ## Benefits over normal PO editing
 - Prevent duplicates, missing translations, collisions.

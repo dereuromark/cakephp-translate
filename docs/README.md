@@ -99,18 +99,4 @@ See [CakePHP docs](https://book.cakephp.org/3.0/en/plugins.html#overriding-plugi
 ## Helping out
 Your help is greatly appreciated. Only with more developers from different language backgrounds can this plugin become more sophisticated.
 
-Please try to provide your changes as pull request, ideally with some test cases.
-
-### Running tests
-From with in the plugin:
-- `composer test-setup`
-- `composer test`
-- `composer test-coverage`
-- `composer cs-check`
-- `composer cs-fix`
-- `composer phpstan-setup`
-- `composer phpstan`
-
-### Updating POT translations file
-This needs to be run from your application:
-- `bin cake i18n extract --plugin Translate --overwrite --merge no --extract-core no`
+See [Contributing](Contributing.md).

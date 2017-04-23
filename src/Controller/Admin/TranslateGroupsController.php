@@ -30,7 +30,7 @@ class TranslateGroupsController extends TranslateAppController {
 			if (!empty($this->request->data['source_code'])) {
 				//TODO: specify: app, cake, vendors or any subfolder of those
 				$names = $translationLib->extractSourceCode();
-				foreach ($names as $name => $occurances) {
+				foreach ($names as $name => $references) {
 					$count += $this->_add((array)$name, ['description' => 'Source Code']);
 				}
 			}

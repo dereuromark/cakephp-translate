@@ -81,15 +81,18 @@
 	</div>
 <br/>
 <?php
-$sep = explode(PHP_EOL, $translateString['occurrences']);
+$sep = explode(PHP_EOL, $translateString['references']);
 $occ = [];
+foreach ($sep as $s) {
+	$occ[] = trim($s);
+}
 
 ?>
 
 <h3>Additional Infos</h3>
 Group: <?php echo $this->Html->link($translateString->translate_group->name, ['action' => 'index', '?' => ['translate_group_id' => $translateString->translate_group_id]]); ?><br/>
 Descr: <?php echo nl2br(h($translateString['description']))?><br/>
-Occurrances: <?php echo count($occ)?>x / <?php echo nl2br(h($translateString['occurrences']))?>
+Occurrances: <?php echo count($occ)?>x / <?php echo nl2br(h($translateString['references']))?>
 <br/><br/>
 <?php echo __d('translate', 'textExcerpt')?>: ..
 

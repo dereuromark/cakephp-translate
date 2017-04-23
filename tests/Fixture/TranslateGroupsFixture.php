@@ -19,6 +19,7 @@ class TranslateGroupsFixture extends TestFixture {
 		'translate_project_id' => ['type' => 'integer', 'length' => 10, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
 		'active' => ['type' => 'boolean', 'length' => null, 'null' => false, 'default' => '0', 'comment' => '', 'precision' => null],
 		'prio' => ['type' => 'integer', 'length' => 10, 'unsigned' => false, 'null' => false, 'default' => '0', 'comment' => '', 'precision' => null, 'autoIncrement' => null],
+		'path' => ['type' => 'string', 'length' => 255, 'null' => true, 'default' => null, 'collate' => 'utf8mb4_unicode_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
 		'created' => ['type' => 'datetime', 'length' => null, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null],
 		'modified' => ['type' => 'datetime', 'length' => null, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null],
 		'_constraints' => [
@@ -42,6 +43,7 @@ class TranslateGroupsFixture extends TestFixture {
 			'translate_project_id' => 1,
 			'active' => 1,
 			'prio' => 1,
+			'path' => 'Lorem ipsum dolor sit amet',
 			'created' => '2017-04-15 01:23:08',
 			'modified' => '2017-04-15 01:23:08'
 		],

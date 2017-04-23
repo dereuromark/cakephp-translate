@@ -76,7 +76,7 @@ class TranslationLibTest extends TestCase {
 
 		$lastTranslation = array_pop($is);
 
-		$expected = ['name', 'content', 'comment', 'occurances'];
+		$expected = ['name', 'content', 'comments', 'references'];
 		$this->assertSame($expected, array_keys($lastTranslation));
 	}
 
@@ -94,12 +94,13 @@ class TranslationLibTest extends TestCase {
 		$expected = [
 			'name' => '{0} tree',
 			'content' => '{0} Baum',
-			'comment' => '#, fuzzy,special',
+			'comments' => null,
 			'plural' => '{0} trees',
 			'plural_2' => '{0} Bäume',
 			'context' => 'context',
+			'flags' => ['fuzzy', 'special'],
 		];
-		$this->assertSame($expected, $is[6]);
+		$this->assertSame($expected, $is[6], print_r($is[6], true));
 	}
 
 	/**

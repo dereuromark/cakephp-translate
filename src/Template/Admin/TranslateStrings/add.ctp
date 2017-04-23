@@ -21,7 +21,7 @@
 			echo $this->Form->input('plural');
 			echo $this->Form->input('context');
 			//echo $this->Form->input('comments');
-			//echo $this->Form->input('occurrences');
+			//echo $this->Form->input('references');
 			//echo $this->Form->input('user_id');
 			echo $this->Form->input('is_html');
 

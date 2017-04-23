@@ -148,7 +148,7 @@ class TranslationLib {
 			$record = [
 				'name' => implode('', $entry['msgid']),
 				'content' => $this->_content($entry),
-				'comment' => $this->_comment($entry),
+				'comments' => $this->_comment($entry),
 			];
 			if (!empty($entry['msgid_plural'])) {
 				$record['plural'] = implode('', $entry['msgid_plural']);
@@ -164,7 +164,10 @@ class TranslationLib {
 				$record['context'] = implode('', $entry['msgctxt']);
 			}
 			if (!empty($entry['reference'])) {
-				$record['occurances'] = implode("\n", $entry['reference']);
+				$record['references'] = implode("\n", $entry['reference']);
+			}
+			if (!empty($entry['flags'])) {
+				$record['flags'] = $entry['flags'];
 			}
 
 			$translations[] = $record;
@@ -197,7 +200,7 @@ class TranslationLib {
 	protected function _comment(array $entry) {
 		$rows = [];
 
-		$keys = ['ccomment', 'tcomment', 'flags'];
+		$keys = ['ccomment', 'tcomment'];
 		foreach ($entry as $key => $value) {
 			if (!in_array($key, $keys)) {
 				continue;
@@ -212,9 +215,6 @@ class TranslationLib {
 					foreach ($value as $v) {
 						$rows[] = '#  ' . $v;
 					}
-					break;
-				case 'flags':
-					$rows[] = '#, ' . implode(',', $value);
 					break;
 			}
 		}

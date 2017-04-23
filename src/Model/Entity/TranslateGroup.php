@@ -10,6 +10,7 @@ use Tools\Model\Entity\Entity;
  * @property string $name
  * @property bool $active
  * @property int $prio
+ * @property string $path
  * @property \Cake\I18n\Time $created
  * @property \Cake\I18n\Time $modified
  *

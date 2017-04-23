@@ -1,6 +1,7 @@
 <?php
 namespace Translate\Model\Table;
 
+use Cake\Database\Schema\TableSchema;
 use Cake\I18n\Time;
 use Cake\Log\Log;
 use Cake\Network\Exception\InternalErrorException;
@@ -80,6 +81,16 @@ class TranslateStringsTable extends Table {
 			'dependent' => true,
 		]
 	];
+
+	/**
+	 * @param \Cake\Database\Schema\TableSchema $schema
+	 * @return \Cake\Database\Schema\TableSchema
+	 */
+	protected function _initializeSchema(TableSchema $schema) {
+		$schema->columnType('flags', 'json');
+
+		return $schema;
+	}
 
 	/**
 	 * @param array $config

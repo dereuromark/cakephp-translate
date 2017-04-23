@@ -50,8 +50,8 @@
 		<?= $this->Text->autoParagraph(h($translateString->description)); ?>
 	</div>
 	<div class="row">
-		<h3><?= __d('translate', 'Occurrences') ?></h3>
-		<?= $this->Text->autoParagraph(h($translateString->occurrences)); ?>
+		<h3><?= __d('translate', 'References') ?></h3>
+		<?= nl2br(h($translateString->references)); ?>
 	</div>
 
 	<div class="related">

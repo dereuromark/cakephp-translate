@@ -38,7 +38,7 @@ Easily manage i18n/translations from your backend.
 <ul>
 <li>Guests/Visitors can help, too (translations need approval from admins)</li>
 <li>Extract from source code directly (triggering cake i18n internally)</li>
-<li>Change strings in the source code directly from the plugin and correct spelling errors etc with this (all occurances will be translated ).</li>
+<li>Change strings in the source code directly from the plugin and correct spelling errors etc with this (all references will be translated ).</li>
 <li>Plugin support __d() and for other __d('translate', ) methods</li>
 </ul>
 </td>

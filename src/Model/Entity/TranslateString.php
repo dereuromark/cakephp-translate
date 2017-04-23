@@ -9,7 +9,7 @@ use Tools\Model\Entity\Entity;
  * @property int $id
  * @property string $name
  * @property string $comments
- * @property string $occurrences
+ * @property string $references
  * @property bool $active
  * @property bool $is_html
  * @property \Cake\I18n\Time $last_import

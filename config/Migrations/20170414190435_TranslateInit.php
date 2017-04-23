@@ -74,6 +74,16 @@ class TranslateInit extends AbstractMigration {
 				'limit' => null,
 				'null' => false,
 			])
+			->addColumn('base', 'boolean', [
+				'default' => 0,
+				'limit' => null,
+				'null' => false,
+			])
+			->addColumn('primary', 'boolean', [
+				'default' => 0,
+				'limit' => null,
+				'null' => false,
+			])
 			->create();
 
 		$table = $this->table('translate_groups');
@@ -97,6 +107,11 @@ class TranslateInit extends AbstractMigration {
 				'default' => 0,
 				'limit' => 10,
 				'null' => false,
+			])
+			->addColumn('path', 'string', [
+				'default' => null,
+				'limit' => 255,
+				'null' => true,
 			])
 			->addColumn('created', 'datetime', [
 				'default' => null,
@@ -137,7 +152,7 @@ class TranslateInit extends AbstractMigration {
 				'limit' => 250,
 				'null' => true,
 			])
-			->addColumn('occurrences', 'text', [
+			->addColumn('references', 'text', [
 				'comment' => 'with file and code line',
 				'default' => null,
 				'limit' => null,

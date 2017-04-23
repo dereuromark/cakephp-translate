@@ -620,7 +620,7 @@ msgid "Description"
 msgstr ""
 
 #: Template/Admin/TranslateStrings/view.ctp:53
-msgid "Occurrences"
+msgid "References"
 msgstr ""
 
 #: Template/Admin/TranslateTerms/edit.ctp:22

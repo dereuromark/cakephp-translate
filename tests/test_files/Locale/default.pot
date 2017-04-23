@@ -27,3 +27,21 @@ msgstr ""
 
 msgid "Some <b>HTML</b>."
 msgstr ""
+
+#. extracted-comments
+# translator-comments
+msgctxt "context"
+msgid "untranslated-string"
+msgstr ""
+
+msgid "{0} day"
+msgid_plural "{0} days"
+msgstr[0] ""
+msgstr[1] ""
+
+#, fuzzy,special
+msgctxt "context"
+msgid "{0} tree"
+msgid_plural "{0} trees"
+msgstr[0] ""
+msgstr[1] ""

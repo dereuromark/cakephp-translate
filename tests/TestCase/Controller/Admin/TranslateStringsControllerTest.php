@@ -4,6 +4,7 @@ namespace Translate\Test\TestCase\Controller\Admin;
 use App\Translator\Engine\Test;
 use App\Translator\Engine\TestMore;
 use Cake\Core\Configure;
+use Cake\Filesystem\Folder;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\IntegrationTestCase;
 
@@ -60,6 +61,50 @@ class TranslateStringsControllerTest extends IntegrationTestCase {
 
 		$this->assertResponseCode(200);
 		$this->assertNoRedirect();
+	}
+
+	/**
+	 * Test view method
+	 *
+	 * @return void
+	 */
+	public function testExtractPost() {
+		$TranslateStrings = TableRegistry::get('Translate.TranslateStrings');
+		$count = $TranslateStrings->find()->count();
+
+		$folder = new Folder();
+		$folder->copy([
+			'from' => ROOT . DS . 'tests' . DS . 'test_files' . DS . 'Locale' . DS,
+			'to' => LOCALE,
+		]);
+
+		$data = [
+			'sel_pot' => [
+				'default'
+			],
+			'sel_po' => [
+			],
+		];
+		$this->post(['prefix' => 'admin', 'plugin' => 'Translate', 'controller' => 'TranslateStrings', 'action' => 'extract'], $data);
+
+		$this->assertResponseCode(200);
+		$this->assertNoRedirect();
+
+		$countAfter = $TranslateStrings->find()->count();
+
+		$this->assertSame(7, $countAfter - $count);
+
+		$translateString = $TranslateStrings->find()->where(['name' => '{0} tree'])->firstOrFail();
+		$this->assertSame('context', $translateString->context);
+		$this->assertSame(['fuzzy', 'special'], $translateString->flags);
+
+		$translateString = $TranslateStrings->find()->where(['name' => 'Your {0}.'])->firstOrFail();
+		$this->assertSame('Template/Account/index.ctp:15;33', $translateString->references);
+
+		$translateString = $TranslateStrings->find()->where(['name' => 'untranslated-string'])->firstOrFail();
+		$expected = '#. extracted-comments
+#  translator-comments';
+		$this->assertSame($expected, $translateString->comments);
 	}
 
 	/**

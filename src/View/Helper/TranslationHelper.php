@@ -3,6 +3,7 @@ namespace Translate\View\Helper;
 
 use Cake\View\Helper;
 use RuntimeException;
+use Translate\Model\Entity\TranslateGroup;
 
 /**
  * @property \Cake\View\Helper\HtmlHelper $Html
@@ -108,6 +109,15 @@ class TranslationHelper extends Helper {
 		];
 
 		return $color;
+	}
+
+	/**
+	 * @param \Translate\Model\Entity\TranslateGroup $translateGroup
+	 *
+	 * @return bool
+	 */
+	public function canDisplayReference(TranslateGroup $translateGroup) {
+		return (bool)$translateGroup->path;
 	}
 
 }

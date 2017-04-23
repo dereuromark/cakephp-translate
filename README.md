@@ -21,7 +21,8 @@ Note: **Plugin in BETA version**
 ## Benefits over normal PO editing
 - Prevent duplicates, missing translations, collisions.
 - Auto-Features like `trim()`, `h()`, newlines to `<p>/<br>`, espacing of `%s`.
-- Validate placeholders (`{0}`, ...).
+- Validate placeholders (`{0}`, `%s`, ...).
+- Preview and code excerpts of references.
 - Auto-Add Controller names (singular + plural).
 - Manage in Groups (=Domains) and export/enable/disable them.
 - Creates clean PO files with all translations in usage to easier diff changes.

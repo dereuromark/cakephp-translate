@@ -1,6 +1,7 @@
 <?php
 namespace Translate\Controller\Admin;
 
+use Cake\Network\Exception\NotFoundException;
 use Translate\Controller\TranslateAppController;
 use Translate\Filesystem\Dumper;
 use Translate\Lib\TranslationLib;
@@ -370,6 +371,50 @@ class TranslateStringsController extends TranslateAppController {
 		//$pluralSuggestions =
 
 		$this->set(compact('translateString', 'translateLanguages', 'suggestions'));
+	}
+
+	/**
+	 * @param int $id
+	 * @param int $reference 0 based
+	 *
+	 * @return void
+	 */
+	public function displayReference($id, $reference) {
+		$translateString = $this->TranslateStrings->get($id, ['contain' => ['TranslateGroups']]);
+
+		$sep = explode(PHP_EOL, $translateString['references']);
+		$occ = [];
+		foreach ($sep as $s) {
+			$s = trim($s);
+			if ($s !== '') {
+				$occ[] = $s;
+			}
+		}
+		if (!isset($occ[(int)$reference])) {
+			throw new NotFoundException('Could not find reference `' . $reference . '`');
+		}
+
+		$reference = $occ[(int)$reference];
+		list ($reference, $lines) = explode(':', $reference);
+		$lines = explode(';', $lines);
+
+		$path = $translateString->translate_group->path;
+		if (substr($path, 0, 1) !== '/') {
+			$path = ROOT . DS . $path;
+		}
+		$path = rtrim(realpath($path), '/') . '/';
+		if (!$path || !is_dir($path)) {
+			throw new NotFoundException('Path not found: ' . $translateString->translate_group->path);
+		}
+
+		$file = $path . $reference;
+		if (!$file || !file_exists($file)) {
+			throw new NotFoundException('File not found: ' . $file);
+		}
+
+		$fileArray = file($file);
+
+		$this->set(compact('fileArray', 'lines'));
 	}
 
 }

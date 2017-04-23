@@ -82,20 +82,57 @@
 <br/>
 <?php
 $sep = explode(PHP_EOL, $translateString['references']);
-$occ = [];
+$references = [];
 foreach ($sep as $s) {
-	$occ[] = trim($s);
+	$s = trim($s);
+	if ($s !== '') {
+		$references[] = $s;
+	}
 }
 
 ?>
 
 <h3>Additional Infos</h3>
 Group: <?php echo $this->Html->link($translateString->translate_group->name, ['action' => 'index', '?' => ['translate_group_id' => $translateString->translate_group_id]]); ?><br/>
-Descr: <?php echo nl2br(h($translateString['description']))?><br/>
-Occurrances: <?php echo count($occ)?>x / <?php echo nl2br(h($translateString['references']))?>
-<br/><br/>
-<?php echo __d('translate', 'textExcerpt')?>: ..
 
+References: <?php echo count($references)?>x
+	<?php if ($references) { ?>
+	<ul class="references">
+		<?php foreach ($references as $key => $reference) { ?>
+		<?php if ($this->Translation->canDisplayReference($translateString->translate_group)) { ?>
+			<li><?php echo $this->Html->link($reference, ['action' => 'displayReference', $translateString->id, $key], ['target'=> '_blank', 'data-toggle'=> "modal", 'data-target' => ".bs-example-modal-lg"]); ?></li>
+		<?php } else { ?>
+			<li><?php echo h($reference); ?></li>
+		<?php } ?>
+	<?php } ?>
+	</ul>
+	<?php } ?>
 
 </div>
 
+
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			...
+			dsfsdfdsf
+			<br>
+			sdfsdfdsf
+		</div>
+	</div>
+</div>
+
+<?php $this->append('script'); ?>
+<script>
+	$(function() {
+		$('#myLargeModalLabel').modal();
+
+		$('ul.references a').on('click', function (event) {
+		    event.preventDefault();
+
+			modal = $('#myLargeModalLabel').modal();
+			modal.show();
+		})
+	});
+</script>
+<?php $this->end(); ?>

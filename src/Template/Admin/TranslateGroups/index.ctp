@@ -22,7 +22,7 @@
 			<tr>
 				<th><?= $this->Paginator->sort('name') ?></th>
 				<th><?= $this->Paginator->sort('active') ?></th>
-				<th><?= $this->Paginator->sort('prio') ?></th>
+				<th><?= $this->Paginator->sort('path') ?></th>
 				<th><?= $this->Paginator->sort('created', null, ['direction' => 'desc']) ?></th>
 				<th><?= $this->Paginator->sort('modified', null, ['direction' => 'desc']) ?></th>
 				<th class="actions"><?= __d('translate', 'Actions') ?></th>
@@ -33,7 +33,7 @@
 			<tr>
 				<td><?= h($translateGroup->name) ?></td>
 				<td><?= $this->Format->yesNo($translateGroup->active) ?></td>
-				<td><?= $this->Number->format($translateGroup->prio) ?></td>
+				<td><?= $this->Format->yesNo((bool)$translateGroup->path) ?></td>
 				<td><?= $this->Time->nice($translateGroup->created) ?></td>
 				<td><?= $this->Time->nice($translateGroup->modified) ?></td>
 				<td class="actions">

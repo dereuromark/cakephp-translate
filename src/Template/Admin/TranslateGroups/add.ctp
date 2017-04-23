@@ -21,6 +21,8 @@
 		<?php
 			echo $this->Form->input('name');
 			echo $this->Form->input('active');
+
+			echo $this->Form->input('path');
 		?>
 	</fieldset>
 	<?= $this->Form->button(__d('translate', 'Submit')) ?>

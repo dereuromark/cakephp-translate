@@ -5,10 +5,8 @@ use Cake\TestSuite\Fixture\TestFixture;
 
 /**
  * TranslateStringsFixture
- *
  */
-class TranslateStringsFixture extends TestFixture
-{
+class TranslateStringsFixture extends TestFixture {
 
 	/**
 	 * Fields
@@ -62,4 +60,5 @@ class TranslateStringsFixture extends TestFixture
 			'modified' => '2017-04-23 21:08:10'
 		],
 	];
+
 }

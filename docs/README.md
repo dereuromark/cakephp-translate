@@ -58,18 +58,12 @@ Provide a class name to an engine that extends the `Translate\Translator\EngineI
 You can provide an array if you want to leverage multiple engines at once.
 For auto-translating it would take the first engine result it finds, for suggest it will ask all engines for a suggestion and provide all results in the view to pick.
 
-### Google
-Has a rate limit, so use it sparely.
-Better to implement a pay version of it.
+All API translations will be internally cached, so a 2nd lookup for the same translation will always read from this cache table. 
+This saves a lot expensive API calls (many translations services charge per lookup). 
 
-### Yandex
-[translate.yandex.com](http://translate.yandex.com/):
-Daily request limit is 1,000,000 characters. The monthly limit is 10,000,000 characters. 
+See [Translator Engines](TranslatorEngines.md) for plugin implemented ones to chose from.
 
-### Translator
-[transltr.org](http://transltr.org/Developers): Free
-
-### Your own implementation
+### Add your own implementation
 Create a class in your project as `src/Translator/Engine/MyClassName.php`:
 ```php
 namespace App\Translator\Engine;

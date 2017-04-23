@@ -22,6 +22,8 @@ class TranslateLanguagesFixture extends TestFixture {
 		'iso2' => ['type' => 'string', 'length' => 2, 'null' => false, 'default' => null, 'collate' => 'utf8mb4_unicode_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
 		'locale' => ['type' => 'string', 'length' => 10, 'null' => false, 'default' => null, 'collate' => 'utf8mb4_unicode_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
 		'active' => ['type' => 'boolean', 'length' => null, 'null' => false, 'default' => '1', 'comment' => '', 'precision' => null],
+		'base' => ['type' => 'boolean', 'length' => null, 'null' => false, 'default' => '0', 'comment' => '', 'precision' => null],
+		'primary' => ['type' => 'boolean', 'length' => null, 'null' => false, 'default' => '0', 'comment' => '', 'precision' => null],
 		'_constraints' => [
 			'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
 		],
@@ -44,7 +46,9 @@ class TranslateLanguagesFixture extends TestFixture {
 			'name' => 'Lorem ipsu',
 			'iso2' => 'Lorem ip',
 			'locale' => 'Lorem ip',
-			'active' => 1
+			'active' => 1,
+			'base' => 1,
+			'primary' => 1
 		],
 	];
 

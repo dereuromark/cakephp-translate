@@ -5,7 +5,9 @@
 
 use Cake\Routing\DispatcherFactory;
 
-define('DS', DIRECTORY_SEPARATOR);
+if (!defined('DS')) {
+	define('DS', DIRECTORY_SEPARATOR);
+}
 define('ROOT', dirname(__DIR__));
 define('APP_DIR', 'src');
 

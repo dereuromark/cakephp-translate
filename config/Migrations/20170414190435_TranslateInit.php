@@ -127,19 +127,21 @@ class TranslateInit extends AbstractMigration {
 
 		$table = $this->table('translate_strings');
 		$table
+			->addColumn('context', 'string', [
+				'default' => null,
+				'limit' => 250,
+				'null' => true,
+				'collate' => 'utf8_bin',
+			])
 			->addColumn('name', 'text', [
 				'default' => null,
 				'limit' => null,
 				'null' => false,
+				'collate' => 'utf8_bin',
 			])
 			->addColumn('plural', 'text', [
 				'default' => null,
 				'limit' => null,
-				'null' => true,
-			])
-			->addColumn('context', 'string', [
-				'default' => null,
-				'limit' => 250,
 				'null' => true,
 			])
 			->addColumn('comment', 'text', [

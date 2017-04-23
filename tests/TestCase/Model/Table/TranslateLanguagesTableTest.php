@@ -67,13 +67,16 @@ class TranslateLanguagesTableTest extends TestCase {
 		$data = [
 			'translate_project_id' => 1,
 			'name' => 'Deutsch',
-			'iso2' => 'de',
+			'iso2' => 'DE',
 			'locale' => 'de',
 		];
 		$entity = $this->TranslateLanguages->newEntity($data);
 		$result = $this->TranslateLanguages->save($entity);
 
 		$this->assertTrue((bool)$result);
+
+		$entity = $this->TranslateLanguages->get($result->id);
+		$this->assertSame('de', $entity->iso2);
 	}
 
 	/**

@@ -29,6 +29,13 @@ So if you want to workaround this, you could set up a staging server, that serve
 Here you extract, translate and export into a (free) translation online storage, or translation tool like [weblate](https://docs.weblate.org/en/latest/about.html).
 The live server would then pull those new translations right on deployment.
 
+## Important database config
+The TranslateStrings DB fields `context` and `name` must be case sensitive, all other fields should not be.
+This is important when dealing with the same string in different casings, as otherwise one of those would be translated, all others would (silently) not.
+
+When using MySQL that means those two should be `utf8_bin`, whereas the rest should become `utf8mb4_unicode_ci` as per migration file and the right table collation defaults.
+
+When using Postgres, make sure the CI extension is installed (as here everything is by default case sensitive) and make all non CS fields CI with it.
 
 ## Configuration
 Adjust your app.php and add Translate configuration: 
@@ -95,6 +102,8 @@ The default layout is based on Twitter Bootstrap v3.
 You can customize templates by moving them into the right folder in project level.
 See [CakePHP docs](https://book.cakephp.org/3.0/en/plugins.html#overriding-plugin-templates-from-inside-your-application).
 
+## Translating
+See [Translating](Translating.md).
 
 ## Helping out
 Your help is greatly appreciated. Only with more developers from different language backgrounds can this plugin become more sophisticated.

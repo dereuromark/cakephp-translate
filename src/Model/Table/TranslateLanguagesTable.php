@@ -5,7 +5,9 @@
  */
 namespace Translate\Model\Table;
 
+use ArrayObject;
 use Cake\Core\Plugin;
+use Cake\Event\Event;
 use Tools\Model\Table\Table;
 
 /**
@@ -43,7 +45,26 @@ class TranslateLanguagesTable extends Table {
 				'message' => 'valErrRecordExists',
 			],
 		],
-		'locale' => [ # => abbreviation - used in find('list') as key
+		'iso2' => [
+			'notEmpty' => [
+				'rule' => ['notEmpty'],
+				'message' => 'Please insert a 2 letter ISO code',
+				'last' => true,
+			],
+			'validIsoCode' => [
+				'rule' => ['validateIsoCode'],
+				'provider' => 'table',
+				'message' => 'Invalid ISO2 code',
+				'last' => true,
+			],
+			'isUnique' => [
+				'rule' => ['isUnique'],
+				'provider' => 'table',
+				'message' => 'valErrRecordExists',
+				'last' => true,
+			],
+		],
+		'locale' => [ // not used right now
 			'notEmpty' => [
 				'rule' => ['notEmpty'],
 				'message' => 'Please insert a abbreviation / folder-name',
@@ -51,6 +72,7 @@ class TranslateLanguagesTable extends Table {
 			],
 			'isUnique' => [
 				'rule' => ['isUnique'],
+				'provider' => 'table',
 				'message' => 'valErrRecordExists',
 			],
 		],
@@ -104,6 +126,36 @@ class TranslateLanguagesTable extends Table {
 		}
 
 		parent::__construct($config);
+	}
+
+	/**
+	 * Preparing the data
+	 *
+	 * @param \Cake\Event\Event $event
+	 * @param \ArrayObject $data
+	 * @param \ArrayObject $options
+	 * @return void
+	 */
+	public function beforeMarshal(Event $event, ArrayObject $data, ArrayObject $options) {
+		if (isset($data['iso2'])) {
+			$data['iso2'] = strtolower($data['iso2']);
+		}
+		if (isset($data['name'])) {
+			$data['name'] = ucfirst($data['name']);
+		}
+	}
+
+	/**
+	 * @param string $value
+	 *
+	 * @return bool
+	 */
+	public function validateIsoCode($value) {
+		if (strlen($value) !== 2) {
+			return false;
+		}
+
+		return true;
 	}
 
 	/**

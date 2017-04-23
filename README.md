@@ -12,7 +12,7 @@ A CakePHP 3.x Plugin for managing translations DB driven.
 Note: **Plugin in BETA version**
 
 ## Key features
-- Import from POT, PO files or DB.
+- Import from POT, PO files or services.
 - Web-based and without external dependencies.
 - Translate strings in all languages simultaneously.
 - Allow others to help translating without having to know technical details.

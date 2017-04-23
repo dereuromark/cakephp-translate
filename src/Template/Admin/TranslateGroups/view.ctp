@@ -11,10 +11,6 @@
 		<li><?= $this->Form->postLink(__d('translate', 'Delete Translate Group'), ['action' => 'delete', $translateGroup->id], ['confirm' => __d('translate', 'Are you sure you want to delete # {0}?', $translateGroup->id)]) ?> </li>
 		<li><?= $this->Html->link(__d('translate', 'List Translate Groups'), ['action' => 'index']) ?> </li>
 		<li><?= $this->Html->link(__d('translate', 'New Translate Group'), ['action' => 'add']) ?> </li>
-		<li><?= $this->Html->link(__d('translate', 'List Translate Projects'), ['controller' => 'TranslateProjects', 'action' => 'index']) ?> </li>
-		<li><?= $this->Html->link(__d('translate', 'New Translate Project'), ['controller' => 'TranslateProjects', 'action' => 'add']) ?> </li>
-		<li><?= $this->Html->link(__d('translate', 'List Translate Strings'), ['controller' => 'TranslateStrings', 'action' => 'index']) ?> </li>
-		<li><?= $this->Html->link(__d('translate', 'New Translate String'), ['controller' => 'TranslateStrings', 'action' => 'add']) ?> </li>
 	</ul>
 </nav>
 <div class="translateGroups view col-sm-8 col-xs-12">
@@ -31,6 +27,10 @@
 		<tr>
 			<th><?= __d('translate', 'Active') ?></th>
 			<td><?= $this->Format->yesNo($translateGroup->active) ?></td>
+		</tr>
+		<tr>
+			<th><?= __d('translate', 'Path') ?></th>
+			<td><?= h($translateGroup->path) ?></td>
 		</tr>
 		<tr>
 			<th><?= __d('translate', 'Prio') ?></th>

@@ -18,6 +18,7 @@ use Tools\Model\Table\Table;
  * @method \Translate\Model\Entity\TranslateLanguage patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \Translate\Model\Entity\TranslateLanguage[] patchEntities($entities, array $data, array $options = [])
  * @method \Translate\Model\Entity\TranslateLanguage findOrCreate($search, callable $callback = null, $options = [])
+ * @mixin \Shim\Model\Behavior\NullableBehavior
  */
 class TranslateLanguagesTable extends Table {
 
@@ -158,6 +159,21 @@ class TranslateLanguagesTable extends Table {
 		}
 
 		return $query->find('list', ['keyField' => 'locale', 'valueField' => 'name'])->toArray();
+	}
+
+	/**
+	 * @param \Translate\Model\Entity\TranslateLanguage[] $translateLanguages
+	 *
+	 * @return string
+	 */
+	public function getBaseLanguage(array $translateLanguages) {
+		foreach ($translateLanguages as $translateLanguage) {
+			if ($translateLanguage->base) {
+				return $translateLanguage->iso2;
+			}
+		}
+
+		return 'en';
 	}
 
 }

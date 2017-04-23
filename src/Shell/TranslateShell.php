@@ -3,6 +3,9 @@ namespace Translate\Shell;
 
 use Cake\Console\Shell;
 
+/**
+ * @property \Translate\Model\Table\TranslateStringsTable $TranslateStrings
+ */
 class TranslateShell extends Shell {
 
 	/**

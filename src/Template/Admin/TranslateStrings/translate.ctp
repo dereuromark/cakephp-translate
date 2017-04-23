@@ -45,6 +45,9 @@
 		foreach ($translateLanguages as $translateLanguage) {
 			$key = $translateLanguage['iso2'];
 			echo $this->Form->input('content_'.$key, ['type'=>'text', 'label'=> __d('translate', 'Singular'). ' ' . $translateLanguage['iso2'], 'rel'=>$key]);
+			if (!empty($suggestions[$key])) {
+				echo $this->element('suggestions', ['suggestions' => $suggestions[$key], 'target' => 'content-' . $key]);
+			}
 		}
 
 		foreach ($translateLanguages as $translateLanguage) {
@@ -59,6 +62,9 @@
 		foreach ($translateLanguages as $translateLanguage) {
 			$key = $translateLanguage['iso2'];
 			echo $this->Form->input('content_'.$key, ['type'=>'textarea','label'=>h($translateLanguage['name']), 'rel'=>$key]);
+			if (!empty($suggestions[$key])) {
+				echo $this->element('suggestions', ['suggestions' => $suggestions[$key], 'target' => 'content-' . $key]);
+			}
 		}
 	}
 

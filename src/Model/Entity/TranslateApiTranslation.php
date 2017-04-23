@@ -4,22 +4,17 @@ namespace Translate\Model\Entity;
 use Tools\Model\Entity\Entity;
 
 /**
- * TranslateLanguage Entity
+ * TranslateApiTranslation Entity
  *
  * @property int $id
- * @property int $language_id
- * @property string $name
- * @property string $iso2
- * @property string $locale
- * @property bool $active
- *
- * @property \Data\Model\Entity\Language $language
- * @property \Translate\Model\Entity\TranslateTerm[] $translate_terms
- * @property int $translate_project_id
- * @property bool $base
- * @property bool $primary
+ * @property string $key
+ * @property string $value
+ * @property string $from
+ * @property string $to
+ * @property string $engine
+ * @property \Cake\I18n\Time $created
  */
-class TranslateLanguage extends Entity {
+class TranslateApiTranslation extends Entity {
 
 	/**
 	 * Fields that can be mass assigned using newEntity() or patchEntity().
@@ -32,7 +27,7 @@ class TranslateLanguage extends Entity {
 	 */
 	protected $_accessible = [
 		'*' => true,
-		'id' => false
+		'id' => false,
 	];
 
 }

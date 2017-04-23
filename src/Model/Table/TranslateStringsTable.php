@@ -7,6 +7,7 @@ use Cake\Network\Exception\InternalErrorException;
 use Cake\ORM\Query;
 use Search\Manager;
 use Tools\Model\Table\Table;
+use Translate\Translator\Translator;
 
 /**
  * @property \App\Model\Table\UsersTable|\Cake\ORM\Association\BelongsTo $Users
@@ -20,6 +21,8 @@ use Tools\Model\Table\Table;
  * @method \Translate\Model\Entity\TranslateString patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \Translate\Model\Entity\TranslateString[] patchEntities($entities, array $data, array $options = [])
  * @method \Translate\Model\Entity\TranslateString findOrCreate($search, callable $callback = null, $options = [])
+ * @mixin \Shim\Model\Behavior\NullableBehavior
+ * @mixin \Search\Model\Behavior\SearchBehavior
  */
 class TranslateStringsTable extends Table {
 
@@ -268,6 +271,31 @@ class TranslateStringsTable extends Table {
 			return true;
 		}
 		return false;
+	}
+
+	/**
+	 * @param \Translate\Model\Entity\TranslateString $translateString
+	 * @param \Translate\Model\Entity\TranslateLanguage[] $translateLanguages
+	 * @param \Translate\Model\Entity\TranslateTerm[] $translateTerms
+	 *
+	 * @return array
+	 */
+	public function getSuggestions($translateString, array $translateLanguages, array $translateTerms) {
+		$translator = new Translator();
+
+		$baseLanguage = $this->TranslateTerms->TranslateLanguages->getBaseLanguage($translateLanguages);
+
+		$result = [];
+		foreach ($translateLanguages as $translateLanguage) {
+			if ($translateLanguage->iso2 === $baseLanguage) {
+				continue;
+			}
+
+			$translations = $translator->suggest($translateString->name, $translateLanguage->iso2, $baseLanguage);
+			$result[$translateLanguage->iso2] = $translations;
+		}
+
+		return $result;
 	}
 
 }

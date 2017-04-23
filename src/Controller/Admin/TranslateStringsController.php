@@ -309,7 +309,7 @@ class TranslateStringsController extends TranslateAppController {
 	public function translate($id = null) {
 		$translateString = $this->TranslateStrings->get($id, ['contain' => 'TranslateGroups']);
 
-		$translateLanguages = $this->TranslateStrings->TranslateTerms->TranslateLanguages->find('all');
+		$translateLanguages = $this->TranslateStrings->TranslateTerms->TranslateLanguages->find()->all();
 
 		if ($translateLanguages->count() < 1) {
 			$this->Flash->error(__d('translate', 'You need at least one language to translate'));
@@ -366,7 +366,10 @@ class TranslateStringsController extends TranslateAppController {
 			}
 		}
 
-		$this->set(compact('translateString', 'translateLanguages'));
+		$suggestions = $this->TranslateStrings->getSuggestions($translateString, $translateLanguages->toArray(), $translateTerms);
+		//$pluralSuggestions =
+
+		$this->set(compact('translateString', 'translateLanguages', 'suggestions'));
 	}
 
 }

@@ -14,6 +14,7 @@ use Tools\Model\Table\Table;
  * @method \Translate\Model\Entity\TranslateGroup patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \Translate\Model\Entity\TranslateGroup[] patchEntities($entities, array $data, array $options = [])
  * @method \Translate\Model\Entity\TranslateGroup findOrCreate($search, callable $callback = null, $options = [])
+ * @mixin \Shim\Model\Behavior\NullableBehavior
  */
 class TranslateGroupsTable extends Table {
 

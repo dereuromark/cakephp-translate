@@ -1,6 +1,9 @@
 <?php
 namespace Translate\Test\TestCase\Controller\Admin;
 
+use App\Translator\Engine\Test;
+use App\Translator\Engine\TestMore;
+use Cake\Core\Configure;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\IntegrationTestCase;
 
@@ -77,6 +80,8 @@ class TranslateStringsControllerTest extends IntegrationTestCase {
 	 * @return void
 	 */
 	public function testTranslate() {
+		Configure::write('Translate.engine', [Test::class, TestMore::class]);
+
 		$id = 1;
 		$this->TranslateStrings = TableRegistry::get('Translate.TranslateStrings');
 		$record = $this->TranslateStrings->get($id);

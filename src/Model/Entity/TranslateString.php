@@ -23,6 +23,7 @@ use Tools\Model\Entity\Entity;
  * @property string $context
  * @property int $user_id
  * @property int $translate_group_id
+ * @property string $flags
  */
 class TranslateString extends Entity {
 

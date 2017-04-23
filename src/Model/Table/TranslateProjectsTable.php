@@ -13,6 +13,7 @@ use Translate\Model\Entity\TranslateProject;
  * @method \Translate\Model\Entity\TranslateProject patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \Translate\Model\Entity\TranslateProject[] patchEntities($entities, array $data, array $options = [])
  * @method \Translate\Model\Entity\TranslateProject findOrCreate($search, callable $callback = null, $options = [])
+ * @mixin \Shim\Model\Behavior\NullableBehavior
  */
 class TranslateProjectsTable extends Table {
 

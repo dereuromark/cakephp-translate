@@ -6,6 +6,7 @@ namespace Translate\Translator;
 
 use Cake\Core\Configure;
 use Cake\Core\InstanceConfigTrait;
+use Cake\ORM\TableRegistry;
 use RuntimeException;
 use Translate\Translator\Engine\Google;
 
@@ -21,6 +22,11 @@ class Translator {
 	];
 
 	/**
+	 * @var \Translate\Model\Table\TranslateApiTranslationsTable
+	 */
+	protected $_cache;
+
+	/**
 	 * Translator constructor.
 	 *
 	 * @param array $config
@@ -30,6 +36,8 @@ class Translator {
 		$this->setConfig($config);
 
 		$engine = $this->getConfig('engine');
+
+		$this->_cache = TableRegistry::get('Translate.TranslateApiTranslations');
 	}
 
 	/**
@@ -47,7 +55,18 @@ class Translator {
 
 		$results = [];
 		foreach ($engines as $engine) {
+			$engineName = get_class($engine);
+			$cacheResult = $this->_cache->retrieve($text, $to, $from, $engineName);
+			if ($cacheResult) {
+				if ($cacheResult->value === null) {
+					continue;
+				}
+				$results[$engineName] = $cacheResult->value;
+				continue;
+			}
+
 			$result = $engine->translate($text, $to, $from);
+			$this->_cache->store($text, $result, $to, $from, $engineName);
 			if ($result === null) {
 				continue;
 			}
@@ -72,7 +91,17 @@ class Translator {
 		$engines = $this->_getEngines();
 
 		foreach ($engines as $engine) {
+			$engineName = get_class($engine);
+			$cacheResult = $this->_cache->retrieve($text, $to, $from, $engineName);
+			if ($cacheResult) {
+				if ($cacheResult->value === null) {
+					continue;
+				}
+				return $cacheResult->value;
+			}
+
 			$result = $engine->translate($text, $to, $from);
+			$this->_cache->store($text, $result, $to, $from, $engineName);
 			if ($result !== null) {
 				return $result;
 			}

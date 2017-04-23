@@ -70,8 +70,10 @@ class TranslateController extends TranslateAppController {
 							break;
 					}
 				}
+
 			}
-			return $this->Common->postRedirect(['action' => 'reset']);
+			$this->Flash->success('Done');
+			return $this->redirect(['action' => 'index']);
 		}
 
 		$this->request->data['Form']['sel'][] = 'terms';

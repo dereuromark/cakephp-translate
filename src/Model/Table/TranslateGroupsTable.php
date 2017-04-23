@@ -84,6 +84,10 @@ class TranslateGroupsTable extends Table {
 			'name' => $name,
 			'translate_project_id' => $projectId,
 		]);
+		// The default one should always be active
+		if ($translateGroup['name'] === 'default') {
+			$translateGroup->active = true;
+		}
 		$this->TranslateProjects->saveOrFail($translateGroup);
 
 		return $translateGroup;

@@ -7,6 +7,7 @@
 <nav class="actions col-sm-4 col-xs-12">
 	<ul class="side-nav nav nav-pills nav-stacked">
 		<li class="heading"><?= __d('translate', 'Actions') ?></li>
+		<li><?= $this->Html->link(__d('translate', 'Overview'), ['controller' => 'Translate', 'action' => 'index']) ?></li>
 		<li><?= $this->Html->link(__d('translate', 'New Translate String'), ['action' => 'add']) ?></li>
 	</ul>
 </nav>

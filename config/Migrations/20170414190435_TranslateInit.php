@@ -131,13 +131,13 @@ class TranslateInit extends AbstractMigration {
 				'default' => null,
 				'limit' => 250,
 				'null' => true,
-				'collate' => 'utf8_bin',
+				//'collate' => 'utf8_bin',
 			])
 			->addColumn('name', 'text', [
 				'default' => null,
 				'limit' => null,
 				'null' => false,
-				'collate' => 'utf8_bin',
+				//'collate' => 'utf8_bin',
 			])
 			->addColumn('plural', 'text', [
 				'default' => null,
@@ -250,6 +250,12 @@ class TranslateInit extends AbstractMigration {
 				'null' => true,
 			])
 			->create();
+
+		$sql = <<<SQL
+ALTER TABLE `translate_strings` CHANGE `name` `name` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL;
+ALTER TABLE `translate_strings` CHANGE `context` `context` VARCHAR( 250 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL;
+SQL;
+		$this->query($sql);
 	}
 
 }

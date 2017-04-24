@@ -86,7 +86,7 @@ class TranslateInit extends AbstractMigration {
 			])
 			->create();
 
-		$table = $this->table('translate_groups');
+		$table = $this->table('translate_domains');
 		$table
 			->addColumn('name', 'string', [
 				'default' => null,
@@ -160,7 +160,7 @@ class TranslateInit extends AbstractMigration {
 				'limit' => null,
 				'null' => true,
 			])
-			->addColumn('translate_group_id', 'integer', [
+			->addColumn('translate_domain_id', 'integer', [
 				'default' => null,
 				'limit' => 10,
 				'null' => false,

@@ -25,7 +25,7 @@ class TranslateTermsTableTest extends TestCase {
 	public $fixtures = [
 		'plugin.translate.translate_terms',
 		'plugin.translate.translate_strings',
-		'plugin.translate.translate_groups',
+		'plugin.translate.translate_domains',
 		'plugin.translate.translate_projects',
 		'plugin.translate.translate_languages',
 	];

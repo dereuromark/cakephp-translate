@@ -197,7 +197,7 @@ class TranslateTermsTable extends Table {
 			'contain' => ['TranslateStrings'],
 		];
 		if ($groupId) {
-			$options['conditions']['TranslateStrings.translate_group_id IN'] = $groupId;
+			$options['conditions']['TranslateStrings.translate_domain_id IN'] = $groupId;
 		}
 
 		return $this->find('all', $options);

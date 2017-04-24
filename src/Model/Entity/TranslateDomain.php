@@ -4,7 +4,7 @@ namespace Translate\Model\Entity;
 use Tools\Model\Entity\Entity;
 
 /**
- * TranslateGroup Entity
+ * TranslateDomain Entity
  *
  * @property int $id
  * @property string $name
@@ -18,7 +18,7 @@ use Tools\Model\Entity\Entity;
  * @property \Translate\Model\Entity\TranslateString[] $translate_strings
  * @property int $translate_project_id
  */
-class TranslateGroup extends Entity {
+class TranslateDomain extends Entity {
 
 	/**
 	 * Fields that can be mass assigned using newEntity() or patchEntity().

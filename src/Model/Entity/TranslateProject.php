@@ -14,7 +14,7 @@ use Tools\Model\Entity\Entity;
  * @property \Cake\I18n\Time $created
  * @property \Cake\I18n\Time $modified
  *
- * @property \Translate\Model\Entity\TranslateGroup[] $translate_groups
+ * @property \Translate\Model\Entity\TranslateDomain[] $translate_domains
  */
 class TranslateProject extends Entity {
 

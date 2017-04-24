@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \Translate\Model\Entity\TranslateGroup $translateGroup
+ * @var \Translate\Model\Entity\TranslateDomain $translateDomain
  */
 ?>
 <nav class="col-sm-4 col-xs-12">
@@ -14,8 +14,8 @@
 		<li><?= $this->Html->link(__d('translate', 'New Translate String'), ['controller' => 'TranslateStrings', 'action' => 'add']) ?></li>
 	</ul>
 </nav>
-<div class="translateGroups form col-sm-8 col-xs-12">
-	<?= $this->Form->create($translateGroup) ?>
+<div class="translateDomains form col-sm-8 col-xs-12">
+	<?= $this->Form->create($translateDomain) ?>
 	<fieldset>
 		<legend><?= __d('translate', 'Add Translate Group') ?></legend>
 		<?php

@@ -31,7 +31,7 @@ class TranslateProjectsController extends TranslateAppController {
 	 */
 	public function view($id = null) {
 		$translateProject = $this->TranslateProjects->get($id, [
-			'contain' => ['TranslateGroups']
+			'contain' => ['TranslateDomains']
 		]);
 
 		$this->set(compact('translateProject'));

@@ -26,7 +26,7 @@ class TranslateStringsTableTest extends TestCase {
 		'plugin.translate.translate_strings',
 		'plugin.translate.translate_terms',
 		'plugin.translate.translate_languages',
-		'plugin.translate.translate_groups',
+		'plugin.translate.translate_domains',
 		'plugin.translate.translate_projects',
 
 	];
@@ -67,7 +67,7 @@ class TranslateStringsTableTest extends TestCase {
 		$data = [
 			'name' => 'Foo Bar',
 			'translate_project_id' => 1,
-			'translate_group_id' => 1,
+			'translate_domain_id' => 1,
 		];
 		$entity = $this->TranslateStrings->newEntity($data);
 		$result = $this->TranslateStrings->save($entity);

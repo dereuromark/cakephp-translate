@@ -4,16 +4,16 @@ namespace Translate\Controller\Admin;
 use Translate\Controller\TranslateAppController;
 
 /**
- * TranslateGroups Controller
+ * TranslateDomains Controller
  *
- * @property \Translate\Model\Table\TranslateGroupsTable $TranslateGroups
+ * @property \Translate\Model\Table\TranslateDomainsTable $TranslateDomains
  */
-class TranslateGroupsController extends TranslateAppController {
+class TranslateDomainsController extends TranslateAppController {
 
 	/**
 	 * @var array
 	 */
-	public $paginate = ['order' => ['TranslateGroups.modified' => 'DESC']];
+	public $paginate = ['order' => ['TranslateDomains.modified' => 'DESC']];
 
 	/**
 	 * Extract from pot file, directly the code
@@ -79,13 +79,13 @@ class TranslateGroupsController extends TranslateAppController {
 	public function _add($names, $customData = []) {
 		$count = 0;
 		foreach ($names as $name) {
-					$this->TranslateGroups->TranslateStrings->create();
+					$this->TranslateDomains->TranslateStrings->create();
 					$data = array_merge([
 						'name' => $name,
 						'user_id' => '1',
 						//'active' => 1
 					], $customData);
-					if ($this->TranslateGroups->TranslateStrings->save($data)) {
+					if ($this->TranslateDomains->TranslateStrings->save($data)) {
 						$count++;
 					}
 				}
@@ -112,10 +112,10 @@ class TranslateGroupsController extends TranslateAppController {
 		$this->paginate = [
 			'contain' => ['TranslateProjects']
 		];
-		$translateGroups = $this->paginate();
+		$translateDomains = $this->paginate();
 
-		$this->set(compact('translateGroups'));
-		$this->set('_serialize', ['translateGroups']);
+		$this->set(compact('translateDomains'));
+		$this->set('_serialize', ['translateDomains']);
 	}
 
 	/**
@@ -126,12 +126,12 @@ class TranslateGroupsController extends TranslateAppController {
 	 * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
 	 */
 	public function view($id = null) {
-		$translateGroup = $this->TranslateGroups->get($id, [
+		$translateDomain = $this->TranslateDomains->get($id, [
 			'contain' => ['TranslateProjects', 'TranslateStrings']
 		]);
 
-		$this->set(compact('translateGroup'));
-		$this->set('_serialize', ['translateGroup']);
+		$this->set(compact('translateDomain'));
+		$this->set('_serialize', ['translateDomain']);
 	}
 
 	/**
@@ -140,12 +140,12 @@ class TranslateGroupsController extends TranslateAppController {
 	 * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
 	 */
 	public function add() {
-		$translateGroup = $this->TranslateGroups->newEntity();
+		$translateDomain = $this->TranslateDomains->newEntity();
 		if ($this->request->is('post')) {
 			$this->request->data['translate_project_id'] = $this->Translation->currentProjectId();
 
-			$translateGroup = $this->TranslateGroups->patchEntity($translateGroup, $this->request->data);
-			if ($this->TranslateGroups->save($translateGroup)) {
+			$translateDomain = $this->TranslateDomains->patchEntity($translateDomain, $this->request->data);
+			if ($this->TranslateDomains->save($translateDomain)) {
 				$this->Flash->success(__d('translate', 'The translate group has been saved.'));
 				return $this->redirect(['action' => 'index']);
 			}
@@ -155,7 +155,7 @@ class TranslateGroupsController extends TranslateAppController {
 			$this->request->data['active'] = true;
 		}
 
-		$this->set(compact('translateGroup'));
+		$this->set(compact('translateDomain'));
 	}
 
 	/**
@@ -166,23 +166,23 @@ class TranslateGroupsController extends TranslateAppController {
 	 * @throws \Cake\Network\Exception\NotFoundException When record not found.
 	 */
 	public function edit($id = null) {
-		$translateGroup = $this->TranslateGroups->get($id, [
+		$translateDomain = $this->TranslateDomains->get($id, [
 			'contain' => ['TranslateStrings']
 		]);
 		if ($this->request->is(['patch', 'post', 'put'])) {
-			$translateGroup = $this->TranslateGroups->patchEntity($translateGroup, $this->request->data);
-			if ($this->TranslateGroups->save($translateGroup)) {
+			$translateDomain = $this->TranslateDomains->patchEntity($translateDomain, $this->request->data);
+			if ($this->TranslateDomains->save($translateDomain)) {
 				$this->Flash->success(__d('translate', 'The translate group has been saved.'));
 				return $this->redirect(['action' => 'index']);
 			}
 
 			$this->Flash->error(__d('translate', 'The translate group could not be saved. Please, try again.'));
 		}
-		$translateProjects = $this->TranslateGroups->TranslateProjects->find('list', ['limit' => 200]);
-		$translateStrings = $this->TranslateGroups->TranslateStrings->find('list', ['limit' => 200]);
+		$translateProjects = $this->TranslateDomains->TranslateProjects->find('list', ['limit' => 200]);
+		$translateStrings = $this->TranslateDomains->TranslateStrings->find('list', ['limit' => 200]);
 
-		$this->set(compact('translateGroup', 'translateProjects', 'translateStrings'));
-		$this->set('_serialize', ['translateGroup']);
+		$this->set(compact('translateDomain', 'translateProjects', 'translateStrings'));
+		$this->set('_serialize', ['translateDomain']);
 	}
 
 	/**
@@ -194,8 +194,8 @@ class TranslateGroupsController extends TranslateAppController {
 	 */
 	public function delete($id = null) {
 		$this->request->allowMethod(['post', 'delete']);
-		$translateGroup = $this->TranslateGroups->get($id);
-		if ($this->TranslateGroups->delete($translateGroup)) {
+		$translateDomain = $this->TranslateDomains->get($id);
+		if ($this->TranslateDomains->delete($translateDomain)) {
 			$this->Flash->success(__d('translate', 'The translate group has been deleted.'));
 		} else {
 			$this->Flash->error(__d('translate', 'The translate group could not be deleted. Please, try again.'));

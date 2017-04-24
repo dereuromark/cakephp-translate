@@ -1,15 +1,15 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \Translate\Model\Entity\TranslateGroup $translateGroup
+ * @var \Translate\Model\Entity\TranslateDomain $translateDomain
  */
 ?><nav class="col-sm-4 col-xs-12">
 	<ul class="side-nav nav nav-pills nav-stacked">
 		<li class="heading"><?= __d('translate', 'Actions') ?></li>
 		<li><?= $this->Form->postLink(
 				__d('translate', 'Delete'),
-				['action' => 'delete', $translateGroup->id],
-				['confirm' => __d('translate', 'Are you sure you want to delete # {0}?', $translateGroup->id)]
+				['action' => 'delete', $translateDomain->id],
+				['confirm' => __d('translate', 'Are you sure you want to delete # {0}?', $translateDomain->id)]
 			)
 		?></li>
 		<li><?= $this->Html->link(__d('translate', 'List Translate Groups'), ['action' => 'index']) ?></li>
@@ -19,8 +19,8 @@
 		<li><?= $this->Html->link(__d('translate', 'New Translate String'), ['controller' => 'TranslateStrings', 'action' => 'add']) ?></li>
 	</ul>
 </nav>
-<div class="translateGroups form col-sm-8 col-xs-12">
-	<?= $this->Form->create($translateGroup) ?>
+<div class="translateDomains form col-sm-8 col-xs-12">
+	<?= $this->Form->create($translateDomain) ?>
 	<fieldset>
 		<legend><?= __d('translate', 'Edit Translate Group') ?></legend>
 		<?php

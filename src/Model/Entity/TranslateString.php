@@ -18,11 +18,11 @@ use Tools\Model\Entity\Entity;
  *
  * @property \App\Model\Entity\User $user
  * @property \Translate\Model\Entity\TranslateTerm[] $translate_terms
- * @property \Translate\Model\Entity\TranslateGroup $translate_group
+ * @property \Translate\Model\Entity\TranslateDomain $translate_domain
  * @property string $plural
  * @property string $context
  * @property int $user_id
- * @property int $translate_group_id
+ * @property int $translate_domain_id
  * @property string $flags
  */
 class TranslateString extends Entity {

@@ -27,8 +27,8 @@ We are trying to provide a "autoParagraph" option that would treat the text as n
 
 ## Enabling code excerpts
 
-For displaying the referenced code pieces you need to set a relative path per TranslateGroup.
-That is usually (per domain):
+For displaying the referenced code pieces you need to set a relative path per TranslateDomain.
+That is usually:
 - default (app): `src/`
 - cake (core): `vendor/cakephp/cakephp/src/`
 - tools (plugin): `vendor/dereuromark/cakephp-tools/src/`

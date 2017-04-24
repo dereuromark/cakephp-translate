@@ -3,7 +3,7 @@ namespace Translate\View\Helper;
 
 use Cake\View\Helper;
 use RuntimeException;
-use Translate\Model\Entity\TranslateGroup;
+use Translate\Model\Entity\TranslateDomain;
 
 /**
  * @property \Cake\View\Helper\HtmlHelper $Html
@@ -112,12 +112,12 @@ class TranslationHelper extends Helper {
 	}
 
 	/**
-	 * @param \Translate\Model\Entity\TranslateGroup $translateGroup
+	 * @param \Translate\Model\Entity\TranslateDomain $translateDomain
 	 *
 	 * @return bool
 	 */
-	public function canDisplayReference(TranslateGroup $translateGroup) {
-		return (bool)$translateGroup->path;
+	public function canDisplayReference(TranslateDomain $translateDomain) {
+		return (bool)$translateDomain->path;
 	}
 
 }

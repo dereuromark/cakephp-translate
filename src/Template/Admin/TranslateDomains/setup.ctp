@@ -1,11 +1,11 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \Translate\Model\Entity\TranslateGroup $translateGroup
+ * @var \Translate\Model\Entity\TranslateDomain $translateDomain
  */
 ?>
 <div class="page form">
-<?php echo $this->Form->create($translateGroup);?>
+<?php echo $this->Form->create($translateDomain);?>
 	<fieldset>
 		<legend><?php echo __d('translate', 'Setup Default Translate Groups');?></legend>
 
@@ -19,7 +19,7 @@
 			if (in_array($subgroup, $existingGroups)) {
 				echo '<li>'.$subgroup.'</li> (already exists)';
 			} else {
-			echo '<li>'.$this->Form->input('TranslateGroup.'.$count.'.confirm', ['type'=>'checkbox','label'=>$subgroup]).''.$this->Form->input('TranslateGroup.'.$count.'.name', ['type'=>'hidden','value'=>$subgroup]).'</li>';
+			echo '<li>'.$this->Form->input('TranslateDomain.'.$count.'.confirm', ['type'=>'checkbox','label'=>$subgroup]).''.$this->Form->input('TranslateDomain.'.$count.'.name', ['type'=>'hidden','value'=>$subgroup]).'</li>';
 			}
 			$count++;
 		}

@@ -17,7 +17,7 @@
 	<?php
 	echo $this->Form->create();
 	// You'll need to populate $authors in the template from your controller
-	echo $this->Form->input('translate_group_id', ['empty' => ' - ' . __d('translate', 'noLimitation') . ' - ']);
+	echo $this->Form->input('translate_domain_id', ['empty' => ' - ' . __d('translate', 'noLimitation') . ' - ']);
 	echo $this->Form->input('search', ['placeholder' => '']);
 	echo $this->Form->input('missing_translation', ['type' => 'checkbox', 'hiddenField' => '']);
 

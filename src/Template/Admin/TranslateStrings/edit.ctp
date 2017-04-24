@@ -21,7 +21,7 @@
 		<legend><?= __d('translate', 'Edit Translate String') ?></legend>
 		<?php
 		//echo $this->Form->input('id');
-		echo $this->Form->input('translate_group_id');
+		echo $this->Form->input('translate_domain_id');
 
 		echo $this->Form->input('name');
 		echo $this->Form->input('plural');
@@ -35,7 +35,7 @@
 
 		echo $this->Form->input('translate_afterwards', ['type'=>'checkbox']);
 
-		//echo $this->Form->input('translate_groups._ids', ['options' => $translateGroups]);
+		//echo $this->Form->input('translate_domains._ids', ['options' => $translateDomains]);
 		?>
 	</fieldset>
 	<?= $this->Form->button(__d('translate', 'Submit')) ?>

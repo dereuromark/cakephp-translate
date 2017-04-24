@@ -20,7 +20,7 @@ class TranslateStringsControllerTest extends IntegrationTestCase {
 	 */
 	public $fixtures = [
 		'plugin.translate.translate_strings',
-		'plugin.translate.translate_groups',
+		'plugin.translate.translate_domains',
 		'plugin.translate.translate_languages',
 		'plugin.translate.translate_projects',
 		'plugin.translate.users',
@@ -131,8 +131,8 @@ class TranslateStringsControllerTest extends IntegrationTestCase {
 		$this->TranslateStrings = TableRegistry::get('Translate.TranslateStrings');
 		$record = $this->TranslateStrings->get($id);
 
-		$groupId = $record->translate_group_id;
-		$record = $this->TranslateStrings->TranslateGroups->get($groupId);
+		$groupId = $record->translate_domain_id;
+		$record = $this->TranslateStrings->TranslateDomains->get($groupId);
 
 		$this->get(['prefix' => 'admin', 'plugin' => 'Translate', 'controller' => 'TranslateStrings', 'action' => 'translate', $id]);
 

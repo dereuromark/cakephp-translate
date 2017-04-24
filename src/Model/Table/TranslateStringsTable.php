@@ -13,7 +13,7 @@ use Translate\Translator\Translator;
 /**
  * @property \App\Model\Table\UsersTable|\Cake\ORM\Association\BelongsTo $Users
  * @property \Translate\Model\Table\TranslateTermsTable|\Cake\ORM\Association\HasMany $TranslateTerms
- * @property \Translate\Model\Table\TranslateGroupsTable|\Cake\ORM\Association\BelongsTo $TranslateGroups
+ * @property \Translate\Model\Table\TranslateDomainsTable|\Cake\ORM\Association\BelongsTo $TranslateDomains
  *
  * @method \Translate\Model\Entity\TranslateString get($primaryKey, $options = [])
  * @method \Translate\Model\Entity\TranslateString newEntity($data = null, array $options = [])
@@ -38,7 +38,7 @@ class TranslateStringsTable extends Table {
 	public $validate = [
 		'name' => [
 			'unique' => [
-				'rule' => ['validateUnique', ['scope' => ['translate_group_id', 'context']]],
+				'rule' => ['validateUnique', ['scope' => ['translate_domain_id', 'context']]],
 				'provider' => 'table',
 				'message' => 'This name is already in use',
 			],
@@ -53,7 +53,7 @@ class TranslateStringsTable extends Table {
 				'message' => 'valErrMandatoryField'
 			],
 		],
-		'translate_group_id' => [
+		'translate_domain_id' => [
 			'numeric' => [
 				'rule' => ['numeric'],
 				'message' => 'valErrMandatoryField'
@@ -102,8 +102,8 @@ class TranslateStringsTable extends Table {
 
 		$this->addBehavior('Shim.Nullable');
 		$this->addBehavior('Search.Search');
-		$this->belongsTo('TranslateGroups', [
-			'className' => 'Translate.TranslateGroups',
+		$this->belongsTo('TranslateDomains', [
+			'className' => 'Translate.TranslateDomains',
 		]);
 	}
 
@@ -113,7 +113,7 @@ class TranslateStringsTable extends Table {
 	public function searchConfiguration() {
 		$search = new Manager($this);
 		$search
-			->value('translate_group_id', [
+			->value('translate_domain_id', [
 			])
 			->callback('missing_translation', [
 				'callback' => function (Query $query, array $args, $filter) {
@@ -151,9 +151,9 @@ class TranslateStringsTable extends Table {
 
 		$options = [
 			//'TranslateStrings.active' => true,
-			'TranslateGroups.translate_project_id' => $id
+			'TranslateDomains.translate_project_id' => $id
 		];
-		$total = $this->find()->contain(['TranslateGroups'])->where($options)->count();
+		$total = $this->find()->contain(['TranslateDomains'])->where($options)->count();
 
 		foreach ($languages as $key => $lang) {
 			$options = [
@@ -241,14 +241,14 @@ class TranslateStringsTable extends Table {
 			//'user_id' => null,
 			'last_imported' => new Time(),
 			'is_html' => $this->containsHtml($translation),
-			'translate_group_id' => $groupId,
+			'translate_domain_id' => $groupId,
 		];
 
 		$translateString = $this->find()->where([
 			'name' => $translation['name'],
 			//'plural' => isset($translation['plural']) ? $translation['plural'] : null,
 			'context IS' => isset($translation['context']) ? $translation['context'] : null,
-			'translate_group_id' => $groupId,
+			'translate_domain_id' => $groupId,
 		])->first();
 		if (!$translateString) {
 			$translation['active'] = true;

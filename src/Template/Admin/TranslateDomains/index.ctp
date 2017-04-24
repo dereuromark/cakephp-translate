@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \Translate\Model\Entity\TranslateGroup[] $translateGroups
+ * @var \Translate\Model\Entity\TranslateDomain[] $translateDomains
  */
 ?>
 <nav class="actions col-sm-4 col-xs-12">
@@ -15,7 +15,7 @@
 		<li><?= $this->Html->link(__d('translate', 'New Translate String'), ['controller' => 'TranslateStrings', 'action' => 'add']) ?></li>
 	</ul>
 </nav>
-<div class="translateGroups index col-sm-8 col-xs-12">
+<div class="translateDomains index col-sm-8 col-xs-12">
 	<h3><?= __d('translate', 'Translate Groups') ?></h3>
 	<table class="table table-striped">
 		<thead>
@@ -29,17 +29,17 @@
 			</tr>
 		</thead>
 		<tbody>
-			<?php foreach ($translateGroups as $translateGroup): ?>
+			<?php foreach ($translateDomains as $translateDomain): ?>
 			<tr>
-				<td><?= h($translateGroup->name) ?></td>
-				<td><?= $this->Format->yesNo($translateGroup->active) ?></td>
-				<td><?= $this->Format->yesNo((bool)$translateGroup->path) ?></td>
-				<td><?= $this->Time->nice($translateGroup->created) ?></td>
-				<td><?= $this->Time->nice($translateGroup->modified) ?></td>
+				<td><?= h($translateDomain->name) ?></td>
+				<td><?= $this->Format->yesNo($translateDomain->active) ?></td>
+				<td><?= $this->Format->yesNo((bool)$translateDomain->path) ?></td>
+				<td><?= $this->Time->nice($translateDomain->created) ?></td>
+				<td><?= $this->Time->nice($translateDomain->modified) ?></td>
 				<td class="actions">
-				<?= $this->Html->link($this->Format->icon('view'), ['action' => 'view', $translateGroup->id], ['escape' => false]); ?>
-				<?= $this->Html->link($this->Format->icon('edit'), ['action' => 'edit', $translateGroup->id], ['escape' => false]); ?>
-				<?= $this->Form->postLink($this->Format->icon('delete'), ['action' => 'delete', $translateGroup->id], ['escape' => false, 'confirm' => __d('translate', 'Are you sure you want to delete # {0}?', $translateGroup->id)]); ?>
+				<?= $this->Html->link($this->Format->icon('view'), ['action' => 'view', $translateDomain->id], ['escape' => false]); ?>
+				<?= $this->Html->link($this->Format->icon('edit'), ['action' => 'edit', $translateDomain->id], ['escape' => false]); ?>
+				<?= $this->Form->postLink($this->Format->icon('delete'), ['action' => 'delete', $translateDomain->id], ['escape' => false, 'confirm' => __d('translate', 'Are you sure you want to delete # {0}?', $translateDomain->id)]); ?>
 				</td>
 			</tr>
 			<?php endforeach; ?>

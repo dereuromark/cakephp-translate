@@ -45,8 +45,8 @@ class TranslateStringsController extends TranslateAppController {
 		$translateStrings = $this->paginate($query);
 
 		$options = ['conditions' => ['translate_project_id' => $this->Translation->currentProjectId()]];
-		$translateGroups = $this->TranslateStrings->getRelatedInUse('TranslateGroups', 'translate_group_id', 'list', $options);
-		$this->set(compact('translateStrings', 'translateGroups'));
+		$translateDomains = $this->TranslateStrings->getRelatedInUse('TranslateDomains', 'translate_domain_id', 'list', $options);
+		$this->set(compact('translateStrings', 'translateDomains'));
 		$this->set('_serialize', ['translateStrings']);
 	}
 
@@ -59,7 +59,7 @@ class TranslateStringsController extends TranslateAppController {
 	 */
 	public function view($id = null) {
 		$translateString = $this->TranslateStrings->get($id, [
-			'contain' => ['Users', 'TranslateGroups', 'TranslateTerms']
+			'contain' => ['Users', 'TranslateDomains', 'TranslateTerms']
 		]);
 
 		$this->set(compact('translateString'));
@@ -86,9 +86,9 @@ class TranslateStringsController extends TranslateAppController {
 
 			$this->Flash->error(__d('translate', 'The translate string could not be saved. Please, try again.'));
 		}
-		$translateGroups = $this->TranslateStrings->TranslateGroups->find('list', ['limit' => 200]);
+		$translateDomains = $this->TranslateStrings->TranslateDomains->find('list', ['limit' => 200]);
 
-		$this->set(compact('translateString', 'translateGroups'));
+		$this->set(compact('translateString', 'translateDomains'));
 		$this->set('_serialize', ['translateString']);
 	}
 
@@ -101,7 +101,7 @@ class TranslateStringsController extends TranslateAppController {
 	 */
 	public function edit($id = null) {
 		$translateString = $this->TranslateStrings->get($id, [
-			'contain' => ['TranslateGroups']
+			'contain' => ['TranslateDomains']
 		]);
 		if ($this->request->is(['patch', 'post', 'put'])) {
 			$translateString = $this->TranslateStrings->patchEntity($translateString, $this->request->data);
@@ -120,9 +120,9 @@ class TranslateStringsController extends TranslateAppController {
 			$this->request->data = $this->request->query;
 		}
 
-		$translateGroups = $this->TranslateStrings->TranslateGroups->find('list', ['limit' => 200]);
+		$translateDomains = $this->TranslateStrings->TranslateDomains->find('list', ['limit' => 200]);
 
-		$this->set(compact('translateString', 'translateGroups'));
+		$this->set(compact('translateString', 'translateDomains'));
 		$this->set('_serialize', ['translateString']);
 	}
 
@@ -177,7 +177,7 @@ class TranslateStringsController extends TranslateAppController {
 				}
 				$translations = $translationLib->extractPotFile($domain);
 
-				$translationGroup = $this->TranslateStrings->TranslateGroups->getGroup($this->Translation->currentProjectId(), $domain);
+				$translationGroup = $this->TranslateStrings->TranslateDomains->getGroup($this->Translation->currentProjectId(), $domain);
 
 				foreach ($translations as $translation) {
 					$success = (bool)$this->TranslateStrings->import($translation, $translationGroup->id);
@@ -203,7 +203,7 @@ class TranslateStringsController extends TranslateAppController {
 
 				$translations = $translationLib->extractPoFile($domain, $lang);
 
-				$translationGroup = $this->TranslateStrings->TranslateGroups->getGroup($this->Translation->currentProjectId(), $domain);
+				$translationGroup = $this->TranslateStrings->TranslateDomains->getGroup($this->Translation->currentProjectId(), $domain);
 
 				foreach ($translations as $name => $translation) {
 					$translationString = $this->TranslateStrings->import($translation, $translationGroup->id);
@@ -249,7 +249,7 @@ class TranslateStringsController extends TranslateAppController {
 	 */
 	public function dump() {
 		$translateLanguages = $this->TranslateStrings->TranslateTerms->TranslateLanguages->getExtractableAsList($this->Translation->currentProjectId());
-		$domains = $this->TranslateStrings->TranslateGroups->getActive();
+		$domains = $this->TranslateStrings->TranslateDomains->getActive();
 
 		$map = [];
 		foreach ($translateLanguages as $code => $id) {
@@ -266,7 +266,7 @@ class TranslateStringsController extends TranslateAppController {
 				list($lang, $domain) = explode('_', $domain, 2);
 
 				$langId = $this->TranslateStrings->TranslateTerms->TranslateLanguages->find()->where(['iso2' => $lang])->firstOrFail()->id;
-				$groupId = $this->TranslateStrings->TranslateGroups->find()->where(['name' => $domain, 'translate_project_id' => $this->Translation->currentProjectId()])->firstOrFail()->id;
+				$groupId = $this->TranslateStrings->TranslateDomains->find()->where(['name' => $domain, 'translate_project_id' => $this->Translation->currentProjectId()])->firstOrFail()->id;
 				$translations = $this->TranslateStrings->TranslateTerms->getTranslations($langId, $groupId)->toArray();
 
 				if (!$translations) {
@@ -308,7 +308,7 @@ class TranslateStringsController extends TranslateAppController {
 	 * @return \Cake\Http\Response|null
 	 */
 	public function translate($id = null) {
-		$translateString = $this->TranslateStrings->get($id, ['contain' => 'TranslateGroups']);
+		$translateString = $this->TranslateStrings->get($id, ['contain' => 'TranslateDomains']);
 
 		$translateLanguages = $this->TranslateStrings->TranslateTerms->TranslateLanguages->find()->all();
 
@@ -380,7 +380,7 @@ class TranslateStringsController extends TranslateAppController {
 	 * @return void
 	 */
 	public function displayReference($id, $reference) {
-		$translateString = $this->TranslateStrings->get($id, ['contain' => ['TranslateGroups']]);
+		$translateString = $this->TranslateStrings->get($id, ['contain' => ['TranslateDomains']]);
 
 		$sep = explode(PHP_EOL, $translateString['references']);
 		$occ = [];
@@ -398,13 +398,13 @@ class TranslateStringsController extends TranslateAppController {
 		list ($reference, $lines) = explode(':', $reference);
 		$lines = explode(';', $lines);
 
-		$path = $translateString->translate_group->path;
+		$path = $translateString->translate_domain->path;
 		if (substr($path, 0, 1) !== '/') {
 			$path = ROOT . DS . $path;
 		}
 		$path = rtrim(realpath($path), '/') . '/';
 		if (!$path || !is_dir($path)) {
-			throw new NotFoundException('Path not found: ' . $translateString->translate_group->path);
+			throw new NotFoundException('Path not found: ' . $translateString->translate_domain->path);
 		}
 
 		$file = $path . $reference;

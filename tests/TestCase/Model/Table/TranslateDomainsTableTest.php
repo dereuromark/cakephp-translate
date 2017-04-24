@@ -3,19 +3,19 @@ namespace Translate\Test\TestCase\Model\Table;
 
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
-use Translate\Model\Table\TranslateGroupsTable;
+use Translate\Model\Table\TranslateDomainsTable;
 
 /**
- * Translate\Model\Table\TranslateGroupsTable Test Case
+ * Translate\Model\Table\TranslateDomainsTable Test Case
  */
-class TranslateGroupsTableTest extends TestCase {
+class TranslateDomainsTableTest extends TestCase {
 
 	/**
 	 * Test subject
 	 *
-	 * @var \Translate\Model\Table\TranslateGroupsTable
+	 * @var \Translate\Model\Table\TranslateDomainsTable
 	 */
-	public $TranslateGroups;
+	public $TranslateDomains;
 
 	/**
 	 * Fixtures
@@ -23,7 +23,7 @@ class TranslateGroupsTableTest extends TestCase {
 	 * @var array
 	 */
 	public $fixtures = [
-		'plugin.translate.translate_groups',
+		'plugin.translate.translate_domains',
 		'plugin.translate.translate_projects',
 		'plugin.translate.translate_strings',
 	];
@@ -35,8 +35,8 @@ class TranslateGroupsTableTest extends TestCase {
 	 */
 	public function setUp() {
 		parent::setUp();
-		$config = TableRegistry::exists('TranslateGroups') ? [] : ['className' => 'Translate\Model\Table\TranslateGroupsTable'];
-		$this->TranslateGroups = TableRegistry::get('TranslateGroups', $config);
+		$config = TableRegistry::exists('TranslateDomains') ? [] : ['className' => 'Translate\Model\Table\TranslateDomainsTable'];
+		$this->TranslateDomains = TableRegistry::get('TranslateDomains', $config);
 	}
 
 	/**
@@ -45,7 +45,7 @@ class TranslateGroupsTableTest extends TestCase {
 	 * @return void
 	 */
 	public function tearDown() {
-		unset($this->TranslateGroups);
+		unset($this->TranslateDomains);
 
 		parent::tearDown();
 	}
@@ -54,7 +54,7 @@ class TranslateGroupsTableTest extends TestCase {
 	 * @return void
 	 */
 	public function testInstance() {
-		$this->assertInstanceOf(TranslateGroupsTable::class, $this->TranslateGroups);
+		$this->assertInstanceOf(TranslateDomainsTable::class, $this->TranslateDomains);
 	}
 
 	/**
@@ -65,8 +65,8 @@ class TranslateGroupsTableTest extends TestCase {
 			'name' => 'default',
 			'translate_project_id' => 1,
 		];
-		$entity = $this->TranslateGroups->newEntity($data);
-		$result = $this->TranslateGroups->save($entity);
+		$entity = $this->TranslateDomains->newEntity($data);
+		$result = $this->TranslateDomains->save($entity);
 
 		$this->assertTrue((bool)$result);
 	}

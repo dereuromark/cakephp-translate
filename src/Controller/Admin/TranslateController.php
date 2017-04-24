@@ -6,7 +6,7 @@ use Translate\Lib\ConvertLib;
 use Translate\Translator\Translator;
 
 /**
- * @property \Translate\Model\Table\TranslateGroupsTable $TranslateGroups
+ * @property \Translate\Model\Table\TranslateDomainsTable $TranslateDomains
  * @property \Translate\Model\Table\TranslateLanguagesTable $TranslateLanguages
  */
 class TranslateController extends TranslateAppController {
@@ -21,7 +21,7 @@ class TranslateController extends TranslateAppController {
 	/**
 	 * @var string
 	 */
-	public $modelClass = 'Translate.TranslateGroups';
+	public $modelClass = 'Translate.TranslateDomains';
 
 	/**
 	 * Initial page / overview
@@ -33,9 +33,9 @@ class TranslateController extends TranslateAppController {
 		$languages = $this->TranslateLanguages->find('all', ['contain' => []]);
 
 		$id = $this->request->session()->read('TranslateProject.id');
-		$count = $this->TranslateGroups->statistics($id, $languages->toArray());
-		$coverage = $this->TranslateGroups->TranslateStrings->coverage($this->Translation->currentProjectId());
-		$projectSwitchArray = $this->TranslateGroups->TranslateProjects->find('list');
+		$count = $this->TranslateDomains->statistics($id, $languages->toArray());
+		$coverage = $this->TranslateDomains->TranslateStrings->coverage($this->Translation->currentProjectId());
+		$projectSwitchArray = $this->TranslateDomains->TranslateProjects->find('list');
 		$this->set(compact('coverage', 'languages', 'count', 'projectSwitchArray'));
 	}
 
@@ -57,16 +57,16 @@ class TranslateController extends TranslateAppController {
 				if (!empty($sel)) {
 					switch ($sel) {
 						case 'terms':
-							$this->TranslateGroups->TranslateStrings->TranslateTerms->truncate();
+							$this->TranslateDomains->TranslateStrings->TranslateTerms->truncate();
 							break;
 						case 'strings':
-							$this->TranslateGroups->TranslateStrings->truncate();
+							$this->TranslateDomains->TranslateStrings->truncate();
 							break;
 						case 'groups':
-							$this->TranslateGroups->truncate();
+							$this->TranslateDomains->truncate();
 							break;
 						case 'languages':
-							$this->TranslateGroups->TranslateLanguages->truncate();
+							$this->TranslateDomains->TranslateLanguages->truncate();
 							break;
 					}
 				}

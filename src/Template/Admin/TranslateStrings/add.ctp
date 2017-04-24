@@ -15,7 +15,7 @@
 	<fieldset>
 		<legend><?= __d('translate', 'Add Translate String') ?></legend>
 		<?php
-			echo $this->Form->input('translate_group_id');
+			echo $this->Form->input('translate_domain_id');
 
 			echo $this->Form->input('name');
 			echo $this->Form->input('plural');

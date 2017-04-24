@@ -56,7 +56,7 @@ Current Translation-Coverage: <span style="color:#<?php echo $totalColor;?>;font
 
 <?php echo $this->element('coverage_table', [])?>
 		<p>
-<?php echo $count['groups']?> <?php echo $this->Html->link(__d('translate', 'Groups'), ['controller'=>'TranslateGroups']);?> with <?php echo $count['strings']?> <?php echo $this->Html->link(__d('translate', 'Strings'), ['controller'=>'TranslateStrings']);?> in <?php echo $count['languages']?> different <?php echo $this->Html->link(__d('translate', 'Languages'), ['controller'=>'TranslateLanguages']);?> = <?php echo $count['translations']?> <?php echo __d('translate', 'Translations');?>
+<?php echo $count['groups']?> <?php echo $this->Html->link(__d('translate', 'Groups'), ['controller'=>'TranslateDomains']);?> with <?php echo $count['strings']?> <?php echo $this->Html->link(__d('translate', 'Strings'), ['controller'=>'TranslateStrings']);?> in <?php echo $count['languages']?> different <?php echo $this->Html->link(__d('translate', 'Languages'), ['controller'=>'TranslateLanguages']);?> = <?php echo $count['translations']?> <?php echo __d('translate', 'Translations');?>
 		</p>
 
 <?php } else { ?>

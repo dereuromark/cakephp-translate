@@ -62,8 +62,8 @@ class TranslateProjectsTable extends Table {
 	 * @var array
 	 */
 	public $hasMany = [
-		'TranslateGroup' => [
-			'className' => 'TranslateGroup',
+		'TranslateDomain' => [
+			'className' => 'TranslateDomain',
 			'dependent' => true,
 		]
 	];
@@ -109,10 +109,10 @@ class TranslateProjectsTable extends Table {
 					$options = [
 						'conditions' => [
 							'TranslateTerm.translate_language_id' => $languages,
-							'TranslateGroup.translate_project_id' => $id,
+							'TranslateDomain.translate_project_id' => $id,
 						],
 						'fields' => ['TranslateTerms.id', 'TranslateTerms.id'],
-						'contain' => ['TranslateGroups' => ['TranslateStrings']]
+						'contain' => ['TranslateDomains' => ['TranslateStrings']]
 					];
 					# bug in deleteAll (cannot use containable/recursion)
 					$res = $this->TranslateTerms->deleteAll($options['conditions']);
@@ -126,7 +126,7 @@ class TranslateProjectsTable extends Table {
 					break;
 				case 'strings':
 					$conditions = [
-						'TranslateGroups.translate_project_id' => $id,
+						'TranslateDomains.translate_project_id' => $id,
 					];
 					//$this->TranslateTerms->TranslateStrings->recursive = 0;
 					//$this->TranslateTerms->TranslateStrings->bindModel(['belongsTo' => $x], false);
@@ -135,9 +135,9 @@ class TranslateProjectsTable extends Table {
 					break;
 				case 'groups':
 					$conditions = [
-						'TranslateGroup.translate_project_id' => $id,
+						'TranslateDomain.translate_project_id' => $id,
 					];
-					$this->TranslateGroups->deleteAll($conditions);
+					$this->TranslateDomains->deleteAll($conditions);
 					break;
 				default:
 					throw new Exception('Invalid type');

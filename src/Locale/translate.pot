@@ -14,19 +14,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: Controller/Admin/TranslateGroupsController.php:149;175
+#: Controller/Admin/TranslateDomainsController.php:149;175
 msgid "The translate group has been saved."
 msgstr ""
 
-#: Controller/Admin/TranslateGroupsController.php:153;179
+#: Controller/Admin/TranslateDomainsController.php:153;179
 msgid "The translate group could not be saved. Please, try again."
 msgstr ""
 
-#: Controller/Admin/TranslateGroupsController.php:199
+#: Controller/Admin/TranslateDomainsController.php:199
 msgid "The translate group has been deleted."
 msgstr ""
 
-#: Controller/Admin/TranslateGroupsController.php:201
+#: Controller/Admin/TranslateDomainsController.php:201
 msgid "The translate group could not be deleted. Please, try again."
 msgstr ""
 
@@ -77,7 +77,7 @@ msgid "Translate Strings"
 msgstr ""
 
 #: Controller/Admin/TranslateProjectsController.php:130
-#: Template/Admin/TranslateGroups/index.ctp:18
+#: Template/Admin/TranslateDomains/index.ctp:18
 msgid "Translate Groups"
 msgstr ""
 
@@ -148,10 +148,10 @@ msgstr ""
 #: Template/Admin/Translate/best_practice.ctp:9
 #: Template/Admin/Translate/convert.ctp:9
 #: Template/Admin/Translate/reset.ctp:9
-#: Template/Admin/TranslateGroups/add.ctp:9
-#: Template/Admin/TranslateGroups/edit.ctp:8
-#: Template/Admin/TranslateGroups/index.ctp:9;27
-#: Template/Admin/TranslateGroups/view.ctp:9
+#: Template/Admin/TranslateDomains/add.ctp:9
+#: Template/Admin/TranslateDomains/edit.ctp:8
+#: Template/Admin/TranslateDomains/index.ctp:9;27
+#: Template/Admin/TranslateDomains/view.ctp:9
 #: Template/Admin/TranslateLanguages/add.ctp:9
 #: Template/Admin/TranslateLanguages/edit.ctp:8
 #: Template/Admin/TranslateLanguages/index.ctp:9;23
@@ -191,10 +191,10 @@ msgid "Convert text"
 msgstr ""
 
 #: Template/Admin/Translate/convert.ctp:37
-#: Template/Admin/TranslateGroups/add.ctp:26
-#: Template/Admin/TranslateGroups/edit.ctp:31
-#: Template/Admin/TranslateGroups/extract.ctp:40
-#: Template/Admin/TranslateGroups/setup.ctp:30
+#: Template/Admin/TranslateDomains/add.ctp:26
+#: Template/Admin/TranslateDomains/edit.ctp:31
+#: Template/Admin/TranslateDomains/extract.ctp:40
+#: Template/Admin/TranslateDomains/setup.ctp:30
 #: Template/Admin/TranslateLanguages/add.ctp:29
 #: Template/Admin/TranslateLanguages/edit.ctp:34
 #: Template/Admin/TranslateLanguages/from_locale.ctp:27
@@ -257,40 +257,40 @@ msgstr ""
 msgid "Selection"
 msgstr ""
 
-#: Template/Admin/TranslateGroups/add.ctp:10
-#: Template/Admin/TranslateGroups/edit.ctp:15
-#: Template/Admin/TranslateGroups/extract.ctp:44
-#: Template/Admin/TranslateGroups/setup.ctp:34
-#: Template/Admin/TranslateGroups/view.ctp:12
+#: Template/Admin/TranslateDomains/add.ctp:10
+#: Template/Admin/TranslateDomains/edit.ctp:15
+#: Template/Admin/TranslateDomains/extract.ctp:44
+#: Template/Admin/TranslateDomains/setup.ctp:34
+#: Template/Admin/TranslateDomains/view.ctp:12
 #: Template/Admin/TranslateProjects/edit.ctp:16
 #: Template/Admin/TranslateProjects/index.ctp:13
 #: Template/Admin/TranslateProjects/view.ctp:14
 msgid "List Translate Groups"
 msgstr ""
 
-#: Template/Admin/TranslateGroups/add.ctp:11
-#: Template/Admin/TranslateGroups/edit.ctp:16
-#: Template/Admin/TranslateGroups/index.ctp:11
-#: Template/Admin/TranslateGroups/view.ctp:14
+#: Template/Admin/TranslateDomains/add.ctp:11
+#: Template/Admin/TranslateDomains/edit.ctp:16
+#: Template/Admin/TranslateDomains/index.ctp:11
+#: Template/Admin/TranslateDomains/view.ctp:14
 #: Template/Admin/TranslateProjects/add.ctp:10
 #: Template/Admin/TranslateProjects/edit.ctp:15
 #: Template/Admin/TranslateProjects/view.ctp:12
 msgid "List Translate Projects"
 msgstr ""
 
-#: Template/Admin/TranslateGroups/add.ctp:12
-#: Template/Admin/TranslateGroups/edit.ctp:17
-#: Template/Admin/TranslateGroups/index.ctp:12
-#: Template/Admin/TranslateGroups/view.ctp:15
+#: Template/Admin/TranslateDomains/add.ctp:12
+#: Template/Admin/TranslateDomains/edit.ctp:17
+#: Template/Admin/TranslateDomains/index.ctp:12
+#: Template/Admin/TranslateDomains/view.ctp:15
 #: Template/Admin/TranslateProjects/index.ctp:11
 #: Template/Admin/TranslateProjects/view.ctp:13
 msgid "New Translate Project"
 msgstr ""
 
-#: Template/Admin/TranslateGroups/add.ctp:13
-#: Template/Admin/TranslateGroups/edit.ctp:18
-#: Template/Admin/TranslateGroups/index.ctp:13
-#: Template/Admin/TranslateGroups/view.ctp:16
+#: Template/Admin/TranslateDomains/add.ctp:13
+#: Template/Admin/TranslateDomains/edit.ctp:18
+#: Template/Admin/TranslateDomains/index.ctp:13
+#: Template/Admin/TranslateDomains/view.ctp:16
 #: Template/Admin/TranslateProjects/index.ctp:14
 #: Template/Admin/TranslateStrings/add.ctp:10
 #: Template/Admin/TranslateStrings/dump.ctp:10
@@ -304,10 +304,10 @@ msgstr ""
 msgid "List Translate Strings"
 msgstr ""
 
-#: Template/Admin/TranslateGroups/add.ctp:14
-#: Template/Admin/TranslateGroups/edit.ctp:19
-#: Template/Admin/TranslateGroups/index.ctp:14
-#: Template/Admin/TranslateGroups/view.ctp:17
+#: Template/Admin/TranslateDomains/add.ctp:14
+#: Template/Admin/TranslateDomains/edit.ctp:19
+#: Template/Admin/TranslateDomains/index.ctp:14
+#: Template/Admin/TranslateDomains/view.ctp:17
 #: Template/Admin/TranslateStrings/index.ctp:10
 #: Template/Admin/TranslateStrings/view.ctp:13
 #: Template/Admin/TranslateTerms/edit.ctp:16
@@ -316,11 +316,11 @@ msgstr ""
 msgid "New Translate String"
 msgstr ""
 
-#: Template/Admin/TranslateGroups/add.ctp:20
+#: Template/Admin/TranslateDomains/add.ctp:20
 msgid "Add Translate Group"
 msgstr ""
 
-#: Template/Admin/TranslateGroups/edit.ctp:10
+#: Template/Admin/TranslateDomains/edit.ctp:10
 #: Template/Admin/TranslateLanguages/edit.ctp:10
 #: Template/Admin/TranslateProjects/edit.ctp:10
 #: Template/Admin/TranslateProjects/view.ctp:79
@@ -330,9 +330,9 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
-#: Template/Admin/TranslateGroups/edit.ctp:12
-#: Template/Admin/TranslateGroups/index.ctp:41
-#: Template/Admin/TranslateGroups/view.ctp:11
+#: Template/Admin/TranslateDomains/edit.ctp:12
+#: Template/Admin/TranslateDomains/index.ctp:41
+#: Template/Admin/TranslateDomains/view.ctp:11
 #: Template/Admin/TranslateLanguages/edit.ctp:12
 #: Template/Admin/TranslateLanguages/index.ctp:41
 #: Template/Admin/TranslateLanguages/view.ctp:11
@@ -348,57 +348,57 @@ msgstr ""
 msgid "Are you sure you want to delete # {0}?"
 msgstr ""
 
-#: Template/Admin/TranslateGroups/edit.ctp:25
-#: Template/Admin/TranslateGroups/view.ctp:10
+#: Template/Admin/TranslateDomains/edit.ctp:25
+#: Template/Admin/TranslateDomains/view.ctp:10
 msgid "Edit Translate Group"
 msgstr ""
 
-#: Template/Admin/TranslateGroups/extract.ctp:9
+#: Template/Admin/TranslateDomains/extract.ctp:9
 #: Template/Admin/TranslateStrings/extract.ctp:17
 msgid "From POT File"
 msgstr ""
 
-#: Template/Admin/TranslateGroups/extract.ctp:19
+#: Template/Admin/TranslateDomains/extract.ctp:19
 #: Template/Admin/TranslateStrings/extract.ctp:27
 msgid "From PO File"
 msgstr ""
 
-#: Template/Admin/TranslateGroups/extract.ctp:27
+#: Template/Admin/TranslateDomains/extract.ctp:27
 msgid "From Source Code"
 msgstr ""
 
-#: Template/Admin/TranslateGroups/extract.ctp:34
+#: Template/Admin/TranslateDomains/extract.ctp:34
 msgid "Controller Names"
 msgstr ""
 
-#: Template/Admin/TranslateGroups/index.ctp:10
-#: Template/Admin/TranslateGroups/view.ctp:13
+#: Template/Admin/TranslateDomains/index.ctp:10
+#: Template/Admin/TranslateDomains/view.ctp:13
 #: Template/Admin/TranslateProjects/edit.ctp:17
 #: Template/Admin/TranslateProjects/view.ctp:15
 msgid "New Translate Group"
 msgstr ""
 
-#: Template/Admin/TranslateGroups/setup.ctp:10
+#: Template/Admin/TranslateDomains/setup.ctp:10
 msgid "Setup Default Translate Groups"
 msgstr ""
 
-#: Template/Admin/TranslateGroups/view.ctp:11
+#: Template/Admin/TranslateDomains/view.ctp:11
 msgid "Delete Translate Group"
 msgstr ""
 
-#: Template/Admin/TranslateGroups/view.ctp:24
+#: Template/Admin/TranslateDomains/view.ctp:24
 #: Template/Admin/TranslateLanguages/view.ctp:24
 #: Template/Admin/TranslateProjects/view.ctp:22;52
 #: Template/Admin/TranslateStrings/view.ctp:45;62
 msgid "Name"
 msgstr ""
 
-#: Template/Admin/TranslateGroups/view.ctp:28
+#: Template/Admin/TranslateDomains/view.ctp:28
 #: Template/Admin/TranslateProjects/reset.ctp:7;11
 msgid "Translate Project"
 msgstr ""
 
-#: Template/Admin/TranslateGroups/view.ctp:32
+#: Template/Admin/TranslateDomains/view.ctp:32
 #: Template/Admin/TranslateLanguages/view.ctp:36
 #: Template/Admin/TranslateProjects/view.ctp:56
 #: Template/Admin/TranslateStrings/view.ctp:24;66
@@ -406,20 +406,20 @@ msgstr ""
 msgid "Active"
 msgstr ""
 
-#: Template/Admin/TranslateGroups/view.ctp:36
+#: Template/Admin/TranslateDomains/view.ctp:36
 #: Template/Admin/TranslateProjects/view.ctp:58
 #: Template/Admin/TranslateStrings/view.ctp:68
 msgid "Prio"
 msgstr ""
 
-#: Template/Admin/TranslateGroups/view.ctp:40
+#: Template/Admin/TranslateDomains/view.ctp:40
 #: Template/Admin/TranslateProjects/view.ctp:38;60
 #: Template/Admin/TranslateStrings/view.ctp:36;70
 #: Template/Admin/TranslateTerms/view.ctp:44
 msgid "Created"
 msgstr ""
 
-#: Template/Admin/TranslateGroups/view.ctp:44
+#: Template/Admin/TranslateDomains/view.ctp:44
 #: Template/Admin/TranslateProjects/view.ctp:42;62
 #: Template/Admin/TranslateStrings/view.ctp:40;72
 #: Template/Admin/TranslateTerms/view.ctp:48

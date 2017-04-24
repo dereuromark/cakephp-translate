@@ -93,13 +93,13 @@ foreach ($sep as $s) {
 ?>
 
 <h3>Additional Infos</h3>
-Group: <?php echo $this->Html->link($translateString->translate_group->name, ['action' => 'index', '?' => ['translate_group_id' => $translateString->translate_group_id]]); ?><br/>
+Group: <?php echo $this->Html->link($translateString->translate_domain->name, ['action' => 'index', '?' => ['translate_domain_id' => $translateString->translate_domain_id]]); ?><br/>
 
 References: <?php echo count($references)?>x
 	<?php if ($references) { ?>
 	<ul class="references">
 		<?php foreach ($references as $key => $reference) { ?>
-		<?php if ($this->Translation->canDisplayReference($translateString->translate_group)) { ?>
+		<?php if ($this->Translation->canDisplayReference($translateString->translate_domain)) { ?>
 			<li><?php echo $this->Html->link($reference, ['action' => 'displayReference', $translateString->id, $key], ['target'=> '_blank', 'data-toggle'=> "modal", 'data-target' => ".bs-example-modal-lg"]); ?></li>
 		<?php } else { ?>
 			<li><?php echo h($reference); ?></li>

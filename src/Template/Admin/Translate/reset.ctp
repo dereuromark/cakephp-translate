@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \Translate\Model\Entity\TranslateGroup $translateGroup
+ * @var \Translate\Model\Entity\TranslateDomain $translateDomain
  */
 ?>
 <nav class="col-sm-4 col-xs-12">

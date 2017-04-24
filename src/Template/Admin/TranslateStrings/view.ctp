@@ -56,7 +56,7 @@
 
 	<div class="related">
 		<h3><?= __d('translate', 'Related Translate Groups') ?></h3>
-		<?php if (!empty($translateString->translate_groups)): ?>
+		<?php if (!empty($translateString->translate_domains)): ?>
 		<table class="table table-horizontal">
 									<tr>
 			<th><?= __d('translate', 'Name') ?></th>
@@ -72,21 +72,21 @@
 			<th><?= __d('translate', 'Modified') ?></th>
 				<th class="actions"><?= __d('translate', 'Actions') ?></th>
 			</tr>
-			<?php foreach ($translateString->translate_groups as $translateGroups): ?>
+			<?php foreach ($translateString->translate_domains as $translateDomains): ?>
 			<tr>
-				<td><?= h($translateGroups->id) ?></td>
-				<td><?= h($translateGroups->name) ?></td>
-				<td><?= h($translateGroups->project_id) ?></td>
-				<td><?= h($translateGroups->active) ?></td>
-				<td><?= h($translateGroups->prio) ?></td>
-				<td><?= h($translateGroups->created) ?></td>
-				<td><?= h($translateGroups->modified) ?></td>
+				<td><?= h($translateDomains->id) ?></td>
+				<td><?= h($translateDomains->name) ?></td>
+				<td><?= h($translateDomains->project_id) ?></td>
+				<td><?= h($translateDomains->active) ?></td>
+				<td><?= h($translateDomains->prio) ?></td>
+				<td><?= h($translateDomains->created) ?></td>
+				<td><?= h($translateDomains->modified) ?></td>
 				<td class="actions">
-					<?= $this->Html->link(__d('translate', 'View'), ['controller' => 'TranslateGroups', 'action' => 'view', $translateGroups->id]) ?>
+					<?= $this->Html->link(__d('translate', 'View'), ['controller' => 'TranslateDomains', 'action' => 'view', $translateDomains->id]) ?>
 
-					<?= $this->Html->link(__d('translate', 'Edit'), ['controller' => 'TranslateGroups', 'action' => 'edit', $translateGroups->id]) ?>
+					<?= $this->Html->link(__d('translate', 'Edit'), ['controller' => 'TranslateDomains', 'action' => 'edit', $translateDomains->id]) ?>
 
-					<?= $this->Form->postLink(__d('translate', 'Delete'), ['controller' => 'TranslateGroups', 'action' => 'delete', $translateGroups->id], ['confirm' => __d('translate', 'Are you sure you want to delete # {0}?', $translateGroups->id)]) ?>
+					<?= $this->Form->postLink(__d('translate', 'Delete'), ['controller' => 'TranslateDomains', 'action' => 'delete', $translateDomains->id], ['confirm' => __d('translate', 'Are you sure you want to delete # {0}?', $translateDomains->id)]) ?>
 
 				</td>
 			</tr>

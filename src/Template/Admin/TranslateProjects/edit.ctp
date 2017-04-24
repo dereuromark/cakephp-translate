@@ -13,8 +13,8 @@
 			)
 		?></li>
 		<li><?= $this->Html->link(__d('translate', 'List Translate Projects'), ['action' => 'index']) ?></li>
-		<li><?= $this->Html->link(__d('translate', 'List Translate Groups'), ['controller' => 'TranslateGroups', 'action' => 'index']) ?></li>
-		<li><?= $this->Html->link(__d('translate', 'New Translate Group'), ['controller' => 'TranslateGroups', 'action' => 'add']) ?></li>
+		<li><?= $this->Html->link(__d('translate', 'List Translate Groups'), ['controller' => 'TranslateDomains', 'action' => 'index']) ?></li>
+		<li><?= $this->Html->link(__d('translate', 'New Translate Group'), ['controller' => 'TranslateDomains', 'action' => 'add']) ?></li>
 	</ul>
 </nav>
 <div class="translateProjects form col-sm-8 col-xs-12">

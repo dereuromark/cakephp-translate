@@ -55,7 +55,7 @@
 	</div>
 
 	<div class="related">
-		<h3><?= __d('translate', 'Related Translate Groups') ?></h3>
+		<h3><?= __d('translate', 'Related Translate Domains') ?></h3>
 		<?php if (!empty($translateString->translate_domains)): ?>
 		<table class="table table-horizontal">
 									<tr>

@@ -47,7 +47,7 @@ class TranslateController extends TranslateAppController {
 
 	/**
 	 * Reset terms and strings
-	 * - optional: groups and languages
+	 * - optional: domains and languages
 	 *
 	 * @return \Cake\Http\Response|null
 	 */

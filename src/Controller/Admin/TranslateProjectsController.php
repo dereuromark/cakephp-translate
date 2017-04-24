@@ -127,7 +127,7 @@ class TranslateProjectsController extends TranslateAppController {
 		$removeOptions = [
 			'terms' => __d('translate', 'Translate Terms'),
 			'strings' => __d('translate', 'Translate Strings'),
-			'groups' => __d('translate', 'Translate Groups'),
+			'groups' => __d('translate', 'Translate Domains'),
 		];
 		$this->TranslateLanguage = TableRegistry::get('Translate.TranslateLanguage');
 		$languages = $this->TranslateLanguages->find('list');

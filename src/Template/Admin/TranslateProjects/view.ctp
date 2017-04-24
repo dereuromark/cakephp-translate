@@ -11,8 +11,8 @@
 		<li><?= $this->Form->postLink(__d('translate', 'Delete Translate Project'), ['action' => 'delete', $translateProject->id], ['confirm' => __d('translate', 'Are you sure you want to delete # {0}?', $translateProject->id)]) ?> </li>
 		<li><?= $this->Html->link(__d('translate', 'List Translate Projects'), ['action' => 'index']) ?> </li>
 		<li><?= $this->Html->link(__d('translate', 'New Translate Project'), ['action' => 'add']) ?> </li>
-		<li><?= $this->Html->link(__d('translate', 'List Translate Groups'), ['controller' => 'TranslateDomains', 'action' => 'index']) ?> </li>
-		<li><?= $this->Html->link(__d('translate', 'New Translate Group'), ['controller' => 'TranslateDomains', 'action' => 'add']) ?> </li>
+		<li><?= $this->Html->link(__d('translate', 'List Translate Domains'), ['controller' => 'TranslateDomains', 'action' => 'index']) ?> </li>
+		<li><?= $this->Html->link(__d('translate', 'New Translate Domain'), ['controller' => 'TranslateDomains', 'action' => 'add']) ?> </li>
 	</ul>
 </nav>
 <div class="translateProjects view col-sm-8 col-xs-12">
@@ -45,7 +45,7 @@
 	</table>
 
 	<div class="related">
-		<h3><?= __d('translate', 'Related Translate Groups') ?></h3>
+		<h3><?= __d('translate', 'Related Translate Domains') ?></h3>
 		<?php if (!empty($translateProject->translate_domains)): ?>
 		<table class="table table-horizontal">
 									<tr>

@@ -12,7 +12,7 @@
 				['confirm' => __d('translate', 'Are you sure you want to delete # {0}?', $translateDomain->id)]
 			)
 		?></li>
-		<li><?= $this->Html->link(__d('translate', 'List Translate Groups'), ['action' => 'index']) ?></li>
+		<li><?= $this->Html->link(__d('translate', 'List Translate Domains'), ['action' => 'index']) ?></li>
 		<li><?= $this->Html->link(__d('translate', 'List Translate Projects'), ['controller' => 'TranslateProjects', 'action' => 'index']) ?></li>
 		<li><?= $this->Html->link(__d('translate', 'New Translate Project'), ['controller' => 'TranslateProjects', 'action' => 'add']) ?></li>
 		<li><?= $this->Html->link(__d('translate', 'List Translate Strings'), ['controller' => 'TranslateStrings', 'action' => 'index']) ?></li>
@@ -22,7 +22,7 @@
 <div class="translateDomains form col-sm-8 col-xs-12">
 	<?= $this->Form->create($translateDomain) ?>
 	<fieldset>
-		<legend><?= __d('translate', 'Edit Translate Group') ?></legend>
+		<legend><?= __d('translate', 'Edit Translate Domain') ?></legend>
 		<?php
 			echo $this->Form->input('name');
 			echo $this->Form->input('active');

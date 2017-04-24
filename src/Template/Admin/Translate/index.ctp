@@ -30,7 +30,7 @@ Easily manage i18n/translations from your backend.
 	<li>Validate placeholders ({0})</li>
 	<li>Prevent doublettes, missing translations, collisions</li>
 	<li>Auto-Add Controller names (singular + plural)</li>
-	<li>Manage in Groups (and export/enable/disable them)</li>
+	<li>Manage in domains (and export/enable/disable them)</li>
 	<li>Creates clean pot files with all translations in usage</li>
 </ul>
 
@@ -70,7 +70,7 @@ Current Translation-Coverage: <span style="color:#<?php echo $totalColor;?>;font
 
 <h3>How to Translate</h3>
 <ol>
-<li>Select group you want to translate</li>
+<li>Select domain you want to translate</li>
 <li>Select language you want to translate into (or from)</li>
 <li>Translate and submit the form</li>
 </ol>

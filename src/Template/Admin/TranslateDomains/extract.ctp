@@ -41,6 +41,6 @@
 </div>
 <div class="actions">
 	<ul>
-		<li><?php echo $this->Html->link(__d('translate', 'List Translate Groups'), ['action'=>'index']);?></li>
+		<li><?php echo $this->Html->link(__d('translate', 'List Translate Domains'), ['action'=>'index']);?></li>
 	</ul>
 </div>

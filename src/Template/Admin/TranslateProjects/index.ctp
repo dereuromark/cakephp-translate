@@ -10,7 +10,7 @@
 		<li><?= $this->Html->link(__d('translate', 'Overview'), ['controller' => 'Translate', 'action' => 'index']) ?></li>
 		<li><?= $this->Html->link(__d('translate', 'New Translate Project'), ['action' => 'add']) ?></li>
 		<li><?= $this->Html->link(__d('translate', 'List Translate Languages'), ['controller' => 'TranslateLanguages', 'action' => 'index']) ?> </li>
-		<li><?= $this->Html->link(__d('translate', 'List Translate Groups'), ['controller' => 'TranslateDomains', 'action' => 'index']) ?> </li>
+		<li><?= $this->Html->link(__d('translate', 'List Translate Domains'), ['controller' => 'TranslateDomains', 'action' => 'index']) ?> </li>
 		<li><?= $this->Html->link(__d('translate', 'List Translate Strings'), ['controller' => 'TranslateStrings', 'action' => 'index']) ?></li>
 	</ul>
 </nav>

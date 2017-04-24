@@ -33,7 +33,7 @@ class TranslateDomainsController extends TranslateAppController {
 	/**
 	 * View method
 	 *
-	 * @param string|null $id Translate Group id.
+	 * @param string|null $id Translate Domain id.
 	 * @return \Cake\Http\Response|null
 	 * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
 	 */
@@ -58,11 +58,11 @@ class TranslateDomainsController extends TranslateAppController {
 
 			$translateDomain = $this->TranslateDomains->patchEntity($translateDomain, $this->request->data);
 			if ($this->TranslateDomains->save($translateDomain)) {
-				$this->Flash->success(__d('translate', 'The translate group has been saved.'));
+				$this->Flash->success(__d('translate', 'The translate domain has been saved.'));
 				return $this->redirect(['action' => 'index']);
 			}
 
-			$this->Flash->error(__d('translate', 'The translate group could not be saved. Please, try again.'));
+			$this->Flash->error(__d('translate', 'The translate domain could not be saved. Please, try again.'));
 		} else {
 			$this->request->data['active'] = true;
 		}
@@ -73,7 +73,7 @@ class TranslateDomainsController extends TranslateAppController {
 	/**
 	 * Edit method
 	 *
-	 * @param string|null $id Translate Group id.
+	 * @param string|null $id Translate Domain id.
 	 * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
 	 * @throws \Cake\Network\Exception\NotFoundException When record not found.
 	 */
@@ -84,11 +84,11 @@ class TranslateDomainsController extends TranslateAppController {
 		if ($this->request->is(['patch', 'post', 'put'])) {
 			$translateDomain = $this->TranslateDomains->patchEntity($translateDomain, $this->request->data);
 			if ($this->TranslateDomains->save($translateDomain)) {
-				$this->Flash->success(__d('translate', 'The translate group has been saved.'));
+				$this->Flash->success(__d('translate', 'The translate domain has been saved.'));
 				return $this->redirect(['action' => 'index']);
 			}
 
-			$this->Flash->error(__d('translate', 'The translate group could not be saved. Please, try again.'));
+			$this->Flash->error(__d('translate', 'The translate domain could not be saved. Please, try again.'));
 		}
 		$translateProjects = $this->TranslateDomains->TranslateProjects->find('list', ['limit' => 200]);
 		$translateStrings = $this->TranslateDomains->TranslateStrings->find('list', ['limit' => 200]);
@@ -100,7 +100,7 @@ class TranslateDomainsController extends TranslateAppController {
 	/**
 	 * Delete method
 	 *
-	 * @param string|null $id Translate Group id.
+	 * @param string|null $id Translate Domain id.
 	 * @return \Cake\Http\Response|null Redirects to index.
 	 * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
 	 */
@@ -108,9 +108,9 @@ class TranslateDomainsController extends TranslateAppController {
 		$this->request->allowMethod(['post', 'delete']);
 		$translateDomain = $this->TranslateDomains->get($id);
 		if ($this->TranslateDomains->delete($translateDomain)) {
-			$this->Flash->success(__d('translate', 'The translate group has been deleted.'));
+			$this->Flash->success(__d('translate', 'The translate domain has been deleted.'));
 		} else {
-			$this->Flash->error(__d('translate', 'The translate group could not be deleted. Please, try again.'));
+			$this->Flash->error(__d('translate', 'The translate domain could not be deleted. Please, try again.'));
 		}
 		return $this->redirect(['action' => 'index']);
 	}

@@ -7,7 +7,7 @@
 <nav class="col-sm-4 col-xs-12">
 	<ul class="side-nav nav nav-pills nav-stacked">
 		<li class="heading"><?= __d('translate', 'Actions') ?></li>
-		<li><?= $this->Html->link(__d('translate', 'List Translate Groups'), ['action' => 'index']) ?></li>
+		<li><?= $this->Html->link(__d('translate', 'List Translate Domains'), ['action' => 'index']) ?></li>
 		<li><?= $this->Html->link(__d('translate', 'List Translate Projects'), ['controller' => 'TranslateProjects', 'action' => 'index']) ?></li>
 		<li><?= $this->Html->link(__d('translate', 'New Translate Project'), ['controller' => 'TranslateProjects', 'action' => 'add']) ?></li>
 		<li><?= $this->Html->link(__d('translate', 'List Translate Strings'), ['controller' => 'TranslateStrings', 'action' => 'index']) ?></li>
@@ -17,7 +17,7 @@
 <div class="translateDomains form col-sm-8 col-xs-12">
 	<?= $this->Form->create($translateDomain) ?>
 	<fieldset>
-		<legend><?= __d('translate', 'Add Translate Group') ?></legend>
+		<legend><?= __d('translate', 'Add Translate Domain') ?></legend>
 		<?php
 			echo $this->Form->input('name');
 			echo $this->Form->input('active');

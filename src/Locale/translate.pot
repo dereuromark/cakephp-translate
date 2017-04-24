@@ -15,19 +15,19 @@ msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
 #: Controller/Admin/TranslateDomainsController.php:149;175
-msgid "The translate group has been saved."
+msgid "The translate domain has been saved."
 msgstr ""
 
 #: Controller/Admin/TranslateDomainsController.php:153;179
-msgid "The translate group could not be saved. Please, try again."
+msgid "The translate domain could not be saved. Please, try again."
 msgstr ""
 
 #: Controller/Admin/TranslateDomainsController.php:199
-msgid "The translate group has been deleted."
+msgid "The translate domain has been deleted."
 msgstr ""
 
 #: Controller/Admin/TranslateDomainsController.php:201
-msgid "The translate group could not be deleted. Please, try again."
+msgid "The translate domain could not be deleted. Please, try again."
 msgstr ""
 
 #: Controller/Admin/TranslateLanguagesController.php:138;163
@@ -78,7 +78,7 @@ msgstr ""
 
 #: Controller/Admin/TranslateProjectsController.php:130
 #: Template/Admin/TranslateDomains/index.ctp:18
-msgid "Translate Groups"
+msgid "Translate Domains"
 msgstr ""
 
 #: Controller/Admin/TranslateProjectsController.php:139
@@ -265,7 +265,7 @@ msgstr ""
 #: Template/Admin/TranslateProjects/edit.ctp:16
 #: Template/Admin/TranslateProjects/index.ctp:13
 #: Template/Admin/TranslateProjects/view.ctp:14
-msgid "List Translate Groups"
+msgid "List Translate Domains"
 msgstr ""
 
 #: Template/Admin/TranslateDomains/add.ctp:11
@@ -317,7 +317,7 @@ msgid "New Translate String"
 msgstr ""
 
 #: Template/Admin/TranslateDomains/add.ctp:20
-msgid "Add Translate Group"
+msgid "Add Translate Domain"
 msgstr ""
 
 #: Template/Admin/TranslateDomains/edit.ctp:10
@@ -350,7 +350,7 @@ msgstr ""
 
 #: Template/Admin/TranslateDomains/edit.ctp:25
 #: Template/Admin/TranslateDomains/view.ctp:10
-msgid "Edit Translate Group"
+msgid "Edit Translate Domain"
 msgstr ""
 
 #: Template/Admin/TranslateDomains/extract.ctp:9
@@ -375,15 +375,15 @@ msgstr ""
 #: Template/Admin/TranslateDomains/view.ctp:13
 #: Template/Admin/TranslateProjects/edit.ctp:17
 #: Template/Admin/TranslateProjects/view.ctp:15
-msgid "New Translate Group"
+msgid "New Translate Domain"
 msgstr ""
 
 #: Template/Admin/TranslateDomains/setup.ctp:10
-msgid "Setup Default Translate Groups"
+msgid "Setup Default Translate Domains"
 msgstr ""
 
 #: Template/Admin/TranslateDomains/view.ctp:11
-msgid "Delete Translate Group"
+msgid "Delete Translate Domain"
 msgstr ""
 
 #: Template/Admin/TranslateDomains/view.ctp:24
@@ -535,7 +535,7 @@ msgstr ""
 
 #: Template/Admin/TranslateProjects/view.ctp:48
 #: Template/Admin/TranslateStrings/view.ctp:58
-msgid "Related Translate Groups"
+msgid "Related Translate Domains"
 msgstr ""
 
 #: Template/Admin/TranslateProjects/view.ctp:54

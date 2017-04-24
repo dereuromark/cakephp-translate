@@ -417,4 +417,15 @@ class TranslateStringsController extends TranslateAppController {
 		$this->set(compact('fileArray', 'lines'));
 	}
 
+	/**
+	 * Import from blob or other source/file
+	 *
+	 * @return void
+	 */
+	public function import() {
+		if ($this->Common->isPosted()) {
+
+		}
+	}
+
 }

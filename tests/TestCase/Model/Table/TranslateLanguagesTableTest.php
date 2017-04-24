@@ -80,21 +80,41 @@ class TranslateLanguagesTableTest extends TestCase {
 	}
 
 	/**
-	 * Test getActive method
-	 *
 	 * @return void
 	 */
-	public function testGetActive() {
-		$this->markTestIncomplete('Not implemented yet.');
+	public function testValidateIsoCode() {
+		$result = $this->TranslateLanguages->validateIsoCode('de');
+		$this->assertTrue($result);
+
+		$result = $this->TranslateLanguages->validateIsoCode('deu');
+		$this->assertFalse($result);
 	}
 
 	/**
-	 * Test getList method
-	 *
 	 * @return void
 	 */
-	public function testGetList() {
-		$this->markTestIncomplete('Not implemented yet.');
+	public function testGetExtractableAsList() {
+		$result = $this->TranslateLanguages->getExtractableAsList(1);
+		$this->assertNotEmpty($result);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testGetAsList() {
+		$result = $this->TranslateLanguages->getAsList();
+		$this->assertNotEmpty($result);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testGetBaseLanguage() {
+		$result = $this->TranslateLanguages->getBaseLanguage([]);
+		$this->assertSame('en', $result);
+
+		$result = $this->TranslateLanguages->getBaseLanguage($this->TranslateLanguages->find()->all()->toArray());
+		$this->assertSame('Lorem ip', $result);
 	}
 
 }

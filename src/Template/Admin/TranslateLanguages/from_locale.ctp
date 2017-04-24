@@ -4,21 +4,34 @@
  * @var \Translate\Model\Entity\TranslateLanguage $translateLanguage
  */
 ?>
-<div class="col-md-12">
+<nav class="actions col-sm-4 col-xs-12">
+	<ul class="side-nav nav nav-pills nav-stacked">
+		<li class="heading"><?= __d('translate', 'Actions') ?></li>
+		<li><?= $this->Html->link(__d('translate', 'Overview'), ['controller' => 'Translate', 'action' => 'index']) ?></li>
+		<li><?php echo $this->Html->link(__d('translate', 'List Translate Languages'), ['action'=>'index']);?></li>
+	</ul>
+</nav>
+<div class="translateLanguages index col-sm-8 col-xs-12">
 <h2><?php echo __d('translate', 'Import Translate Languages');?></h2>
+
+<p>
+	Looking into <code><?php echo h($path); ?></code>
+</p>
 
 <?php echo $this->Form->create(null);?>
 	<fieldset>
-		<legend><?php echo __d('translate', 'Find');?></legend>
-	<?php echo count($folders)?> locale(s) gefunden
-	<ul>
+		<legend><?php echo __dn('translate', '{0} locale found', '{0} locales found', count($folders), count($folders)); ?></legend>
+
+	<ul class="list-unstyled">
 	<?php
 	foreach ($folders as $key => $folder) {
 		if (array_key_exists($folder, $existingLanguages)) {
 			echo '<li>'.$folder.'</li> (already exists)';
 		} else {
-		echo $this->Form->input('TranslateLanguage.'.$key.'.locale', ['type'=>'hidden','value'=>$folder]);
-		echo '<li>'.$this->Form->input('TranslateLanguage.'.$key.'.confirm', ['type'=>'checkbox','label'=>$folder]).''.$this->Form->input('TranslateLanguage.'.$key.'.name', ['label'=> __d('translate', 'languageName')]).'</li>';
+			echo '<li>';
+			echo $this->Form->input('language.'.$folder.'.confirm', ['type'=>'checkbox','label'=>$folder]);
+			echo $this->Form->input('language.'.$folder.'.name', ['label'=> __d('translate', 'Language name')]);
+			echo '</li>';
 		}
 	}
 	?>
@@ -26,10 +39,4 @@
 	</fieldset>
 <?php echo $this->Form->submit(__d('translate', 'Submit')); echo $this->Form->end();?>
 
-</div>
-
-<div class="actions">
-	<ul>
-		<li><?php echo $this->Html->link(__d('translate', 'List Translate Languages'), ['action'=>'index']);?></li>
-	</ul>
 </div>

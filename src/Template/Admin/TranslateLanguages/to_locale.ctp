@@ -4,38 +4,38 @@
  * @var \Translate\Model\Entity\TranslateLanguage $translateLanguage
  */
 ?>
-<div class="col-md-12">
+<nav class="actions col-sm-4 col-xs-12">
+	<ul class="side-nav nav nav-pills nav-stacked">
+		<li class="heading"><?= __d('translate', 'Actions') ?></li>
+		<li><?= $this->Html->link(__d('translate', 'Overview'), ['controller' => 'Translate', 'action' => 'index']) ?></li>
+		<li><?php echo $this->Html->link(__d('translate', 'List Translate Languages'), ['action'=>'index']);?></li>
+	</ul>
+</nav>
+<div class="translateLanguages index col-sm-8 col-xs-12">
 <h2><?php echo __d('translate', 'Export Translate Languages');?></h2>
-<?php echo count($existingFolders)?> locale(s) gefunden: <?php echo implode(', ', $existingFolders);?>
+
+	<p>
+		Checking <code><?php echo h($path); ?></code>
+	</p>
 
 <?php echo $this->Form->create(null);?>
 	<fieldset>
-		<legend><?php echo __d('translate', 'Create');?></legend>
-	<ul>
+		<legend><?php echo __dn('translate', '{0} locale', '{0} locales', count($languages), count($languages)); ?></legend>
+	<div>
 	<?php
-	$count = 0;
 	foreach ($languages as $key => $language) {
 		if (in_array($key, $existingFolders)) {
-			echo '<li>'.$language.'</li> (already exists)';
+			echo '<p><b>'.$key . '</b>' . ' - ' . $language . ' (already exists)</p>';
 		} else {
-
-		echo $this->Form->input('TranslateLanguage.'.$count.'.folder', ['type'=>'hidden','value'=>$key]);
-		echo '<li>'.$this->Form->input('TranslateLanguage.'.$count.'.confirm', ['type'=>'checkbox','label'=>$language]).'</li>';
-		$count++;
+			echo $this->Form->input('locale.' . $key . '.confirm', ['type'=>'checkbox','label' => $key . ' (' . $language . ')']);
 		}
 	}
 	?>
-	</ul>
+	</div>
 	<?php
 
 	?>
 	</fieldset>
 <?php echo $this->Form->submit(__d('translate', 'Submit')); echo $this->Form->end();?>
 
-</div>
-
-<div class="actions">
-	<ul>
-		<li><?php echo $this->Html->link(__d('translate', 'List Translate Languages'), ['action'=>'index']);?></li>
-	</ul>
 </div>

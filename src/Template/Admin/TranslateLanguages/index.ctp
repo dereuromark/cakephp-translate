@@ -8,6 +8,8 @@
 	<ul class="side-nav nav nav-pills nav-stacked">
 		<li class="heading"><?= __d('translate', 'Actions') ?></li>
 		<li><?= $this->Html->link(__d('translate', 'Overview'), ['controller' => 'Translate', 'action' => 'index']) ?></li>
+		<li><?= $this->Html->link(__d('translate', 'From Locale'), ['action' => 'fromLocale']) ?></li>
+		<li><?= $this->Html->link(__d('translate', 'To Locale'), ['action' => 'toLocale']) ?></li>
 		<li><?= $this->Html->link(__d('translate', 'New Translate Language'), ['action' => 'add']) ?></li>
 	</ul>
 </nav>
@@ -47,3 +49,4 @@
 
 	<?php echo $this->element('Tools.pagination'); ?>
 </div>
+

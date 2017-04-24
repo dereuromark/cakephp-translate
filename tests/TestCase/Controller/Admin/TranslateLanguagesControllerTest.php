@@ -14,7 +14,8 @@ class TranslateLanguagesControllerTest extends IntegrationTestCase {
 	 * @var array
 	 */
 	public $fixtures = [
-		'plugin.translate.translate_languages'
+		'plugin.translate.translate_languages',
+		'plugin.translate.translate_terms',
 	];
 
 	/**
@@ -39,12 +40,33 @@ class TranslateLanguagesControllerTest extends IntegrationTestCase {
 	}
 
 	/**
-	 * Test add method
-	 *
+	 * @return void
+	 */
+	public function testFromLocale() {
+		$this->get(['prefix' => 'admin', 'plugin' => 'Translate', 'controller' => 'TranslateLanguages', 'action' => 'fromLocale']);
+
+		$this->assertResponseCode(200);
+		$this->assertNoRedirect();
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testToLocale() {
+		$this->get(['prefix' => 'admin', 'plugin' => 'Translate', 'controller' => 'TranslateLanguages', 'action' => 'toLocale']);
+
+		$this->assertResponseCode(200);
+		$this->assertNoRedirect();
+	}
+
+	/**
 	 * @return void
 	 */
 	public function testAdd() {
-		$this->markTestIncomplete('Not implemented yet.');
+		$this->get(['prefix' => 'admin', 'plugin' => 'Translate', 'controller' => 'TranslateLanguages', 'action' => 'add']);
+
+		$this->assertResponseCode(200);
+		$this->assertNoRedirect();
 	}
 
 	/**
@@ -53,7 +75,11 @@ class TranslateLanguagesControllerTest extends IntegrationTestCase {
 	 * @return void
 	 */
 	public function testEdit() {
-		$this->markTestIncomplete('Not implemented yet.');
+		$id = 1;
+		$this->get(['prefix' => 'admin', 'plugin' => 'Translate', 'controller' => 'TranslateLanguages', 'action' => 'edit', $id]);
+
+		$this->assertResponseCode(200);
+		$this->assertNoRedirect();
 	}
 
 	/**

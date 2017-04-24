@@ -1,8 +1,8 @@
 <?php
 namespace Translate\Controller\Admin;
 
-use Cake\Filesystem\Folder;
 use Translate\Controller\TranslateAppController;
+use Translate\Filesystem\Creator;
 
 /**
  * TranslateLanguages Controller
@@ -17,84 +17,79 @@ class TranslateLanguagesController extends TranslateAppController {
 	public $paginate = ['order' => ['TranslateLanguages.name' => 'ASC']];
 
 	/**
-	 * @return void
+	 * @return \Cake\Http\Response|null
 	 */
 	public function toLocale() {
-		$existingFolders = $this->_findLocaleFolders();
-		$languages = $this->TranslateLanguages->find('list');
+		$path = LOCALE;
+
+		$creator = new Creator();
+		$existingFolders = $creator->findLocaleFolders($path);
+		$languages = $this->TranslateLanguages->find('list', ['keyField' => 'locale'])->toArray();
 
 		if ($this->Common->isPosted()) {
 			$data = [];
-			foreach ($this->request->data as $lang) {
-				if (!empty($lang['confirm'])) {
-					$data[] = $lang['folder'];
+			foreach ($this->request->data['locale'] as $lang => $value) {
+				if (!empty($value)) {
+					$data[] = $lang;
 				}
 			}
-			if (!empty($data) && $this->_createLocaleFolders($data) === true) {
-				$this->Flash->success('new locale folders created');
-				//$this->redirect(array('action'=>'index'));
-			} else {
-				$this->Flash->error('Sth went wrong');
+
+			if (!empty($data) && $creator->createLocaleFolders($data, $path) === true) {
+				$this->Flash->success('New locale folders created');
+				return $this->redirect(['action' => 'index']);
+			}
+
+			$this->Flash->error('Sth went wrong,');
+		} else {
+			foreach ($languages as $k => $v) {
+				$this->request->data['locale'][$k] = true;
 			}
 		}
 
-		$this->set(compact('languages', 'existingFolders'));
+		$this->set(compact('path', 'languages', 'existingFolders'));
 	}
 
 	/**
 	 * @return \Cake\Http\Response|null
 	 */
 	public function fromLocale() {
-		$folders = $this->_findLocaleFolders();
-		$existingLanguages = $this->TranslateLanguages->find('list');
+		$path = LOCALE;
+
+		$creator = new Creator();
+		$folders = $creator->findLocaleFolders($path);
+		$existingLanguages = $this->TranslateLanguages->find('list', ['keyField' => 'locale'])->toArray();
 
 		if ($this->Common->isPosted()) {
-			$data = $this->request->data;
-			foreach ($data as $key => $value) {
-				if (empty($value['confirm'])) {
-					unset($data[$key]);
-				} else {
-					$data[$key]['active'] = 1;
+			$translateLanguages = [];
+			foreach ($this->request->data['language'] as $key => $data) {
+				if (empty($data['confirm'])) {
+					continue;
 				}
+
+				$data = [
+					'locale' => $key,
+					'name' => $data['name'],
+					//'active' => true,
+					'translate_project_id' => $this->Translation->currentProjectId(),
+				];
+				if (strlen($data['locale']) === 2) {
+					$data['iso2'] = $data['locale'];
+				} elseif (preg_match('/[a-z]{2}_[a-z]{2}/i', $data['locale'])) {
+					$data['iso2'] = substr($data['locale'], 0, 2);
+				}
+
+				$translateLanguages[] = $this->TranslateLanguages->newEntity($data);
 			}
 
-			$translateLanguage = $this->TranslateLanguages->newEntity($this->request->data);
-
-			if (!empty($data) && $this->TranslateLanguages->saveAll($data, ['validate' => 'first', 'fieldList' => ['name', 'locale']])) {
+			if (!empty($data) && $this->TranslateLanguages->saveMany($translateLanguages)) {
 				$this->Flash->success('new language(s) added');
 				return $this->redirect(['action' => 'index']);
 			}
 
-		}
-		$this->set(compact('existingLanguages', 'folders'));
-	}
+			$this->Flash->error('Sth went wrong.');
 
-	/**
-	 * @return array folders;
-	 */
-	public function _findLocaleFolders() {
-		$handle = new Folder(LOCALE);
-		$folders = $handle->read(true, true);
-		return $folders[0];
-	}
-
-	/**
-	 * @param array $folders
-	 *
-	 * @return mixed Bool TRUE on sucess, array $errors on failure
-	 */
-	public function _createLocaleFolders($folders = []) {
-		$basepath = LOCALE;
-		$handle = new Folder($basepath, true);
-		if ($handle->errors()) {
-			return $handle->errors();
 		}
-		foreach ($folders as $folder) {
-			if (!$handle->create($basepath . $folder . DS) || !$handle->create($basepath . $folder . DS . 'LC_MESSAGES' . DS)) {
-				return $handle->errors();
-			}
-		}
-		return true;
+		$this->set(compact('path', 'existingLanguages', 'folders'));
 	}
 
 	/**

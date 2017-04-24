@@ -45,7 +45,7 @@ class TranslateLanguagesTable extends Table {
 				'message' => 'valErrRecordExists',
 			],
 		],
-		'iso2' => [
+		'iso2' => [ // For translation handling (languages)
 			'notEmpty' => [
 				'rule' => ['notEmpty'],
 				'message' => 'Please insert a 2 letter ISO code',
@@ -57,14 +57,8 @@ class TranslateLanguagesTable extends Table {
 				'message' => 'Invalid ISO2 code',
 				'last' => true,
 			],
-			'isUnique' => [
-				'rule' => ['isUnique'],
-				'provider' => 'table',
-				'message' => 'valErrRecordExists',
-				'last' => true,
-			],
 		],
-		'locale' => [ // not used right now
+		'locale' => [ // For Locale folder import/export
 			'notEmpty' => [
 				'rule' => ['notEmpty'],
 				'message' => 'Please insert a abbreviation / folder-name',
@@ -81,16 +75,8 @@ class TranslateLanguagesTable extends Table {
 				'rule' => ['numeric'],
 				'message' => 'Not a number',
 				'last' => true,
-				//'allowEmpty' => true,
+				'allowEmpty' => true,
 			],
-			/*
-			'isUnique' => array(
-				'rule' => array('validateUnique'),
-				'message' => 'valErrRecordExists',
-				//'allowEmpty' => true,
-				'last' => true
-			),
-			*/
 		],
 		'active' => ['numeric']
 	];

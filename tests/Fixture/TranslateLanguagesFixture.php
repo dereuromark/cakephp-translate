@@ -44,7 +44,7 @@ class TranslateLanguagesFixture extends TestFixture {
 			'translate_project_id' => 1,
 			'language_id' => 1,
 			'name' => 'Lorem ipsu',
-			'iso2' => 'Lorem ip',
+			'iso2' => 'Lo',
 			'locale' => 'Lorem ip',
 			'active' => 1,
 			'base' => 1,

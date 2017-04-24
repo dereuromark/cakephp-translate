@@ -114,7 +114,7 @@ class TranslateLanguagesTableTest extends TestCase {
 		$this->assertSame('en', $result);
 
 		$result = $this->TranslateLanguages->getBaseLanguage($this->TranslateLanguages->find()->all()->toArray());
-		$this->assertSame('Lorem ip', $result);
+		$this->assertSame('Lo', $result);
 	}
 
 }

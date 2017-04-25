@@ -46,6 +46,8 @@ Then, to load the plugin either run the following command:
 
 ```sh
 bin/cake plugin load Translate -b -r
+# If you haven't loaded the Tools plugin already
+bin/cake plugin load Tools -b -r
 ```
 
 or manually add the following line to your app's `config/bootstrap.php` file:

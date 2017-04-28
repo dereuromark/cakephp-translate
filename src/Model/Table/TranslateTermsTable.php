@@ -64,11 +64,6 @@ class TranslateTermsTable extends Table {
 				'message' => 'valErrMandatoryField',
 				'last' => true
 			],
-			'isUnique' => [
-				'rule' => ['validateUnique', ['scope' => ['translate_string_id']]],
-				'message' => 'valErrRecordNameExists',
-				'provider' => 'table',
-			],
 		],
 		'user_id' => ['notEmpty'],
 		'confirmed' => ['numeric'],

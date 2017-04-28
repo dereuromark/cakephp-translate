@@ -71,7 +71,7 @@ class TranslateTermsTableTest extends TestCase {
 		$entity = $this->TranslateTerms->newEntity($data);
 		$result = $this->TranslateTerms->save($entity);
 
-		$this->assertTrue((bool)$result);
+		$this->assertTrue((bool)$result, print_r($entity->errors(), true));
 	}
 
 	/**

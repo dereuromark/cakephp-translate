@@ -38,7 +38,7 @@ class TranslateStringsController extends TranslateAppController {
 	 */
 	public function index() {
 		$this->paginate = [
-			'contain' => ['Users']
+			'contain' => []
 		];
 
 		$query = $this->TranslateStrings->find('search', ['search' => $this->request->query]);
@@ -59,7 +59,7 @@ class TranslateStringsController extends TranslateAppController {
 	 */
 	public function view($id = null) {
 		$translateString = $this->TranslateStrings->get($id, [
-			'contain' => ['Users', 'TranslateDomains', 'TranslateTerms']
+			'contain' => ['TranslateDomains', 'TranslateTerms']
 		]);
 
 		$this->set(compact('translateString'));

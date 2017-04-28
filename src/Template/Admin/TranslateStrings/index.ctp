@@ -26,7 +26,7 @@
 		<?php
 		echo $this->Form->button(__d('translate', 'Filter'), ['type' => 'submit']);
 		if ($this->request->query) {
-			echo ' ' . $this->Html->link(__d('translate', 'Reset'), ['action' => 'search'], ['class' => 'btn btn-default']);
+			echo ' ' . $this->Html->link(__d('translate', 'Reset'), ['action' => 'index'], ['class' => 'btn btn-default']);
 		}
 		?>
 	</div>

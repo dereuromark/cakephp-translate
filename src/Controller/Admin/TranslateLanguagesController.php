@@ -128,6 +128,8 @@ class TranslateLanguagesController extends TranslateAppController {
 	public function add() {
 		$translateLanguage = $this->TranslateLanguages->newEntity();
 		if ($this->request->is('post')) {
+			$this->request->data['translate_project_id'] = $this->Translation->currentProjectId();
+
 			$translateLanguage = $this->TranslateLanguages->patchEntity($translateLanguage, $this->request->data);
 			if ($this->TranslateLanguages->save($translateLanguage)) {
 				$this->Flash->success(__d('translate', 'The translate language has been saved.'));

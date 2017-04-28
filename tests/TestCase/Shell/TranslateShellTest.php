@@ -1,5 +1,5 @@
 <?php
-namespace Setup\Test\TestCase\Shell;
+namespace Translate\Test\TestCase\Shell;
 
 use Cake\Console\ConsoleIo;
 use Cake\TestSuite\TestCase;

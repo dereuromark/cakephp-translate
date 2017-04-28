@@ -35,7 +35,7 @@ class TranslateDomainsTable extends Table {
 				'message' => 'valErrRecordExists',
 			],
 		],
-		'active' => ['numeric']
+		'active' => ['boolean']
 	];
 
 	/**

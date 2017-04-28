@@ -133,9 +133,9 @@ class MessagesDbLoader {
 			$context = $item['translate_string']['context'];
 			$translation = $item['content'];
 			if ($context) {
-				$messages[$singular]['_context'][$context] = $item['content'];
+				$messages[$singular]['_context'][$context] = $translation;
 			} else {
-				$messages[$singular] = $item['content'];
+				$messages[$singular]['_context'][''] = $translation;
 			}
 
 			if ($item['translate_string']['plural'] === null) {
@@ -144,7 +144,7 @@ class MessagesDbLoader {
 
 			$key = $item['translate_string']['plural'];
 			$plurals = [
-				$item['content']
+				$translation
 			];
 			for ($i = 1; $i <= $pluralForms; $i++) {
 				$plurals[] = $item['plural_' . ($i + 1)];
@@ -153,7 +153,7 @@ class MessagesDbLoader {
 			if ($context) {
 				$messages[$key]['_context'][$context] = $plurals;
 			} else {
-				$messages[$key] = $plurals;
+				$messages[$key]['_context'][''] = $plurals;
 			}
 		}
 

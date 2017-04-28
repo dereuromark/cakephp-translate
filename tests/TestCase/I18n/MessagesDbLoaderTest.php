@@ -43,20 +43,51 @@ class MessagesDbLoaderTest extends TestCase {
 	/**
 	 * @return void
 	 */
-	public function testGetAll() {
+	public function testDefault() {
 		I18n::config('default', function ($domain, $locale) {
 			return new MessagesDbLoader(
 				$domain,
 				$locale
 			);
 		});
-
 		I18n::locale('de');
+
 		$translated = __('Sing');
 		$this->assertSame('SingTrans', $translated);
 
 		$translated = __n('Sing', 'Plur', 2);
 		$this->assertSame('PlurTrans', $translated);
+
+		$translated = __x('MyContext', 'Sing');
+		$this->assertSame('MySingTrans', $translated);
+
+		$translated = __xn('MyContext', 'Sing', 'Plur', 2);
+		$this->assertSame('MyPlurTrans', $translated);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testDomain() {
+		I18n::config('dom', function ($domain, $locale) {
+			return new MessagesDbLoader(
+				$domain,
+				$locale
+			);
+		});
+		I18n::locale('de');
+
+		$translated = __d('dom', 'Sing');
+		$this->assertSame('SingTrans', $translated);
+
+		$translated = __dn('dom', 'Sing', 'Plur', 2);
+		$this->assertSame('PlurTrans', $translated);
+
+		$translated = __dx('dom', 'MyContext', 'Sing');
+		$this->assertSame('MySingTrans', $translated);
+
+		$translated = __dxn('dom', 'MyContext', 'Sing', 'Plur', 2);
+		$this->assertSame('MyPlurTrans', $translated);
 	}
 
 	/**
@@ -76,6 +107,42 @@ class MessagesDbLoaderTest extends TestCase {
 			'plural_2' => 'PlurTrans'
 		];
 		$translateString = $TranslateStrings->import($translation, $default->id);
+		$TranslateStrings->TranslateTerms->import($translation, $translateString->id, $de->id);
+
+		$translation = [
+			'context' => 'MyContext',
+			'name' => 'Sing',
+			'plural' => 'Plur',
+			'content' => 'MySingTrans',
+			'plural_2' => 'MyPlurTrans'
+		];
+		$translateString = $TranslateStrings->import($translation, $default->id);
+		$TranslateStrings->TranslateTerms->import($translation, $translateString->id, $de->id);
+
+		$translateDomain = $TranslateStrings->TranslateDomains->newEntity([
+			'translate_project_id' => 1,
+			'name' => 'dom',
+			'active' => true,
+		]);
+		$dom = $TranslateStrings->TranslateDomains->save($translateDomain, ['strict' => true]);
+
+		$translation = [
+			'name' => 'Sing',
+			'plural' => 'Plur',
+			'content' => 'SingTrans',
+			'plural_2' => 'PlurTrans'
+		];
+		$translateString = $TranslateStrings->import($translation, $dom->id);
+		$TranslateStrings->TranslateTerms->import($translation, $translateString->id, $de->id);
+
+		$translation = [
+			'context' => 'MyContext',
+			'name' => 'Sing',
+			'plural' => 'Plur',
+			'content' => 'MySingTrans',
+			'plural_2' => 'MyPlurTrans'
+		];
+		$translateString = $TranslateStrings->import($translation, $dom->id);
 		$TranslateStrings->TranslateTerms->import($translation, $translateString->id, $de->id);
 	}
 

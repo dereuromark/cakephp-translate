@@ -33,7 +33,7 @@ class TranslateTermsTable extends Table {
 	 * @var array
 	 */
 	public $validate = [
-		'string_id' => ['numeric'],
+		'translate_string_id' => ['numeric'],
 		'comment' => [
 		],
 		'content' => [
@@ -58,7 +58,7 @@ class TranslateTermsTable extends Table {
 				'allowEmpty' => true,
 			],
 		],
-		'language_id' => [
+		'translate_language_id' => [
 			'numeric' => [
 				'rule' => ['numeric'],
 				'message' => 'valErrMandatoryField',

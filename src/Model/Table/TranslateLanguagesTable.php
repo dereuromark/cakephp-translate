@@ -78,7 +78,7 @@ class TranslateLanguagesTable extends Table {
 				'allowEmpty' => true,
 			],
 		],
-		'active' => ['numeric']
+		'active' => ['boolean']
 	];
 
 	/**
@@ -98,6 +98,12 @@ class TranslateLanguagesTable extends Table {
 		'Language' => [
 			'className' => 'Data.Language',
 			'foreignKey' => 'language_id',
+		],
+		'TranslateProject' => [
+			'className' => 'Translate.TranslateProject',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
 		],
 	];
 
@@ -153,6 +159,26 @@ class TranslateLanguagesTable extends Table {
 		parent::initialize($config);
 
 		$this->addBehavior('Shim.Nullable');
+	}
+
+	/**
+	 * @param string $name
+	 * @param string $locale
+	 * @param string $iso2
+	 * @param int $projectId
+	 * @param array $data
+	 *
+	 * @return bool|\Translate\Model\Entity\TranslateLanguage
+	 */
+	public function init($name, $locale, $iso2, $projectId, array $data = []) {
+		$translateLanguage = $this->newEntity([
+			'name' => $name,
+			'locale' => $locale,
+			'iso2' => $iso2,
+			'translate_project_id' => $projectId,
+		] + $data + ['active' => true]);
+
+		return $this->save($translateLanguage, ['strict' => true]);
 	}
 
 	public function getActive($type = 'all', $options = []) {

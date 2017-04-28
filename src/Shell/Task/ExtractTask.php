@@ -117,7 +117,7 @@ class ExtractTask extends CoreExtractTask {
 		if (!$this->_projectId) {
 			throw new RuntimeException('Project ID needed');
 		}
-		$translationGroup = $model->TranslateDomains->getGroup($this->_projectId, $domain);
+		$translationGroup = $model->TranslateDomains->getDomain($this->_projectId, $domain);
 
 		$translation = [
 			'name' => $singular,

@@ -54,6 +54,23 @@ If you need to use more than 2 plurals (for some languages), make sure you exten
 Add `plural_3` up to `plural_6` if needed to the "translation_terms".
 
 
+## Extract right into DB instead of the POT file detour.
+
+Use the ExtractTask of this plugin in your business logic.
+
+## Directly read translations from the DB.
+Configure I18n to use the Translate MessagesDbLoader for default domain: 
+
+```php
+I18n::config('default', function ($domain, $locale) {
+	return new MessagesDbLoader(
+		$domain,
+		$locale
+	);
+});
+```
+If you have more than just default domain, you will need to do this for each domain separately.
+
 ## Translation Auto-Suggest
 
 By default it uses a simple Google API translation.

@@ -79,7 +79,7 @@ class TranslateDomainsTable extends Table {
 	 *
 	 * @return \Translate\Model\Entity\TranslateDomain
 	 */
-	public function getGroup($projectId, $name = 'default') {
+	public function getDomain($projectId, $name = 'default') {
 		$translateDomain = $this->findOrCreate([
 			'name' => $name,
 			'translate_project_id' => $projectId,

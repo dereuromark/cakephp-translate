@@ -177,10 +177,10 @@ class TranslateStringsController extends TranslateAppController {
 				}
 				$translations = $translationLib->extractPotFile($domain);
 
-				$translationGroup = $this->TranslateStrings->TranslateDomains->getGroup($this->Translation->currentProjectId(), $domain);
+				$translationDomain = $this->TranslateStrings->TranslateDomains->getDomain($this->Translation->currentProjectId(), $domain);
 
 				foreach ($translations as $translation) {
-					$success = (bool)$this->TranslateStrings->import($translation, $translationGroup->id);
+					$success = (bool)$this->TranslateStrings->import($translation, $translationDomain->id);
 					if (!$success) {
 						$errors[] = '`' . h($translation['name']) . '`';
 						continue;
@@ -203,10 +203,10 @@ class TranslateStringsController extends TranslateAppController {
 
 				$translations = $translationLib->extractPoFile($domain, $lang);
 
-				$translationGroup = $this->TranslateStrings->TranslateDomains->getGroup($this->Translation->currentProjectId(), $domain);
+				$translationDomain = $this->TranslateStrings->TranslateDomains->getDomain($this->Translation->currentProjectId(), $domain);
 
 				foreach ($translations as $name => $translation) {
-					$translationString = $this->TranslateStrings->import($translation, $translationGroup->id);
+					$translationString = $this->TranslateStrings->import($translation, $translationDomain->id);
 					if (!$translationString) {
 						$errors[] = '`' . h($translation['name']) . '`';
 						continue;

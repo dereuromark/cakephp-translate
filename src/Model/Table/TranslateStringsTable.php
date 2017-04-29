@@ -1,7 +1,10 @@
 <?php
 namespace Translate\Model\Table;
 
+use ArrayObject;
 use Cake\Database\Schema\TableSchema;
+use Cake\Datasource\EntityInterface;
+use Cake\Event\Event;
 use Cake\I18n\Time;
 use Cake\Log\Log;
 use Cake\Network\Exception\InternalErrorException;
@@ -105,6 +108,19 @@ class TranslateStringsTable extends Table {
 		$this->belongsTo('TranslateDomains', [
 			'className' => 'Translate.TranslateDomains',
 		]);
+	}
+
+	/**
+	 * @param \Cake\Event\Event $event The beforeSave event that was fired
+	 * @param \Translate\Model\Entity\TranslateString|\Cake\Datasource\EntityInterface $entity The entity that is going to be saved
+	 * @param \ArrayObject $options the options passed to the save method
+	 * @return void
+	 */
+	public function beforeSave(Event $event, EntityInterface $entity, ArrayObject $options) {
+		$user = $event->getData('_footprint');
+		if ($user) {
+			$entity->user_id = $user['id'];
+		}
 	}
 
 	/**
@@ -237,9 +253,12 @@ class TranslateStringsTable extends Table {
 	 * @return \Translate\Model\Entity\TranslateString|null
 	 */
 	public function import(array $translation, $groupId) {
+		if (!isset($this->lastImported)) {
+			$this->lastImported = new Time();
+		}
+
 		$translation += [
-			//'user_id' => null,
-			'last_imported' => new Time(),
+			'last_imported' => $this->lastImported,
 			'is_html' => $this->containsHtml($translation),
 			'translate_domain_id' => $groupId,
 		];

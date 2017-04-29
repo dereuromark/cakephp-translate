@@ -12,11 +12,11 @@ A CakePHP 3.x Plugin for managing translations DB driven.
 Note: **Plugin in BETA version**
 
 ## Key features
-- Import from POT, PO files or services.
+- Import from POT, PO files or any service/API.
 - Web-based and without external dependencies.
 - Translate strings in all languages simultaneously.
 - Allow others to help translating without having to know technical details.
-- Auto-Translate and Auto-Suggest with Translate APIs (e.g. Google Translate PHP/JS, Yandex, ...) for performance.
+- Auto-Translate and Auto-Suggest with Translate APIs (e.g. Google Translate PHP/JS, Yandex, ...) for efficiency.
 
 ## Benefits over normal PO editing
 - Prevent duplicates, missing translations, collisions.

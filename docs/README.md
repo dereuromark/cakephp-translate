@@ -30,6 +30,8 @@ Here you extract, translate and export into a (free) translation online storage,
 The live server would then pull those new translations right on deployment.
 
 ## Important database config
+Use `'quoteIdentifiers' => true` for your Datasources config.
+
 The TranslateStrings DB fields `context` and `name` must be case sensitive, all other fields should not be.
 This is important when dealing with the same string in different casings, as otherwise one of those would be translated, all others would (silently) not.
 

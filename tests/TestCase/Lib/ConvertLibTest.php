@@ -14,6 +14,9 @@ class ConvertLibTest extends TestCase {
 	 */
 	public $ConvertLib;
 
+	/**
+	 * @return void
+	 */
 	public function setUp() {
 		parent::setUp();
 		$this->ConvertLib = new ConvertLib();

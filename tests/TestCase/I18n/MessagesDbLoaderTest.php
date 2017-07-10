@@ -28,6 +28,9 @@ class MessagesDbLoaderTest extends TestCase {
 	 */
 	protected $MessagesDbLoader;
 
+	/**
+	 * @return void
+	 */
 	public function setUp() {
 		parent::setUp();
 

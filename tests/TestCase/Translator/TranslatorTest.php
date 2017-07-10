@@ -17,6 +17,9 @@ class TranslatorTest extends TestCase {
 	 */
 	protected $Translator;
 
+	/**
+	 * @return void
+	 */
 	public function setUp() {
 		parent::setUp();
 

@@ -15,6 +15,9 @@ class TranslationLibTest extends TestCase {
 	 */
 	protected $TranslationLib;
 
+	/**
+	 * @return void
+	 */
 	public function setUp() {
 		parent::setUp();
 		$this->TranslationLib = new TranslationLib();

@@ -15,6 +15,9 @@ class YandexTest extends TestCase {
 	 */
 	protected $Yandex;
 
+	/**
+	 * @return void
+	 */
 	public function setUp() {
 		parent::setUp();
 

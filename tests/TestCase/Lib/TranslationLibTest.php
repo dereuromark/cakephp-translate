@@ -114,8 +114,12 @@ class TranslationLibTest extends TestCase {
 		$this->assertTrue(!empty($is));
 		$this->assertArrayHasKey('December', $is);
 		$expected = [
-			0 => '',
-			1 => ''
+			'_context' => [
+				'' => [
+					0 => '',
+					1 => '',
+				],
+			],
 		];
 		$this->assertSame($expected, $is['{0} years']);
 	}
@@ -159,12 +163,28 @@ class TranslationLibTest extends TestCase {
 
 		$this->assertTrue(!empty($is));
 		$expected = [
-			'Error' => 'Fehler',
-			'The requested address {0} was not found on this server.' => 'Die Adresse {0} wurde nicht gefunden.',
-			'{0} year' => '{0} Jahr',
+			'Error' => [
+				'_context' => [
+					'' => 'Fehler'
+				],
+			],
+			'The requested address {0} was not found on this server.' => [
+				'_context' => [
+					'' => 'Die Adresse {0} wurde nicht gefunden.',
+				],
+			],
+			'{0} year' => [
+				'_context' => [
+					'' => '{0} Jahr',
+				],
+			],
 			'{0} years' => [
-				0 => '{0} Jahr',
-				1 => '{0} Jahre'
+				'_context' => [
+					'' => [
+						0 => '{0} Jahr',
+						1 => '{0} Jahre',
+					],
+				],
 			]
 		];
 		$this->assertSame($expected, $is);

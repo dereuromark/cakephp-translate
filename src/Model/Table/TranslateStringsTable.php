@@ -108,6 +108,8 @@ class TranslateStringsTable extends Table {
 		$this->belongsTo('TranslateDomains', [
 			'className' => 'Translate.TranslateDomains',
 		]);
+
+		$this->searchConfigurationNew($this->searchManager());
 	}
 
 	/**
@@ -124,11 +126,12 @@ class TranslateStringsTable extends Table {
 	}
 
 	/**
-	 * @return \Search\Manager
+	 * @param \Search\Manager
+	 *
+	 * @return void
 	 */
-	public function searchConfiguration() {
-		$search = new Manager($this);
-		$search
+	public function searchConfigurationNew(Manager $searchManager) {
+		$searchManager
 			->value('translate_domain_id', [
 			])
 			->callback('missing_translation', [
@@ -147,8 +150,6 @@ class TranslateStringsTable extends Table {
 			->like('search', [
 				'field' => [$this->aliasField('name'), 'plural', 'context'],
 			]);
-
-		return $search;
 	}
 
 	/**

@@ -15,7 +15,7 @@
 	<h3><?= __d('translate', 'Translate Strings') ?></h3>
 
 	<?php
-	echo $this->Form->create();
+	echo $this->Form->create(null, ['valueSources' => 'query']);
 	// You'll need to populate $authors in the template from your controller
 	echo $this->Form->input('translate_domain_id', ['empty' => ' - ' . __d('translate', 'noLimitation') . ' - ']);
 	echo $this->Form->input('search', ['placeholder' => '']);

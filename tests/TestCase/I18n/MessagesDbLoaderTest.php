@@ -97,7 +97,7 @@ class MessagesDbLoaderTest extends TestCase {
 	 * @return void
 	 */
 	protected function _setUpData() {
-		/* @var \Translate\Model\Table\TranslateStringsTable $TranslateStrings */
+		/** @var \Translate\Model\Table\TranslateStringsTable $TranslateStrings */
 		$TranslateStrings = TableRegistry::get('Translate.TranslateStrings');
 
 		$de = $TranslateStrings->TranslateTerms->TranslateLanguages->init('DE', 'de', 'de', 1);

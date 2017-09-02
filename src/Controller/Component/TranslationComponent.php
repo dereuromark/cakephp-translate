@@ -13,7 +13,7 @@ class TranslationComponent extends Component {
 	public function currentProjectId() {
 		$id = $this->request->session()->read('TranslateProject.id');
 		if ($id === null) {
-			/* @var \Translate\Model\Table\TranslateProjectsTable $TranslationProjects */
+			/** @var \Translate\Model\Table\TranslateProjectsTable $TranslationProjects */
 			$TranslationProjects = TableRegistry::get('Translate.TranslateProjects');
 			$id = $TranslationProjects->getDefaultProjectId();
 

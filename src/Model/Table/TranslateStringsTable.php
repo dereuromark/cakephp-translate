@@ -126,7 +126,7 @@ class TranslateStringsTable extends Table {
 	}
 
 	/**
-	 * @param \Search\Manager
+	 * @param \Search\Manager $searchManager
 	 *
 	 * @return void
 	 */

@@ -40,12 +40,6 @@
 			"App\\": "tests/test_app/src"
 		}
 	},
-	"repositories": [
-		{
-			"type": "git",
-			"url": "git@github.com:dereuromark/translate-api.git"
-		}
-	],
 	"support":{
 		"source": "https://github.com/dereuromark/cakephp-translate"
 	},

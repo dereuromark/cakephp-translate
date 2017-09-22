@@ -33,7 +33,7 @@ Note: **Plugin in BETA version**
 - Yandex (free, limited)
 - Transltr (free)
 
-Add your translation engine here [in a heartbeat](docs#your-own).
+Add your translation engine here [in a heartbeat](docs#add-your-own-implementation).
 
 ## Installation
 Including the plugin is pretty much as with every other CakePHP plugin:

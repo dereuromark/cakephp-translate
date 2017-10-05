@@ -9,7 +9,6 @@ use Cake\I18n\Time;
 use Cake\Log\Log;
 use Cake\Network\Exception\InternalErrorException;
 use Cake\ORM\Query;
-use Search\Manager;
 use Tools\Model\Table\Table;
 use Translate\Translator\Translator;
 
@@ -108,8 +107,6 @@ class TranslateStringsTable extends Table {
 		$this->belongsTo('TranslateDomains', [
 			'className' => 'Translate.TranslateDomains',
 		]);
-
-		$this->searchConfigurationNew($this->searchManager());
 	}
 
 	/**
@@ -126,11 +123,10 @@ class TranslateStringsTable extends Table {
 	}
 
 	/**
-	 * @param \Search\Manager $searchManager
-	 *
-	 * @return void
+	 * @return \Search\Manager
 	 */
-	public function searchConfigurationNew(Manager $searchManager) {
+	public function searchManager() {
+		$searchManager = $this->behaviors()->Search->searchManager();
 		$searchManager
 			->value('translate_domain_id', [
 			])
@@ -150,6 +146,8 @@ class TranslateStringsTable extends Table {
 			->like('search', [
 				'field' => [$this->aliasField('name'), 'plural', 'context'],
 			]);
+
+		return $searchManager;
 	}
 
 	/**

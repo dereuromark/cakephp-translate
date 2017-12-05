@@ -1,7 +1,9 @@
 <?php
 namespace Translate\Controller\Admin;
 
+use Cake\ORM\TableRegistry;
 use Translate\Controller\TranslateAppController;
+use Translate\Model\Entity\TranslateProject;
 
 /**
  * TranslateProjects Controller
@@ -17,6 +19,10 @@ class TranslateProjectsController extends TranslateAppController {
 	 */
 	public function index() {
 		$translateProjects = $this->paginate();
+
+		if (!$translateProjects->count()) {
+		    return $this->redirect(['action' => 'add', '?' => ['name' => 'Default', 'default' => true, 'status' => TranslateProject::STATUS_HIDDEN]]);
+        }
 
 		$this->set(compact('translateProjects'));
 		$this->set('_serialize', ['translateProjects']);
@@ -58,7 +64,9 @@ class TranslateProjectsController extends TranslateAppController {
 			}
 
 			$this->Flash->error(__d('translate', 'The translate project could not be saved. Please, try again.'));
-		}
+		} else {
+		    $this->request->data = $this->request->getQuery();
+        }
 
 		$this->set(compact('translateProject'));
 		$this->set('_serialize', ['translateProject']);
@@ -129,7 +137,7 @@ class TranslateProjectsController extends TranslateAppController {
 			'strings' => __d('translate', 'Translate Strings'),
 			'groups' => __d('translate', 'Translate Domains'),
 		];
-		$this->TranslateLanguage = TableRegistry::get('Translate.TranslateLanguage');
+		$this->TranslateLanguage = TableRegistry::get('Translate.TranslateLanguages');
 		$languages = $this->TranslateLanguages->find('list');
 		$id = $this->request->session()->read('TranslateProject.id');
 

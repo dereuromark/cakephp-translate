@@ -32,9 +32,9 @@
 			<?php foreach ($translateProjects as $translateProject): ?>
 			<tr>
 				<td><?= h($translateProject->name) ?></td>
-				<td><?= $this->Number->format($translateProject->type) ?></td>
+				<td><?= $translateProject::types($translateProject->type) ?></td>
 				<td><?= $this->Format->yesNo($translateProject->default) ?></td>
-				<td><?= $this->Number->format($translateProject->status) ?></td>
+				<td><?= $translateProject::statuses($translateProject->status) ?></td>
 				<td><?= $this->Time->nice($translateProject->created) ?></td>
 				<td><?= $this->Time->nice($translateProject->modified) ?></td>
 				<td class="actions">

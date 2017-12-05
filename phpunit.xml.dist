@@ -12,7 +12,7 @@
 		<ini name="apc.enable_cli" value="1"/>
 	</php>
 	<testsuites>
-		<testsuite name="Translate">
+		<testsuite name="translate">
 			<directory>./tests/</directory>
 		</testsuite>
 	</testsuites>
@@ -25,9 +25,9 @@
 	</listeners>
 	<filter>
 		<whitelist>
-			<directory suffix=".php">./src</directory>
+			<directory suffix=".php">./src/</directory>
 			<exclude>
-				<directory suffix=".php">./src/Translator/Engine</directory>
+				<directory suffix=".php">./src/Translator/Engine/</directory>
 			</exclude>
 		</whitelist>
 	</filter>

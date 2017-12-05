@@ -24,7 +24,7 @@
 		</tr>
 		<tr>
 			<th><?= __d('translate', 'Type') ?></th>
-			<td><?= $this->Number->format($translateProject->type) ?></td>
+			<td><?= $translateProject::types($translateProject->type) ?></td>
 		</tr>
 		<tr>
 			<th><?= __d('translate', 'Default') ?></th>
@@ -32,7 +32,7 @@
 		</tr>
 		<tr>
 			<th><?= __d('translate', 'Status') ?></th>
-			<td><?= $this->Number->format($translateProject->status) ?></td>
+			<td><?= $translateProject::statuses($translateProject->status) ?></td>
 		</tr>
 		<tr>
 			<th><?= __d('translate', 'Created') ?></th>

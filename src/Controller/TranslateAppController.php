@@ -9,12 +9,8 @@ use Cake\Event\Event;
 Configure::write('Plugin.name', 'Translate');
 
 /**
- * @property \App\Controller\Component\UserComponent $User
- * @property \Flash\Controller\Component\FlashComponent $Flash
  * @property \Tools\Controller\Component\CommonComponent $Common
  * @property \Shim\Controller\Component\SessionComponent $Session
- * @property \TinyAuth\Controller\Component\AuthComponent $Auth
- * @property \TinyAuth\Controller\Component\AuthUserComponent $AuthUser
  * @property \Translate\Model\Table\TranslateProjectsTable $TranslateProjects
  * @property \Translate\Controller\Component\TranslationComponent $Translation
  */

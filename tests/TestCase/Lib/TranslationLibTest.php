@@ -124,7 +124,7 @@ class TranslationLibTest extends TestCase {
 				],
 			],
 		];
-		$this->assertSame($expected, $is['{0} years']);
+		$this->assertSame($expected, $is['p:{0} years']);
 	}
 
 	/**
@@ -153,7 +153,7 @@ class TranslationLibTest extends TestCase {
 				]
 			],
 		];
-		$this->assertSame($expected, $is['{0} trees']);
+		$this->assertSame($expected, $is['p:{0} trees']);
 	}
 
 	/**
@@ -181,7 +181,7 @@ class TranslationLibTest extends TestCase {
 					'' => '{0} Jahr',
 				],
 			],
-			'{0} years' => [
+			'p:{0} years' => [
 				'_context' => [
 					'' => [
 						0 => '{0} Jahr',

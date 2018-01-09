@@ -118,6 +118,8 @@ It should not throw exceptions, instead use try/catch if needed and log the mess
 
 ## Layout adjustments
 The default layout is based on Twitter Bootstrap v3.
+It uses fontawesome for the action buttons. Please make sure you include this CSS library, if you are using the default templates.
+
 You can customize templates by moving them into the right folder in project level.
 See [CakePHP docs](https://book.cakephp.org/3.0/en/plugins.html#overriding-plugin-templates-from-inside-your-application).
 

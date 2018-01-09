@@ -22,6 +22,7 @@ msgid "Register"
 msgstr ""
 
 #: Template/Account/index.ctp:15;33
+#: Template/Account/foo.ctp:15
 msgid "Your {0}."
 msgstr ""
 

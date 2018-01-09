@@ -17,7 +17,7 @@
 		"cakephp/cakephp": "^3.5.10",
 		"dereuromark/cakephp-tools": "^1.4",
 		"friendsofcake/search": "^4.0",
-		"sepia/po-parser": "^4.2"
+		"maxakawizard/po-parser": "dev-master"
 	},
 	"require-dev": {
 		"dereuromark/cakephp-tools": "dev-master as 1.4",

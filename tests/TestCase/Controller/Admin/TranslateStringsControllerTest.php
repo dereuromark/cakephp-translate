@@ -99,7 +99,8 @@ class TranslateStringsControllerTest extends IntegrationTestCase {
 		$this->assertSame(['fuzzy', 'special'], $translateString->flags);
 
 		$translateString = $TranslateStrings->find()->where(['name' => 'Your {0}.'])->firstOrFail();
-		$this->assertSame('Template/Account/index.ctp:15;33', $translateString->references);
+		$this->assertSame('Template/Account/index.ctp:15;33
+Template/Account/foo.ctp:15', $translateString->references);
 
 		$translateString = $TranslateStrings->find()->where(['name' => 'untranslated-string'])->firstOrFail();
 		$expected = '#. extracted-comments

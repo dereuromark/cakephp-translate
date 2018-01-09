@@ -4,8 +4,7 @@ namespace Translate\Lib;
 use Cake\Filesystem\Folder;
 use Cake\I18n\Parser\PoFileParser;
 use Cake\Utility\Inflector;
-use Sepia\FileHandler;
-use Sepia\PoParser;
+use PoParser\Parser;
 
 class TranslationLib {
 
@@ -97,10 +96,9 @@ class TranslationLib {
 		$content = [];
 
 		if (file_exists($file)) {
-			$fileHandler = new FileHandler($file);
-
-			$poParser = new PoParser($fileHandler);
-			$entries = $poParser->parse();
+			$poParser = new Parser();
+			$poParser->read($file);
+			$entries = $poParser->getEntriesAsArrays();
 
 			$content = $this->_map($entries);
 		}
@@ -122,10 +120,9 @@ class TranslationLib {
 		$content = [];
 
 		if (file_exists($file)) {
-			$fileHandler = new FileHandler($file);
-
-			$poParser = new PoParser($fileHandler);
-			$entries = $poParser->parse();
+			$poParser = new Parser();
+			$poParser->read($file);
+			$entries = $poParser->getEntriesAsArrays();
 
 			$content = $this->_map($entries);
 		}
@@ -138,10 +135,56 @@ class TranslationLib {
 
 	/**
 	 * @param array $entries
-	 *
 	 * @return array
 	 */
 	protected function _map(array $entries) {
+		$translations = [];
+
+		foreach ($entries as $entry) {
+			if (empty($entry['msgid'])) {
+				continue;
+			}
+
+			$record = [
+				'name' => is_array($entry['msgid']) ? implode('', $entry['msgid']) : $entry['msgid'],
+				'content' => $this->_content($entry),
+				'comments' => $this->_comment($entry),
+			];
+
+			if (!empty($entry['msgid_plural'])) {
+				$record['plural'] = $entry['msgid_plural'];
+				for ($i = 1; $i <= 6; $i++) {
+					if (!isset($entry['msgstr'][$i])) {
+						break;
+					}
+
+					$record['plural_' . ($i + 1)] = $entry['msgstr'][$i];
+				}
+			}
+			if (!empty($entry['msgctxt'])) {
+				$record['context'] = $entry['msgctxt'];
+			}
+
+			if (!empty($entry['references'])) {
+				$record['references'] = is_array($entry['references']) ? implode("\n", $entry['references']) : $entry['references'];
+			}
+			if (!empty($entry['flags'])) {
+				$record['flags'] = $entry['flags'];
+			}
+
+			$translations[] = $record;
+		}
+
+		return $translations;
+	}
+
+	/**
+	 * @deprecated Too buggy
+	 * @param array $entries
+	 *
+	 * @return array
+	 */
+	protected function _mapSepia(array $entries) {
 		$translations = [];
 
 		foreach ($entries as $entry) {
@@ -202,19 +245,15 @@ class TranslationLib {
 
 		$keys = ['ccomment', 'tcomment'];
 		foreach ($entry as $key => $value) {
-			if (!in_array($key, $keys)) {
+			if (!in_array($key, $keys) || $entry[$key] === '') {
 				continue;
 			}
 			switch ($key) {
 				case 'ccomment':
-					foreach ($value as $v) {
-						$rows[] = '#. ' . $v;
-					}
+					$rows[] = '#. ' . $value;
 					break;
 				case 'tcomment':
-					foreach ($value as $v) {
-						$rows[] = '#  ' . $v;
-					}
+					$rows[] = '#  ' . $value;
 					break;
 			}
 		}
@@ -233,11 +272,7 @@ class TranslationLib {
 	 */
 	protected function _content(array $entry) {
 		if (isset($entry['msgstr'])) {
-			return implode('', $entry['msgstr']);
-		}
-
-		if (isset($entry['msgstr[0]'])) {
-			return implode('', $entry['msgstr[0]']);
+			return is_array($entry['msgstr']) ? $entry['msgstr'][0] : $entry['msgstr'];
 		}
 
 		return null;

@@ -10,7 +10,7 @@
 		<li><?= $this->Html->link(__d('translate', 'Overview'), ['action' => 'index']) ?></li>
 	</ul>
 </nav>
-<div class="translateStrings form col-sm-8 col-xs-12">
+<div class="translateStrings form col-md-9 col-sm-8 col-xs-12">
 <h2>Convert text</h2>
 
 <?php if (!empty($text)) { ?>

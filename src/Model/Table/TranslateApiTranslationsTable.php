@@ -88,7 +88,7 @@ class TranslateApiTranslationsTable extends Table {
 	 * @param string|null $from
 	 * @param string|null $engine
 	 *
-	 * @return \Translate\Model\Entity\TranslateApiTranslation|null
+	 * @return \Translate\Model\Entity\TranslateApiTranslation|\Cake\Datasource\EntityInterface|null
 	 */
 	public function retrieve($key, $to, $from, $engine = null) {
 		if (!$from) {

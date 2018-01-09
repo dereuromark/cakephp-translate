@@ -10,7 +10,7 @@
 		<li><?= $this->Html->link(__d('translate', 'Overview'), ['action' => 'index']) ?></li>
 	</ul>
 </nav>
-<div class="translateStrings form col-sm-8 col-xs-12">
+<div class="translateStrings form col-md-9 col-sm-8 col-xs-12">
 <h2><?php echo __d('translate', 'bestPractice');?></h2>
 
 <h3>Common things</h3>

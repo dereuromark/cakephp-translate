@@ -16,7 +16,7 @@
 		<li><?= $this->Html->link(__d('translate', 'New Translate String'), ['controller' => 'TranslateStrings', 'action' => 'add']) ?></li>
 	</ul>
 </nav>
-<div class="translateTerms form col-sm-8 col-xs-12">
+<div class="translateTerms form col-md-9 col-sm-8 col-xs-12">
 	<?= $this->Form->create($translateTerm) ?>
 	<fieldset>
 		<legend><?= __d('translate', 'Edit Translate Term') ?></legend>

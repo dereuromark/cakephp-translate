@@ -15,7 +15,7 @@
 		<li><?= $this->Html->link(__d('translate', 'List Translate Languages'), ['action' => 'index']) ?></li>
 	</ul>
 </nav>
-<div class="translateLanguages form col-sm-8 col-xs-12">
+<div class="translateLanguages form col-md-9 col-sm-8 col-xs-12">
 	<?= $this->Form->create($translateLanguage) ?>
 	<fieldset>
 		<legend><?= __d('translate', 'Edit Translate Language') ?></legend>

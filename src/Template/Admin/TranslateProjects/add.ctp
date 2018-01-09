@@ -10,7 +10,7 @@
 		<li><?= $this->Html->link(__d('translate', 'List Translate Projects'), ['action' => 'index']) ?></li>
 	</ul>
 </nav>
-<div class="translateProjects form col-sm-8 col-xs-12">
+<div class="translateProjects form col-md-9 col-sm-8 col-xs-12">
 	<?= $this->Form->create($translateProject) ?>
 	<fieldset>
 		<legend><?= __d('translate', 'Add Translate Project') ?></legend>

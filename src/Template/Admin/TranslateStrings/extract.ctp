@@ -11,7 +11,7 @@
 	</ul>
 </nav>
 
-<div class="page form col-sm-8 col-xs-12">
+<div class="page form col-md-9 col-sm-8 col-xs-12">
 <?php echo $this->Form->create(null);?>
 	<fieldset>
 		<legend><?php echo __d('translate', 'From POT File');?></legend>

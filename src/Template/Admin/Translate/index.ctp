@@ -2,6 +2,9 @@
 /**
  * @var \App\View\AppView $this
  */
+
+use Cake\Core\Configure;
+
 $totalCoverage =(int)$this->Translation->totalCoverage($coverage);
 $totalColor = $this->Translation->getColor($totalCoverage);
 ?>
@@ -86,9 +89,12 @@ Current Translation-Coverage: <span style="color:#<?php echo $totalColor;?>;font
 <br/><br/>
 
 <ul>
-<li><?php echo $this->Html->link(__d('translate', 'Best Practice'), ['action' => 'bestPractice']);?> </li>
-<li><?php echo $this->Html->link(__d('translate', 'Extract'), ['controller' => 'TranslateStrings', 'action' => 'extract']);?> </li>
+	<li><?php echo $this->Html->link(__d('translate', 'Best Practice'), ['action' => 'bestPractice']);?> </li>
+	<li><?php echo $this->Html->link(__d('translate', 'Extract'), ['controller' => 'TranslateStrings', 'action' => 'extract']);?> </li>
 	<li><?php echo $this->Html->link(__d('translate', 'Dump'), ['controller' => 'TranslateStrings', 'action' => 'dump']);?> </li>
+<?php if (Configure::read('debug')) { ?>
+	<li><?php echo $this->Html->link(__d('translate', 'Reset'), ['controller' => 'Translate', 'action' => 'reset']);?> </li>
+<?php } ?>
 </ul>
 
 </td>

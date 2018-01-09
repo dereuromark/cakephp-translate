@@ -15,7 +15,7 @@
 		<li><?= $this->Html->link(__('List Translate Api Translations'), ['action' => 'index']) ?></li>
 	</ul>
 </nav>
-<div class="translateApiTranslations form col-sm-8 col-xs-12">
+<div class="translateApiTranslations form col-md-9 col-sm-8 col-xs-12">
 	<?= $this->Form->create($translateApiTranslation) ?>
 	<fieldset>
 		<legend><?= __('Edit Translate Api Translation') ?></legend>

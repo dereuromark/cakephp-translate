@@ -27,7 +27,7 @@
 		if (in_array($key, $existingFolders)) {
 			echo '<p><b>'.$key . '</b>' . ' - ' . $language . ' (already exists)</p>';
 		} else {
-			echo $this->Form->input('locale.' . $key . '.confirm', ['type'=>'checkbox','label' => $key . ' (' . $language . ')']);
+			echo $this->Form->control('locale.' . $key . '.confirm', ['type'=>'checkbox','label' => $key . ' (' . $language . ')']);
 		}
 	}
 	?>

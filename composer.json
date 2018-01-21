@@ -21,10 +21,12 @@
 	},
 	"require-dev": {
 		"dereuromark/cakephp-tools": "dev-master as 1.4",
+		"dereuromark/cakephp-queue": "dev-master as 3.6",
 		"yandex/translate-api": "dev-master",
 		"fig-r/psr2r-sniffer": "dev-master"
 	},
 	"suggest": {
+		"dereuromark/cakephp-queue": "To use background processing for e.g. PO file import",
 		"yandex/translate-api": "Free Translation API Alternative"
 	},
 	"autoload": {

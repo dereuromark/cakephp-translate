@@ -16,6 +16,18 @@ class TranslateTermsController extends TranslateAppController {
 	public $paginate = ['order' => ['TranslateTerms.modified' => 'DESC']];
 
 	/**
+	 * @return void
+	 */
+	public function initialize() {
+		parent::initialize();
+		$this->loadComponent('Search.Prg', [
+			'actions' => ['index'],
+			'emptyValues' => [
+			],
+		]);
+	}
+
+	/**
 	 * Index method
 	 *
 	 * @return \Cake\Http\Response|null
@@ -24,7 +36,9 @@ class TranslateTermsController extends TranslateAppController {
 		$this->paginate = [
 			'contain' => ['TranslateStrings', 'TranslateLanguages']
 		];
-		$translateTerms = $this->paginate();
+
+		$query = $this->TranslateTerms->find('search', ['search' => $this->request->query]);
+		$translateTerms = $this->paginate($query);
 
 		$this->set(compact('translateTerms'));
 		$this->set('_serialize', ['translateTerms']);

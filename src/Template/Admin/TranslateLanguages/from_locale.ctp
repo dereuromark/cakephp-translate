@@ -29,8 +29,8 @@
 			echo '<li>'.$folder.'</li> (already exists)';
 		} else {
 			echo '<li>';
-			echo $this->Form->input('language.'.$folder.'.confirm', ['type'=>'checkbox','label'=>$folder]);
-			echo $this->Form->input('language.'.$folder.'.name', ['label'=> __d('translate', 'Language name')]);
+			echo $this->Form->control('language.'.$folder.'.confirm', ['type'=>'checkbox','label'=>$folder]);
+			echo $this->Form->control('language.'.$folder.'.name', ['label'=> __d('translate', 'Language name')]);
 			echo '</li>';
 		}
 	}

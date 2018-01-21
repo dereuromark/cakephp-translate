@@ -147,6 +147,22 @@ class TranslateTermsTable extends Table {
 		parent::initialize($config);
 
 		$this->addBehavior('Shim.Nullable');
+		$this->addBehavior('Search.Search');
+	}
+
+	/**
+	 * @return \Search\Manager
+	 */
+	public function searchManager() {
+		$searchManager = $this->behaviors()->Search->searchManager();
+		$searchManager
+			->value('translate_language_id', [
+			])
+			->like('search', [
+				'field' => [$this->aliasField('content'), 'TranslateStrings.name'],
+			]);
+
+		return $searchManager;
 	}
 
 	/**

@@ -17,15 +17,15 @@
 	<?php
 	echo $this->Form->create(null, ['valueSources' => 'query']);
 	// You'll need to populate $authors in the template from your controller
-	echo $this->Form->input('translate_domain_id', ['empty' => ' - ' . __d('translate', 'noLimitation') . ' - ']);
-	echo $this->Form->input('search', ['placeholder' => '']);
-	echo $this->Form->input('missing_translation', ['type' => 'checkbox', 'hiddenField' => '']);
+	echo $this->Form->control('translate_domain_id', ['empty' => ' - ' . __d('translate', 'noLimitation') . ' - ']);
+	echo $this->Form->control('search', ['placeholder' => '']);
+	echo $this->Form->control('missing_translation', ['type' => 'checkbox', 'hiddenField' => '']);
 
 	?>
 	<div class="text-right" style="margin-bottom: 8px;">
 		<?php
 		echo $this->Form->button(__d('translate', 'Filter'), ['type' => 'submit']);
-		if ($this->request->query) {
+		if (!empty($_isSearch)) {
 			echo ' ' . $this->Html->link(__d('translate', 'Reset'), ['action' => 'index'], ['class' => 'btn btn-default']);
 		}
 		?>

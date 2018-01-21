@@ -16,6 +16,25 @@
 </nav>
 <div class="translateTerms index col-md-9 col-sm-8 col-xs-12">
 	<h2><?= __d('translate', 'Translate Terms') ?></h2>
+
+	<?php
+	echo $this->Form->create(null, ['valueSources' => 'query']);
+	// You'll need to populate $authors in the template from your controller
+	echo $this->Form->control('translate_language_id', ['empty' => ' - ' . __d('translate', 'noLimitation') . ' - ', 'label' => __d('translate', 'Language')]);
+	echo $this->Form->control('search', ['placeholder' => '']);
+	?>
+	<div class="text-right" style="margin-bottom: 8px;">
+		<?php
+		echo $this->Form->button(__d('translate', 'Filter'), ['type' => 'submit']);
+		if (!empty($_isSearch)) {
+			echo ' ' . $this->Html->link(__d('translate', 'Reset'), ['action' => 'index'], ['class' => 'btn btn-default']);
+		}
+		?>
+	</div>
+	<?php
+	echo $this->Form->end();
+	?>
+
 	<table class="table table-striped">
 		<thead>
 			<tr>

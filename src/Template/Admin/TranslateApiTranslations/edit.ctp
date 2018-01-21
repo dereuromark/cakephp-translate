@@ -3,7 +3,7 @@
  * @var \App\View\AppView $this
  * @var \Translate\Model\Entity\TranslateApiTranslation $translateApiTranslation
  */
-?><nav class="col-sm-4 col-xs-12">
+?><nav class="col-md-3 col-sm-4 col-xs-12">
 	<ul class="side-nav nav nav-pills nav-stacked">
 		<li class="heading"><?= __('Actions') ?></li>
 		<li><?= $this->Form->postLink(
@@ -20,11 +20,11 @@
 	<fieldset>
 		<legend><?= __('Edit Translate Api Translation') ?></legend>
 		<?php
-			echo $this->Form->input('key');
-			echo $this->Form->input('value');
-			echo $this->Form->input('from');
-			echo $this->Form->input('to');
-			echo $this->Form->input('engine');
+			echo $this->Form->control('key');
+			echo $this->Form->control('value');
+			echo $this->Form->control('from');
+			echo $this->Form->control('to');
+			echo $this->Form->control('engine');
 		?>
 	</fieldset>
 	<?= $this->Form->button(__('Submit')) ?>

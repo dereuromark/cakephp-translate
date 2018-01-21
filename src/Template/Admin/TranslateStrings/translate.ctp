@@ -39,12 +39,12 @@
 		<legend><?php echo __d('translate', 'Translate This String');?></legend>
 
 	<?php
-		//echo $this->Form->input('id');
+		//echo $this->Form->control('id');
 
 	if ($translateString->plural) {
 		foreach ($translateLanguages as $translateLanguage) {
 			$key = $translateLanguage['iso2'];
-			echo $this->Form->input('content_'.$key, ['type'=>'text', 'label'=> __d('translate', 'Singular'). ' ' . $translateLanguage['iso2'], 'rel'=>$key]);
+			echo $this->Form->control('content_'.$key, ['type'=>'text', 'label'=> __d('translate', 'Singular'). ' ' . $translateLanguage['iso2'], 'rel'=>$key]);
 			if (!empty($suggestions[$key])) {
 				echo $this->element('suggestions', ['suggestions' => $suggestions[$key], 'target' => 'content-' . $key]);
 			}
@@ -53,7 +53,7 @@
 		foreach ($translateLanguages as $translateLanguage) {
 			$key = $translateLanguage['iso2'];
 			//TODO add plural 3 to 6 if necessary
-			echo $this->Form->input('plural_2_'.$key, ['type'=>'text', 'label'=>__d('translate', 'Plural') . ' ' . $translateLanguage['iso2'], 'rel' => 'p' . $key]);
+			echo $this->Form->control('plural_2_'.$key, ['type'=>'text', 'label'=>__d('translate', 'Plural') . ' ' . $translateLanguage['iso2'], 'rel' => 'p' . $key]);
 
 		}
 
@@ -61,7 +61,7 @@
 
 		foreach ($translateLanguages as $translateLanguage) {
 			$key = $translateLanguage['iso2'];
-			echo $this->Form->input('content_'.$key, ['type'=>'textarea','label'=>h($translateLanguage['name']), 'rel'=>$key]);
+			echo $this->Form->control('content_'.$key, ['type'=>'textarea','label'=>h($translateLanguage['name']), 'rel'=>$key]);
 			if (!empty($suggestions[$key])) {
 				echo $this->element('suggestions', ['suggestions' => $suggestions[$key], 'key' => $key]);
 			}

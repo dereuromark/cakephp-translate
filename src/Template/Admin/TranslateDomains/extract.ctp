@@ -9,9 +9,9 @@
 		<legend><?php echo __d('translate', 'From POT File');?></legend>
 	<?php
 
-		echo $this->Form->input('sel_pot', ['multiple'=>'checkbox', 'label'=>'Auswahl', 'options'=>$potFiles]);
+		echo $this->Form->control('sel_pot', ['multiple'=>'checkbox', 'label'=>'Auswahl', 'options'=>$potFiles]);
 
-		//echo $this->Form->input('active');
+		//echo $this->Form->control('active');
 	?>
 	</fieldset>
 
@@ -19,21 +19,21 @@
 		<legend><?php echo __d('translate', 'From PO File');?></legend>
 
 	<?php
-		echo $this->Form->input('sel_po', ['multiple'=>'checkbox', 'label'=>'Auswahl', 'options'=>$poFiles]);
+		echo $this->Form->control('sel_po', ['multiple'=>'checkbox', 'label'=>'Auswahl', 'options'=>$poFiles]);
 	?>
 	</fieldset>
 
 	<fieldset>
 		<legend><?php echo __d('translate', 'From Source Code');?></legend>
 	<?php
-		echo $this->Form->input('source_code', ['type'=>'checkbox']);
+		echo $this->Form->control('source_code', ['type'=>'checkbox']);
 	?>
 	</fieldset>
 
 	<fieldset>
 		<legend><?php echo __d('translate', 'Controller Names');?></legend>
 	<?php
-		echo $this->Form->input('controller_names', ['type'=>'checkbox']);
+		echo $this->Form->control('controller_names', ['type'=>'checkbox']);
 	?>
 	</fieldset>
 

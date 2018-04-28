@@ -6,7 +6,7 @@
  */
 
 ?>
-<nav class="actions col-sm-4 col-xs-12">
+<nav class="actions col-md-3 col-sm-4 col-xs-12">
 	<ul class="side-nav nav nav-pills nav-stacked">
 		<li class="heading"><?= __d('translate', 'Actions') ?></li>
 		<li><?= $this->Html->link(__d('translate', 'Overview'), ['controller' => 'Translate', 'action' => 'index']) ?></li>
@@ -14,7 +14,7 @@
 		<li><?php echo $this->Html->link(__d('translate', 'Edit Translate String'), ['action'=>'edit', $translateString['id']]);?></li>
 	</ul>
 </nav>
-<div class="translateStrings index col-sm-8 col-xs-12">
+<div class="translateStrings index col-md-9 col-sm-8 col-xs-12">
 
 <h3>String</h3>
 
@@ -39,12 +39,12 @@
 		<legend><?php echo __d('translate', 'Translate This String');?></legend>
 
 	<?php
-		//echo $this->Form->input('id');
+		//echo $this->Form->control('id');
 
 	if ($translateString->plural) {
 		foreach ($translateLanguages as $translateLanguage) {
 			$key = $translateLanguage['iso2'];
-			echo $this->Form->input('content_'.$key, ['type'=>'text', 'label'=> __d('translate', 'Singular'). ' ' . $translateLanguage['iso2'], 'rel'=>$key]);
+			echo $this->Form->control('content_'.$key, ['type'=>'text', 'label'=> __d('translate', 'Singular'). ' ' . $translateLanguage['iso2'], 'rel'=>$key]);
 			if (!empty($suggestions[$key])) {
 				echo $this->element('suggestions', ['suggestions' => $suggestions[$key], 'target' => 'content-' . $key]);
 			}
@@ -53,7 +53,7 @@
 		foreach ($translateLanguages as $translateLanguage) {
 			$key = $translateLanguage['iso2'];
 			//TODO add plural 3 to 6 if necessary
-			echo $this->Form->input('plural_2_'.$key, ['type'=>'text', 'label'=>__d('translate', 'Plural') . ' ' . $translateLanguage['iso2'], 'rel' => 'p' . $key]);
+			echo $this->Form->control('plural_2_'.$key, ['type'=>'text', 'label'=>__d('translate', 'Plural') . ' ' . $translateLanguage['iso2'], 'rel' => 'p' . $key]);
 
 		}
 
@@ -61,7 +61,7 @@
 
 		foreach ($translateLanguages as $translateLanguage) {
 			$key = $translateLanguage['iso2'];
-			echo $this->Form->input('content_'.$key, ['type'=>'textarea','label'=>h($translateLanguage['name']), 'rel'=>$key]);
+			echo $this->Form->control('content_'.$key, ['type'=>'textarea','label'=>h($translateLanguage['name']), 'rel'=>$key]);
 			if (!empty($suggestions[$key])) {
 				echo $this->element('suggestions', ['suggestions' => $suggestions[$key], 'key' => $key]);
 			}

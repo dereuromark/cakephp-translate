@@ -19,7 +19,7 @@
 			if (in_array($subgroup, $existingGroups)) {
 				echo '<li>'.$subgroup.'</li> (already exists)';
 			} else {
-			echo '<li>'.$this->Form->input('TranslateDomain.'.$count.'.confirm', ['type'=>'checkbox','label'=>$subgroup]).''.$this->Form->input('TranslateDomain.'.$count.'.name', ['type'=>'hidden','value'=>$subgroup]).'</li>';
+			echo '<li>'.$this->Form->control('TranslateDomain.'.$count.'.confirm', ['type'=>'checkbox','label'=>$subgroup]).''.$this->Form->control('TranslateDomain.'.$count.'.name', ['type'=>'hidden','value'=>$subgroup]).'</li>';
 			}
 			$count++;
 		}

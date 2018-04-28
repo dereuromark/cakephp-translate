@@ -4,7 +4,7 @@
  * @var \Translate\Model\Entity\TranslateLanguage $translateLanguage
  */
 ?>
-<nav class="actions col-sm-4 col-xs-12">
+<nav class="actions col-md-3 col-sm-4 col-xs-12">
 	<ul class="side-nav nav nav-pills nav-stacked">
 		<li class="heading"><?= __d('translate', 'Actions') ?></li>
 		<li><?= $this->Html->link(__d('translate', 'Edit Translate Language'), ['action' => 'edit', $translateLanguage->id]) ?> </li>
@@ -13,7 +13,7 @@
 		<li><?= $this->Html->link(__d('translate', 'New Translate Language'), ['action' => 'add']) ?> </li>
 	</ul>
 </nav>
-<div class="translateLanguages view col-sm-8 col-xs-12">
+<div class="translateLanguages view col-md-9 col-sm-8 col-xs-12">
 	<h2><?= h($translateLanguage->name) ?></h2>
 	<table class="table vertical-table">
 		<tr>

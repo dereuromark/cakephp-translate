@@ -89,7 +89,6 @@ class TranslationLibTest extends TestCase {
 	public function testExtractPoFile() {
 		$is = $this->TranslationLib->getPoFiles('de');
 		$file = array_pop($is);
-		//$file = array_shift($is);
 		$is = $this->TranslationLib->extractPoFile($file, 'de');
 
 		$this->assertTrue(!empty($is));

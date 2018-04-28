@@ -4,28 +4,28 @@
  * @var \Translate\Model\Entity\TranslateString[] $translateStrings
  */
 ?>
-<nav class="actions col-sm-4 col-xs-12">
+<nav class="actions col-md-3 col-sm-4 col-xs-12">
 	<ul class="side-nav nav nav-pills nav-stacked">
 		<li class="heading"><?= __d('translate', 'Actions') ?></li>
 		<li><?= $this->Html->link(__d('translate', 'Overview'), ['controller' => 'Translate', 'action' => 'index']) ?></li>
 		<li><?= $this->Html->link(__d('translate', 'New Translate String'), ['action' => 'add']) ?></li>
 	</ul>
 </nav>
-<div class="translateStrings index col-sm-8 col-xs-12">
-	<h3><?= __d('translate', 'Translate Strings') ?></h3>
+<div class="translateStrings index col-md-9 col-sm-8 col-xs-12">
+	<h2><?= __d('translate', 'Translate Strings') ?></h2>
 
 	<?php
 	echo $this->Form->create(null, ['valueSources' => 'query']);
 	// You'll need to populate $authors in the template from your controller
-	echo $this->Form->input('translate_domain_id', ['empty' => ' - ' . __d('translate', 'noLimitation') . ' - ']);
-	echo $this->Form->input('search', ['placeholder' => '']);
-	echo $this->Form->input('missing_translation', ['type' => 'checkbox', 'hiddenField' => '']);
+	echo $this->Form->control('translate_domain_id', ['empty' => ' - ' . __d('translate', 'noLimitation') . ' - ']);
+	echo $this->Form->control('search', ['placeholder' => '']);
+	echo $this->Form->control('missing_translation', ['type' => 'checkbox', 'hiddenField' => '']);
 
 	?>
 	<div class="text-right" style="margin-bottom: 8px;">
 		<?php
 		echo $this->Form->button(__d('translate', 'Filter'), ['type' => 'submit']);
-		if ($this->request->query) {
+		if (!empty($_isSearch)) {
 			echo ' ' . $this->Html->link(__d('translate', 'Reset'), ['action' => 'index'], ['class' => 'btn btn-default']);
 		}
 		?>

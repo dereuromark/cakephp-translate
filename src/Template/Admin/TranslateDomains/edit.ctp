@@ -3,7 +3,7 @@
  * @var \App\View\AppView $this
  * @var \Translate\Model\Entity\TranslateDomain $translateDomain
  */
-?><nav class="col-sm-4 col-xs-12">
+?><nav class="col-md-3 col-sm-4 col-xs-12">
 	<ul class="side-nav nav nav-pills nav-stacked">
 		<li class="heading"><?= __d('translate', 'Actions') ?></li>
 		<li><?= $this->Form->postLink(
@@ -19,15 +19,15 @@
 		<li><?= $this->Html->link(__d('translate', 'New Translate String'), ['controller' => 'TranslateStrings', 'action' => 'add']) ?></li>
 	</ul>
 </nav>
-<div class="translateDomains form col-sm-8 col-xs-12">
+<div class="translateDomains form col-md-9 col-sm-8 col-xs-12">
 	<?= $this->Form->create($translateDomain) ?>
 	<fieldset>
 		<legend><?= __d('translate', 'Edit Translate Domain') ?></legend>
 		<?php
-			echo $this->Form->input('name');
-			echo $this->Form->input('active');
+			echo $this->Form->control('name');
+			echo $this->Form->control('active');
 
-			echo $this->Form->input('path');
+			echo $this->Form->control('path');
 		?>
 	</fieldset>
 	<?= $this->Form->button(__d('translate', 'Submit')) ?>

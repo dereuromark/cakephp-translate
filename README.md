@@ -63,6 +63,10 @@ Run this in console to create the necessary DB tables:
 bin/cake migrations migrate -p Translate
 ```
 
+### Recommendations
+Use `dereuromark/cakephp-queue` for larger projects to avoid timeout issues when importing PO files.
+
+
 ## Usage
 Web Backend
 - Navigate to `/admin/translate/` in your browser.

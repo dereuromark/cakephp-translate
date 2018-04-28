@@ -35,7 +35,7 @@ class TranslateController extends TranslateAppController {
 		$id = $this->request->session()->read('TranslateProject.id');
 		$count = $this->TranslateDomains->statistics($id, $languages->toArray());
 		$coverage = $this->TranslateDomains->TranslateStrings->coverage($this->Translation->currentProjectId());
-		$projectSwitchArray = $this->TranslateDomains->TranslateProjects->find('list');
+		$projectSwitchArray = $this->TranslateDomains->TranslateProjects->find('list')->toArray();
 		$this->set(compact('coverage', 'languages', 'count', 'projectSwitchArray'));
 	}
 

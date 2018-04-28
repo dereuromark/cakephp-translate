@@ -4,7 +4,7 @@
  * @var \Translate\Model\Entity\TranslateApiTranslation $translateApiTranslation
  */
 ?>
-<nav class="actions col-sm-4 col-xs-12">
+<nav class="actions col-md-3 col-sm-4 col-xs-12">
 	<ul class="side-nav nav nav-pills nav-stacked">
 		<li class="heading"><?= __('Actions') ?></li>
 		<li><?= $this->Html->link(__('Edit Translate Api Translation'), ['action' => 'edit', $translateApiTranslation->id]) ?> </li>
@@ -13,7 +13,7 @@
 		<li><?= $this->Html->link(__('New Translate Api Translation'), ['action' => 'add']) ?> </li>
 	</ul>
 </nav>
-<div class="translateApiTranslations view col-sm-8 col-xs-12">
+<div class="translateApiTranslations view col-md-9 col-sm-8 col-xs-12">
 	<h2><?= h($translateApiTranslation->id) ?></h2>
 	<table class="table vertical-table">
 		<tr>

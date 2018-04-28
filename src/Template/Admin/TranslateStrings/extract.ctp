@@ -4,22 +4,22 @@
  */
 ?>
 
-<nav class="col-sm-4 col-xs-12">
+<nav class="col-md-3 col-sm-4 col-xs-12">
 	<ul class="side-nav nav nav-pills nav-stacked">
 		<li class="heading"><?= __d('translate', 'Actions') ?></li>
 		<li><?php echo $this->Html->link(__d('translate', 'List Translate Strings'), ['action'=>'index']);?></li>
 	</ul>
 </nav>
 
-<div class="page form col-sm-8 col-xs-12">
+<div class="page form col-md-9 col-sm-8 col-xs-12">
 <?php echo $this->Form->create(null);?>
 	<fieldset>
 		<legend><?php echo __d('translate', 'From POT File');?></legend>
 	<?php
 
-		echo $this->Form->input('sel_pot', ['multiple'=>'checkbox', 'label' => __d('translate', 'Selection'), 'options' => $potFiles]);
+		echo $this->Form->control('sel_pot', ['multiple'=>'checkbox', 'label' => __d('translate', 'Selection'), 'options' => $potFiles]);
 
-		//echo $this->Form->input('active');
+		//echo $this->Form->control('active');
 	?>
 	</fieldset>
 
@@ -27,7 +27,7 @@
 		<legend><?php echo __d('translate', 'From PO File');?></legend>
 
 	<?php
-		echo $this->Form->input('sel_po', ['multiple'=>'checkbox', 'label' => __d('translate', 'Selection'), 'options' => $poFiles]);
+		echo $this->Form->control('sel_po', ['multiple'=>'checkbox', 'label' => __d('translate', 'Selection'), 'options' => $poFiles]);
 	?>
 	</fieldset>
 

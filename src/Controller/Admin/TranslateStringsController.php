@@ -258,10 +258,9 @@ class TranslateStringsController extends TranslateAppController {
 			}
 		}
 
-		if ($this->Common->isPosted()) {
+		if ($this->Common->isPosted() && !empty($this->request->data['domains'])) {
 			$count = 0;
 			$errors = [];
-
 			foreach ((array)$this->request->data['domains'] as $key => $domain) {
 				list($lang, $domain) = explode('_', $domain, 2);
 
@@ -288,7 +287,10 @@ class TranslateStringsController extends TranslateAppController {
 			}
 			//$this->redirect(array('action'=>'index'));
 
-		} else {
+		} elseif ($this->Common->isPosted() && !$map) {
+			$this->Flash->warning('Please activate a domain for dumping.');
+			return $this->redirect(['controller' => 'TranslateDomains', 'action' => 'index']);
+		} elseif (!$this->Common->isPosted()) {
 			foreach ($translateLanguages as $code => $id) {
 				foreach ($domains as $domain) {
 					$this->request->data['domains'][] = $code . '_' . $domain->name;

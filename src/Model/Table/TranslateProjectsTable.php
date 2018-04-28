@@ -85,8 +85,8 @@ class TranslateProjectsTable extends Table {
 	public function getDefaultProjectId() {
 		$options = [
 			'fields' => ['id'],
-			'conditions' => [$this->alias() . '.status >' => TranslateProject::STATUS_INACTIVE],
-			'order' => [$this->alias() . '.default' => 'DESC']
+			'conditions' => [$this->getAlias() . '.status >' => TranslateProject::STATUS_INACTIVE],
+			'order' => [$this->getAlias() . '.default' => 'DESC']
 		];
 		$res = $this->find('first', $options);
 		if (!$res) {

@@ -89,7 +89,7 @@ class TranslateStringsTable extends Table {
 	 * @return \Cake\Database\Schema\TableSchema
 	 */
 	protected function _initializeSchema(TableSchema $schema) {
-		$schema->columnType('flags', 'json');
+		$schema->setColumnType('flags', 'json');
 
 		return $schema;
 	}

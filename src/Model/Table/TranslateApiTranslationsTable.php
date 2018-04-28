@@ -29,9 +29,9 @@ class TranslateApiTranslationsTable extends Table {
 	public function initialize(array $config) {
 		parent::initialize($config);
 
-		$this->table('translate_api_translations');
-		$this->displayField('id');
-		$this->primaryKey('id');
+		$this->setTable('translate_api_translations');
+		$this->setDisplayField('id');
+		$this->setPrimaryKey('id');
 
 		$this->addBehavior('Shim.Nullable');
 	}

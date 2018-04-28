@@ -220,7 +220,7 @@ class TranslateTermsTable extends Table {
 	 */
 	public function getTranslations($languageId, $groupId = null) {
 		$options = [
-			'conditions' => [$this->alias() . '.translate_language_id' => $languageId],
+			'conditions' => [$this->getAlias() . '.translate_language_id' => $languageId],
 			'contain' => ['TranslateStrings'],
 		];
 		if ($groupId) {
@@ -252,7 +252,7 @@ class TranslateTermsTable extends Table {
 	 * @return \Cake\ORM\Query
 	 */
 	public function getTranslated($stringId) {
-		$options = ['conditions' => [$this->alias() . '.translate_string_id' => $stringId]];
+		$options = ['conditions' => [$this->getAlias() . '.translate_string_id' => $stringId]];
 
 		return $this->find('all', $options);
 	}

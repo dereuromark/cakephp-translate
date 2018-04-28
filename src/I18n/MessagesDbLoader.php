@@ -82,10 +82,10 @@ class MessagesDbLoader {
 		$query = $model->find();
 
 		// Get list of fields without primaryKey, domain, locale.
-		$fields = $model->schema()->columns();
+		$fields = $model->getSchema()->columns();
 		$fields = array_flip(array_diff(
 			$fields,
-			$model->schema()->primaryKey()
+			$model->getSchema()->primaryKey()
 		));
 		unset($fields['domain'], $fields['locale']);
 		$query->select(array_flip($fields));

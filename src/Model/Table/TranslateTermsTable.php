@@ -19,6 +19,8 @@ use Tools\Model\Table\Table;
  * @method \Translate\Model\Entity\TranslateTerm[] patchEntities($entities, array $data, array $options = [])
  * @method \Translate\Model\Entity\TranslateTerm findOrCreate($search, callable $callback = null, $options = [])
  * @mixin \Shim\Model\Behavior\NullableBehavior
+ * @method \Translate\Model\Entity\TranslateTerm|bool saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @mixin \Search\Model\Behavior\SearchBehavior
  */
 class TranslateTermsTable extends Table {
 

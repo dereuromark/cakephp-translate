@@ -26,6 +26,7 @@ use Translate\Translator\Translator;
  * @method \Translate\Model\Entity\TranslateString findOrCreate($search, callable $callback = null, $options = [])
  * @mixin \Shim\Model\Behavior\NullableBehavior
  * @mixin \Search\Model\Behavior\SearchBehavior
+ * @method \Translate\Model\Entity\TranslateString|bool saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
  */
 class TranslateStringsTable extends Table {
 

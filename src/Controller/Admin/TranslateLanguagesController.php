@@ -8,6 +8,7 @@ use Translate\Filesystem\Creator;
  * TranslateLanguages Controller
  *
  * @property \Translate\Model\Table\TranslateLanguagesTable $TranslateLanguages
+ * @method \Translate\Model\Entity\TranslateLanguage[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class TranslateLanguagesController extends TranslateAppController {
 

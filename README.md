@@ -42,18 +42,12 @@ Including the plugin is pretty much as with every other CakePHP plugin:
 composer require dereuromark/cakephp-translate
 ```
 
-Then, to load the plugin either run the following command:
+Then, to load the plugin run the following command:
 
 ```sh
 bin/cake plugin load Translate -b -r
 # If you haven't loaded the Tools plugin already
 bin/cake plugin load Tools -b -r
-```
-
-or manually add the following line to your app's `config/bootstrap.php` file:
-
-```php
-Plugin::load('Translate', ['bootstrap' => true, 'routes' => true]);
 ```
 
 Routes are needed for the backed, the bootstrap sets up a few defaults.

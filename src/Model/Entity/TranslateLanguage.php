@@ -18,6 +18,7 @@ use Tools\Model\Entity\Entity;
  * @property int $translate_project_id
  * @property bool $base
  * @property bool $primary
+ * @property \Translate\Model\Entity\TranslateProject $translate_project
  */
 class TranslateLanguage extends Entity {
 

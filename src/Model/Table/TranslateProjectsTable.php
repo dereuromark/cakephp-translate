@@ -14,6 +14,8 @@ use Translate\Model\Entity\TranslateProject;
  * @method \Translate\Model\Entity\TranslateProject[] patchEntities($entities, array $data, array $options = [])
  * @method \Translate\Model\Entity\TranslateProject findOrCreate($search, callable $callback = null, $options = [])
  * @mixin \Shim\Model\Behavior\NullableBehavior
+ * @property \Translate\Model\Table\TranslateDomainsTable|\Cake\ORM\Association\HasMany $TranslateDomains
+ * @method \Translate\Model\Entity\TranslateProject|bool saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
  */
 class TranslateProjectsTable extends Table {
 
@@ -63,7 +65,7 @@ class TranslateProjectsTable extends Table {
 	 */
 	public $hasMany = [
 		'TranslateDomain' => [
-			'className' => 'TranslateDomain',
+			'className' => 'Translate.TranslateDomain',
 			'dependent' => true,
 		]
 	];

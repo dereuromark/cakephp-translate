@@ -12,7 +12,7 @@ use Tools\Model\Entity\Entity;
  * @property string $references
  * @property bool $active
  * @property bool $is_html
- * @property \Cake\I18n\Time $last_import
+ * @property \Cake\I18n\Date $last_import
  * @property \Cake\I18n\Time $created
  * @property \Cake\I18n\Time $modified
  *
@@ -23,7 +23,8 @@ use Tools\Model\Entity\Entity;
  * @property string $context
  * @property int $user_id
  * @property int $translate_domain_id
- * @property string $flags
+ * @property array $flags
+ * @property string $comment
  */
 class TranslateString extends Entity {
 

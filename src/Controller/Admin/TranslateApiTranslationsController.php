@@ -7,6 +7,7 @@ use App\Controller\AppController;
  * TranslateApiTranslations Controller
  *
  * @property \Translate\Model\Table\TranslateApiTranslationsTable $TranslateApiTranslations
+ * @method \Translate\Model\Entity\TranslateApiTranslation[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class TranslateApiTranslationsController extends AppController {
 

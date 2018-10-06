@@ -17,6 +17,7 @@ use Tools\Model\Table\Table;
  *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  * @mixin \Shim\Model\Behavior\NullableBehavior
+ * @method \Translate\Model\Entity\TranslateApiTranslation|bool saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
  */
 class TranslateApiTranslationsTable extends Table {
 

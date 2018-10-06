@@ -15,6 +15,7 @@ use Tools\Model\Table\Table;
  * @method \Translate\Model\Entity\TranslateDomain[] patchEntities($entities, array $data, array $options = [])
  * @method \Translate\Model\Entity\TranslateDomain findOrCreate($search, callable $callback = null, $options = [])
  * @mixin \Shim\Model\Behavior\NullableBehavior
+ * @method \Translate\Model\Entity\TranslateDomain|bool saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
  */
 class TranslateDomainsTable extends Table {
 

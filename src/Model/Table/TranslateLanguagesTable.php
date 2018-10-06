@@ -21,6 +21,8 @@ use Tools\Model\Table\Table;
  * @method \Translate\Model\Entity\TranslateLanguage[] patchEntities($entities, array $data, array $options = [])
  * @method \Translate\Model\Entity\TranslateLanguage findOrCreate($search, callable $callback = null, $options = [])
  * @mixin \Shim\Model\Behavior\NullableBehavior
+ * @property \Translate\Model\Table\TranslateProjectsTable|\Cake\ORM\Association\BelongsTo $TranslateProjects
+ * @method \Translate\Model\Entity\TranslateLanguage|bool saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
  */
 class TranslateLanguagesTable extends Table {
 

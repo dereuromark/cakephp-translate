@@ -48,7 +48,7 @@ class TranslateTermsFixture extends TestFixture {
 			'plural_2' => 'Lorem ipsum dolor sit amet',
 			'comment' => 'Lorem ipsum dolor sit amet',
 			'translate_language_id' => 1,
-			'user_id' => 'Lorem ipsum dolor sit amet',
+			'user_id' => 1,
 			'confirmed' => 1,
 			'confirmed_by' => null,
 			'created' => '2017-04-15 01:23:08',

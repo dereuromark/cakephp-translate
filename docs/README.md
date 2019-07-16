@@ -43,9 +43,9 @@ When using Postgres, make sure the CI extension is installed (as here everything
 Adjust your app.php and add Translate configuration: 
 ```php
 'Translate' => [
-	'noComments' => true, // Do not output references, tags, ... into PO files
-	'plurals' => 2, // 2 is the default for most languages, 6 is the max
-	'engine' => MyCustomEngine::class,
+    'noComments' => true, // Do not output references, tags, ... into PO files
+    'plurals' => 2, // 2 is the default for most languages, 6 is the max
+    'engine' => MyCustomEngine::class,
 ],
 ```
 
@@ -65,10 +65,10 @@ Configure I18n to use the Translate MessagesDbLoader for default domain:
 
 ```php
 I18n::config('default', function ($domain, $locale) {
-	return new MessagesDbLoader(
-		$domain,
-		$locale
-	);
+    return new MessagesDbLoader(
+        $domain,
+        $locale
+    );
 });
 ```
 If you have more than just default domain, you will need to do this for each domain separately.
@@ -98,18 +98,18 @@ use Translate\Translator\EngineInterface;
 
 class MyClassName implements EngineInterface {
 
-	/**
-	 * @param string $text Text
-	 * @param string $to Iso2 code (e.g.: de)
-	 * @param string $from Iso2 code (e.g.: en)
-	 *
-	 * @return string|null
-	 */
-	public function translate($text, $to, $from) {
-		...
+    /**
+     * @param string $text Text
+     * @param string $to Iso2 code (e.g.: de)
+     * @param string $from Iso2 code (e.g.: en)
+     *
+     * @return string|null
+     */
+    public function translate($text, $to, $from) {
+        ...
 
-		return $result;
-	}
+        return $result;
+    }
 
 }
 ```

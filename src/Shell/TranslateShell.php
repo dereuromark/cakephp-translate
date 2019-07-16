@@ -30,12 +30,33 @@ class TranslateShell extends Shell {
 	}
 
 	/**
+	 * @return void
+	 */
+	public function import() {
+		$this->out('TODO - Done via controller right now.');
+	}
+
+	/**
+	 * @return void
+	 */
+	public function export() {
+		$this->out('TODO - Done via controller right now.');
+	}
+
+	/**
 	 * Display help for this console.
 	 *
 	 * @return \Cake\Console\ConsoleOptionParser
 	 */
 	public function getOptionParser() {
 		$consoleOptionParser = parent::getOptionParser();
+
+		$consoleOptionParser->addSubcommand('import', [
+			'help' => 'Import from POT files.',
+		]);
+		$consoleOptionParser->addSubcommand('export', [
+			'help' => 'Export into PO files.',
+		]);
 
 		$consoleOptionParser->addSubcommand('help', [
 			'help' => 'Display some help.',

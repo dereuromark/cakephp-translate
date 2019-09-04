@@ -47,7 +47,7 @@ class TranslateApiTranslationsController extends AppController {
 	public function add() {
 		$translateApiTranslation = $this->TranslateApiTranslations->newEntity();
 		if ($this->request->is('post')) {
-			$translateApiTranslation = $this->TranslateApiTranslations->patchEntity($translateApiTranslation, $this->request->data);
+			$translateApiTranslation = $this->TranslateApiTranslations->patchEntity($translateApiTranslation, $this->request->getData());
 			if ($this->TranslateApiTranslations->save($translateApiTranslation)) {
 				$this->Flash->success(__('The translate api translation has been saved.'));
 				return $this->redirect(['action' => 'index']);
@@ -72,7 +72,7 @@ class TranslateApiTranslationsController extends AppController {
 			'contain' => []
 		]);
 		if ($this->request->is(['patch', 'post', 'put'])) {
-			$translateApiTranslation = $this->TranslateApiTranslations->patchEntity($translateApiTranslation, $this->request->data);
+			$translateApiTranslation = $this->TranslateApiTranslations->patchEntity($translateApiTranslation, $this->request->getData());
 			if ($this->TranslateApiTranslations->save($translateApiTranslation)) {
 				$this->Flash->success(__('The translate api translation has been saved.'));
 				return $this->redirect(['action' => 'index']);

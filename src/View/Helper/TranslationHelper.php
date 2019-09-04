@@ -70,7 +70,7 @@ class TranslationHelper extends Helper {
 	/**
 	 * @param int|float $value (between $first, $second!)
 	 * @param string $type hex, rgb, ... (defaults to hex) [optional]
-	 * @return string color
+	 * @return string|float[] color
 	 */
 	public function getColor($value, $type = 'hex') {
 		$color = $this->_calcColor($value);
@@ -88,7 +88,7 @@ class TranslationHelper extends Helper {
 	/**
 	 * @see http://www.javascripter.net/faq/rgbtohex.htm
 	 *
-	 * @param array $rgb
+	 * @param float[] $rgb
 	 *
 	 * @return string
 	 */
@@ -97,9 +97,9 @@ class TranslationHelper extends Helper {
 	}
 
 	/**
-	 * @param int $value
+	 * @param int|float $value
 	 *
-	 * @return array
+	 * @return float[]
 	 */
 	protected function _calcColor($value) {
 		$color = [

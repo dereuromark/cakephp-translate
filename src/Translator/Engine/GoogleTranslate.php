@@ -19,6 +19,7 @@ namespace Translate\Translator\Engine;
 use Exception;
 
 class GoogleTranslate {
+
 	/**
 	 * Retrieves the translation of a text
 	 *
@@ -40,6 +41,7 @@ class GoogleTranslate {
 		$translation = static::getSentencesFromJSON($response);
 		return $translation;
 	}
+
 	/**
 	 * Internal function to make the request to the translator service
 	 *
@@ -52,7 +54,7 @@ class GoogleTranslate {
 	 * @param string $text
 	 *            Text to translate taken from the 'translate' function
 	 *
-	 * @return object[] The response of the translation service in JSON format
+	 * @return string The response of the translation service in JSON format
 	 */
 	protected static function requestTranslation($source, $target, $text) {
 		// Google translate URL
@@ -89,6 +91,7 @@ class GoogleTranslate {
 		curl_close($ch);
 		return $result;
 	}
+
 	/**
 	 * Dump of the JSON's response in an array
 	 *

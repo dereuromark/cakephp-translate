@@ -29,20 +29,22 @@ class TranslateAppController extends AppController {
 	/**
 	 * @param \Cake\Event\Event $event
 	 *
-	 * @return void
+	 * @return \Cake\Http\Response|null
 	 */
 	public function beforeFilter(Event $event) {
 		parent::beforeFilter($event);
 
 		/*
 		if ($this->request->session()->check('TranslateProject.id')) {
-			return;
+			return null;
 		}
 
 		$this->loadModel('Translate.TranslateProjects');
 		$id = $this->TranslateProjects->getDefaultProjectId();
 		$this->request->session()->write('TranslateProject.id', $id);
 		*/
+
+		return null;
 	}
 
 }

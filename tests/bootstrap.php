@@ -29,6 +29,8 @@ define('CAKE_CORE_INCLUDE_PATH', ROOT . '/vendor/cakephp/cakephp');
 define('CORE_PATH', CAKE_CORE_INCLUDE_PATH . DS);
 define('CAKE', CORE_PATH . APP_DIR . DS);
 
+define('WWW_ROOT', TMP . 'webroot' . DS);
+
 require dirname(__DIR__) . '/vendor/autoload.php';
 require CORE_PATH . 'config/bootstrap.php';
 

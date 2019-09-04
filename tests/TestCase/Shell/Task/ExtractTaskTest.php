@@ -75,7 +75,7 @@ class ExtractTaskTest extends TestCase {
 		$translateStrings = $TranslateStrings->find()->orderDesc('id')->all()->toArray();
 
 		$this->assertTextContains('foobar', $translateStrings[0]->name);
-		$this->assertTextContains('Controller/FooController.php:9', $translateStrings[1]->references);
+		$this->assertTextContains('Controller/FooController.php:12', $translateStrings[1]->references);
 		$this->assertNotSame($translateStrings[0]->translate_domain_id, $translateStrings[1]->translate_domain_id);
 	}
 

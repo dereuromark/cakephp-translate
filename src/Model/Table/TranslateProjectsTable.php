@@ -97,6 +97,12 @@ class TranslateProjectsTable extends Table {
 		return $res['id'];
 	}
 
+	/**
+	 * @param int $id
+	 * @param string[] $types
+	 * @param int[] $languages
+	 * @return void
+	 */
 	public function reset($id, $types, $languages = []) {
 		# bug in current 2.0.4?
 		//$this->TranslateTerm = TableRegistry::get('Translate.TranslateTerms');
@@ -110,7 +116,7 @@ class TranslateProjectsTable extends Table {
 				case 'terms':
 					$options = [
 						'conditions' => [
-							'TranslateTerm.translate_language_id' => $languages,
+							'TranslateTerm.translate_language_id IN' => $languages,
 							'TranslateDomain.translate_project_id' => $id,
 						],
 						'fields' => ['TranslateTerms.id', 'TranslateTerms.id'],

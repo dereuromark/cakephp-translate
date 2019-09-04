@@ -169,7 +169,7 @@ class TranslateTermsTable extends Table {
 
 	/**
 	 * @param \Cake\Event\Event $event The beforeSave event that was fired
-	 * @param \Translate\Model\Entity\TranslateTerm|\Cake\Datasource\EntityInterface $entity The entity that is going to be saved
+	 * @param \Translate\Model\Entity\TranslateTerm $entity The entity that is going to be saved
 	 * @param \ArrayObject $options the options passed to the save method
 	 * @return void
 	 */

@@ -41,7 +41,7 @@ class TranslateStringsController extends TranslateAppController {
 			'contain' => []
 		];
 
-		$query = $this->TranslateStrings->find('search', ['search' => $this->request->query]);
+		$query = $this->TranslateStrings->find('search', ['search' => $this->request->getQuery()]);
 		$translateStrings = $this->paginate($query);
 
 		$options = ['conditions' => ['translate_project_id' => $this->Translation->currentProjectId()]];
@@ -74,7 +74,7 @@ class TranslateStringsController extends TranslateAppController {
 	public function add() {
 		$translateString = $this->TranslateStrings->newEntity();
 		if ($this->request->is('post')) {
-			$translateString = $this->TranslateStrings->patchEntity($translateString, $this->request->data);
+			$translateString = $this->TranslateStrings->patchEntity($translateString, $this->request->getData());
 			if ($this->TranslateStrings->save($translateString)) {
 				$this->Flash->success(__d('translate', 'The translate string has been saved.'));
 
@@ -104,7 +104,7 @@ class TranslateStringsController extends TranslateAppController {
 			'contain' => ['TranslateDomains']
 		]);
 		if ($this->request->is(['patch', 'post', 'put'])) {
-			$translateString = $this->TranslateStrings->patchEntity($translateString, $this->request->data);
+			$translateString = $this->TranslateStrings->patchEntity($translateString, $this->request->getData());
 			if ($this->TranslateStrings->save($translateString)) {
 				$this->Flash->success(__d('translate', 'The translate string has been saved.'));
 
@@ -117,7 +117,7 @@ class TranslateStringsController extends TranslateAppController {
 
 			$this->Flash->error(__d('translate', 'The translate string could not be saved. Please, try again.'));
 		} else {
-			$this->request->data = $this->request->query;
+			$this->request->data = $this->request->getQuery();
 		}
 
 		$translateDomains = $this->TranslateStrings->TranslateDomains->find('list', ['limit' => 200]);
@@ -144,6 +144,9 @@ class TranslateStringsController extends TranslateAppController {
 		return $this->redirect(['action' => 'index']);
 	}
 
+	/**
+	 * @return void
+	 */
 	public function source() {
 		//$sourceContent = $this->Common->showSource(__FILE__, true);
 		//$sourceContent = show_source(__FILE__, true);
@@ -168,7 +171,7 @@ class TranslateStringsController extends TranslateAppController {
 			$count = 0;
 			$errors = [];
 
-			foreach ((array)$this->request->data['sel_pot'] as $key => $domain) {
+			foreach ((array)$this->request->getData('sel_pot') as $key => $domain) {
 				if (!$domain) {
 					continue;
 				}
@@ -189,7 +192,7 @@ class TranslateStringsController extends TranslateAppController {
 				}
 			}
 
-			foreach ((array)$this->request->data['sel_po'] as $key => $domain) {
+			foreach ((array)$this->request->getData('sel_po') as $key => $domain) {
 				if (!$domain) {
 					continue;
 				}
@@ -258,7 +261,7 @@ class TranslateStringsController extends TranslateAppController {
 			}
 		}
 
-		if ($this->Common->isPosted() && !empty($this->request->data['domains'])) {
+		if ($this->Common->isPosted() && $this->request->getData('domains')) {
 			$count = 0;
 			$errors = [];
 			foreach ((array)$this->request->data['domains'] as $key => $domain) {
@@ -353,7 +356,7 @@ class TranslateStringsController extends TranslateAppController {
 			}
 
 			if ($success) {
-				if (array_key_exists('next', $this->request->data)) {
+				if (array_key_exists('next', $this->request->getData())) {
 					$next = $this->TranslateStrings->getNext($id)->first();
 					if (!empty($next['id'])) {
 						return $this->redirect([$next['id']]);

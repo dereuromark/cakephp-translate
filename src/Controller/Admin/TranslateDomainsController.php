@@ -57,7 +57,7 @@ class TranslateDomainsController extends TranslateAppController {
 		if ($this->request->is('post')) {
 			$this->request->data['translate_project_id'] = $this->Translation->currentProjectId();
 
-			$translateDomain = $this->TranslateDomains->patchEntity($translateDomain, $this->request->data);
+			$translateDomain = $this->TranslateDomains->patchEntity($translateDomain, $this->request->getData());
 			if ($this->TranslateDomains->save($translateDomain)) {
 				$this->Flash->success(__d('translate', 'The translate domain has been saved.'));
 				return $this->redirect(['action' => 'index']);
@@ -83,7 +83,7 @@ class TranslateDomainsController extends TranslateAppController {
 			'contain' => ['TranslateStrings']
 		]);
 		if ($this->request->is(['patch', 'post', 'put'])) {
-			$translateDomain = $this->TranslateDomains->patchEntity($translateDomain, $this->request->data);
+			$translateDomain = $this->TranslateDomains->patchEntity($translateDomain, $this->request->getData());
 			if ($this->TranslateDomains->save($translateDomain)) {
 				$this->Flash->success(__d('translate', 'The translate domain has been saved.'));
 				return $this->redirect(['action' => 'index']);

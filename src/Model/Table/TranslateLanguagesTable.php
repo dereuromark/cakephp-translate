@@ -183,6 +183,12 @@ class TranslateLanguagesTable extends Table {
 		return $this->save($translateLanguage, ['strict' => true]);
 	}
 
+	/**
+	 * @param string $type
+	 * @param array $options
+	 *
+	 * @return \Cake\ORM\Query
+	 */
 	public function getActive($type = 'all', $options = []) {
 		$defaults = ['conditions' => [$this->alias() . '.active' => 1]];
 

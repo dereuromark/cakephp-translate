@@ -37,7 +37,7 @@ class TranslateTermsController extends TranslateAppController {
 			'contain' => ['TranslateStrings', 'TranslateLanguages']
 		];
 
-		$query = $this->TranslateTerms->find('search', ['search' => $this->request->query]);
+		$query = $this->TranslateTerms->find('search', ['search' => $this->request->getQuery()]);
 		$translateTerms = $this->paginate($query);
 
 		$this->set(compact('translateTerms'));
@@ -72,7 +72,7 @@ class TranslateTermsController extends TranslateAppController {
 			'contain' => []
 		]);
 		if ($this->request->is(['patch', 'post', 'put'])) {
-			$translateTerm = $this->TranslateTerms->patchEntity($translateTerm, $this->request->data);
+			$translateTerm = $this->TranslateTerms->patchEntity($translateTerm, $this->request->getData());
 			if ($this->TranslateTerms->save($translateTerm)) {
 				$this->Flash->success(__d('translate', 'The translate term has been saved.'));
 				return $this->redirect(['action' => 'index']);

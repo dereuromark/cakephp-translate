@@ -10,6 +10,11 @@ class ConvertLib {
 	const EOL = PHP_EOL;
 
 	/**
+	 * @var \Cake\View\Helper\TextHelper|null
+	 */
+	protected $Text;
+
+	/**
 	 * Convert from text to PO file content
 	 *
 	 * Options:

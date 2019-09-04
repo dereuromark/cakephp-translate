@@ -131,7 +131,7 @@ class TranslateLanguagesController extends TranslateAppController {
 		if ($this->request->is('post')) {
 			$this->request->data['translate_project_id'] = $this->Translation->currentProjectId();
 
-			$translateLanguage = $this->TranslateLanguages->patchEntity($translateLanguage, $this->request->data);
+			$translateLanguage = $this->TranslateLanguages->patchEntity($translateLanguage, $this->request->getData());
 			if ($this->TranslateLanguages->save($translateLanguage)) {
 				$this->Flash->success(__d('translate', 'The translate language has been saved.'));
 				return $this->redirect(['action' => 'index']);
@@ -156,7 +156,7 @@ class TranslateLanguagesController extends TranslateAppController {
 			'contain' => []
 		]);
 		if ($this->request->is(['patch', 'post', 'put'])) {
-			$translateLanguage = $this->TranslateLanguages->patchEntity($translateLanguage, $this->request->data);
+			$translateLanguage = $this->TranslateLanguages->patchEntity($translateLanguage, $this->request->getData());
 			if ($this->TranslateLanguages->save($translateLanguage)) {
 				$this->Flash->success(__d('translate', 'The translate language has been saved.'));
 				return $this->redirect(['action' => 'index']);

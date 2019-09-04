@@ -58,7 +58,7 @@ class TranslateProjectsController extends TranslateAppController {
 
 		$translateProject = $this->TranslateProjects->newEntity();
 		if ($this->request->is('post')) {
-			$translateProject = $this->TranslateProjects->patchEntity($translateProject, $this->request->data);
+			$translateProject = $this->TranslateProjects->patchEntity($translateProject, $this->request->getData());
 			if ($this->TranslateProjects->save($translateProject)) {
 				$this->Flash->success(__d('translate', 'The translate project has been saved.'));
 				return $this->redirect(['action' => 'index']);
@@ -85,7 +85,7 @@ class TranslateProjectsController extends TranslateAppController {
 			'contain' => []
 		]);
 		if ($this->request->is(['patch', 'post', 'put'])) {
-			$translateProject = $this->TranslateProjects->patchEntity($translateProject, $this->request->data);
+			$translateProject = $this->TranslateProjects->patchEntity($translateProject, $this->request->getData());
 			if ($this->TranslateProjects->save($translateProject)) {
 				$this->Flash->success(__d('translate', 'The translate project has been saved.'));
 				return $this->redirect(['action' => 'index']);

@@ -20,7 +20,8 @@ class Yandex implements EngineInterface {
 	 */
 	public function translate($text, $to, $from) {
 		try {
-			$translator = new Translator(Configure::read('Yandex.key'), ['sslVerifyPeer' => false]);
+			$translator = new Translator(Configure::read('Yandex.key')); // ['sslVerifyPeer' => false]
+			/** @var \Yandex\Translate\Translation $translation */
 			$translation = $translator->translate($text, $from . '-' . $to);
 
 			$result = (string)$translation;

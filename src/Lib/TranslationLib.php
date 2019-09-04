@@ -130,7 +130,12 @@ class TranslationLib {
 		return $content;
 	}
 
+	/**
+	 * @param array $data
+	 * @return void
+	 */
 	public function exportPoFile($data) {
+		//TODO
 	}
 
 	/**

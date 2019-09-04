@@ -1,6 +1,8 @@
 <?php
 /**
  * @var \App\View\AppView $this
+ * @var mixed $text
+ * @var mixed $translate
  */
 ?>
 

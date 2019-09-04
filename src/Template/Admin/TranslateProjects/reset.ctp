@@ -1,6 +1,8 @@
 <?php
 /**
  * @var \App\View\AppView $this
+ * @var mixed $languages
+ * @var mixed $removeOptions
  */
 ?>
 <div class="page form">

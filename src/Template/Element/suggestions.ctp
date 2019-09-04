@@ -2,6 +2,7 @@
 /**
  * @var \App\View\AppView $this
  * @var string[] $suggestions
+ * @var string $key
  */
 
 if (!$suggestions) {

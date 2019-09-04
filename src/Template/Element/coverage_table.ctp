@@ -1,6 +1,8 @@
 <?php
 /**
  * @var \App\View\AppView $this
+ * @var array $coverage
+ * @var mixed $languages
  */
 ?>
 <table class="table table-striped">

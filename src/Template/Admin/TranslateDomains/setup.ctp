@@ -2,6 +2,8 @@
 /**
  * @var \App\View\AppView $this
  * @var \Translate\Model\Entity\TranslateDomain $translateDomain
+ * @var mixed $existingGroups
+ * @var mixed $groups
  */
 ?>
 <div class="page form">

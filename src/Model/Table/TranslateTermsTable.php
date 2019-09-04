@@ -184,7 +184,7 @@ class TranslateTermsTable extends Table {
 	 * @param array $translation
 	 * @param int $translateStringId
 	 * @param int $translateLanguageId
-	 * @return \Translate\Model\Entity\TranslateTerm
+	 * @return \Translate\Model\Entity\TranslateTerm|null
 	 */
 	public function import(array $translation, $translateStringId, $translateLanguageId) {
 		$translation += [

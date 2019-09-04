@@ -8,6 +8,7 @@ use Cake\Routing\Router;
 use Cake\TestSuite\IntegrationTestCase;
 
 /**
+ * @uses \Translate\Controller\Admin\TranslateController
  */
 class TranslateControllerTest extends IntegrationTestCase {
 

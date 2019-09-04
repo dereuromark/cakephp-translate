@@ -2,6 +2,8 @@
 /**
  * @var \App\View\AppView $this
  * @var \Translate\Model\Entity\TranslateTerm $translateTerm
+ * @var mixed $translateLanguages
+ * @var mixed $translateStrings
  */
 ?><nav class="col-md-3 col-sm-4 col-xs-12">
 	<ul class="side-nav nav nav-pills nav-stacked">

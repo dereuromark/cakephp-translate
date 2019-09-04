@@ -6,6 +6,8 @@ use Cake\TestSuite\IntegrationTestCase;
 
 /**
  * Translate\Controller\Admin\TranslateProjectsController Test Case
+ *
+ * @uses \Translate\Controller\Admin\TranslateProjectsController
  */
 class TranslateProjectsControllerTest extends IntegrationTestCase {
 

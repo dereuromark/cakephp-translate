@@ -1,6 +1,7 @@
 <?php
 namespace Translate\Model\Table;
 
+use Cake\ORM\TableRegistry;
 use Exception;
 use Tools\Model\Table\Table;
 use Translate\Model\Entity\TranslateProject;
@@ -15,6 +16,7 @@ use Translate\Model\Entity\TranslateProject;
  * @method \Translate\Model\Entity\TranslateProject findOrCreate($search, callable $callback = null, $options = [])
  * @mixin \Shim\Model\Behavior\NullableBehavior
  * @property \Translate\Model\Table\TranslateDomainsTable|\Cake\ORM\Association\HasMany $TranslateDomains
+ * @property \Translate\Model\Table\TranslateTermsTable|\Cake\ORM\Association\HasMany $TranslateTerms
  * @method \Translate\Model\Entity\TranslateProject|bool saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
  */
 class TranslateProjectsTable extends Table {
@@ -105,7 +107,7 @@ class TranslateProjectsTable extends Table {
 	 */
 	public function reset($id, $types, $languages = []) {
 		# bug in current 2.0.4?
-		//$this->TranslateTerm = TableRegistry::get('Translate.TranslateTerms');
+		$this->TranslateTerms = TableRegistry::get('Translate.TranslateTerms');
 
 		//$x = $this->TranslateTerms->TranslateStrings->habtmJoin;
 		// recursive = 0;

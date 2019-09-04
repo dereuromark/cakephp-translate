@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \Translate\Model\Entity\TranslateDomain[] $translateDomains
+ * @var \Translate\Model\Entity\TranslateDomain[]|\Cake\Collection\CollectionInterface $translateDomains
  */
 ?>
 <nav class="actions col-md-3 col-sm-4 col-xs-12">

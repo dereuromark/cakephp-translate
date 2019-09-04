@@ -1,8 +1,9 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \Translate\Model\Entity\TranslateLanguage[] $translateLanguages
+ * @var \Translate\Model\Entity\TranslateLanguage[]|\Cake\Collection\CollectionInterface $translateLanguages
  * @var \Translate\Model\Entity\TranslateString $translateString
+ * @var array $suggestions
  */
 
 ?>

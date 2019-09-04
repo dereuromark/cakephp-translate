@@ -2,6 +2,7 @@
 /**
  * @var \App\View\AppView $this
  * @var \Translate\Model\Entity\TranslateLanguage $translateLanguage
+ * @var mixed $Languages
  */
 ?>
 <nav class="col-md-3 col-sm-4 col-xs-12">

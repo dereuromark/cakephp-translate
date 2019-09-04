@@ -2,6 +2,9 @@
 /**
  * @var \App\View\AppView $this
  * @var \Translate\Model\Entity\TranslateLanguage $translateLanguage
+ * @var mixed $existingLanguages
+ * @var mixed $folders
+ * @var mixed $path
  */
 ?>
 <nav class="actions col-md-3 col-sm-4 col-xs-12">

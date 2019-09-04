@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \Translate\Model\Entity\TranslateApiTranslation[] $translateApiTranslations
+ * @var \Translate\Model\Entity\TranslateApiTranslation[]|\Cake\Collection\CollectionInterface $translateApiTranslations
  */
 ?>
 <nav class="actions col-md-3 col-sm-4 col-xs-12">

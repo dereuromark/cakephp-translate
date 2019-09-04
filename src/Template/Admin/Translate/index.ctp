@@ -1,6 +1,8 @@
 <?php
 /**
  * @var \App\View\AppView $this
+ * @var array $count
+ * @var mixed $coverage
  */
 
 use Cake\Core\Configure;

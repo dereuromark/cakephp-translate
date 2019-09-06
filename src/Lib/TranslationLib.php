@@ -243,7 +243,7 @@ class TranslationLib {
 	/**
 	 * @param array $entry
 	 *
-	 * @return null|string
+	 * @return string|null
 	 */
 	protected function _comment(array $entry) {
 		$rows = [];
@@ -273,7 +273,7 @@ class TranslationLib {
 	/**
 	 * @param array $entry
 	 *
-	 * @return null|string
+	 * @return string|null
 	 */
 	protected function _content(array $entry) {
 		if (isset($entry['msgstr'])) {

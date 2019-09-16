@@ -8,8 +8,6 @@ use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Translate\I18n\MessagesDbLoader;
 
-/**
- */
 class MessagesDbLoaderTest extends TestCase {
 
 	/**

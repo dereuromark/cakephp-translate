@@ -5,8 +5,6 @@ namespace Translate\Test\TestCase\Lib;
 use Cake\TestSuite\TestCase;
 use Translate\Lib\ConvertLib;
 
-/**
- */
 class ConvertLibTest extends TestCase {
 
 	/**

@@ -6,8 +6,6 @@ use Cake\Core\Configure;
 use Cake\TestSuite\TestCase;
 use Translate\Translator\Engine\Transltr;
 
-/**
- */
 class TransltrTest extends TestCase {
 
 	/**

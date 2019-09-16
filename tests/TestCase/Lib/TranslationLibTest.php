@@ -6,8 +6,6 @@ use Cake\Filesystem\Folder;
 use Cake\TestSuite\TestCase;
 use Translate\Lib\TranslationLib;
 
-/**
- */
 class TranslationLibTest extends TestCase {
 
 	/**

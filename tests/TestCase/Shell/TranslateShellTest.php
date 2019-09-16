@@ -6,8 +6,6 @@ use Cake\TestSuite\TestCase;
 use Tools\TestSuite\ConsoleOutput;
 use Translate\Shell\TranslateShell;
 
-/**
- */
 class TranslateShellTest extends TestCase {
 
 	/**

@@ -8,8 +8,6 @@ use Cake\Core\Configure;
 use Cake\TestSuite\TestCase;
 use Translate\Translator\Translator;
 
-/**
- */
 class TranslatorTest extends TestCase {
 
 	/**

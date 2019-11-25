@@ -5,9 +5,9 @@ use ArrayObject;
 use Cake\Database\Schema\TableSchema;
 use Cake\Datasource\EntityInterface;
 use Cake\Event\Event;
+use Cake\Http\Exception\InternalErrorException;
 use Cake\I18n\Time;
 use Cake\Log\Log;
-use Cake\Network\Exception\InternalErrorException;
 use Cake\ORM\Query;
 use Tools\Model\Table\Table;
 use Translate\Translator\Translator;
@@ -34,6 +34,11 @@ class TranslateStringsTable extends Table {
 	 * @var array
 	 */
 	public $order = ['name' => 'ASC'];
+
+	/**
+	 * @var \DateTime|null
+	 */
+	protected $lastImported;
 
 	/**
 	 * @var array
@@ -234,8 +239,8 @@ class TranslateStringsTable extends Table {
 	/**
 	 * @param int $translate_language_id
 	 * @param array $translateLanguages
-	 *
 	 * @return string
+	 * @throws \Cake\Http\Exception\InternalErrorException
 	 */
 	public function resolveLanguageKey($translate_language_id, $translateLanguages) {
 		foreach ($translateLanguages as $translateLanguage) {

@@ -27,7 +27,7 @@
 	<div>
 	<?php
 	foreach ($languages as $key => $language) {
-		if (in_array($key, $existingFolders)) {
+		if (in_array($key, $existingFolders, true)) {
 			echo '<p><b>'.$key . '</b>' . ' - ' . $language . ' (already exists)</p>';
 		} else {
 			echo $this->Form->control('locale.' . $key . '.confirm', ['type'=>'checkbox','label' => $key . ' (' . $language . ')']);

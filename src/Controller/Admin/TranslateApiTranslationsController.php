@@ -65,7 +65,7 @@ class TranslateApiTranslationsController extends AppController {
 	 *
 	 * @param string|null $id Translate Api Translation id.
 	 * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
-	 * @throws \Cake\Network\Exception\NotFoundException When record not found.
+	 * @throws \Cake\Http\Exception\NotFoundException When record not found.
 	 */
 	public function edit($id = null) {
 		$translateApiTranslation = $this->TranslateApiTranslations->get($id, [

@@ -10,7 +10,7 @@
 echo $this->Form->create(null, ['url' => ['controller'=>'TranslateProjects', 'action'=>'switchProject']]);
 
 $selected = '-1';
-if ($s = $this->request->session()->read('TranslateProject.id')) {
+if ($s = $this->request->getSession()->read('TranslateProject.id')) {
 	$selected = $s;
 }
 

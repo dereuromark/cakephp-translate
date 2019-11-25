@@ -71,7 +71,7 @@ class TranslateStringsControllerTest extends IntegrationTestCase {
 	 * @return void
 	 */
 	public function testExtractPost() {
-		$TranslateStrings = TableRegistry::get('Translate.TranslateStrings');
+		$TranslateStrings = TableRegistry::getTableLocator()->get('Translate.TranslateStrings');
 		$count = $TranslateStrings->find()->count();
 
 		$folder = new Folder();
@@ -131,7 +131,7 @@ Template/Account/foo.ctp:15', $translateString->references);
 		Configure::write('Translate.engine', [Test::class, TestMore::class]);
 
 		$id = 1;
-		$this->TranslateStrings = TableRegistry::get('Translate.TranslateStrings');
+		$this->TranslateStrings = TableRegistry::getTableLocator()->get('Translate.TranslateStrings');
 		$record = $this->TranslateStrings->get($id);
 
 		$groupId = $record->translate_domain_id;

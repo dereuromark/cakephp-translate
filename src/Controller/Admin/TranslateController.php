@@ -32,7 +32,7 @@ class TranslateController extends TranslateAppController {
 		$this->loadModel('Translate.TranslateLanguages');
 		$languages = $this->TranslateLanguages->find('all', ['contain' => []]);
 
-		$id = $this->request->session()->read('TranslateProject.id');
+		$id = $this->request->getSession()->read('TranslateProject.id');
 		$count = $this->TranslateDomains->statistics($id, $languages->toArray());
 		$coverage = $this->TranslateDomains->TranslateStrings->coverage($this->Translation->currentProjectId());
 		$projectSwitchArray = $this->TranslateDomains->TranslateProjects->find('list')->toArray();
@@ -53,7 +53,8 @@ class TranslateController extends TranslateAppController {
 	 */
 	public function reset() {
 		if ($this->Common->isPosted()) {
-			foreach ($this->request->data['Form']['sel'] as $sel) {
+			$selection = (array)$this->request->getData('Form.sel');
+			foreach ($selection as $sel) {
 				if (!empty($sel)) {
 					switch ($sel) {
 						case 'terms':
@@ -66,7 +67,7 @@ class TranslateController extends TranslateAppController {
 							$this->TranslateDomains->truncate();
 							break;
 						case 'languages':
-							$this->TranslateDomains->TranslateLanguages->truncate();
+							$this->TranslateDomains->TranslateStrings->TranslateTerms->TranslateLanguages->truncate();
 							break;
 					}
 				}
@@ -88,9 +89,9 @@ class TranslateController extends TranslateAppController {
 	public function translate() {
 		$this->request->allowMethod(['post']);
 
-		$text = $this->request->data('text');
-		$to = $this->request->data('to');
-		$from = $this->request->data('from');
+		$text = $this->request->getData('text');
+		$to = $this->request->getData('to');
+		$from = $this->request->getData('from');
 
 		$translator = new Translator();
 		$translation = $translator->translate($text, $to, $from);
@@ -106,11 +107,11 @@ class TranslateController extends TranslateAppController {
 	 */
 	public function convert() {
 		if ($this->Common->isPosted()) {
-			$settings = $this->request->data('Translate');
-			$text = $this->request->data['input'];
+			$settings = $this->request->getData('Translate');
+			$text = $this->request->getData('input');
 
-			$this->ConvertLib = new ConvertLib();
-			$text = $this->ConvertLib->convert($text, $settings);
+			$ConvertLib = new ConvertLib();
+			$text = $ConvertLib->convert($text, $settings);
 			$this->set(compact('text'));
 		}
 	}

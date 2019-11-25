@@ -135,9 +135,11 @@ class ExtractTask extends CoreExtractTask {
 		if ($this->_model !== null) {
 			return $this->_model;
 		}
-		$model = 'Translate.TranslateStrings';
 
-		return $this->_model = TableRegistry::get($model);
+		/** @var \Translate\Model\Table\TranslateStringsTable $model */
+		$model = TableRegistry::getTableLocator()->get('Translate.TranslateStrings');
+
+		return $this->_model = $model;
 	}
 
 }

@@ -64,7 +64,7 @@ class TranslateControllerTest extends IntegrationTestCase {
 		$this->assertResponseCode(302);
 		$this->assertRedirect();
 
-		$TranslateStrings = TableRegistry::get('Translate.TranslateStrings');
+		$TranslateStrings = TableRegistry::getTableLocator()->get('Translate.TranslateStrings');
 		$this->assertSame(0, $TranslateStrings->find()->count());
 		$this->assertSame(0, $TranslateStrings->TranslateTerms->find()->count());
 	}

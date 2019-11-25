@@ -1,7 +1,7 @@
 <?php
 namespace Translate\Controller\Admin;
 
-use Cake\Network\Exception\NotFoundException;
+use Cake\Http\Exception\NotFoundException;
 use Translate\Controller\TranslateAppController;
 use Translate\Filesystem\Dumper;
 use Translate\Lib\TranslationLib;
@@ -78,7 +78,7 @@ class TranslateStringsController extends TranslateAppController {
 			if ($this->TranslateStrings->save($translateString)) {
 				$this->Flash->success(__d('translate', 'The translate string has been saved.'));
 
-				if ($this->request->data('translate_afterwards')) {
+				if ($this->request->getData('translate_afterwards')) {
 					return $this->redirect(['action' => 'translate', $translateString->id]);
 				}
 				return $this->redirect(['action' => 'index']);
@@ -97,7 +97,7 @@ class TranslateStringsController extends TranslateAppController {
 	 *
 	 * @param string|null $id Translate String id.
 	 * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
-	 * @throws \Cake\Network\Exception\NotFoundException When record not found.
+	 * @throws \Cake\Http\Exception\NotFoundException When record not found.
 	 */
 	public function edit($id = null) {
 		$translateString = $this->TranslateStrings->get($id, [
@@ -108,7 +108,7 @@ class TranslateStringsController extends TranslateAppController {
 			if ($this->TranslateStrings->save($translateString)) {
 				$this->Flash->success(__d('translate', 'The translate string has been saved.'));
 
-				if ($this->request->data('translate_afterwards')) {
+				if ($this->request->getData('translate_afterwards')) {
 					return $this->redirect(['action' => 'translate', $id]);
 				}
 
@@ -175,7 +175,7 @@ class TranslateStringsController extends TranslateAppController {
 				if (!$domain) {
 					continue;
 				}
-				if (!in_array($domain, $potFiles)) {
+				if (!in_array($domain, $potFiles, true)) {
 					continue;
 				}
 				$translations = $translationLib->extractPotFile($domain);
@@ -248,7 +248,7 @@ class TranslateStringsController extends TranslateAppController {
 	}
 
 	/**
-	 * @return void
+	 * @return \Cake\Http\Response|null
 	 */
 	public function dump() {
 		$translateLanguages = $this->TranslateStrings->TranslateTerms->TranslateLanguages->getExtractableAsList($this->Translation->currentProjectId());
@@ -264,7 +264,9 @@ class TranslateStringsController extends TranslateAppController {
 		if ($this->Common->isPosted() && $this->request->getData('domains')) {
 			$count = 0;
 			$errors = [];
-			foreach ((array)$this->request->data['domains'] as $key => $domain) {
+			/** @var string[] $postedDomains */
+			$postedDomains = (array)$this->request->getData('domains');
+			foreach ($postedDomains as $key => $domain) {
 				list($lang, $domain) = explode('_', $domain, 2);
 
 				$langId = $this->TranslateStrings->TranslateTerms->TranslateLanguages->find()->where(['iso2' => $lang])->firstOrFail()->id;
@@ -288,7 +290,6 @@ class TranslateStringsController extends TranslateAppController {
 			if ($errors) {
 				$this->Flash->error(count($errors) . ' errors: ' . implode(', ', $errors));
 			}
-			//$this->redirect(array('action'=>'index'));
 
 		} elseif ($this->Common->isPosted() && !$map) {
 			$this->Flash->warning('Please activate a domain for dumping.');
@@ -328,8 +329,8 @@ class TranslateStringsController extends TranslateAppController {
 			$success = true;
 			foreach ($translateLanguages as $translateLanguage) {
 				$key = $translateLanguage->iso2;
-				if (isset($this->request->data['content_' . $key])) {
-					$term = $this->request->data['content_' . $key];
+				$term = $this->request->getData('content_' . $key);
+				if ($term !== null) {
 					if (!isset($translateTerms[$translateLanguage->id])) {
 						$translateTerm = $this->TranslateStrings->TranslateTerms->newEntity();
 					} else {
@@ -344,7 +345,7 @@ class TranslateStringsController extends TranslateAppController {
 					];
 					if ($translateString->plural !== null) {
 						//TODO allow more plurals
-						$data['plural_2'] = $this->request->data['plural_2_' . $key];
+						$data['plural_2'] = $this->request->getData('plural_2_' . $key);
 					}
 
 					$translateTerm = $this->TranslateStrings->TranslateTerms->patchEntity($translateTerm, $data);
@@ -381,8 +382,8 @@ class TranslateStringsController extends TranslateAppController {
 	/**
 	 * @param int $id
 	 * @param int $reference 0 based
-	 *
 	 * @return void
+	 * @throws \Cake\Http\Exception\NotFoundException
 	 */
 	public function displayReference($id, $reference) {
 		$translateString = $this->TranslateStrings->get($id, ['contain' => ['TranslateDomains']]);

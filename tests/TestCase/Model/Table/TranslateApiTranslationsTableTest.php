@@ -34,7 +34,7 @@ class TranslateApiTranslationsTableTest extends TestCase {
 	public function setUp() {
 		parent::setUp();
 		$config = TableRegistry::exists('TranslateApiTranslations') ? [] : ['className' => 'Translate\Model\Table\TranslateApiTranslationsTable'];
-		$this->TranslateApiTranslations = TableRegistry::get('TranslateApiTranslations', $config);
+		$this->TranslateApiTranslations = TableRegistry::getTableLocator()->get('TranslateApiTranslations', $config);
 	}
 
 	/**

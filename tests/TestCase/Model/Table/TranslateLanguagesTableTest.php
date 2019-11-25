@@ -39,7 +39,7 @@ class TranslateLanguagesTableTest extends TestCase {
 	public function setUp() {
 		parent::setUp();
 		$config = TableRegistry::exists('TranslateLanguages') ? [] : ['className' => 'Translate\Model\Table\TranslateLanguagesTable'];
-		$this->TranslateLanguages = TableRegistry::get('TranslateLanguages', $config);
+		$this->TranslateLanguages = TableRegistry::getTableLocator()->get('TranslateLanguages', $config);
 	}
 
 	/**

@@ -36,7 +36,7 @@ class TranslateDomainsTableTest extends TestCase {
 	public function setUp() {
 		parent::setUp();
 		$config = TableRegistry::exists('TranslateDomains') ? [] : ['className' => 'Translate\Model\Table\TranslateDomainsTable'];
-		$this->TranslateDomains = TableRegistry::get('TranslateDomains', $config);
+		$this->TranslateDomains = TableRegistry::getTableLocator()->get('TranslateDomains', $config);
 	}
 
 	/**

@@ -115,7 +115,7 @@ class TranslateLanguagesTable extends Table {
 	 * @param array $config
 	 */
 	public function __construct(array $config = []) {
-		if (!Plugin::loaded('Data')) {
+		if (!Plugin::isLoaded('Data')) {
 			unset($this->belongsTo['Language']);
 		}
 

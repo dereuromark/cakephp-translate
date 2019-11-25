@@ -36,7 +36,7 @@ class Translator {
 
 		$engine = $this->getConfig('engine');
 
-		$this->_cache = TableRegistry::get('Translate.TranslateApiTranslations');
+		$this->_cache = TableRegistry::getTableLocator()->get('Translate.TranslateApiTranslations');
 	}
 
 	/**

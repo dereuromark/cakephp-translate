@@ -18,7 +18,7 @@
 		echo '<ul>';
 		foreach ($group as $subgroup) {
 
-			if (in_array($subgroup, $existingGroups)) {
+			if (in_array($subgroup, $existingGroups, true)) {
 				echo '<li>'.$subgroup.'</li> (already exists)';
 			} else {
 			echo '<li>'.$this->Form->control('TranslateDomain.'.$count.'.confirm', ['type'=>'checkbox','label'=>$subgroup]).''.$this->Form->control('TranslateDomain.'.$count.'.name', ['type'=>'hidden','value'=>$subgroup]).'</li>';

@@ -23,7 +23,7 @@ class TranslationLib {
 
 			$names[] = $name;
 			$singular = Inflector::singularize($name);
-			if (!in_array($singular, $names)) {
+			if (!in_array($singular, $names, true)) {
 				$names[] = $singular;
 			}
 		}

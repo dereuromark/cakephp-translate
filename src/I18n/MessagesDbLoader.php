@@ -67,7 +67,7 @@ class MessagesDbLoader {
 	public function __invoke() {
 		$model = $this->_model;
 		if (is_string($model)) {
-			$model = TableRegistry::get($this->_model);
+			$model = TableRegistry::getTableLocator()->get($this->_model);
 			if (!$model) {
 				throw new RuntimeException(
 					sprintf('Unable to load model "%s".', $this->_model)

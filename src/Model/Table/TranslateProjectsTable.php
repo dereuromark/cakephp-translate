@@ -107,7 +107,7 @@ class TranslateProjectsTable extends Table {
 	 */
 	public function reset($id, $types, $languages = []) {
 		# bug in current 2.0.4?
-		$this->TranslateTerms = TableRegistry::get('Translate.TranslateTerms');
+		$this->TranslateTerms = TableRegistry::getTableLocator()->get('Translate.TranslateTerms');
 
 		//$x = $this->TranslateTerms->TranslateStrings->habtmJoin;
 		// recursive = 0;

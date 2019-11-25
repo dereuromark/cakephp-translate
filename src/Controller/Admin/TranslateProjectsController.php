@@ -1,7 +1,6 @@
 <?php
 namespace Translate\Controller\Admin;
 
-use Cake\ORM\TableRegistry;
 use Translate\Controller\TranslateAppController;
 use Translate\Model\Entity\TranslateProject;
 
@@ -9,6 +8,7 @@ use Translate\Model\Entity\TranslateProject;
  * TranslateProjects Controller
  *
  * @property \Translate\Model\Table\TranslateProjectsTable $TranslateProjects
+ * @property \Translate\Model\Table\TranslateLanguagesTable $TranslateLanguages
  * @method \Translate\Model\Entity\TranslateProject[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class TranslateProjectsController extends TranslateAppController {
@@ -78,7 +78,7 @@ class TranslateProjectsController extends TranslateAppController {
 	 *
 	 * @param string|null $id Translate Project id.
 	 * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
-	 * @throws \Cake\Network\Exception\NotFoundException When record not found.
+	 * @throws \Cake\Http\Exception\NotFoundException When record not found.
 	 */
 	public function edit($id = null) {
 		$translateProject = $this->TranslateProjects->get($id, [
@@ -120,9 +120,9 @@ class TranslateProjectsController extends TranslateAppController {
 	 * @return \Cake\Http\Response
 	 */
 	public function switchProject() {
-		$projectId = !empty($this->request->data['project_switch']) ? (int)$this->request->data['project_switch'] : 0;
+		$projectId = (int)$this->request->getData('project_switch');
 		if ($projectId && ($project = $this->TranslateProjects->get($projectId))) {
-			$this->request->session()->write('TranslateProject.id', $project->translateProject['id']);
+			$this->request->getSession()->write('TranslateProject.id', $project->translateProject['id']);
 			$this->Flash->success(__d('translate', 'Project switched'));
 		}
 
@@ -138,12 +138,12 @@ class TranslateProjectsController extends TranslateAppController {
 			'strings' => __d('translate', 'Translate Strings'),
 			'groups' => __d('translate', 'Translate Domains'),
 		];
-		$this->TranslateLanguage = TableRegistry::get('Translate.TranslateLanguages');
+		$this->loadModel('Translate.TranslateLanguages');
 		$languages = $this->TranslateLanguages->find('list');
-		$id = $this->request->session()->read('TranslateProject.id');
+		$id = $this->request->getSession()->read('TranslateProject.id');
 
 		if ($this->Common->isPosted()) {
-			$this->TranslateProjects->reset($id, $this->request->data['Form']['reset'], $this->request->data['Form']['language']);
+			$this->TranslateProjects->reset($id, $this->request->getData('Form.reset'), $this->request->getData('Form.language'));
 
 			$this->Flash->success(__d('translate', 'Done'));
 			//$this->Common->autoRedirect(array('controller'=>'translate', 'action'=>'index'));

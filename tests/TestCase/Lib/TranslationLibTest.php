@@ -197,6 +197,7 @@ class TranslationLibTest extends TestCase {
 		$is = $this->TranslationLib->getResourceNames();
 
 		//$this->assertTrue(!empty($is));
+		$this->assertSame([], $is);
 	}
 
 }

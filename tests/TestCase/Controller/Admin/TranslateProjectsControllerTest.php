@@ -51,7 +51,7 @@ class TranslateProjectsControllerTest extends IntegrationTestCase {
 	 * @return void
 	 */
 	public function testAdd() {
-		$TranslateProjects = TableRegistry::get('Translate.TranslateProjects');
+		$TranslateProjects = TableRegistry::getTableLocator()->get('Translate.TranslateProjects');
 		$TranslateProjects->truncate();
 
 		$this->get(['prefix' => 'admin', 'plugin' => 'Translate', 'controller' => 'TranslateProjects', 'action' => 'add']);

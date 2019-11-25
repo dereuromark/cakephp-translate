@@ -39,7 +39,7 @@ class TranslateStringsTableTest extends TestCase {
 	public function setUp() {
 		parent::setUp();
 		$config = TableRegistry::exists('TranslateStrings') ? [] : ['className' => 'Translate\Model\Table\TranslateStringsTable'];
-		$this->TranslateStrings = TableRegistry::get('TranslateStrings', $config);
+		$this->TranslateStrings = TableRegistry::getTableLocator()->get('TranslateStrings', $config);
 	}
 
 	/**

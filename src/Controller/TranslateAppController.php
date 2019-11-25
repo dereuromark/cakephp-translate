@@ -35,13 +35,13 @@ class TranslateAppController extends AppController {
 		parent::beforeFilter($event);
 
 		/*
-		if ($this->request->session()->check('TranslateProject.id')) {
+		if ($this->request->getSession()->check('TranslateProject.id')) {
 			return null;
 		}
 
 		$this->loadModel('Translate.TranslateProjects');
 		$id = $this->TranslateProjects->getDefaultProjectId();
-		$this->request->session()->write('TranslateProject.id', $id);
+		$this->request->getSession()->write('TranslateProject.id', $id);
 		*/
 
 		return null;

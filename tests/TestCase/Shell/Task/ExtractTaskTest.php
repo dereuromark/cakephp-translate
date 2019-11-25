@@ -65,7 +65,7 @@ class ExtractTaskTest extends TestCase {
 		$this->Task->setPath(Plugin::path('Translate') . 'tests' . DS . 'test_files' . DS . 'src' . DS);
 
 		/** @var \Translate\Model\Table\TranslateStringsTable $TranslateStrings */
-		$TranslateStrings = TableRegistry::get('Translate.TranslateStrings');
+		$TranslateStrings = TableRegistry::getTableLocator()->get('Translate.TranslateStrings');
 		$TranslateStrings->truncate();
 
 		$this->Task->main();

@@ -29,7 +29,8 @@ class TranslateLanguagesController extends TranslateAppController {
 
 		if ($this->Common->isPosted()) {
 			$data = [];
-			foreach ($this->request->data['locale'] as $lang => $value) {
+			$locales = (array)$this->request->getData('locale');
+			foreach ($locales as $lang => $value) {
 				if (!empty($value)) {
 					$data[] = $lang;
 				}
@@ -62,7 +63,8 @@ class TranslateLanguagesController extends TranslateAppController {
 
 		if ($this->Common->isPosted()) {
 			$translateLanguages = [];
-			foreach ($this->request->data['language'] as $key => $data) {
+			$languages = (array)$this->request->getData('language');
+			foreach ($languages as $key => $data) {
 				if (empty($data['confirm'])) {
 					continue;
 				}
@@ -149,7 +151,7 @@ class TranslateLanguagesController extends TranslateAppController {
 	 *
 	 * @param string|null $id Translate Language id.
 	 * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
-	 * @throws \Cake\Network\Exception\NotFoundException When record not found.
+	 * @throws \Cake\Http\Exception\NotFoundException When record not found.
 	 */
 	public function edit($id = null) {
 		$translateLanguage = $this->TranslateLanguages->get($id, [

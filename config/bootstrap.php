@@ -7,7 +7,7 @@ if (!defined('LOCALE')) {
 	define('LOCALE', APP . 'Locale' . DS);
 }
 
-$className = Plugin::loaded('DatabaseLog') ? 'DatabaseLog.Database' : 'Cake\Log\Engine\FileLog';
+$className = Plugin::isLoaded('DatabaseLog') ? 'DatabaseLog.Database' : 'Cake\Log\Engine\FileLog';
 
 $log = [
 	'translate' => [
@@ -17,4 +17,4 @@ $log = [
 		'scopes' => ['import'],
 	],
 ];
-Log::config($log);
+Log::setConfig($log);

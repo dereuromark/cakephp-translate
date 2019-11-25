@@ -67,12 +67,12 @@ class TranslateTermsTable extends Table {
 			'numeric' => [
 				'rule' => ['numeric'],
 				'message' => 'valErrMandatoryField',
-				'last' => true
+				'last' => true,
 			],
 		],
 		'user_id' => ['notEmpty'],
 		'confirmed' => ['numeric'],
-		'confirmed_by' => ['notEmpty']
+		'confirmed_by' => ['notEmpty'],
 	];
 
 	/**

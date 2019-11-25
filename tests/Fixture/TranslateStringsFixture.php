@@ -33,7 +33,7 @@ class TranslateStringsFixture extends TestFixture {
 		],
 		'_options' => [
 			'engine' => 'InnoDB',
-			'collation' => 'utf8mb4_unicode_ci'
+			'collation' => 'utf8mb4_unicode_ci',
 		],
 	];
 
@@ -57,7 +57,7 @@ class TranslateStringsFixture extends TestFixture {
 			'is_html' => 1,
 			'last_import' => '2017-04-23',
 			'created' => '2017-04-23 21:08:10',
-			'modified' => '2017-04-23 21:08:10'
+			'modified' => '2017-04-23 21:08:10',
 		],
 	];
 

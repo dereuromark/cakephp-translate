@@ -55,8 +55,8 @@ class TranslateControllerTest extends IntegrationTestCase {
 				'sel' => [
 					'terms',
 					'strings',
-				]
-			]
+				],
+			],
 		];
 
 		$this->post(['prefix' => 'admin', 'plugin' => 'Translate', 'controller' => 'Translate', 'action' => 'reset'], $data);

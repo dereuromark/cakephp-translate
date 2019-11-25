@@ -105,7 +105,7 @@ class TranslationHelper extends Helper {
 		$color = [
 			'r' => $this->start['r'] + (int)((($this->end['r'] - $this->start['r']) * $value) / 100),
 			'g' => $this->start['g'] + (int)((($this->end['g'] - $this->start['g']) * $value) / 100),
-			'b' => $this->start['b'] + (int)((($this->end['b'] - $this->start['b']) * $value) / 100)
+			'b' => $this->start['b'] + (int)((($this->end['b'] - $this->start['b']) * $value) / 100),
 		];
 
 		return $color;

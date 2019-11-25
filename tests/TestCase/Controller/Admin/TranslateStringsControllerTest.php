@@ -82,7 +82,7 @@ class TranslateStringsControllerTest extends IntegrationTestCase {
 
 		$data = [
 			'sel_pot' => [
-				'default'
+				'default',
 			],
 			'sel_po' => [
 			],

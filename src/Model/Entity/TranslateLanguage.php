@@ -33,7 +33,7 @@ class TranslateLanguage extends Entity {
 	 */
 	protected $_accessible = [
 		'*' => true,
-		'id' => false
+		'id' => false,
 	];
 
 }

@@ -39,7 +39,7 @@ class TranslateLanguagesTable extends Table {
 			'minLength' => [
 				'rule' => ['notEmpty'],
 				'message' => 'Please insert a language name',
-				'last' => true
+				'last' => true,
 			],
 			'isUnique' => [
 				'rule' => ['validateUnique', ['scope' => ['translate_project_id']]],
@@ -64,7 +64,7 @@ class TranslateLanguagesTable extends Table {
 			'notEmpty' => [
 				'rule' => ['notEmpty'],
 				'message' => 'Please insert a abbreviation / folder-name',
-				'last' => true
+				'last' => true,
 			],
 			'isUnique' => [
 				'rule' => ['isUnique'],
@@ -80,7 +80,7 @@ class TranslateLanguagesTable extends Table {
 				'allowEmpty' => true,
 			],
 		],
-		'active' => ['boolean']
+		'active' => ['boolean'],
 	];
 
 	/**
@@ -105,7 +105,7 @@ class TranslateLanguagesTable extends Table {
 			'className' => 'Translate.TranslateProject',
 			'conditions' => '',
 			'fields' => '',
-			'order' => ''
+			'order' => '',
 		],
 	];
 

@@ -114,7 +114,7 @@ class TranslateLanguagesController extends TranslateAppController {
 	 */
 	public function view($id = null) {
 		$translateLanguage = $this->TranslateLanguages->get($id, [
-			'contain' => ['TranslateTerms']
+			'contain' => ['TranslateTerms'],
 		]);
 
 		$this->set(compact('translateLanguage'));
@@ -153,7 +153,7 @@ class TranslateLanguagesController extends TranslateAppController {
 	 */
 	public function edit($id = null) {
 		$translateLanguage = $this->TranslateLanguages->get($id, [
-			'contain' => []
+			'contain' => [],
 		]);
 		if ($this->request->is(['patch', 'post', 'put'])) {
 			$translateLanguage = $this->TranslateLanguages->patchEntity($translateLanguage, $this->request->getData());

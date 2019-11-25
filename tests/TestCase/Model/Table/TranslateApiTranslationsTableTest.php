@@ -23,7 +23,7 @@ class TranslateApiTranslationsTableTest extends TestCase {
 	 * @var array
 	 */
 	public $fixtures = [
-		'plugin.translate.translate_api_translations'
+		'plugin.translate.translate_api_translations',
 	];
 
 	/**

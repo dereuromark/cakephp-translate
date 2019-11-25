@@ -69,7 +69,7 @@ class TranslateProjectsTable extends Table {
 		'TranslateDomain' => [
 			'className' => 'Translate.TranslateDomain',
 			'dependent' => true,
-		]
+		],
 	];
 
 	/**
@@ -90,7 +90,7 @@ class TranslateProjectsTable extends Table {
 		$options = [
 			'fields' => ['id'],
 			'conditions' => [$this->getAlias() . '.status >' => TranslateProject::STATUS_INACTIVE],
-			'order' => [$this->getAlias() . '.default' => 'DESC']
+			'order' => [$this->getAlias() . '.default' => 'DESC'],
 		];
 		$res = $this->find('first', $options);
 		if (!$res) {
@@ -122,7 +122,7 @@ class TranslateProjectsTable extends Table {
 							'TranslateDomain.translate_project_id' => $id,
 						],
 						'fields' => ['TranslateTerms.id', 'TranslateTerms.id'],
-						'contain' => ['TranslateDomains' => ['TranslateStrings']]
+						'contain' => ['TranslateDomains' => ['TranslateStrings']],
 					];
 					# bug in deleteAll (cannot use containable/recursion)
 					$res = $this->TranslateTerms->deleteAll($options['conditions']);

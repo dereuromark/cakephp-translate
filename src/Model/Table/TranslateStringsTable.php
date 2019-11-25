@@ -47,19 +47,19 @@ class TranslateStringsTable extends Table {
 			],
 			'minLength' => [
 				'rule' => ['minLength', 2],
-				'message' => 'Should have at least 2 characters'
+				'message' => 'Should have at least 2 characters',
 			],
 		],
 		'user_id' => [
 			'notEmpty' => [
 				'rule' => ['notEmpty'],
-				'message' => 'valErrMandatoryField'
+				'message' => 'valErrMandatoryField',
 			],
 		],
 		'translate_domain_id' => [
 			'numeric' => [
 				'rule' => ['numeric'],
-				'message' => 'valErrMandatoryField'
+				'message' => 'valErrMandatoryField',
 			],
 		],
 	];
@@ -82,7 +82,7 @@ class TranslateStringsTable extends Table {
 		'TranslateTerm' => [
 			'className' => 'Translate.TranslateTerm',
 			'dependent' => true,
-		]
+		],
 	];
 
 	/**
@@ -167,7 +167,7 @@ class TranslateStringsTable extends Table {
 
 		$options = [
 			//'TranslateStrings.active' => true,
-			'TranslateDomains.translate_project_id' => $id
+			'TranslateDomains.translate_project_id' => $id,
 		];
 		$total = $this->find()->contain(['TranslateDomains'])->where($options)->count();
 
@@ -209,7 +209,7 @@ class TranslateStringsTable extends Table {
 		$options = [
 			'conditions' => [
 				'TranslateStrings.id !=' => $id,
-			]
+			],
 		] + $options;
 		$query = $this->find('all', $options);
 		$query->leftJoinWith('TranslateTerms');

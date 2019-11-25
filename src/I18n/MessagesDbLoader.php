@@ -144,7 +144,7 @@ class MessagesDbLoader {
 
 			$key = $item['translate_string']['plural'];
 			$plurals = [
-				$translation
+				$translation,
 			];
 			for ($i = 1; $i <= $pluralForms; $i++) {
 				$plurals[] = $item['plural_' . ($i + 1)];

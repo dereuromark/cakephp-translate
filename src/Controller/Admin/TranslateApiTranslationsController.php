@@ -32,7 +32,7 @@ class TranslateApiTranslationsController extends AppController {
 	 */
 	public function view($id = null) {
 		$translateApiTranslation = $this->TranslateApiTranslations->get($id, [
-			'contain' => []
+			'contain' => [],
 		]);
 
 		$this->set(compact('translateApiTranslation'));
@@ -69,7 +69,7 @@ class TranslateApiTranslationsController extends AppController {
 	 */
 	public function edit($id = null) {
 		$translateApiTranslation = $this->TranslateApiTranslations->get($id, [
-			'contain' => []
+			'contain' => [],
 		]);
 		if ($this->request->is(['patch', 'post', 'put'])) {
 			$translateApiTranslation = $this->TranslateApiTranslations->patchEntity($translateApiTranslation, $this->request->getData());

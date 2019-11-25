@@ -62,7 +62,7 @@ class GoogleTranslate {
 		$fields = [
 			'sl' => urlencode($source),
 			'tl' => urlencode($target),
-			'q' => urlencode($text)
+			'q' => urlencode($text),
 		];
 		if (strlen($fields['q']) >= 5000) {
 			throw new Exception('Maximum number of characters exceeded: 5000');

@@ -38,7 +38,7 @@ class TranslateProjectsController extends TranslateAppController {
 	 */
 	public function view($id = null) {
 		$translateProject = $this->TranslateProjects->get($id, [
-			'contain' => ['TranslateDomains']
+			'contain' => ['TranslateDomains'],
 		]);
 
 		$this->set(compact('translateProject'));
@@ -82,7 +82,7 @@ class TranslateProjectsController extends TranslateAppController {
 	 */
 	public function edit($id = null) {
 		$translateProject = $this->TranslateProjects->get($id, [
-			'contain' => []
+			'contain' => [],
 		]);
 		if ($this->request->is(['patch', 'post', 'put'])) {
 			$translateProject = $this->TranslateProjects->patchEntity($translateProject, $this->request->getData());

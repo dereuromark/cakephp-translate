@@ -23,7 +23,7 @@ class TranslateDomainsController extends TranslateAppController {
 	 */
 	public function index() {
 		$this->paginate = [
-			'contain' => ['TranslateProjects']
+			'contain' => ['TranslateProjects'],
 		];
 		$translateDomains = $this->paginate();
 
@@ -40,7 +40,7 @@ class TranslateDomainsController extends TranslateAppController {
 	 */
 	public function view($id = null) {
 		$translateDomain = $this->TranslateDomains->get($id, [
-			'contain' => ['TranslateProjects', 'TranslateStrings']
+			'contain' => ['TranslateProjects', 'TranslateStrings'],
 		]);
 
 		$this->set(compact('translateDomain'));
@@ -80,7 +80,7 @@ class TranslateDomainsController extends TranslateAppController {
 	 */
 	public function edit($id = null) {
 		$translateDomain = $this->TranslateDomains->get($id, [
-			'contain' => ['TranslateStrings']
+			'contain' => ['TranslateStrings'],
 		]);
 		if ($this->request->is(['patch', 'post', 'put'])) {
 			$translateDomain = $this->TranslateDomains->patchEntity($translateDomain, $this->request->getData());

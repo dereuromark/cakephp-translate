@@ -26,7 +26,7 @@ class TranslateApiTranslationsFixture extends TestFixture {
 		],
 		'_options' => [
 			'engine' => 'InnoDB',
-			'collation' => 'utf8_general_ci'
+			'collation' => 'utf8_general_ci',
 		],
 	];
 
@@ -43,7 +43,7 @@ class TranslateApiTranslationsFixture extends TestFixture {
 			'from' => 'Lore',
 			'to' => 'Lore',
 			'engine' => 'Lorem ipsum dolor sit amet',
-			'created' => '2017-04-23 11:50:13'
+			'created' => '2017-04-23 11:50:13',
 		],
 	];
 

@@ -27,7 +27,7 @@ class TranslateDomainsFixture extends TestFixture {
 		],
 		'_options' => [
 			'engine' => 'InnoDB',
-			'collation' => 'utf8mb4_unicode_ci'
+			'collation' => 'utf8mb4_unicode_ci',
 		],
 	];
 
@@ -45,7 +45,7 @@ class TranslateDomainsFixture extends TestFixture {
 			'prio' => 1,
 			'path' => 'Lorem ipsum dolor sit amet',
 			'created' => '2017-04-15 01:23:08',
-			'modified' => '2017-04-15 01:23:08'
+			'modified' => '2017-04-15 01:23:08',
 		],
 	];
 

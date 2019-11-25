@@ -105,7 +105,7 @@ class MessagesDbLoaderTest extends TestCase {
 			'name' => 'Sing',
 			'plural' => 'Plur',
 			'content' => 'SingTrans',
-			'plural_2' => 'PlurTrans'
+			'plural_2' => 'PlurTrans',
 		];
 		$translateString = $TranslateStrings->import($translation, $default->id);
 		$TranslateStrings->TranslateTerms->import($translation, $translateString->id, $de->id);
@@ -115,7 +115,7 @@ class MessagesDbLoaderTest extends TestCase {
 			'name' => 'Sing',
 			'plural' => 'Plur',
 			'content' => 'MySingTrans',
-			'plural_2' => 'MyPlurTrans'
+			'plural_2' => 'MyPlurTrans',
 		];
 		$translateString = $TranslateStrings->import($translation, $default->id);
 		$TranslateStrings->TranslateTerms->import($translation, $translateString->id, $de->id);
@@ -131,7 +131,7 @@ class MessagesDbLoaderTest extends TestCase {
 			'name' => 'Sing',
 			'plural' => 'Plur',
 			'content' => 'SingTrans',
-			'plural_2' => 'PlurTrans'
+			'plural_2' => 'PlurTrans',
 		];
 		$translateString = $TranslateStrings->import($translation, $dom->id);
 		$TranslateStrings->TranslateTerms->import($translation, $translateString->id, $de->id);
@@ -141,7 +141,7 @@ class MessagesDbLoaderTest extends TestCase {
 			'name' => 'Sing',
 			'plural' => 'Plur',
 			'content' => 'MySingTrans',
-			'plural_2' => 'MyPlurTrans'
+			'plural_2' => 'MyPlurTrans',
 		];
 		$translateString = $TranslateStrings->import($translation, $dom->id);
 		$TranslateStrings->TranslateTerms->import($translation, $translateString->id, $de->id);

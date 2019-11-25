@@ -137,7 +137,7 @@ class TranslationLibTest extends TestCase {
 
 		$expected = [
 			'_context' => [
-				'context' => 'translated-string'
+				'context' => 'translated-string',
 			],
 		];
 		$this->assertSame($expected, $is['untranslated-string']);
@@ -147,7 +147,7 @@ class TranslationLibTest extends TestCase {
 				'context' => [
 					'{0} Baum',
 					'{0} Bäume',
-				]
+				],
 			],
 		];
 		$this->assertSame($expected, $is['p:{0} trees']);
@@ -165,7 +165,7 @@ class TranslationLibTest extends TestCase {
 		$expected = [
 			'Error' => [
 				'_context' => [
-					'' => 'Fehler'
+					'' => 'Fehler',
 				],
 			],
 			'The requested address {0} was not found on this server.' => [
@@ -185,7 +185,7 @@ class TranslationLibTest extends TestCase {
 						1 => '{0} Jahre',
 					],
 				],
-			]
+			],
 		];
 		$this->assertSame($expected, $is);
 	}

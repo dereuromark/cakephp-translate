@@ -34,7 +34,7 @@ class TranslateTermsController extends TranslateAppController {
 	 */
 	public function index() {
 		$this->paginate = [
-			'contain' => ['TranslateStrings', 'TranslateLanguages']
+			'contain' => ['TranslateStrings', 'TranslateLanguages'],
 		];
 
 		$query = $this->TranslateTerms->find('search', ['search' => $this->request->getQuery()]);
@@ -53,7 +53,7 @@ class TranslateTermsController extends TranslateAppController {
 	 */
 	public function view($id = null) {
 		$translateTerm = $this->TranslateTerms->get($id, [
-			'contain' => ['TranslateStrings', 'TranslateLanguages']
+			'contain' => ['TranslateStrings', 'TranslateLanguages'],
 		]);
 
 		$this->set(compact('translateTerm'));
@@ -69,7 +69,7 @@ class TranslateTermsController extends TranslateAppController {
 	 */
 	public function edit($id = null) {
 		$translateTerm = $this->TranslateTerms->get($id, [
-			'contain' => []
+			'contain' => [],
 		]);
 		if ($this->request->is(['patch', 'post', 'put'])) {
 			$translateTerm = $this->TranslateTerms->patchEntity($translateTerm, $this->request->getData());

@@ -23,13 +23,8 @@ class TranslateDomainsFixture extends TestFixture {
 		'path' => ['type' => 'string', 'length' => 255, 'null' => true, 'default' => null, 'collate' => 'utf8mb4_unicode_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
 		'created' => ['type' => 'datetime', 'length' => null, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null],
 		'modified' => ['type' => 'datetime', 'length' => null, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null],
-		'_constraints' => [
-			'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
-		],
-		'_options' => [
-			'engine' => 'InnoDB',
-			'collation' => 'utf8mb4_unicode_ci',
-		],
+		'_constraints' => ['primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []]],
+		'_options' => ['engine' => 'InnoDB', 'collation' => 'utf8mb4_unicode_ci'],
 	];
 
 	/**

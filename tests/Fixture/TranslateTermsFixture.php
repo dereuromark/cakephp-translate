@@ -27,13 +27,8 @@ class TranslateTermsFixture extends TestFixture {
 		'confirmed_by' => ['type' => 'integer', 'length' => 10, 'null' => true, 'default' => null, 'collate' => 'utf8mb4_unicode_ci', 'fixed' => null],
 		'created' => ['type' => 'datetime', 'length' => null, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null],
 		'modified' => ['type' => 'datetime', 'length' => null, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null],
-		'_constraints' => [
-			'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
-		],
-		'_options' => [
-			'engine' => 'InnoDB',
-			'collation' => 'utf8mb4_unicode_ci'
-		],
+		'_constraints' => ['primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []]],
+		'_options' => ['engine' => 'InnoDB', 'collation' => 'utf8mb4_unicode_ci']
 	];
 
 	/**

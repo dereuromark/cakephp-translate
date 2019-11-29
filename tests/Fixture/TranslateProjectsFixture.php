@@ -23,13 +23,8 @@ class TranslateProjectsFixture extends TestFixture {
 		'status' => ['type' => 'integer', 'length' => 2, 'unsigned' => false, 'null' => false, 'default' => '0', 'comment' => '', 'precision' => null, 'autoIncrement' => null],
 		'created' => ['type' => 'datetime', 'length' => null, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null],
 		'modified' => ['type' => 'datetime', 'length' => null, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null],
-		'_constraints' => [
-			'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
-		],
-		'_options' => [
-			'engine' => 'InnoDB',
-			'collation' => 'utf8mb4_unicode_ci'
-		],
+		'_constraints' => ['primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []]],
+		'_options' => ['engine' => 'InnoDB', 'collation' => 'utf8mb4_unicode_ci']
 	];
 
 	/**

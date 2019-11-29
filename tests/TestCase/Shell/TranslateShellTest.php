@@ -10,7 +10,7 @@ use Translate\Shell\TranslateShell;
 class TranslateShellTest extends TestCase {
 
 	/**
-	 * @var \Translate\Shell\TranslateShell|\PHPUnit_Framework_MockObject_MockObject
+	 * @var \Translate\Shell\TranslateShell|\PHPUnit\Framework\MockObject\MockObject
 	 */
 	public $Shell;
 

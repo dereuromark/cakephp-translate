@@ -14,11 +14,11 @@ class MessagesDbLoaderTest extends TestCase {
 	 * @var array
 	 */
 	public $fixtures = [
-		'plugin.translate.translate_terms',
-		'plugin.translate.translate_strings',
-		'plugin.translate.translate_domains',
-		'plugin.translate.translate_languages',
-		'plugin.translate.translate_projects',
+		'plugin.Translate.TranslateTerms',
+		'plugin.Translate.TranslateStrings',
+		'plugin.Translate.TranslateDomains',
+		'plugin.Translate.TranslateLanguages',
+		'plugin.Translate.TranslateProjects',
 	];
 
 	/**

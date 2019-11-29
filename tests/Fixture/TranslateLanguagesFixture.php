@@ -25,13 +25,8 @@ class TranslateLanguagesFixture extends TestFixture {
 		'active' => ['type' => 'boolean', 'length' => null, 'null' => false, 'default' => '1', 'comment' => '', 'precision' => null],
 		'base' => ['type' => 'boolean', 'length' => null, 'null' => false, 'default' => '0', 'comment' => '', 'precision' => null],
 		'primary' => ['type' => 'boolean', 'length' => null, 'null' => false, 'default' => '0', 'comment' => '', 'precision' => null],
-		'_constraints' => [
-			'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
-		],
-		'_options' => [
-			'engine' => 'InnoDB',
-			'collation' => 'utf8mb4_unicode_ci'
-		],
+		'_constraints' => ['primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []]],
+		'_options' => ['engine' => 'InnoDB', 'collation' => 'utf8mb4_unicode_ci']
 	];
 
 	/**

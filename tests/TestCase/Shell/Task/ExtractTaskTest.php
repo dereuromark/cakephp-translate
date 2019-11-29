@@ -15,13 +15,13 @@ class ExtractTaskTest extends TestCase {
 	 * @var array
 	 */
 	public $fixtures = [
-		'plugin.translate.translate_strings',
-		'plugin.translate.translate_domains',
-		'plugin.translate.translate_projects',
+		'plugin.Translate.TranslateStrings',
+		'plugin.Translate.TranslateDomains',
+		'plugin.Translate.TranslateProjects',
 	];
 
 	/**
-	 * @var \Translate\Shell\Task\ExtractTask|\PHPUnit_Framework_MockObject_MockObject
+	 * @var \Translate\Shell\Task\ExtractTask|\PHPUnit\Framework\MockObject\MockObject
 	 */
 	public $Task;
 

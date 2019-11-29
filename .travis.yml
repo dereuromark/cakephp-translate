@@ -2,7 +2,6 @@ language: php
 
 php:
   - 5.6
-  - 7.3
   - 7.4snapshot
 
 services:
@@ -40,6 +39,7 @@ before_script:
 
 script:
   - if [[ $DEFAULT == 1 ]]; then vendor/bin/phpunit ; fi
+
   - if [[ $PHPCS == 1 ]]; then composer cs-check ; fi
 
   - if [[ $CODECOVERAGE == 1 ]]; then vendor/bin/phpunit --coverage-clover=clover.xml || true ; fi

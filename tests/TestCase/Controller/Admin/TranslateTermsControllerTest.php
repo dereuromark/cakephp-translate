@@ -17,8 +17,8 @@ class TranslateTermsControllerTest extends IntegrationTestCase {
 	 * @var array
 	 */
 	public $fixtures = [
-		'plugin.translate.translate_terms',
-		'plugin.translate.translate_strings',
+		'plugin.Translate.TranslateTerms',
+		'plugin.Translate.TranslateStrings',
 	];
 
 	/**

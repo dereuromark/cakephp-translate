@@ -1,4 +1,5 @@
 <?php
+
 namespace Translate\Model\Table;
 
 use Cake\Validation\Validator;

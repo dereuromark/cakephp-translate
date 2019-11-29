@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Translate\Translator\Engine;
 
 use Cake\Core\Configure;

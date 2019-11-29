@@ -1,4 +1,5 @@
 <?php
+
 namespace Translate\Lib;
 
 use Cake\Filesystem\Folder;

@@ -1,4 +1,5 @@
 <?php
+
 namespace Translate\Test\TestCase\Shell;
 
 use Cake\Console\ConsoleIo;

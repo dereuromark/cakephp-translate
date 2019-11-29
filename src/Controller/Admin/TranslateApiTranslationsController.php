@@ -1,4 +1,5 @@
 <?php
+
 namespace Translate\Controller\Admin;
 
 use App\Controller\AppController;

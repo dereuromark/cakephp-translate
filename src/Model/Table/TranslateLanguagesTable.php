@@ -3,6 +3,7 @@
 /**
  * @see: http://www.loc.gov/standards/iso639-2/php/code_list.php
  */
+
 namespace Translate\Model\Table;
 
 use ArrayObject;

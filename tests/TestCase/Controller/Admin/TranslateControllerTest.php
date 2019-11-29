@@ -1,4 +1,5 @@
 <?php
+
 namespace Translate\Test\TestCase\Controller\Admin;
 
 use App\Translator\Engine\Test;

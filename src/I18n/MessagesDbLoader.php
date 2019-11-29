@@ -1,4 +1,5 @@
 <?php
+
 namespace Translate\I18n;
 
 use Aura\Intl\Package;

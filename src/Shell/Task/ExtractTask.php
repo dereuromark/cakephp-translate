@@ -1,4 +1,5 @@
 <?php
+
 namespace Translate\Shell\Task;
 
 use Cake\ORM\TableRegistry;

@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Translator\Engine;
 
 use Translate\Translator\EngineInterface;

@@ -1,4 +1,5 @@
 <?php
+
 namespace Translate\Model\Entity;
 
 use Tools\Model\Entity\Entity;

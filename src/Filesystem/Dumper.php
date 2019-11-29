@@ -1,4 +1,5 @@
 <?php
+
 namespace Translate\Filesystem;
 
 use Cake\Core\Configure;

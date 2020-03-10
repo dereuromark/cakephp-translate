@@ -2,7 +2,6 @@
 
 namespace Translate\Model\Table;
 
-use Cake\ORM\TableRegistry;
 use Exception;
 use Tools\Model\Table\Table;
 use Translate\Model\Entity\TranslateProject;

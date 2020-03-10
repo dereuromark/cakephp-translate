@@ -36,6 +36,7 @@ require CORE_PATH . 'config/bootstrap.php';
 require ROOT . DS . 'config' . DS . 'bootstrap.php';
 
 Cake\Core\Configure::write('App', [
+	'namespace' => 'App',
 	'paths' => [
 		'templates' => [ROOT . DS . 'tests' . DS . 'test_app' . DS . 'templates' . DS],
 	],
@@ -48,7 +49,7 @@ Cake\Core\Configure::write('Transltr.live', env('TRANSLTR_LIVE'));
 
 $cache = [
 	'default' => [
-		'engine' => 'File',
+		'className' => 'File',
 	],
 	'_cake_core_' => [
 		'className' => 'File',
@@ -68,8 +69,8 @@ $cache = [
 
 Cake\Cache\Cache::setConfig($cache);
 
-Cake\Core\Plugin::getCollection()->add(new \Tools\Plugin());
-Cake\Core\Plugin::getCollection()->add(new \Translate\Plugin());
+//Cake\Core\Plugin::getCollection()->add(new \Tools\Plugin());
+//Cake\Core\Plugin::getCollection()->add(new \Translate\Plugin());
 
 //DispatcherFactory::add('Routing');
 //DispatcherFactory::add('ControllerFactory');

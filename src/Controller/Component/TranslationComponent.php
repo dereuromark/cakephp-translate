@@ -2,8 +2,8 @@
 
 namespace Translate\Controller\Component;
 
-use Cake\ORM\TableRegistry;
 use Cake\Controller\Component;
+use Cake\ORM\TableRegistry;
 
 class TranslationComponent extends Component {
 

@@ -9,12 +9,15 @@ if (!defined('LOCALE')) {
 
 $className = Plugin::isLoaded('DatabaseLog') ? 'DatabaseLog.Database' : 'Cake\Log\Engine\FileLog';
 
-$log = [
-	'translate' => [
-		'className' => $className,
-		'type' => 'translate',
-		'levels' => ['info'],
-		'scopes' => ['import'],
-	],
-];
-Log::setConfig($log);
+$logConfig = Log::getConfig('translate');
+if (!$logConfig) {
+	$logConfig = [
+		'translate' => [
+			'className' => $className,
+			'type' => 'translate',
+			'levels' => ['info'],
+			'scopes' => ['import'],
+		],
+	];
+	Log::setConfig($logConfig);
+}

@@ -21,9 +21,8 @@ class TranslationLibTest extends TestCase {
 		$this->TranslationLib = new TranslationLib();
 
 		$folder = new Folder();
-		$folder->copy([
+		$folder->copy(LOCALE, [
 			'from' => ROOT . DS . 'tests' . DS . 'test_files' . DS . 'Locale' . DS,
-			'to' => LOCALE,
 		]);
 	}
 

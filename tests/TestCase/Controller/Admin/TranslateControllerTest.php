@@ -30,7 +30,7 @@ class TranslateControllerTest extends IntegrationTestCase {
 	 * @return void
 	 */
 	public function testIndex() {
-		$this->get(['prefix' => 'admin', 'plugin' => 'Translate', 'controller' => 'Translate', 'action' => 'index']);
+		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'Translate', 'action' => 'index']);
 
 		$this->assertResponseCode(200);
 		$this->assertNoRedirect();
@@ -40,7 +40,7 @@ class TranslateControllerTest extends IntegrationTestCase {
 	 * @return void
 	 */
 	public function testReset() {
-		$this->get(['prefix' => 'admin', 'plugin' => 'Translate', 'controller' => 'Translate', 'action' => 'reset']);
+		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'Translate', 'action' => 'reset']);
 
 		$this->assertResponseCode(200);
 		$this->assertNoRedirect();
@@ -59,7 +59,7 @@ class TranslateControllerTest extends IntegrationTestCase {
 			],
 		];
 
-		$this->post(['prefix' => 'admin', 'plugin' => 'Translate', 'controller' => 'Translate', 'action' => 'reset'], $data);
+		$this->post(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'Translate', 'action' => 'reset'], $data);
 
 		$this->assertResponseCode(302);
 		$this->assertRedirect();
@@ -84,12 +84,12 @@ class TranslateControllerTest extends IntegrationTestCase {
 			'from' => 'en',
 			'to' => 'de',
 		];
-		$this->post(['prefix' => 'admin', 'plugin' => 'Translate', 'controller' => 'Translate', 'action' => 'translate', '_ext' => 'json'], $data);
+		$this->post(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'Translate', 'action' => 'translate', '_ext' => 'json'], $data);
 
 		$this->assertResponseCode(200);
 		$this->assertNoRedirect();
 
-		$result = json_decode($this->_response->body(), true);
+		$result = json_decode($this->_response->getBody(), true);
 		$expected = [
 			'translation' => 'rehtaF',
 		];

@@ -1,3 +1,3 @@
 <?php
 
-require '../../config/bootstrap.php';
+//require '../../config/bootstrap.php';

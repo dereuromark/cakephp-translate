@@ -28,7 +28,7 @@ class TranslateDomainsControllerTest extends IntegrationTestCase {
 	 * @return void
 	 */
 	public function testIndex() {
-		$this->get(['prefix' => 'admin', 'plugin' => 'Translate', 'controller' => 'TranslateDomains', 'action' => 'index']);
+		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateDomains', 'action' => 'index']);
 
 		$this->assertResponseCode(200);
 		$this->assertNoRedirect();
@@ -41,7 +41,7 @@ class TranslateDomainsControllerTest extends IntegrationTestCase {
 	 */
 	public function testView() {
 		$id = 1;
-		$this->get(['prefix' => 'admin', 'plugin' => 'Translate', 'controller' => 'TranslateDomains', 'action' => 'view', $id]);
+		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateDomains', 'action' => 'view', $id]);
 
 		$this->assertResponseCode(200);
 		$this->assertNoRedirect();
@@ -53,7 +53,7 @@ class TranslateDomainsControllerTest extends IntegrationTestCase {
 	 * @return void
 	 */
 	public function testAdd() {
-		$this->get(['prefix' => 'admin', 'plugin' => 'Translate', 'controller' => 'TranslateDomains', 'action' => 'add']);
+		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateDomains', 'action' => 'add']);
 
 		$this->assertResponseCode(200);
 		$this->assertNoRedirect();
@@ -66,7 +66,7 @@ class TranslateDomainsControllerTest extends IntegrationTestCase {
 	 */
 	public function testEdit() {
 		$id = 1;
-		$this->get(['prefix' => 'admin', 'plugin' => 'Translate', 'controller' => 'TranslateDomains', 'action' => 'edit', $id]);
+		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateDomains', 'action' => 'edit', $id]);
 
 		$this->assertResponseCode(200);
 		$this->assertNoRedirect();
@@ -79,7 +79,7 @@ class TranslateDomainsControllerTest extends IntegrationTestCase {
 	 */
 	public function testDelete() {
 		$id = 1;
-		$this->post(['prefix' => 'admin', 'plugin' => 'Translate', 'controller' => 'TranslateDomains', 'action' => 'delete', $id]);
+		$this->post(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateDomains', 'action' => 'delete', $id]);
 
 		$this->assertResponseCode(302);
 		$this->assertRedirect();

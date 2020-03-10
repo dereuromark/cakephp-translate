@@ -33,9 +33,8 @@ class MessagesDbLoaderTest extends TestCase {
 		parent::setUp();
 
 		$folder = new Folder();
-		$folder->copy([
+		$folder->copy(LOCALE, [
 			'from' => ROOT . DS . 'tests' . DS . 'test_files' . DS . 'Locale' . DS,
-			'to' => LOCALE,
 		]);
 
 		$this->_setUpData();
@@ -51,7 +50,7 @@ class MessagesDbLoaderTest extends TestCase {
 				$locale
 			);
 		});
-		I18n::locale('de');
+		I18n::setLocale('de');
 
 		$translated = __('Sing');
 		$this->assertSame('SingTrans', $translated);
@@ -76,7 +75,7 @@ class MessagesDbLoaderTest extends TestCase {
 				$locale
 			);
 		});
-		I18n::locale('de');
+		I18n::setLocale('de');
 
 		$translated = __d('dom', 'Sing');
 		$this->assertSame('SingTrans', $translated);

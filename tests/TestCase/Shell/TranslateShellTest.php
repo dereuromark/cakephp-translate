@@ -4,7 +4,7 @@ namespace Translate\Test\TestCase\Shell;
 
 use Cake\Console\ConsoleIo;
 use Cake\TestSuite\TestCase;
-use Tools\TestSuite\ConsoleOutput;
+use Shim\TestSuite\ConsoleOutput;
 use Translate\Shell\TranslateShell;
 
 class TranslateShellTest extends TestCase {
@@ -15,7 +15,7 @@ class TranslateShellTest extends TestCase {
 	public $Shell;
 
 	/**
-	 * @var \Tools\TestSuite\ConsoleOutput
+	 * @var \Shim\TestSuite\ConsoleOutput
 	 */
 	protected $out;
 

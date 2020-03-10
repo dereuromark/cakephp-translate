@@ -6,7 +6,7 @@ use Cake\Console\ConsoleIo;
 use Cake\Core\Plugin;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
-use Tools\TestSuite\ConsoleOutput;
+use Shim\TestSuite\ConsoleOutput;
 use Translate\Shell\Task\ExtractTask;
 
 class ExtractTaskTest extends TestCase {
@@ -26,7 +26,7 @@ class ExtractTaskTest extends TestCase {
 	public $Task;
 
 	/**
-	 * @var \Tools\TestSuite\ConsoleOutput
+	 * @var \Shim\TestSuite\ConsoleOutput
 	 */
 	protected $out;
 

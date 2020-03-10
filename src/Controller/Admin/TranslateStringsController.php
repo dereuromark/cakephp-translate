@@ -234,17 +234,22 @@ class TranslateStringsController extends TranslateAppController {
 			//$this->redirect(array('action'=>'index'));
 
 		} else {
+			$selPot = [];
 			foreach ($potFiles as $key => $val) {
-				$this->request->data['sel_pot'][] = $val;
+				$selPot[] = $val;
 			}
+			$this->request = $this->request->withData('sel_pot', $selPot);
+
+			$selPo = [];
 			foreach ($poFiles as $lang => $val) {
 				if (!isset($translateLanguages[$lang])) {
 					continue;
 				}
 				foreach ($val as $k => $v) {
-					$this->request->data['sel_po'][] = $k;
+					$selPo[] = $k;
 				}
 			}
+			$this->request = $this->request->withData('sel_po', $selPo);
 		}
 
 		$this->set(compact('potFiles', 'poFiles'));
@@ -298,11 +303,13 @@ class TranslateStringsController extends TranslateAppController {
 			$this->Flash->warning('Please activate a domain for dumping.');
 			return $this->redirect(['controller' => 'TranslateDomains', 'action' => 'index']);
 		} elseif (!$this->Common->isPosted()) {
+			$domainArray = [];
 			foreach ($translateLanguages as $code => $id) {
 				foreach ($domains as $domain) {
-					$this->request->data['domains'][] = $code . '_' . $domain->name;
+					$domainArray[] = $code . '_' . $domain->name;
 				}
 			}
+			$this->request = $this->request->withData('domains', $domainArray);
 		}
 
 		$this->set(compact('map'));
@@ -319,9 +326,8 @@ class TranslateStringsController extends TranslateAppController {
 	public function translate($id = null) {
 		$translateString = $this->TranslateStrings->get($id, ['contain' => 'TranslateDomains']);
 
-		$translateLanguages = $this->TranslateStrings->TranslateTerms->TranslateLanguages->find()->all();
-
-		if ($translateLanguages->count() < 1) {
+		$translateLanguages = $this->TranslateStrings->TranslateTerms->TranslateLanguages->find()->all()->toArray();
+		if (!$translateLanguages) {
 			$this->Flash->error(__d('translate', 'You need at least one language to translate'));
 			return $this->redirect(['controller' => 'TranslateLanguages', 'action' => 'add']);
 		}
@@ -371,12 +377,13 @@ class TranslateStringsController extends TranslateAppController {
 		} else {
 			foreach ($translateTerms as $translateTerm) {
 				$key = $this->TranslateStrings->resolveLanguageKey($translateTerm->translate_language_id, $translateLanguages);
-				$this->request->data['content_' . $key] = $translateTerm->content;
-				$this->request->data['plural_2_' . $key] = $translateTerm->plural_2;
+
+				$this->request = $this->request->withData('content_' . $key, $translateTerm->content);
+				$this->request = $this->request->withData('plural_2_' . $key, $translateTerm->plural_2);
 			}
 		}
 
-		$suggestions = $this->TranslateStrings->getSuggestions($translateString, $translateLanguages->toArray(), $translateTerms);
+		$suggestions = $this->TranslateStrings->getSuggestions($translateString, $translateLanguages, $translateTerms);
 		//$pluralSuggestions =
 
 		$this->set(compact('translateString', 'translateLanguages', 'suggestions'));

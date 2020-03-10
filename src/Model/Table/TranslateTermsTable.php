@@ -4,7 +4,7 @@ namespace Translate\Model\Table;
 
 use ArrayObject;
 use Cake\Datasource\EntityInterface;
-use Cake\Event\Event;
+use Cake\Event\EventInterface;
 use Cake\Log\Log;
 use Tools\Model\Table\Table;
 
@@ -169,12 +169,12 @@ class TranslateTermsTable extends Table {
 	}
 
 	/**
-	 * @param \Cake\Event\Event $event The beforeSave event that was fired
+	 * @param \Cake\Event\EventInterface $event The beforeSave event that was fired
 	 * @param \Translate\Model\Entity\TranslateTerm $entity The entity that is going to be saved
 	 * @param \ArrayObject $options the options passed to the save method
 	 * @return void
 	 */
-	public function beforeSave(Event $event, EntityInterface $entity, ArrayObject $options) {
+	public function beforeSave(EventInterface $event, EntityInterface $entity, ArrayObject $options) {
 		$user = $event->getData('_footprint');
 		if ($user) {
 			$entity->user_id = $user['id'];

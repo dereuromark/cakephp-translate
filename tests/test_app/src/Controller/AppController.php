@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use Cake\Controller\Controller;
+use Shim\Controller\Controller;
 
 class AppController extends Controller {
 

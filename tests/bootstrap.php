@@ -3,8 +3,6 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-use Cake\Routing\DispatcherFactory;
-
 if (!defined('DS')) {
 	define('DS', DIRECTORY_SEPARATOR);
 }
@@ -20,7 +18,8 @@ define('TMP', ROOT . DS . 'tmp' . DS);
 if (!is_dir(TMP)) {
 	mkdir(TMP, 0770, true);
 }
-define('CONFIG', ROOT . DS . 'config' . DS);
+define('TESTS', ROOT . DS . 'tests' . DS);
+define('CONFIG', TESTS . 'config' . DS);
 
 define('LOGS', TMP . 'logs' . DS);
 define('CACHE', TMP . 'cache' . DS);
@@ -34,9 +33,11 @@ define('WWW_ROOT', TMP . 'webroot' . DS);
 require dirname(__DIR__) . '/vendor/autoload.php';
 require CORE_PATH . 'config/bootstrap.php';
 
+require ROOT . DS . 'config' . DS . 'bootstrap.php';
+
 Cake\Core\Configure::write('App', [
 	'paths' => [
-		'templates' => [ROOT . DS . 'tests' . DS . 'test_app' . DS . 'src' . DS . 'Template' . DS],
+		'templates' => [ROOT . DS . 'tests' . DS . 'test_app' . DS . 'templates' . DS],
 	],
 ]);
 

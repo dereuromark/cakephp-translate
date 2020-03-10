@@ -78,8 +78,10 @@ class TranslateController extends TranslateAppController {
 			return $this->redirect(['action' => 'index']);
 		}
 
-		$this->request->data['Form']['sel'][] = 'terms';
-		$this->request->data['Form']['sel'][] = 'strings';
+		//FIXME
+		//$this->request->data['Form']['sel'][] = 'terms';
+		//$this->request->data['Form']['sel'][] = 'strings';
+
 		//$this->request->data['Form']['sel']['languages'] = 0;
 		//$this->request->data['Form']['sel']['groups'] = 0;
 	}

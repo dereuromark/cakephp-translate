@@ -5,7 +5,7 @@ namespace Translate\Model\Table;
 use ArrayObject;
 use Cake\Database\Schema\TableSchemaInterface;
 use Cake\Datasource\EntityInterface;
-use Cake\Event\Event;
+use Cake\Event\EventInterface;
 use Cake\Http\Exception\InternalErrorException;
 use Cake\I18n\Time;
 use Cake\Log\Log;
@@ -117,12 +117,12 @@ class TranslateStringsTable extends Table {
 	}
 
 	/**
-	 * @param \Cake\Event\Event $event The beforeSave event that was fired
+	 * @param \Cake\Event\EventInterface $event The beforeSave event that was fired
 	 * @param \Translate\Model\Entity\TranslateString $entity The entity that is going to be saved
 	 * @param \ArrayObject $options the options passed to the save method
 	 * @return void
 	 */
-	public function beforeSave(Event $event, EntityInterface $entity, ArrayObject $options) {
+	public function beforeSave(EventInterface $event, EntityInterface $entity, ArrayObject $options) {
 		$user = $event->getData('_footprint');
 		if ($user) {
 			$entity->user_id = $user['id'];
@@ -232,7 +232,14 @@ class TranslateStringsTable extends Table {
 	public function getUntranslated() {
 		$query = $this->find();
 		$query->leftJoinWith('TranslateTerms');
-		$query->where(['TranslateTerms.content IS' => null])->orWhere(['TranslateStrings.plural IS NOT' => null, 'TranslateTerms.plural_2 IS' => null]);
+
+		$conditions = [
+			'OR' => [
+				['TranslateTerms.content IS' => null],
+				['TranslateStrings.plural IS NOT' => null, 'TranslateTerms.plural_2 IS' => null],
+			],
+		];
+		$query->where($conditions);
 
 		return $query;
 	}

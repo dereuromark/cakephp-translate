@@ -4,7 +4,7 @@ use Cake\Core\Plugin;
 use Cake\Log\Log;
 
 if (!defined('LOCALE')) {
-	define('LOCALE', APP . 'Locale' . DS);
+	define('LOCALE', ROOT . DS . 'locales' . DS);
 }
 
 $className = Plugin::isLoaded('DatabaseLog') ? 'DatabaseLog.Database' : 'Cake\Log\Engine\FileLog';

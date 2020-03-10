@@ -152,11 +152,12 @@ class TranslateProjectsController extends TranslateAppController {
 			//$this->Common->autoRedirect(array('controller'=>'translate', 'action'=>'index'));
 
 		} else {
-			$this->request->data['Form']['reset'][] = 'terms';
+			$formArray = [];
+			$formArray['Form']['reset'][] = 'terms';
 			foreach ($languages as $key => $language) {
-				$this->request->data['Form']['language'][] = $key;
+				$formArray['Form']['language'][] = $key;
 			}
-
+			$this->request = $this->request->withData('Form', $formArray);
 		}
 
 		$this->set(compact('removeOptions', 'languages'));

@@ -92,11 +92,11 @@ class TranslateProjectsTable extends Table {
 			'conditions' => [$this->getAlias() . '.status >' => TranslateProject::STATUS_INACTIVE],
 			'order' => [$this->getAlias() . '.default' => 'DESC'],
 		];
-		$res = $this->find('first', $options);
+		$res = $this->find('all', $options)->first();
 		if (!$res) {
 			return null;
 		}
-		return $res['id'];
+		return $res->id;
 	}
 
 	/**

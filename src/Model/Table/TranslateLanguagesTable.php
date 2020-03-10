@@ -8,7 +8,7 @@ namespace Translate\Model\Table;
 
 use ArrayObject;
 use Cake\Core\Plugin;
-use Cake\Event\Event;
+use Cake\Event\EventInterface;
 use Tools\Model\Table\Table;
 
 /**
@@ -126,12 +126,12 @@ class TranslateLanguagesTable extends Table {
 	/**
 	 * Preparing the data
 	 *
-	 * @param \Cake\Event\Event $event
+	 * @param \Cake\Event\EventInterface $event
 	 * @param \ArrayObject $data
 	 * @param \ArrayObject $options
 	 * @return void
 	 */
-	public function beforeMarshal(Event $event, ArrayObject $data, ArrayObject $options) {
+	public function beforeMarshal(EventInterface $event, ArrayObject $data, ArrayObject $options) {
 		if (isset($data['iso2'])) {
 			$data['iso2'] = strtolower($data['iso2']);
 		}
@@ -191,7 +191,7 @@ class TranslateLanguagesTable extends Table {
 	 * @return \Cake\ORM\Query
 	 */
 	public function getActive($type = 'all', $options = []) {
-		$defaults = ['conditions' => [$this->alias() . '.active' => 1]];
+		$defaults = ['conditions' => [$this->getAlias() . '.active' => 1]];
 
 		$options = array_merge($defaults, $options);
 		return $this->find($type, $options);

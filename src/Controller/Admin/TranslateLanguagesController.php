@@ -44,9 +44,11 @@ class TranslateLanguagesController extends TranslateAppController {
 
 			$this->Flash->error('Sth went wrong,');
 		} else {
+			$localeArray = [];
 			foreach ($languages as $k => $v) {
-				$this->request->data['locale'][$k] = true;
+				$localeArray[$k] = true;
 			}
+			$this->request = $this->request->withData('locale', $localeArray);
 		}
 
 		$this->set(compact('path', 'languages', 'existingFolders'));

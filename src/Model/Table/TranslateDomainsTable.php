@@ -107,7 +107,7 @@ class TranslateDomainsTable extends Table {
 		}
 
 		$count = [];
-		$count['groups'] = $this->find('list', ['fields' => [$this->alias() . '.id'], 'conditions' => [$this->alias() . '.translate_project_id' => $id]])->toArray();
+		$count['groups'] = $this->find('list', ['fields' => [$this->getAlias() . '.id'], 'conditions' => [$this->getAlias() . '.translate_project_id' => $id]])->toArray();
 		// recursive = 0;
 		//$this->TranslateStrings->bindModel(['belongsTo' => $this->TranslateStrings->habtmJoin], false);
 		$count['strings'] = $this->TranslateStrings->find()->where(['TranslateDomains.translate_project_id' => $id])->contain(['TranslateDomains'])->count();

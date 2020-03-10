@@ -86,7 +86,7 @@ class MessagesDbLoader {
 		$fields = $model->getSchema()->columns();
 		$fields = array_flip(array_diff(
 			$fields,
-			$model->getSchema()->primaryKey()
+			$model->getSchema()->getPrimaryKey()
 		));
 		unset($fields['domain'], $fields['locale']);
 		$query->select(array_flip($fields));

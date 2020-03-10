@@ -67,7 +67,7 @@ class TranslateDomainsController extends TranslateAppController {
 
 			$this->Flash->error(__d('translate', 'The translate domain could not be saved. Please, try again.'));
 		} else {
-			$this->request->data['active'] = true;
+			$this->request = $this->request->withData('active', true);
 		}
 
 		$this->set(compact('translateDomain'));

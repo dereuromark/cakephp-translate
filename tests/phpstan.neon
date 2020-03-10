@@ -1,6 +1,7 @@
 parameters:
 	autoload_files:
 		- bootstrap.php
+		- %rootDir%/../../../config/bootstrap.php
 	ignoreErrors:
 		- '#Property Translate\\Translator\\Translator::\$_cache \(.+TranslateApiTranslationsTable\) does not accept Cake\\ORM\\Table.#'
 		- '#Access to an undefined property .+BehaviorRegistry::\$Search.#'

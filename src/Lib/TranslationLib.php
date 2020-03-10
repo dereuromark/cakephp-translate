@@ -43,7 +43,9 @@ class TranslationLib {
 				if (pathinfo($file, PATHINFO_EXTENSION) !== 'pot') {
 					continue;
 				}
-				$potFiles[pathinfo($file, PATHINFO_FILENAME)] = pathinfo($file, PATHINFO_FILENAME);
+
+				$filename = pathinfo($file, PATHINFO_FILENAME);
+				$potFiles[$filename] = $filename;
 			}
 		}
 		return $potFiles;

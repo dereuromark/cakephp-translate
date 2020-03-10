@@ -50,7 +50,7 @@ class TranslateController extends TranslateAppController {
 	 * Reset terms and strings
 	 * - optional: domains and languages
 	 *
-	 * @return \Cake\Http\Response|null
+	 * @return \Cake\Http\Response|null|void
 	 */
 	public function reset() {
 		if ($this->Common->isPosted()) {

@@ -1,7 +1,7 @@
 parameters:
-  autoload_files:
-    - tests/bootstrap.php
-  ignoreErrors:
-    - '#Property Translate\\Translator\\Translator::\$_cache \(.+TranslateApiTranslationsTable\) does not accept Cake\\ORM\\Table.#'
-    - '#Access to an undefined property .+BehaviorRegistry::\$Search.#'
-    - '#Call to an undefined method .+FlashComponent::warning\(\).#'
+	autoload_files:
+		- bootstrap.php
+	ignoreErrors:
+		- '#Property Translate\\Translator\\Translator::\$_cache \(.+TranslateApiTranslationsTable\) does not accept Cake\\ORM\\Table.#'
+		- '#Access to an undefined property .+BehaviorRegistry::\$Search.#'
+		- '#Call to an undefined method .+FlashComponent::warning\(\).#'

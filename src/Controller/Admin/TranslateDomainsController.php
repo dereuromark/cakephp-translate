@@ -20,7 +20,7 @@ class TranslateDomainsController extends TranslateAppController {
 	/**
 	 * Index method
 	 *
-	 * @return \Cake\Http\Response|null
+	 * @return \Cake\Http\Response|null|void
 	 */
 	public function index() {
 		$this->paginate = [
@@ -36,7 +36,7 @@ class TranslateDomainsController extends TranslateAppController {
 	 * View method
 	 *
 	 * @param string|null $id Translate Domain id.
-	 * @return \Cake\Http\Response|null
+	 * @return \Cake\Http\Response|null|void
 	 * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
 	 */
 	public function view($id = null) {
@@ -51,14 +51,15 @@ class TranslateDomainsController extends TranslateAppController {
 	/**
 	 * Add method
 	 *
-	 * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
+	 * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
 	 */
 	public function add() {
 		$translateDomain = $this->TranslateDomains->newEntity();
 		if ($this->request->is('post')) {
-			$this->request->data['translate_project_id'] = $this->Translation->currentProjectId();
+			$data = $this->request->getData();
+			$data['translate_project_id'] = $this->Translation->currentProjectId();
 
-			$translateDomain = $this->TranslateDomains->patchEntity($translateDomain, $this->request->getData());
+			$translateDomain = $this->TranslateDomains->patchEntity($translateDomain, $data);
 			if ($this->TranslateDomains->save($translateDomain)) {
 				$this->Flash->success(__d('translate', 'The translate domain has been saved.'));
 				return $this->redirect(['action' => 'index']);
@@ -76,7 +77,7 @@ class TranslateDomainsController extends TranslateAppController {
 	 * Edit method
 	 *
 	 * @param string|null $id Translate Domain id.
-	 * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
+	 * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
 	 * @throws \Cake\Http\Exception\NotFoundException When record not found.
 	 */
 	public function edit($id = null) {

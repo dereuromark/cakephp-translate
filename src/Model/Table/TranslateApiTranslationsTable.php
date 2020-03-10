@@ -102,7 +102,10 @@ class TranslateApiTranslationsTable extends Table {
 			$query->andWhere(['engine' => $engine]);
 		}
 
-		return $query->first();
+		/** @var \Translate\Model\Entity\TranslateApiTranslation|null $translation */
+		$translation = $query->first();
+
+		return $translation;
 	}
 
 }

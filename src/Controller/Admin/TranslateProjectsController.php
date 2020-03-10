@@ -17,7 +17,7 @@ class TranslateProjectsController extends TranslateAppController {
 	/**
 	 * Index method
 	 *
-	 * @return \Cake\Http\Response|null
+	 * @return \Cake\Http\Response|null|void
 	 */
 	public function index() {
 		$translateProjects = $this->paginate();
@@ -34,7 +34,7 @@ class TranslateProjectsController extends TranslateAppController {
 	 * View method
 	 *
 	 * @param string|null $id Translate Project id.
-	 * @return \Cake\Http\Response|null
+	 * @return \Cake\Http\Response|null|void
 	 * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
 	 */
 	public function view($id = null) {
@@ -49,7 +49,7 @@ class TranslateProjectsController extends TranslateAppController {
 	/**
 	 * Add method
 	 *
-	 * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
+	 * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
 	 */
 	public function add() {
 		if ($this->TranslateProjects->find()->count() > 0) {
@@ -67,7 +67,9 @@ class TranslateProjectsController extends TranslateAppController {
 
 			$this->Flash->error(__d('translate', 'The translate project could not be saved. Please, try again.'));
 		} else {
-		    $this->request->data = $this->request->getQuery();
+			foreach ($this->request->getQuery() as $key => $value) {
+		    	$this->request = $this->request->withData((string)$key, (string)$value);
+			}
 		}
 
 		$this->set(compact('translateProject'));
@@ -78,7 +80,7 @@ class TranslateProjectsController extends TranslateAppController {
 	 * Edit method
 	 *
 	 * @param string|null $id Translate Project id.
-	 * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
+	 * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
 	 * @throws \Cake\Http\Exception\NotFoundException When record not found.
 	 */
 	public function edit($id = null) {
@@ -122,10 +124,10 @@ class TranslateProjectsController extends TranslateAppController {
 	 */
 	public function switchProject() {
 		$projectId = (int)$this->request->getData('project_switch');
-		if ($projectId && ($project = $this->TranslateProjects->get($projectId))) {
-			$this->request->getSession()->write('TranslateProject.id', $project->translateProject['id']);
-			$this->Flash->success(__d('translate', 'Project switched'));
-		}
+		$translateProject = $this->TranslateProjects->get($projectId);
+
+		$this->request->getSession()->write('TranslateProject.id', $translateProject->id);
+		$this->Flash->success(__d('translate', 'Project switched'));
 
 		return $this->Common->autoRedirect(['controller' => 'translate', 'action' => 'index']);
 	}

@@ -35,7 +35,7 @@ class TranslateStringsController extends TranslateAppController {
 	/**
 	 * Index method
 	 *
-	 * @return \Cake\Http\Response|null
+	 * @return \Cake\Http\Response|null|void
 	 */
 	public function index() {
 		$this->paginate = [
@@ -55,7 +55,7 @@ class TranslateStringsController extends TranslateAppController {
 	 * View method
 	 *
 	 * @param string|null $id Translate String id.
-	 * @return \Cake\Http\Response|null
+	 * @return \Cake\Http\Response|null|void
 	 * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
 	 */
 	public function view($id = null) {
@@ -70,7 +70,7 @@ class TranslateStringsController extends TranslateAppController {
 	/**
 	 * Add method
 	 *
-	 * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
+	 * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
 	 */
 	public function add() {
 		$translateString = $this->TranslateStrings->newEntity();
@@ -97,7 +97,7 @@ class TranslateStringsController extends TranslateAppController {
 	 * Edit method
 	 *
 	 * @param string|null $id Translate String id.
-	 * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
+	 * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
 	 * @throws \Cake\Http\Exception\NotFoundException When record not found.
 	 */
 	public function edit($id = null) {
@@ -118,7 +118,9 @@ class TranslateStringsController extends TranslateAppController {
 
 			$this->Flash->error(__d('translate', 'The translate string could not be saved. Please, try again.'));
 		} else {
-			$this->request->data = $this->request->getQuery();
+			foreach ($this->request->getQuery() as $key => $value) {
+				$this->request = $this->request->withData((string)$key, (string)$value);
+			}
 		}
 
 		$translateDomains = $this->TranslateStrings->TranslateDomains->find('list', ['limit' => 200]);
@@ -249,7 +251,7 @@ class TranslateStringsController extends TranslateAppController {
 	}
 
 	/**
-	 * @return \Cake\Http\Response|null
+	 * @return \Cake\Http\Response|null|void
 	 */
 	public function dump() {
 		$translateLanguages = $this->TranslateStrings->TranslateTerms->TranslateLanguages->getExtractableAsList($this->Translation->currentProjectId());
@@ -312,7 +314,7 @@ class TranslateStringsController extends TranslateAppController {
 	 *
 	 * @param int|null $id
 	 *
-	 * @return \Cake\Http\Response|null
+	 * @return \Cake\Http\Response|null|void
 	 */
 	public function translate($id = null) {
 		$translateString = $this->TranslateStrings->get($id, ['contain' => 'TranslateDomains']);

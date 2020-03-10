@@ -19,7 +19,7 @@ class TranslateLanguagesController extends TranslateAppController {
 	public $paginate = ['order' => ['TranslateLanguages.name' => 'ASC']];
 
 	/**
-	 * @return \Cake\Http\Response|null
+	 * @return \Cake\Http\Response|null|void
 	 */
 	public function toLocale() {
 		$path = LOCALE;
@@ -53,7 +53,7 @@ class TranslateLanguagesController extends TranslateAppController {
 	}
 
 	/**
-	 * @return \Cake\Http\Response|null
+	 * @return \Cake\Http\Response|null|void
 	 */
 	public function fromLocale() {
 		$path = LOCALE;
@@ -99,7 +99,7 @@ class TranslateLanguagesController extends TranslateAppController {
 	/**
 	 * Index method
 	 *
-	 * @return \Cake\Http\Response|null
+	 * @return \Cake\Http\Response|null|void
 	 */
 	public function index() {
 		$translateLanguages = $this->paginate();
@@ -112,7 +112,7 @@ class TranslateLanguagesController extends TranslateAppController {
 	 * View method
 	 *
 	 * @param string|null $id Translate Language id.
-	 * @return \Cake\Http\Response|null
+	 * @return \Cake\Http\Response|null|void
 	 * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
 	 */
 	public function view($id = null) {
@@ -127,14 +127,15 @@ class TranslateLanguagesController extends TranslateAppController {
 	/**
 	 * Add method
 	 *
-	 * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
+	 * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
 	 */
 	public function add() {
 		$translateLanguage = $this->TranslateLanguages->newEntity();
 		if ($this->request->is('post')) {
-			$this->request->data['translate_project_id'] = $this->Translation->currentProjectId();
+			$data = $this->request->getData();
+			$data['translate_project_id'] = $this->Translation->currentProjectId();
 
-			$translateLanguage = $this->TranslateLanguages->patchEntity($translateLanguage, $this->request->getData());
+			$translateLanguage = $this->TranslateLanguages->patchEntity($translateLanguage, $data);
 			if ($this->TranslateLanguages->save($translateLanguage)) {
 				$this->Flash->success(__d('translate', 'The translate language has been saved.'));
 				return $this->redirect(['action' => 'index']);
@@ -151,7 +152,7 @@ class TranslateLanguagesController extends TranslateAppController {
 	 * Edit method
 	 *
 	 * @param string|null $id Translate Language id.
-	 * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
+	 * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
 	 * @throws \Cake\Http\Exception\NotFoundException When record not found.
 	 */
 	public function edit($id = null) {

@@ -99,7 +99,7 @@ class MessagesDbLoader {
 			->where(['TranslateLanguages.translate_project_id' => $translateProjectId])
 			->where(['TranslateDomains.name' => $this->_domain, 'TranslateLanguages.locale' => $this->_locale])
 			->where(['TranslateStrings.active' => true])
-			->hydrate(false)
+			->enableHydration(false)
 			->all();
 
 		return new Package($this->_formatter, null, $this->_messages($results));

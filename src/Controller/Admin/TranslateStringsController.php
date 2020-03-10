@@ -22,7 +22,7 @@ class TranslateStringsController extends TranslateAppController {
 	/**
 	 * @return void
 	 */
-	public function initialize() {
+	public function initialize(): void {
 		parent::initialize();
 		$this->loadComponent('Search.Prg', [
 			'actions' => ['index'],

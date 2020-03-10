@@ -158,7 +158,7 @@ class TranslateLanguagesTable extends Table {
 	 *
 	 * @return void
 	 */
-	public function initialize(array $config) {
+	public function initialize(array $config): void {
 		parent::initialize($config);
 
 		$this->addBehavior('Shim.Nullable');

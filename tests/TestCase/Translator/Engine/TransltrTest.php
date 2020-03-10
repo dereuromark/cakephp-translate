@@ -16,7 +16,7 @@ class TransltrTest extends TestCase {
 	/**
 	 * @return void
 	 */
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->skipIf(!Configure::read('Transltr.live'), 'Requires confirmation for API live call');

@@ -110,6 +110,8 @@ class ExtractTask extends CoreExtractTask {
 	 * @param string|null $context Context.
 	 * @param string|null $refs Source code references.
 	 *
+	 * @throws \RuntimeException
+	 *
 	 * @return void
 	 */
 	protected function _save($domain, $singular, $plural = null, $context = null, $refs = null) {

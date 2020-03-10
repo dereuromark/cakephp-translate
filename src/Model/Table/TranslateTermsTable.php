@@ -146,7 +146,7 @@ class TranslateTermsTable extends Table {
 	 *
 	 * @return void
 	 */
-	public function initialize(array $config) {
+	public function initialize(array $config): void {
 		parent::initialize($config);
 
 		$this->addBehavior('Shim.Nullable');
@@ -206,7 +206,7 @@ class TranslateTermsTable extends Table {
 		}
 
 		if (!$this->save($translateTerm)) {
-			Log::write('info', 'Term `' . $translateTerm->content . '` for String # `' . $translateStringId . '`: ' . print_r($translateTerm->errors(), true), ['scope' => 'import']);
+			Log::write('info', 'Term `' . $translateTerm->content . '` for String # `' . $translateStringId . '`: ' . print_r($translateTerm->getErrors(), true), ['scope' => 'import']);
 
 			return null;
 		}

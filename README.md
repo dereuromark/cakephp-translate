@@ -2,14 +2,14 @@
 [![Build Status](https://api.travis-ci.org/dereuromark/cakephp-translate.svg?branch=master)](https://travis-ci.org/dereuromark/cakephp-translate)
 [![Coverage Status](https://img.shields.io/codecov/c/github/dereuromark/cakephp-translate/master.svg)](https://codecov.io/github/dereuromark/cakephp-translate?branch=master)
 [![Latest Stable Version](https://poser.pugx.org/dereuromark/cakephp-translate/v/stable.svg)](https://packagist.org/packages/dereuromark/cakephp-translate)
-[![Minimum PHP Version](http://img.shields.io/badge/php-%3E%3D%205.6-8892BF.svg)](https://php.net/)
+[![Minimum PHP Version](http://img.shields.io/badge/php-%3E%3D%207.2-8892BF.svg)](https://php.net/)
 [![License](https://poser.pugx.org/dereuromark/cakephp-translate/license.svg)](https://packagist.org/packages/dereuromark/cakephp-translate)
 [![Total Downloads](https://poser.pugx.org/dereuromark/cakephp-translate/d/total.svg)](https://packagist.org/packages/dereuromark/cakephp-translate)
 [![Coding Standards](https://img.shields.io/badge/cs-PSR--2--R-yellow.svg)](https://github.com/php-fig-rectified/fig-rectified-standards)
 
-A CakePHP 3.x Plugin for managing translations DB driven.
+A CakePHP plugin for managing translations DB driven.
 
-Note: **Plugin in BETA version**
+This branch is for use with **CakePHP 4.0+**. For details see [version map](https://github.com/dereuromark/cakephp-queue/wiki#cakephp-version-map).
 
 ## Key features
 - Import from POT, PO files or any service/API.
@@ -52,7 +52,7 @@ bin/cake plugin load Tools -b -r
 
 Routes are needed for the backed, the bootstrap sets up a few defaults.
 
-Run this in console to create the necessary DB tables: 
+Run this in console to create the necessary DB tables:
 ```
 bin/cake migrations migrate -p Translate
 ```

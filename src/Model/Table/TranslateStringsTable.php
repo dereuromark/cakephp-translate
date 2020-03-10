@@ -3,7 +3,7 @@
 namespace Translate\Model\Table;
 
 use ArrayObject;
-use Cake\Database\Schema\TableSchema;
+use Cake\Database\Schema\TableSchemaInterface;
 use Cake\Datasource\EntityInterface;
 use Cake\Event\Event;
 use Cake\Http\Exception\InternalErrorException;
@@ -92,10 +92,10 @@ class TranslateStringsTable extends Table {
 	];
 
 	/**
-	 * @param \Cake\Database\Schema\TableSchema $schema
-	 * @return \Cake\Database\Schema\TableSchema
+	 * @param \Cake\Database\Schema\TableSchemaInterface $schema
+	 * @return \Cake\Database\Schema\TableSchemaInterface
 	 */
-	protected function _initializeSchema(TableSchema $schema) {
+	protected function _initializeSchema(TableSchemaInterface $schema): TableSchemaInterface {
 		$schema->setColumnType('flags', 'json');
 
 		return $schema;
@@ -106,7 +106,7 @@ class TranslateStringsTable extends Table {
 	 *
 	 * @return void
 	 */
-	public function initialize(array $config) {
+	public function initialize(array $config): void {
 		parent::initialize($config);
 
 		$this->addBehavior('Shim.Nullable');
@@ -283,7 +283,7 @@ class TranslateStringsTable extends Table {
 		}
 
 		if (!$this->save($translateString)) {
-			Log::write('info', 'String `' . $translateString->name . '`: ' . print_r($translateString->errors(), true), ['scope' => 'import']);
+			Log::write('info', 'String `' . $translateString->name . '`: ' . print_r($translateString->getErrors(), true), ['scope' => 'import']);
 
 			return null;
 		}

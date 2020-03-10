@@ -16,7 +16,7 @@ class TranslateDomainsControllerTest extends IntegrationTestCase {
 	 *
 	 * @var array
 	 */
-	public $fixtures = [
+	protected $fixtures = [
 		'plugin.Translate.TranslateDomains',
 		'plugin.Translate.TranslateStrings',
 		'plugin.Translate.TranslateProjects',

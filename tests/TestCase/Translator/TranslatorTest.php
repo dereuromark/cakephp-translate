@@ -18,7 +18,7 @@ class TranslatorTest extends TestCase {
 	/**
 	 * @return void
 	 */
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		Configure::write('Translate.engine', Test::class);

@@ -67,11 +67,11 @@ $cache = [
 
 Cake\Cache\Cache::setConfig($cache);
 
-Cake\Core\Plugin::load('Tools', ['path' => ROOT . DS . 'vendor/dereuromark/cakephp-tools/', 'autoload' => true, 'bootstrap' => true, 'routes' => true]);
-Cake\Core\Plugin::load('Translate', ['path' => ROOT . DS, 'autoload' => true, 'bootstrap' => true, 'routes' => true]);
+Cake\Core\Plugin::getCollection()->add(new \Tools\Plugin());
+Cake\Core\Plugin::getCollection()->add(new \Translate\Plugin());
 
-DispatcherFactory::add('Routing');
-DispatcherFactory::add('ControllerFactory');
+//DispatcherFactory::add('Routing');
+//DispatcherFactory::add('ControllerFactory');
 
 // Ensure default test connection is defined
 if (!getenv('db_class')) {
@@ -81,11 +81,8 @@ if (!getenv('db_class')) {
 
 Cake\Datasource\ConnectionManager::setConfig('test', [
 	'className' => 'Cake\Database\Connection',
-	'driver' => getenv('db_class'),
-	'dsn' => getenv('db_dsn'),
-	'database' => getenv('db_database'),
-	'username' => getenv('db_username'),
-	'password' => getenv('db_password'),
+	'driver' => getenv('db_class') ?: null,
+	'dsn' => getenv('db_dsn') ?: null,
 	'timezone' => 'UTC',
 	'quoteIdentifiers' => true,
 	'cacheMetadata' => true,
@@ -93,11 +90,8 @@ Cake\Datasource\ConnectionManager::setConfig('test', [
 
 Cake\Datasource\ConnectionManager::setConfig('test_database_log', [
 	'className' => 'Cake\Database\Connection',
-	'driver' => getenv('db_class'),
-	'dsn' => getenv('db_dsn'),
-	'database' => getenv('db_database'),
-	'username' => getenv('db_username'),
-	'password' => getenv('db_password'),
+	'driver' => getenv('db_class') ?: null,
+	'dsn' => getenv('db_dsn') ?: null,
 	'timezone' => 'UTC',
 	'quoteIdentifiers' => true,
 	'cacheMetadata' => true,

@@ -14,7 +14,7 @@ class ExtractTaskTest extends TestCase {
 	/**
 	 * @var array
 	 */
-	public $fixtures = [
+	protected $fixtures = [
 		'plugin.Translate.TranslateStrings',
 		'plugin.Translate.TranslateDomains',
 		'plugin.Translate.TranslateProjects',
@@ -35,7 +35,7 @@ class ExtractTaskTest extends TestCase {
 	 *
 	 * @return void
 	 */
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->out = new ConsoleOutput();
@@ -53,7 +53,7 @@ class ExtractTaskTest extends TestCase {
 	 *
 	 * @return void
 	 */
-	public function tearDown() {
+	public function tearDown(): void {
 		parent::tearDown();
 		unset($this->Task);
 	}

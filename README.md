@@ -7,9 +7,9 @@
 [![Total Downloads](https://poser.pugx.org/dereuromark/cakephp-translate/d/total.svg)](https://packagist.org/packages/dereuromark/cakephp-translate)
 [![Coding Standards](https://img.shields.io/badge/cs-PSR--2--R-yellow.svg)](https://github.com/php-fig-rectified/fig-rectified-standards)
 
-A CakePHP 3.x Plugin for managing translations DB driven.
+A CakePHP plugin for managing translations DB driven.
 
-Note: **Plugin in BETA version**
+This branch is for use with **CakePHP 3.8+**. For details see [version map](https://github.com/dereuromark/cakephp-translate/wiki#cakephp-version-map).
 
 ## Key features
 - Import from POT, PO files or any service/API.

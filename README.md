@@ -9,7 +9,7 @@
 
 A CakePHP plugin for managing translations DB driven.
 
-This branch is for use with **CakePHP 4.0+**. For details see [version map](https://github.com/dereuromark/cakephp-queue/wiki#cakephp-version-map).
+This branch is for use with **CakePHP 4.0+**. For details see [version map](https://github.com/dereuromark/cakephp-translate/wiki#cakephp-version-map).
 
 ## Key features
 - Import from POT, PO files or any service/API.

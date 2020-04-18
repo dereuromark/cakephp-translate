@@ -22,7 +22,7 @@
 	"require-dev": {
 		"dereuromark/cakephp-queue": "^3.6",
 		"yandex/translate-api": "dev-master",
-		"fig-r/psr2r-sniffer": "dev-master"
+		"fig-r/psr2r-sniffer": "^0.6"
 	},
 	"suggest": {
 		"dereuromark/cakephp-queue": "To use background processing for e.g. PO file import",

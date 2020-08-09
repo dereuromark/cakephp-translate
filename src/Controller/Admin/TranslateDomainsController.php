@@ -55,7 +55,7 @@ class TranslateDomainsController extends TranslateAppController {
 	 * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
 	 */
 	public function add() {
-		$translateDomain = $this->TranslateDomains->newEntity();
+		$translateDomain = $this->TranslateDomains->newEmptyEntity();
 		if ($this->request->is('post')) {
 			$data = $this->request->getData();
 			$data['translate_project_id'] = $this->Translation->currentProjectId();

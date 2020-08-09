@@ -133,7 +133,7 @@ class TranslateLanguagesController extends TranslateAppController {
 	 * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
 	 */
 	public function add() {
-		$translateLanguage = $this->TranslateLanguages->newEntity();
+		$translateLanguage = $this->TranslateLanguages->newEmptyEntity();
 		if ($this->request->is('post')) {
 			$data = $this->request->getData();
 			$data['translate_project_id'] = $this->Translation->currentProjectId();

@@ -46,7 +46,7 @@ class TranslateApiTranslationsController extends AppController {
 	 * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
 	 */
 	public function add() {
-		$translateApiTranslation = $this->TranslateApiTranslations->newEntity();
+		$translateApiTranslation = $this->TranslateApiTranslations->newEmptyEntity();
 		if ($this->request->is('post')) {
 			$translateApiTranslation = $this->TranslateApiTranslations->patchEntity($translateApiTranslation, $this->request->getData());
 			if ($this->TranslateApiTranslations->save($translateApiTranslation)) {

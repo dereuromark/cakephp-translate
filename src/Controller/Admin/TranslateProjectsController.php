@@ -58,7 +58,7 @@ class TranslateProjectsController extends TranslateAppController {
 			return $this->Common->autoRedirect(['action' => 'index']);
 		}
 
-		$translateProject = $this->TranslateProjects->newEntity();
+		$translateProject = $this->TranslateProjects->newEmptyEntity();
 		if ($this->request->is('post')) {
 			$translateProject = $this->TranslateProjects->patchEntity($translateProject, $this->request->getData());
 			if ($this->TranslateProjects->save($translateProject)) {

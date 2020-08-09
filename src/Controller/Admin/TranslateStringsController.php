@@ -75,7 +75,7 @@ class TranslateStringsController extends TranslateAppController {
 	 * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
 	 */
 	public function add() {
-		$translateString = $this->TranslateStrings->newEntity();
+		$translateString = $this->TranslateStrings->newEmptyEntity();
 		if ($this->request->is('post')) {
 			$translateString = $this->TranslateStrings->patchEntity($translateString, $this->request->getData());
 			if ($this->TranslateStrings->save($translateString)) {

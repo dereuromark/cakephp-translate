@@ -9,11 +9,11 @@ use Tools\Model\Entity\Entity;
  *
  * @property int $id
  * @property string $key
- * @property string $value
+ * @property string|null $value
  * @property string $from
  * @property string $to
  * @property string $engine
- * @property \Cake\I18n\Time $created
+ * @property \Cake\I18n\FrozenTime|null $created
  */
 class TranslateApiTranslation extends Entity {
 

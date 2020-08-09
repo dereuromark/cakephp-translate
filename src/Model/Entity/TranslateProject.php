@@ -12,8 +12,8 @@ use Tools\Model\Entity\Entity;
  * @property int $type
  * @property bool $default
  * @property int $status
- * @property \Cake\I18n\Time $created
- * @property \Cake\I18n\Time $modified
+ * @property \Cake\I18n\FrozenTime|null $created
+ * @property \Cake\I18n\FrozenTime|null $modified
  *
  * @property \Translate\Model\Entity\TranslateDomain[] $translate_domains
  */

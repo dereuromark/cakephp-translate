@@ -11,6 +11,8 @@ use Translate\Lib\TranslationLib;
  * TranslateStrings Controller
  *
  * @property \Translate\Model\Table\TranslateStringsTable $TranslateStrings
+ * @property \Translate\Controller\Component\TranslationComponent $Translation
+ * @property \Search\Controller\Component\SearchComponent $Search
  */
 class TranslateStringsController extends TranslateAppController {
 
@@ -24,7 +26,7 @@ class TranslateStringsController extends TranslateAppController {
 	 */
 	public function initialize(): void {
 		parent::initialize();
-		$this->loadComponent('Search.Prg', [
+		$this->loadComponent('Search.Search', [
 			'actions' => ['index'],
 			'emptyValues' => [
 				'missing_translation' => 0,

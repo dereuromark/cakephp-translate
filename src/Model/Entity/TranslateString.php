@@ -10,22 +10,22 @@ use Tools\Model\Entity\Entity;
  * @property int $id
  * @property string $name
  * @property string $comments
- * @property string $references
+ * @property string|null $references
  * @property bool $active
  * @property bool $is_html
- * @property \Cake\I18n\Date $last_import
- * @property \Cake\I18n\Time $created
- * @property \Cake\I18n\Time $modified
+ * @property \Cake\I18n\FrozenDate|null $last_import
+ * @property \Cake\I18n\FrozenTime|null $created
+ * @property \Cake\I18n\FrozenTime|null $modified
  *
- * @property \App\Model\Entity\User $user
+ * @property \App\Model\Entity\User|null $user
  * @property \Translate\Model\Entity\TranslateTerm[] $translate_terms
  * @property \Translate\Model\Entity\TranslateDomain $translate_domain
- * @property string $plural
- * @property string $context
- * @property int $user_id
+ * @property string|null $plural
+ * @property string|null $context
+ * @property int|null $user_id
  * @property int $translate_domain_id
- * @property array $flags
- * @property string $comment
+ * @property array|null $flags
+ * @property string|null $comment
  */
 class TranslateString extends Entity {
 

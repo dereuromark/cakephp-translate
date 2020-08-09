@@ -8,6 +8,8 @@ use Translate\Controller\TranslateAppController;
  * TranslateTerms Controller
  *
  * @property \Translate\Model\Table\TranslateTermsTable $TranslateTerms
+ * @property \Translate\Controller\Component\TranslationComponent $Translation
+ * @property \Search\Controller\Component\SearchComponent $Search
  */
 class TranslateTermsController extends TranslateAppController {
 
@@ -21,7 +23,7 @@ class TranslateTermsController extends TranslateAppController {
 	 */
 	public function initialize(): void {
 		parent::initialize();
-		$this->loadComponent('Search.Prg', [
+		$this->loadComponent('Search.Search', [
 			'actions' => ['index'],
 			'emptyValues' => [
 			],

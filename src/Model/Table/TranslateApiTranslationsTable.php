@@ -9,16 +9,21 @@ use Tools\Model\Table\Table;
  * TranslateApiTranslations Model
  *
  * @method \Translate\Model\Entity\TranslateApiTranslation get($primaryKey, $options = [])
- * @method \Translate\Model\Entity\TranslateApiTranslation newEntity($data = null, array $options = [])
+ * @method \Translate\Model\Entity\TranslateApiTranslation newEntity(array $data, array $options = [])
  * @method \Translate\Model\Entity\TranslateApiTranslation[] newEntities(array $data, array $options = [])
- * @method \Translate\Model\Entity\TranslateApiTranslation|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \Translate\Model\Entity\TranslateApiTranslation|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \Translate\Model\Entity\TranslateApiTranslation patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \Translate\Model\Entity\TranslateApiTranslation[] patchEntities($entities, array $data, array $options = [])
- * @method \Translate\Model\Entity\TranslateApiTranslation findOrCreate($search, callable $callback = null, $options = [])
+ * @method \Translate\Model\Entity\TranslateApiTranslation[] patchEntities(iterable $entities, array $data, array $options = [])
+ * @method \Translate\Model\Entity\TranslateApiTranslation findOrCreate($search, ?callable $callback = null, $options = [])
  *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  * @mixin \Shim\Model\Behavior\NullableBehavior
- * @method \Translate\Model\Entity\TranslateApiTranslation|bool saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \Translate\Model\Entity\TranslateApiTranslation saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \Translate\Model\Entity\TranslateApiTranslation newEmptyEntity()
+ * @method \Translate\Model\Entity\TranslateApiTranslation[]|\Cake\Datasource\ResultSetInterface|false saveMany(iterable $entities, $options = [])
+ * @method \Translate\Model\Entity\TranslateApiTranslation[]|\Cake\Datasource\ResultSetInterface saveManyOrFail(iterable $entities, $options = [])
+ * @method \Translate\Model\Entity\TranslateApiTranslation[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
+ * @method \Translate\Model\Entity\TranslateApiTranslation[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
  */
 class TranslateApiTranslationsTable extends Table {
 

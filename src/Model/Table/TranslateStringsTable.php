@@ -14,20 +14,25 @@ use Tools\Model\Table\Table;
 use Translate\Translator\Translator;
 
 /**
- * @property \App\Model\Table\UsersTable|\Cake\ORM\Association\BelongsTo $Users
- * @property \Translate\Model\Table\TranslateTermsTable|\Cake\ORM\Association\HasMany $TranslateTerms
- * @property \Translate\Model\Table\TranslateDomainsTable|\Cake\ORM\Association\BelongsTo $TranslateDomains
+ * @property \App\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Users
+ * @property \Translate\Model\Table\TranslateTermsTable&\Cake\ORM\Association\HasMany $TranslateTerms
+ * @property \Translate\Model\Table\TranslateDomainsTable&\Cake\ORM\Association\BelongsTo $TranslateDomains
  *
  * @method \Translate\Model\Entity\TranslateString get($primaryKey, $options = [])
- * @method \Translate\Model\Entity\TranslateString newEntity($data = null, array $options = [])
+ * @method \Translate\Model\Entity\TranslateString newEntity(array $data, array $options = [])
  * @method \Translate\Model\Entity\TranslateString[] newEntities(array $data, array $options = [])
- * @method \Translate\Model\Entity\TranslateString|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \Translate\Model\Entity\TranslateString|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \Translate\Model\Entity\TranslateString patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \Translate\Model\Entity\TranslateString[] patchEntities($entities, array $data, array $options = [])
- * @method \Translate\Model\Entity\TranslateString findOrCreate($search, callable $callback = null, $options = [])
+ * @method \Translate\Model\Entity\TranslateString[] patchEntities(iterable $entities, array $data, array $options = [])
+ * @method \Translate\Model\Entity\TranslateString findOrCreate($search, ?callable $callback = null, $options = [])
  * @mixin \Shim\Model\Behavior\NullableBehavior
  * @mixin \Search\Model\Behavior\SearchBehavior
- * @method \Translate\Model\Entity\TranslateString|bool saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \Translate\Model\Entity\TranslateString saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \Translate\Model\Entity\TranslateString newEmptyEntity()
+ * @method \Translate\Model\Entity\TranslateString[]|\Cake\Datasource\ResultSetInterface|false saveMany(iterable $entities, $options = [])
+ * @method \Translate\Model\Entity\TranslateString[]|\Cake\Datasource\ResultSetInterface saveManyOrFail(iterable $entities, $options = [])
+ * @method \Translate\Model\Entity\TranslateString[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
+ * @method \Translate\Model\Entity\TranslateString[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
  */
 class TranslateStringsTable extends Table {
 

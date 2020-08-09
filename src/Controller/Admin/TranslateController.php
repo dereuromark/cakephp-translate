@@ -9,6 +9,7 @@ use Translate\Translator\Translator;
 /**
  * @property \Translate\Model\Table\TranslateDomainsTable $TranslateDomains
  * @property \Translate\Model\Table\TranslateLanguagesTable $TranslateLanguages
+ * @property \Translate\Controller\Component\TranslationComponent $Translation
  */
 class TranslateController extends TranslateAppController {
 

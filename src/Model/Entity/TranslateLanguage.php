@@ -8,13 +8,13 @@ use Tools\Model\Entity\Entity;
  * TranslateLanguage Entity
  *
  * @property int $id
- * @property int $language_id
+ * @property int|null $language_id
  * @property string $name
  * @property string $iso2
  * @property string $locale
  * @property bool $active
  *
- * @property \Data\Model\Entity\Language $language
+ * @property \Data\Model\Entity\Language|null $language
  * @property \Translate\Model\Entity\TranslateTerm[] $translate_terms
  * @property int $translate_project_id
  * @property bool $base

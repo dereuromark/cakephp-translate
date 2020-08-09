@@ -9,6 +9,7 @@ use Translate\Controller\TranslateAppController;
  *
  * @property \Translate\Model\Table\TranslateDomainsTable $TranslateDomains
  * @method \Translate\Model\Entity\TranslateDomain[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
+ * @property \Translate\Controller\Component\TranslationComponent $Translation
  */
 class TranslateDomainsController extends TranslateAppController {
 

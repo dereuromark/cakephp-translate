@@ -16,11 +16,11 @@
 		"php": ">=7.2",
 		"cakephp/cakephp": "^4.0.0",
 		"dereuromark/cakephp-tools": "^2.0",
-		"friendsofcake/search": "^6.0",
-		"maxakawizard/po-parser": "dev-master"
+		"friendsofcake/search": "^6.0"
 	},
 	"require-dev": {
 		"ext-json": "*",
+		"maxakawizard/po-parser": "dev-master",
 		"dereuromark/cakephp-queue": "^5.0",
 		"yandex/translate-api": "dev-master",
 		"fig-r/psr2r-sniffer": "dev-master"
@@ -46,7 +46,6 @@
 		"source": "https://github.com/dereuromark/cakephp-translate"
 	},
 	"prefer-stable": true,
-	"minimum-stability": "dev",
 	"scripts": {
 		"test": "php phpunit.phar",
 		"test-coverage" : "php phpunit.phar --log-junit tmp/coverage/unitreport.xml --coverage-html tmp/coverage --coverage-clover tmp/coverage/coverage.xml",

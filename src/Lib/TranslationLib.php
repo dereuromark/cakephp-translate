@@ -12,12 +12,12 @@ class TranslationLib {
 	/**
 	 * Singular + plural!
 	 *
+	 * @param array $list
+	 *
 	 * @return array
 	 */
-	public function getResourceNames() {
+	public function getResourceNames(array $list = []) {
 		$names = [];
-
-		$list = [];
 
 		foreach ($list as $name) {
 			$name = Inflector::humanize(Inflector::underscore($name));

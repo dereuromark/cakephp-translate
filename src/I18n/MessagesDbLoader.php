@@ -66,16 +66,7 @@ class MessagesDbLoader {
 	 * @return \Aura\Intl\Package
 	 */
 	public function __invoke() {
-		$model = $this->_model;
-		if (is_string($model)) {
-			$model = TableRegistry::getTableLocator()->get($this->_model);
-			if (!$model) {
-				throw new RuntimeException(
-					sprintf('Unable to load model "%s".', $this->_model)
-				);
-			}
-			$this->_model = $model;
-		}
+		$model = $this->_getModel();
 
 		$translateProject = $this->_model->TranslateLanguages->TranslateProjects->find()->where(['default' => true])->firstOrFail();
 		$translateProjectId = $translateProject->id;
@@ -159,6 +150,27 @@ class MessagesDbLoader {
 		}
 
 		return $messages;
+	}
+
+	/**
+	 * @throws \RuntimeException
+	 *
+	 * @return \Translate\Model\Table\TranslateTermsTable
+	 */
+	protected function _getModel() {
+		$model = $this->_model;
+		if (is_string($model)) {
+			/** @var \Translate\Model\Table\TranslateTermsTable|null $model */
+			$model = TableRegistry::getTableLocator()->get($this->_model);
+			if (!$model) {
+				throw new RuntimeException(
+					sprintf('Unable to load model "%s".', $this->_model)
+				);
+			}
+			$this->_model = $model;
+		}
+
+		return $model;
 	}
 
 }

@@ -341,7 +341,7 @@ class TranslateStringsController extends TranslateAppController {
 				$term = $this->request->getData('content_' . $key);
 				if ($term !== null) {
 					if (!isset($translateTerms[$translateLanguage->id])) {
-						$translateTerm = $this->TranslateStrings->TranslateTerms->newEntity();
+						$translateTerm = $this->TranslateStrings->TranslateTerms->newEmptyEntity();
 					} else {
 						$translateTerm = $translateTerms[$translateLanguage->id];
 					}

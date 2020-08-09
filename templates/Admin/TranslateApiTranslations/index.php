@@ -3,6 +3,9 @@
  * @var \App\View\AppView $this
  * @var \Translate\Model\Entity\TranslateApiTranslation[]|\Cake\Collection\CollectionInterface $translateApiTranslations
  */
+
+use Cake\Core\Plugin;
+
 ?>
 <nav class="actions col-md-3 col-sm-4 col-xs-12">
 	<ul class="side-nav nav nav-pills nav-stacked">
@@ -41,5 +44,11 @@
 		</tbody>
 	</table>
 
-	<?php echo $this->element('Tools.pagination'); ?>
+	<?php
+	if (Plugin::isLoaded('Tools')) {
+		echo $this->element('Tools.pagination');
+	} else {
+		echo $this->element('pagination');
+	}
+	?>
 </div>

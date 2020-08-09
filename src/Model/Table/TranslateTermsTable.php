@@ -167,7 +167,7 @@ class TranslateTermsTable extends Table {
 			->value('translate_language_id', [
 			])
 			->like('search', [
-				'field' => [$this->aliasField('content'), 'TranslateStrings.name'],
+				'fields' => [$this->aliasField('content'), 'TranslateStrings.name'],
 			]);
 
 		return $searchManager;

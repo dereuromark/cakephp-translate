@@ -6,7 +6,7 @@ use App\Translator\Engine\Test;
 use Cake\Core\Configure;
 use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
-use Cake\TestSuite\IntegrationTestCase;
+use Shim\TestSuite\IntegrationTestCase;
 
 /**
  * @uses \Translate\Controller\Admin\TranslateController
@@ -24,12 +24,15 @@ class TranslateControllerTest extends IntegrationTestCase {
 		'plugin.Translate.TranslateDomains',
 		'plugin.Translate.TranslateStrings',
 		'plugin.Translate.TranslateTerms',
+		'plugin.Translate.TranslateApiTranslations',
 	];
 
 	/**
 	 * @return void
 	 */
 	public function testIndex() {
+		$this->disableErrorHandlerMiddleware();
+
 		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'Translate', 'action' => 'index']);
 
 		$this->assertResponseCode(200);

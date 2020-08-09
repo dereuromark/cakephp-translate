@@ -17,14 +17,18 @@ Configure::write('Plugin.name', 'Translate');
 class TranslateAppController extends AppController {
 
 	/**
-	 * @var array
+	 * @throws \Exception
+	 * @return void
 	 */
-	public $helpers = ['Translate.Translation', 'Tools.Format'];
+	public function initialize(): void {
+		parent::initialize();
 
-	/**
-	 * @var array
-	 */
-	public $components = ['Translate.Translation', 'Tools.Common'];
+		$this->loadComponent('Translate.Translation');
+		$this->loadComponent('Tools.Common');
+
+		$this->viewBuilder()->addHelper('Translate.Translation');
+		$this->viewBuilder()->addHelper('Tools.Format');
+	}
 
 	/**
 	 * @param \Cake\Event\EventInterface $event

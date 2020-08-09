@@ -36,6 +36,7 @@ require CORE_PATH . 'config/bootstrap.php';
 require ROOT . DS . 'config' . DS . 'bootstrap.php';
 
 Cake\Core\Configure::write('App', [
+	'encoding' => 'UTF-8',
 	'namespace' => 'App',
 	'paths' => [
 		'templates' => [ROOT . DS . 'tests' . DS . 'test_app' . DS . 'templates' . DS],

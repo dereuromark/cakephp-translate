@@ -11,7 +11,7 @@
 	<ul class="side-nav nav nav-pills nav-stacked">
 		<li class="heading"><?= __d('translate', 'Actions') ?></li>
 		<li><?= $this->Html->link(__d('translate', 'Overview'), ['controller' => 'Translate', 'action' => 'index']) ?></li>
-		<li><?= $this->Html->link(__d('translate', 'List Translate Strings'), ['controller' => 'TranslateStrings', 'action' => 'index', '?' => $this->request->query]) ?></li>
+		<li><?= $this->Html->link(__d('translate', 'List Translate Strings'), ['controller' => 'TranslateStrings', 'action' => 'index', '?' => $this->request->getQuery()]) ?></li>
 		<li><?php echo $this->Html->link(__d('translate', 'Edit Translate String'), ['action'=>'edit', $translateString['id']]);?></li>
 	</ul>
 </nav>

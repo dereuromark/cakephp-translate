@@ -4,6 +4,9 @@
  * @var \Translate\Model\Entity\TranslateTerm[]|\Cake\Collection\CollectionInterface $translateTerms
  * @var mixed $_isSearch
  */
+
+use Cake\Core\Plugin;
+
 ?>
 <nav class="actions col-md-3 col-sm-4 col-xs-12">
 	<ul class="side-nav nav nav-pills nav-stacked">
@@ -79,5 +82,11 @@
 		</tbody>
 	</table>
 
-	<?php echo $this->element('Tools.pagination'); ?>
+	<?php
+	if (Plugin::isLoaded('Tools')) {
+		echo $this->element('Tools.pagination');
+	} else {
+		echo $this->element('pagination');
+	}
+	?>
 </div>

@@ -26,6 +26,7 @@ class TranslateStringsController extends TranslateAppController {
 	 */
 	public function initialize(): void {
 		parent::initialize();
+
 		$this->loadComponent('Search.Search', [
 			'actions' => ['index'],
 			'emptyValues' => [

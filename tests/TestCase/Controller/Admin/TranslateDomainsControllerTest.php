@@ -2,7 +2,7 @@
 
 namespace Translate\Test\TestCase\Controller\Admin;
 
-use Cake\TestSuite\IntegrationTestCase;
+use Shim\TestSuite\IntegrationTestCase;
 
 /**
  * Translate\Controller\Admin\TranslateDomainsController Test Case
@@ -28,6 +28,8 @@ class TranslateDomainsControllerTest extends IntegrationTestCase {
 	 * @return void
 	 */
 	public function testIndex() {
+		$this->disableErrorHandlerMiddleware();
+
 		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateDomains', 'action' => 'index']);
 
 		$this->assertResponseCode(200);
@@ -40,6 +42,8 @@ class TranslateDomainsControllerTest extends IntegrationTestCase {
 	 * @return void
 	 */
 	public function testView() {
+		$this->disableErrorHandlerMiddleware();
+
 		$id = 1;
 		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateDomains', 'action' => 'view', $id]);
 
@@ -53,6 +57,8 @@ class TranslateDomainsControllerTest extends IntegrationTestCase {
 	 * @return void
 	 */
 	public function testAdd() {
+		$this->disableErrorHandlerMiddleware();
+
 		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateDomains', 'action' => 'add']);
 
 		$this->assertResponseCode(200);
@@ -65,6 +71,8 @@ class TranslateDomainsControllerTest extends IntegrationTestCase {
 	 * @return void
 	 */
 	public function testEdit() {
+		$this->disableErrorHandlerMiddleware();
+
 		$id = 1;
 		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateDomains', 'action' => 'edit', $id]);
 
@@ -78,6 +86,8 @@ class TranslateDomainsControllerTest extends IntegrationTestCase {
 	 * @return void
 	 */
 	public function testDelete() {
+		$this->disableErrorHandlerMiddleware();
+
 		$id = 1;
 		$this->post(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateDomains', 'action' => 'delete', $id]);
 

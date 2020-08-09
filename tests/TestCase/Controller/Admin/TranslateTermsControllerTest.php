@@ -2,7 +2,7 @@
 
 namespace Translate\Test\TestCase\Controller\Admin;
 
-use Cake\TestSuite\IntegrationTestCase;
+use Shim\TestSuite\IntegrationTestCase;
 
 /**
  * Translate\Controller\Admin\TranslateTermsController Test Case
@@ -19,6 +19,7 @@ class TranslateTermsControllerTest extends IntegrationTestCase {
 	protected $fixtures = [
 		'plugin.Translate.TranslateTerms',
 		'plugin.Translate.TranslateStrings',
+		'plugin.Translate.TranslateLanguages',
 	];
 
 	/**
@@ -27,6 +28,8 @@ class TranslateTermsControllerTest extends IntegrationTestCase {
 	 * @return void
 	 */
 	public function testIndex() {
+		$this->disableErrorHandlerMiddleware();
+
 		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateTerms', 'action' => 'index']);
 
 		$this->assertResponseCode(200);

@@ -14,13 +14,6 @@ use Translate\Translator\Translator;
 class TranslateController extends TranslateAppController {
 
 	/**
-	 * @var array
-	 */
-	public $helpers = [
-		'Translate.Translation',
-	];
-
-	/**
 	 * @var string
 	 */
 	public $modelClass = 'Translate.TranslateDomains';
@@ -32,10 +25,10 @@ class TranslateController extends TranslateAppController {
 	 */
 	public function index() {
 		$this->loadModel('Translate.TranslateLanguages');
-		$languages = $this->TranslateLanguages->find('all', ['contain' => []]);
+		$languages = $this->TranslateLanguages->find('all')->toArray();
 
 		$id = $this->request->getSession()->read('TranslateProject.id');
-		$count = $this->TranslateDomains->statistics($id, $languages->toArray());
+		$count = $id ? $this->TranslateDomains->statistics($id, $languages) : 0;
 		$coverage = $this->TranslateDomains->TranslateStrings->coverage($this->Translation->currentProjectId());
 		$projectSwitchArray = $this->TranslateDomains->TranslateProjects->find('list')->toArray();
 		$this->set(compact('coverage', 'languages', 'count', 'projectSwitchArray'));

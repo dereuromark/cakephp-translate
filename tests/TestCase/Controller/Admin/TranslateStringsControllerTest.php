@@ -6,8 +6,7 @@ use App\Translator\Engine\Test;
 use App\Translator\Engine\TestMore;
 use Cake\Core\Configure;
 use Cake\Filesystem\Folder;
-use Cake\ORM\TableRegistry;
-use Cake\TestSuite\IntegrationTestCase;
+use Shim\TestSuite\IntegrationTestCase;
 
 /**
  * Translate\Controller\Admin\TranslateStringsController Test Case
@@ -26,6 +25,7 @@ class TranslateStringsControllerTest extends IntegrationTestCase {
 		'plugin.Translate.TranslateDomains',
 		'plugin.Translate.TranslateLanguages',
 		'plugin.Translate.TranslateProjects',
+		'plugin.Translate.TranslateTerms',
 		'plugin.Translate.Users',
 	];
 
@@ -35,6 +35,8 @@ class TranslateStringsControllerTest extends IntegrationTestCase {
 	 * @return void
 	 */
 	public function testIndex() {
+		$this->disableErrorHandlerMiddleware();
+
 		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateStrings', 'action' => 'index']);
 
 		$this->assertResponseCode(200);
@@ -72,12 +74,14 @@ class TranslateStringsControllerTest extends IntegrationTestCase {
 	 * @return void
 	 */
 	public function testExtractPost() {
-		$TranslateStrings = TableRegistry::getTableLocator()->get('Translate.TranslateStrings');
+		$this->disableErrorHandlerMiddleware();
+
+		$TranslateStrings = $this->getTableLocator()->get('Translate.TranslateStrings');
 		$count = $TranslateStrings->find()->count();
 
 		$folder = new Folder();
 		$folder->copy(LOCALE, [
-			'from' => ROOT . DS . 'tests' . DS . 'test_files' . DS . 'Locale' . DS,
+			'from' => ROOT . DS . 'tests' . DS . 'test_files' . DS . 'locales' . DS,
 		]);
 
 		$data = [
@@ -128,10 +132,12 @@ Template/Account/foo.ctp:15', $translateString->references);
 	 * @return void
 	 */
 	public function testTranslate() {
+		$this->disableErrorHandlerMiddleware();
+
 		Configure::write('Translate.engine', [Test::class, TestMore::class]);
 
 		$id = 1;
-		$this->TranslateStrings = TableRegistry::getTableLocator()->get('Translate.TranslateStrings');
+		$this->TranslateStrings = $this->getTableLocator()->get('Translate.TranslateStrings');
 		$record = $this->TranslateStrings->get($id);
 
 		$groupId = $record->translate_domain_id;

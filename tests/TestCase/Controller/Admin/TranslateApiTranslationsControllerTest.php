@@ -2,7 +2,7 @@
 
 namespace Translate\Test\TestCase\Controller\Admin;
 
-use Cake\TestSuite\IntegrationTestCase;
+use Shim\TestSuite\IntegrationTestCase;
 
 /**
  * Translate\Controller\Admin\TranslateApiTranslationsController Test Case

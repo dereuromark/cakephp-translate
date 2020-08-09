@@ -156,7 +156,7 @@ class TranslateStringsTable extends Table {
 				'filterEmpty' => 0,
 			])
 			->like('search', [
-				'field' => [$this->aliasField('name'), 'plural', 'context'],
+				'fields' => [$this->aliasField('name'), 'plural', 'context'],
 			]);
 
 		return $searchManager;

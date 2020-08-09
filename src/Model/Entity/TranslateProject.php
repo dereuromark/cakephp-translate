@@ -44,12 +44,13 @@ class TranslateProject extends Entity {
 			static::STATUS_HIDDEN => __d('translate', 'Hidden Project'),
 			static::STATUS_PUBLIC => __d('translate', 'Public Project'),
 		];
+
 		return parent::enum($value, $options);
 	}
 
-	const STATUS_INACTIVE = 0;
-	const STATUS_HIDDEN = 1;
-	const STATUS_PUBLIC = 2;
+	public const STATUS_INACTIVE = 0;
+	public const STATUS_HIDDEN = 1;
+	public const STATUS_PUBLIC = 2;
 
 	/**
 	 * @param int|null $value
@@ -62,12 +63,13 @@ class TranslateProject extends Entity {
 			static::TYPE_PLUGIN => __d('translate', 'CakePHP Plugin'),
 			static::TYPE_OTHER => __d('translate', 'Other Project'),
 		];
+
 		return parent::enum($value, $options);
 	}
 
-	const TYPE_APP = 0;
-	const TYPE_PLUGIN = 1;
+	public const TYPE_APP = 0;
+	public const TYPE_PLUGIN = 1;
 	//todo?
-	const TYPE_OTHER = 9;
+	public const TYPE_OTHER = 9;
 
 }

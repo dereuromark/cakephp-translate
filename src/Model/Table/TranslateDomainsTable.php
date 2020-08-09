@@ -106,7 +106,7 @@ class TranslateDomainsTable extends Table {
 	 *
 	 * @return array
 	 */
-	public function statistics($id, array $languages = null) {
+	public function statistics($id, ?array $languages = null) {
 		if ($languages === null) {
 			$languages = $this->TranslateStrings->TranslateTerms->TranslateLanguages->find('list', ['contain' => []])->toArray();
 		}

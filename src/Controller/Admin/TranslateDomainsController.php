@@ -37,8 +37,8 @@ class TranslateDomainsController extends TranslateAppController {
 	 * View method
 	 *
 	 * @param string|null $id Translate Domain id.
-	 * @return \Cake\Http\Response|null|void
 	 * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+	 * @return \Cake\Http\Response|null|void
 	 */
 	public function view($id = null) {
 		$translateDomain = $this->TranslateDomains->get($id, [
@@ -63,6 +63,7 @@ class TranslateDomainsController extends TranslateAppController {
 			$translateDomain = $this->TranslateDomains->patchEntity($translateDomain, $data);
 			if ($this->TranslateDomains->save($translateDomain)) {
 				$this->Flash->success(__d('translate', 'The translate domain has been saved.'));
+
 				return $this->redirect(['action' => 'index']);
 			}
 
@@ -78,8 +79,8 @@ class TranslateDomainsController extends TranslateAppController {
 	 * Edit method
 	 *
 	 * @param string|null $id Translate Domain id.
-	 * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
 	 * @throws \Cake\Http\Exception\NotFoundException When record not found.
+	 * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
 	 */
 	public function edit($id = null) {
 		$translateDomain = $this->TranslateDomains->get($id, [
@@ -89,6 +90,7 @@ class TranslateDomainsController extends TranslateAppController {
 			$translateDomain = $this->TranslateDomains->patchEntity($translateDomain, $this->request->getData());
 			if ($this->TranslateDomains->save($translateDomain)) {
 				$this->Flash->success(__d('translate', 'The translate domain has been saved.'));
+
 				return $this->redirect(['action' => 'index']);
 			}
 
@@ -105,8 +107,8 @@ class TranslateDomainsController extends TranslateAppController {
 	 * Delete method
 	 *
 	 * @param string|null $id Translate Domain id.
-	 * @return \Cake\Http\Response|null Redirects to index.
 	 * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+	 * @return \Cake\Http\Response|null Redirects to index.
 	 */
 	public function delete($id = null) {
 		$this->request->allowMethod(['post', 'delete']);
@@ -116,6 +118,7 @@ class TranslateDomainsController extends TranslateAppController {
 		} else {
 			$this->Flash->error(__d('translate', 'The translate domain could not be deleted. Please, try again.'));
 		}
+
 		return $this->redirect(['action' => 'index']);
 	}
 

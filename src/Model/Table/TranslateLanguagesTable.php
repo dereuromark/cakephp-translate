@@ -117,8 +117,6 @@ class TranslateLanguagesTable extends Table {
 	];
 
 	/**
-	 * TranslateLanguagesTable constructor.
-	 *
 	 * @param array $config
 	 */
 	public function __construct(array $config = []) {
@@ -200,6 +198,7 @@ class TranslateLanguagesTable extends Table {
 		$defaults = ['conditions' => [$this->getAlias() . '.active' => 1]];
 
 		$options = array_merge($defaults, $options);
+
 		return $this->find($type, $options);
 	}
 

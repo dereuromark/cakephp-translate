@@ -101,6 +101,7 @@ class TranslateProjectsTable extends Table {
 		if (!$res) {
 			return null;
 		}
+
 		return $res->id;
 	}
 
@@ -133,6 +134,7 @@ class TranslateProjectsTable extends Table {
 					];
 					# bug in deleteAll (cannot use containable/recursion)
 					$res = $this->TranslateTerms->deleteAll($options['conditions']);
+
 					/*
 					die(returns($res));
 					$res = $this->TranslateTerms->find('list', $options);
@@ -148,6 +150,7 @@ class TranslateProjectsTable extends Table {
 					//$this->TranslateTerms->TranslateStrings->recursive = 0;
 					//$this->TranslateTerms->TranslateStrings->bindModel(['belongsTo' => $x], false);
 					$res = $this->TranslateTerms->TranslateStrings->deleteAll($conditions);
+
 					//die(returns($res));
 					break;
 				case 'groups':
@@ -155,6 +158,7 @@ class TranslateProjectsTable extends Table {
 						'TranslateDomain.translate_project_id' => $id,
 					];
 					$this->TranslateDomains->deleteAll($conditions);
+
 					break;
 				default:
 					throw new Exception('Invalid type');

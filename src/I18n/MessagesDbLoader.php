@@ -116,6 +116,7 @@ class MessagesDbLoader {
 		for ($i = 7; $i >= 2; $i--) {
 			if (isset($item['plural_' . $i])) {
 				$pluralForms = $i - 1;
+
 				break;
 			}
 		}

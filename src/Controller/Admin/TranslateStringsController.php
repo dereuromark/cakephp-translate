@@ -57,8 +57,8 @@ class TranslateStringsController extends TranslateAppController {
 	 * View method
 	 *
 	 * @param string|null $id Translate String id.
-	 * @return \Cake\Http\Response|null|void
 	 * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+	 * @return \Cake\Http\Response|null|void
 	 */
 	public function view($id = null) {
 		$translateString = $this->TranslateStrings->get($id, [
@@ -84,6 +84,7 @@ class TranslateStringsController extends TranslateAppController {
 				if ($this->request->getData('translate_afterwards')) {
 					return $this->redirect(['action' => 'translate', $translateString->id]);
 				}
+
 				return $this->redirect(['action' => 'index']);
 			}
 
@@ -99,8 +100,8 @@ class TranslateStringsController extends TranslateAppController {
 	 * Edit method
 	 *
 	 * @param string|null $id Translate String id.
-	 * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
 	 * @throws \Cake\Http\Exception\NotFoundException When record not found.
+	 * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
 	 */
 	public function edit($id = null) {
 		$translateString = $this->TranslateStrings->get($id, [
@@ -135,8 +136,8 @@ class TranslateStringsController extends TranslateAppController {
 	 * Delete method
 	 *
 	 * @param string|null $id Translate String id.
-	 * @return \Cake\Http\Response|null Redirects to index.
 	 * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+	 * @return \Cake\Http\Response|null Redirects to index.
 	 */
 	public function delete($id = null) {
 		$this->request->allowMethod(['post', 'delete']);
@@ -146,6 +147,7 @@ class TranslateStringsController extends TranslateAppController {
 		} else {
 			$this->Flash->error(__d('translate', 'The translate string could not be deleted. Please, try again.'));
 		}
+
 		return $this->redirect(['action' => 'index']);
 	}
 
@@ -191,6 +193,7 @@ class TranslateStringsController extends TranslateAppController {
 					$success = (bool)$this->TranslateStrings->import($translation, $translationDomain->id);
 					if (!$success) {
 						$errors[] = '`' . h($translation['name']) . '`';
+
 						continue;
 					}
 					$count += (int)$success;
@@ -201,7 +204,7 @@ class TranslateStringsController extends TranslateAppController {
 				if (!$domain) {
 					continue;
 				}
-				list($lang, $domain) = explode('_', $domain, 2);
+				[$lang, $domain] = explode('_', $domain, 2);
 				if (!isset($poFiles[$lang][$lang . '_' . $domain])) {
 					continue;
 				}
@@ -217,12 +220,14 @@ class TranslateStringsController extends TranslateAppController {
 					$translationString = $this->TranslateStrings->import($translation, $translationDomain->id);
 					if (!$translationString) {
 						$errors[] = '`' . h($translation['name']) . '`';
+
 						continue;
 					}
 
 					$success = (bool)$this->TranslateStrings->TranslateTerms->import($translation, $translationString->id, $translateLanguages[$lang]);
 					if (!$success) {
 						$errors[] = '`' . h($translation['name']) . '`';
+
 						continue;
 					}
 					$count += (int)$success;
@@ -277,7 +282,7 @@ class TranslateStringsController extends TranslateAppController {
 			/** @var string[] $postedDomains */
 			$postedDomains = (array)$this->request->getData('domains');
 			foreach ($postedDomains as $key => $domain) {
-				list($lang, $domain) = explode('_', $domain, 2);
+				[$lang, $domain] = explode('_', $domain, 2);
 
 				$langId = $this->TranslateStrings->TranslateTerms->TranslateLanguages->find()->where(['iso2' => $lang])->firstOrFail()->id;
 				$groupId = $this->TranslateStrings->TranslateDomains->find()->where(['name' => $domain, 'translate_project_id' => $this->Translation->currentProjectId()])->firstOrFail()->id;
@@ -290,6 +295,7 @@ class TranslateStringsController extends TranslateAppController {
 				$dumper = new Dumper();
 				if (!$dumper->dump($translations, $domain, $lang)) {
 					$errors[] = $lang . '/' . $domain;
+
 					continue;
 				}
 
@@ -303,6 +309,7 @@ class TranslateStringsController extends TranslateAppController {
 
 		} elseif ($this->Common->isPosted() && !$map) {
 			$this->Flash->warning('Please activate a domain for dumping.');
+
 			return $this->redirect(['controller' => 'TranslateDomains', 'action' => 'index']);
 		} elseif (!$this->Common->isPosted()) {
 			$domainArray = [];
@@ -331,6 +338,7 @@ class TranslateStringsController extends TranslateAppController {
 		$translateLanguages = $this->TranslateStrings->TranslateTerms->TranslateLanguages->find()->all()->toArray();
 		if (!$translateLanguages) {
 			$this->Flash->error(__d('translate', 'You need at least one language to translate'));
+
 			return $this->redirect(['controller' => 'TranslateLanguages', 'action' => 'add']);
 		}
 
@@ -374,6 +382,7 @@ class TranslateStringsController extends TranslateAppController {
 						return $this->redirect([$next['id']]);
 					}
 				}
+
 				return $this->redirect(['action' => 'index']);
 			}
 		} else {
@@ -394,8 +403,8 @@ class TranslateStringsController extends TranslateAppController {
 	/**
 	 * @param int $id
 	 * @param int $reference 0 based
-	 * @return void
 	 * @throws \Cake\Http\Exception\NotFoundException
+	 * @return void
 	 */
 	public function displayReference($id, $reference) {
 		$translateString = $this->TranslateStrings->get($id, ['contain' => ['TranslateDomains']]);
@@ -413,7 +422,7 @@ class TranslateStringsController extends TranslateAppController {
 		}
 
 		$reference = $occ[(int)$reference];
-		list ($reference, $lines) = explode(':', $reference);
+		[$reference, $lines] = explode(':', $reference);
 		$lines = explode(';', $lines);
 
 		$path = $translateString->translate_domain->path;

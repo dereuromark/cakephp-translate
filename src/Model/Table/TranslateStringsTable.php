@@ -168,7 +168,7 @@ class TranslateStringsTable extends Table {
 	 *   (defaults to ALL languages)
 	 * @return array coverage
 	 */
-	public function coverage($id, array $languages = null) {
+	public function coverage($id, ?array $languages = null) {
 		$res = [];
 		if ($languages === null) {
 			$languages = $this->TranslateTerms->TranslateLanguages->find()
@@ -192,6 +192,7 @@ class TranslateStringsTable extends Table {
 
 			$res[$lang] = $this->_coverage($total, $translated);
 		}
+
 		return $res;
 	}
 
@@ -205,6 +206,7 @@ class TranslateStringsTable extends Table {
 		if ($total < 1) {
 			return 0;
 		}
+
 		return (int)(($translated / $total) * 100);
 	}
 
@@ -252,8 +254,8 @@ class TranslateStringsTable extends Table {
 	/**
 	 * @param int $translate_language_id
 	 * @param array $translateLanguages
-	 * @return string
 	 * @throws \Cake\Http\Exception\InternalErrorException
+	 * @return string
 	 */
 	public function resolveLanguageKey($translate_language_id, $translateLanguages) {
 		foreach ($translateLanguages as $translateLanguage) {
@@ -318,6 +320,7 @@ class TranslateStringsTable extends Table {
 		if (strpos($translation['plural'], '<') !== false || strpos($translation['plural'], '>') !== false) {
 			return true;
 		}
+
 		return false;
 	}
 

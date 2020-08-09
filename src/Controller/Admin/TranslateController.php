@@ -61,21 +61,26 @@ class TranslateController extends TranslateAppController {
 					switch ($sel) {
 						case 'terms':
 							$this->TranslateDomains->TranslateStrings->TranslateTerms->truncate();
+
 							break;
 						case 'strings':
 							$this->TranslateDomains->TranslateStrings->truncate();
+
 							break;
 						case 'groups':
 							$this->TranslateDomains->truncate();
+
 							break;
 						case 'languages':
 							$this->TranslateDomains->TranslateStrings->TranslateTerms->TranslateLanguages->truncate();
+
 							break;
 					}
 				}
 
 			}
 			$this->Flash->success('Done');
+
 			return $this->redirect(['action' => 'index']);
 		}
 

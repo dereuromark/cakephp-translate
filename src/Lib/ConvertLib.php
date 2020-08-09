@@ -7,7 +7,7 @@ use Cake\View\View;
 
 class ConvertLib {
 
-	const EOL = PHP_EOL;
+	public const EOL = PHP_EOL;
 
 	/**
 	 * @var \Cake\View\Helper\TextHelper|null
@@ -41,6 +41,7 @@ class ConvertLib {
 		} else {
 			$text = str_replace(["\r\n", "\r", "\n"], '\n', $text);
 		}
+
 		return $text;
 	}
 
@@ -51,6 +52,7 @@ class ConvertLib {
 	 */
 	public function reverse($text) {
 		$text = str_replace('\n', static::EOL, $text);
+
 		return $text;
 	}
 

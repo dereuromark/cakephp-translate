@@ -20,7 +20,6 @@
 	},
 	"require-dev": {
 		"ext-json": "*",
-		"maxakawizard/po-parser": "dev-master",
 		"dereuromark/cakephp-queue": "^5.0",
 		"yandex/translate-api": "dev-master",
 		"fig-r/psr2r-sniffer": "dev-master"

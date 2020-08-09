@@ -28,6 +28,7 @@ class TranslationLib {
 				$names[] = $singular;
 			}
 		}
+
 		return $names;
 	}
 
@@ -48,6 +49,7 @@ class TranslationLib {
 				$potFiles[$filename] = $filename;
 			}
 		}
+
 		return $potFiles;
 	}
 
@@ -62,6 +64,7 @@ class TranslationLib {
 		if (!empty($files[0])) {
 			$languages = $files[0];
 		}
+
 		return $languages;
 	}
 
@@ -83,6 +86,7 @@ class TranslationLib {
 				$poFiles[$lang . '_' . pathinfo($file, PATHINFO_FILENAME)] = pathinfo($file, PATHINFO_FILENAME);
 			}
 		}
+
 		return $poFiles;
 	}
 
@@ -259,9 +263,11 @@ class TranslationLib {
 			switch ($key) {
 				case 'ccomment':
 					$rows[] = '#. ' . $value;
+
 					break;
 				case 'tcomment':
 					$rows[] = '#  ' . $value;
+
 					break;
 			}
 		}

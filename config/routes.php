@@ -1,7 +1,8 @@
 <?php
+
+use Cake\Routing\Route\DashedRoute;
 use Cake\Routing\RouteBuilder;
 use Cake\Routing\Router;
-use Cake\Routing\Route\DashedRoute;
 
 Router::prefix('Admin', function (RouteBuilder $routes) {
 		$routes->plugin('Translate', ['path' => '/translate'], function (RouteBuilder $routes) {

@@ -86,6 +86,7 @@ class TranslateApiTranslationsTable extends Table {
 			'value' => $value,
 			'engine' => $engine,
 		]);
+
 		return $this->save($translateApiTranslation);
 	}
 

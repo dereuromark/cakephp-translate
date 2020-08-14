@@ -2,7 +2,7 @@
 /**
  * @var \App\View\AppView $this
  * @var \Translate\Model\Entity\TranslateTerm[]|\Cake\Collection\CollectionInterface $translateTerms
- * @var mixed $_isSearch
+ * @var bool $_isSearch
  */
 ?>
 <nav class="actions col-md-3 col-sm-4 col-xs-12">

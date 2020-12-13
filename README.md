@@ -1,6 +1,6 @@
 # CakePHP Translate Plugin
-[![Build Status](https://api.travis-ci.com/dereuromark/cakephp-translate.svg?branch=cake4)](https://travis-ci.com/dereuromark/cakephp-translate)
-[![Coverage Status](https://img.shields.io/codecov/c/github/dereuromark/cakephp-translate/master.svg)](https://codecov.io/github/dereuromark/cakephp-translate?branch=master)
+[![Build Status](https://api.travis-ci.com/dereuromark/cakephp-translate.svg?branch=cake4)](https://github.com/dereuromark/cakephp-translate/actions?query=workflow%3ACI+branch%3Amaster)
+[![Coverage Status](https://img.shields.io/codecov/c/github/dereuromark/cakephp-translate/master.svg)](https://codecov.io/github/dereuromark/cakephp-translate/branch/master)
 [![Latest Stable Version](https://poser.pugx.org/dereuromark/cakephp-translate/v/stable.svg)](https://packagist.org/packages/dereuromark/cakephp-translate)
 [![Minimum PHP Version](http://img.shields.io/badge/php-%3E%3D%207.2-8892BF.svg)](https://php.net/)
 [![License](https://poser.pugx.org/dereuromark/cakephp-translate/license.svg)](https://packagist.org/packages/dereuromark/cakephp-translate)

@@ -2,7 +2,7 @@
 /**
  * @var \App\View\AppView $this
  * @var \Translate\Model\Entity\TranslateString[]|\Cake\Collection\CollectionInterface $translateStrings
- * @var mixed $_isSearch
+ * @var bool $_isSearch
  */
 
 use Cake\Core\Plugin;

@@ -70,17 +70,17 @@ class GoogleTranslate {
 		}
 
 		// URL-ify the data for the POST
-		$fields_string = '';
+		$fieldsString = '';
 		foreach ($fields as $key => $value) {
-			$fields_string .= $key . '=' . $value . '&';
+			$fieldsString .= $key . '=' . $value . '&';
 		}
-		rtrim($fields_string, '&');
+		$fieldsString = rtrim($fieldsString, '&');
 		// Open connection
 		$ch = curl_init();
 		// Set the url, number of POST vars, POST data
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_POST, count($fields));
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_string);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $fieldsString);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_ENCODING, 'UTF-8');
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);

@@ -2,6 +2,7 @@
 
 namespace Translate\Shell;
 
+use Cake\Console\ConsoleOptionParser;
 use Cake\Console\Shell;
 
 /**
@@ -21,7 +22,7 @@ class TranslateShell extends Shell {
 	 */
 	public function help() {
 		$this->out('CakePHP Translate Plugin:');
-		$this->out();
+		$this->out('');
 
 		$this->out('Run `bin/cake i18n extract` first to create POT files.');
 		$this->out('Import them then via `bin/cake translate import`.');
@@ -49,8 +50,9 @@ class TranslateShell extends Shell {
 	 *
 	 * @return \Cake\Console\ConsoleOptionParser
 	 */
-	public function getOptionParser() {
+	public function getOptionParser(): ConsoleOptionParser {
 		$consoleOptionParser = parent::getOptionParser();
+		$consoleOptionParser->setDescription('Tooling for translation management.');
 
 		$consoleOptionParser->addSubcommand('import', [
 			'help' => 'Import from POT files.',

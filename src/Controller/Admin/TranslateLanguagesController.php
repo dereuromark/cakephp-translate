@@ -10,6 +10,7 @@ use Translate\Filesystem\Creator;
  *
  * @property \Translate\Model\Table\TranslateLanguagesTable $TranslateLanguages
  * @method \Translate\Model\Entity\TranslateLanguage[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
+ * @property \Translate\Controller\Component\TranslationComponent $Translation
  */
 class TranslateLanguagesController extends TranslateAppController {
 
@@ -39,14 +40,17 @@ class TranslateLanguagesController extends TranslateAppController {
 
 			if (!empty($data) && $creator->createLocaleFolders($data, $path) === true) {
 				$this->Flash->success('New locale folders created');
+
 				return $this->redirect(['action' => 'index']);
 			}
 
 			$this->Flash->error('Sth went wrong,');
 		} else {
+			$localeArray = [];
 			foreach ($languages as $k => $v) {
-				$this->request->data['locale'][$k] = true;
+				$localeArray[$k] = true;
 			}
+			$this->request = $this->request->withData('locale', $localeArray);
 		}
 
 		$this->set(compact('path', 'languages', 'existingFolders'));
@@ -87,6 +91,7 @@ class TranslateLanguagesController extends TranslateAppController {
 
 			if (!empty($data) && $this->TranslateLanguages->saveMany($translateLanguages)) {
 				$this->Flash->success('new language(s) added');
+
 				return $this->redirect(['action' => 'index']);
 			}
 
@@ -112,8 +117,8 @@ class TranslateLanguagesController extends TranslateAppController {
 	 * View method
 	 *
 	 * @param string|null $id Translate Language id.
-	 * @return \Cake\Http\Response|null|void
 	 * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+	 * @return \Cake\Http\Response|null|void
 	 */
 	public function view($id = null) {
 		$translateLanguage = $this->TranslateLanguages->get($id, [
@@ -130,7 +135,7 @@ class TranslateLanguagesController extends TranslateAppController {
 	 * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
 	 */
 	public function add() {
-		$translateLanguage = $this->TranslateLanguages->newEntity();
+		$translateLanguage = $this->TranslateLanguages->newEmptyEntity();
 		if ($this->request->is('post')) {
 			$data = $this->request->getData();
 			$data['translate_project_id'] = $this->Translation->currentProjectId();
@@ -138,6 +143,7 @@ class TranslateLanguagesController extends TranslateAppController {
 			$translateLanguage = $this->TranslateLanguages->patchEntity($translateLanguage, $data);
 			if ($this->TranslateLanguages->save($translateLanguage)) {
 				$this->Flash->success(__d('translate', 'The translate language has been saved.'));
+
 				return $this->redirect(['action' => 'index']);
 			}
 
@@ -152,8 +158,8 @@ class TranslateLanguagesController extends TranslateAppController {
 	 * Edit method
 	 *
 	 * @param string|null $id Translate Language id.
-	 * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
 	 * @throws \Cake\Http\Exception\NotFoundException When record not found.
+	 * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
 	 */
 	public function edit($id = null) {
 		$translateLanguage = $this->TranslateLanguages->get($id, [
@@ -163,6 +169,7 @@ class TranslateLanguagesController extends TranslateAppController {
 			$translateLanguage = $this->TranslateLanguages->patchEntity($translateLanguage, $this->request->getData());
 			if ($this->TranslateLanguages->save($translateLanguage)) {
 				$this->Flash->success(__d('translate', 'The translate language has been saved.'));
+
 				return $this->redirect(['action' => 'index']);
 			}
 
@@ -177,8 +184,8 @@ class TranslateLanguagesController extends TranslateAppController {
 	 * Delete method
 	 *
 	 * @param string|null $id Translate Language id.
-	 * @return \Cake\Http\Response|null Redirects to index.
 	 * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+	 * @return \Cake\Http\Response|null Redirects to index.
 	 */
 	public function delete($id = null) {
 		$this->request->allowMethod(['post', 'delete']);
@@ -188,6 +195,7 @@ class TranslateLanguagesController extends TranslateAppController {
 		} else {
 			$this->Flash->error(__d('translate', 'The translate language could not be deleted. Please, try again.'));
 		}
+
 		return $this->redirect(['action' => 'index']);
 	}
 

@@ -3,7 +3,7 @@
 namespace Translate\Test\TestCase\Controller\Admin;
 
 use Cake\ORM\TableRegistry;
-use Cake\TestSuite\IntegrationTestCase;
+use Shim\TestSuite\IntegrationTestCase;
 
 /**
  * Translate\Controller\Admin\TranslateProjectsController Test Case
@@ -17,7 +17,7 @@ class TranslateProjectsControllerTest extends IntegrationTestCase {
 	 *
 	 * @var array
 	 */
-	public $fixtures = [
+	protected $fixtures = [
 		'plugin.Translate.TranslateProjects',
 	];
 
@@ -27,7 +27,7 @@ class TranslateProjectsControllerTest extends IntegrationTestCase {
 	 * @return void
 	 */
 	public function testIndex() {
-		$this->get(['prefix' => 'admin', 'plugin' => 'Translate', 'controller' => 'TranslateProjects', 'action' => 'index']);
+		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateProjects', 'action' => 'index']);
 
 		$this->assertResponseCode(200);
 		$this->assertNoRedirect();
@@ -40,7 +40,7 @@ class TranslateProjectsControllerTest extends IntegrationTestCase {
 	 */
 	public function testView() {
 		$id = 1;
-		$this->get(['prefix' => 'admin', 'plugin' => 'Translate', 'controller' => 'TranslateProjects', 'action' => 'view', $id]);
+		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateProjects', 'action' => 'view', $id]);
 
 		$this->assertResponseCode(200);
 		$this->assertNoRedirect();
@@ -55,7 +55,7 @@ class TranslateProjectsControllerTest extends IntegrationTestCase {
 		$TranslateProjects = TableRegistry::getTableLocator()->get('Translate.TranslateProjects');
 		$TranslateProjects->truncate();
 
-		$this->get(['prefix' => 'admin', 'plugin' => 'Translate', 'controller' => 'TranslateProjects', 'action' => 'add']);
+		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateProjects', 'action' => 'add']);
 
 		$this->assertResponseCode(200);
 		$this->assertNoRedirect();
@@ -68,7 +68,7 @@ class TranslateProjectsControllerTest extends IntegrationTestCase {
 	 */
 	public function testEdit() {
 		$id = 1;
-		$this->get(['prefix' => 'admin', 'plugin' => 'Translate', 'controller' => 'TranslateProjects', 'action' => 'edit', $id]);
+		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateProjects', 'action' => 'edit', $id]);
 
 		$this->assertResponseCode(200);
 		$this->assertNoRedirect();
@@ -81,7 +81,7 @@ class TranslateProjectsControllerTest extends IntegrationTestCase {
 	 */
 	public function testDelete() {
 		$id = 1;
-		$this->post(['prefix' => 'admin', 'plugin' => 'Translate', 'controller' => 'TranslateProjects', 'action' => 'delete', $id]);
+		$this->post(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateProjects', 'action' => 'delete', $id]);
 
 		$this->assertResponseCode(302);
 		$this->assertRedirect();

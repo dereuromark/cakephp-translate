@@ -16,7 +16,7 @@ class YandexTest extends TestCase {
 	/**
 	 * @return void
 	 */
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->skipIf(!Configure::read('Yandex.key'), 'Requires API key');

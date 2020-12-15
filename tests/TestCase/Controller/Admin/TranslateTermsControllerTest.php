@@ -2,7 +2,7 @@
 
 namespace Translate\Test\TestCase\Controller\Admin;
 
-use Cake\TestSuite\IntegrationTestCase;
+use Shim\TestSuite\IntegrationTestCase;
 
 /**
  * Translate\Controller\Admin\TranslateTermsController Test Case
@@ -16,9 +16,10 @@ class TranslateTermsControllerTest extends IntegrationTestCase {
 	 *
 	 * @var array
 	 */
-	public $fixtures = [
+	protected $fixtures = [
 		'plugin.Translate.TranslateTerms',
 		'plugin.Translate.TranslateStrings',
+		'plugin.Translate.TranslateLanguages',
 	];
 
 	/**
@@ -27,7 +28,9 @@ class TranslateTermsControllerTest extends IntegrationTestCase {
 	 * @return void
 	 */
 	public function testIndex() {
-		$this->get(['prefix' => 'admin', 'plugin' => 'Translate', 'controller' => 'TranslateTerms', 'action' => 'index']);
+		$this->disableErrorHandlerMiddleware();
+
+		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateTerms', 'action' => 'index']);
 
 		$this->assertResponseCode(200);
 		$this->assertNoRedirect();
@@ -49,7 +52,7 @@ class TranslateTermsControllerTest extends IntegrationTestCase {
 	 */
 	public function testEdit() {
 		$id = 1;
-		$this->get(['prefix' => 'admin', 'plugin' => 'Translate', 'controller' => 'TranslateTerms', 'action' => 'edit', $id]);
+		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateTerms', 'action' => 'edit', $id]);
 
 		$this->assertResponseCode(200);
 		$this->assertNoRedirect();
@@ -62,7 +65,7 @@ class TranslateTermsControllerTest extends IntegrationTestCase {
 	 */
 	public function testDelete() {
 		$id = 1;
-		$this->post(['prefix' => 'admin', 'plugin' => 'Translate', 'controller' => 'TranslateTerms', 'action' => 'delete', $id]);
+		$this->post(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateTerms', 'action' => 'delete', $id]);
 
 		$this->assertResponseCode(302);
 		$this->assertRedirect();

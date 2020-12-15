@@ -25,6 +25,7 @@ class Yandex implements EngineInterface {
 			$result = (string)$translation;
 		} catch (Exception $e) {
 			trigger_error($e->getMessage());
+
 			return null;
 		}
 

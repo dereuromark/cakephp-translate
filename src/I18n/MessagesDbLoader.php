@@ -66,16 +66,7 @@ class MessagesDbLoader {
 	 * @return \Aura\Intl\Package
 	 */
 	public function __invoke() {
-		$model = $this->_model;
-		if (is_string($model)) {
-			$model = TableRegistry::getTableLocator()->get($this->_model);
-			if (!$model) {
-				throw new RuntimeException(
-					sprintf('Unable to load model "%s".', $this->_model)
-				);
-			}
-			$this->_model = $model;
-		}
+		$model = $this->_getModel();
 
 		$translateProject = $this->_model->TranslateLanguages->TranslateProjects->find()->where(['default' => true])->firstOrFail();
 		$translateProjectId = $translateProject->id;
@@ -86,7 +77,7 @@ class MessagesDbLoader {
 		$fields = $model->getSchema()->columns();
 		$fields = array_flip(array_diff(
 			$fields,
-			$model->getSchema()->primaryKey()
+			$model->getSchema()->getPrimaryKey()
 		));
 		unset($fields['domain'], $fields['locale']);
 		$query->select(array_flip($fields));
@@ -125,6 +116,7 @@ class MessagesDbLoader {
 		for ($i = 7; $i >= 2; $i--) {
 			if (isset($item['plural_' . $i])) {
 				$pluralForms = $i - 1;
+
 				break;
 			}
 		}
@@ -159,6 +151,27 @@ class MessagesDbLoader {
 		}
 
 		return $messages;
+	}
+
+	/**
+	 * @throws \RuntimeException
+	 *
+	 * @return \Translate\Model\Table\TranslateTermsTable
+	 */
+	protected function _getModel() {
+		$model = $this->_model;
+		if (is_string($model)) {
+			/** @var \Translate\Model\Table\TranslateTermsTable|null $model */
+			$model = TableRegistry::getTableLocator()->get($this->_model);
+			if (!$model) {
+				throw new RuntimeException(
+					sprintf('Unable to load model "%s".', $this->_model)
+				);
+			}
+			$this->_model = $model;
+		}
+
+		return $model;
 	}
 
 }

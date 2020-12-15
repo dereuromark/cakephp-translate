@@ -13,7 +13,7 @@ class MessagesDbLoaderTest extends TestCase {
 	/**
 	 * @var array
 	 */
-	public $fixtures = [
+	protected $fixtures = [
 		'plugin.Translate.TranslateTerms',
 		'plugin.Translate.TranslateStrings',
 		'plugin.Translate.TranslateDomains',
@@ -29,13 +29,12 @@ class MessagesDbLoaderTest extends TestCase {
 	/**
 	 * @return void
 	 */
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$folder = new Folder();
-		$folder->copy([
+		$folder->copy(LOCALE, [
 			'from' => ROOT . DS . 'tests' . DS . 'test_files' . DS . 'Locale' . DS,
-			'to' => LOCALE,
 		]);
 
 		$this->_setUpData();
@@ -51,7 +50,7 @@ class MessagesDbLoaderTest extends TestCase {
 				$locale
 			);
 		});
-		I18n::locale('de');
+		I18n::setLocale('de');
 
 		$translated = __('Sing');
 		$this->assertSame('SingTrans', $translated);
@@ -76,7 +75,7 @@ class MessagesDbLoaderTest extends TestCase {
 				$locale
 			);
 		});
-		I18n::locale('de');
+		I18n::setLocale('de');
 
 		$translated = __d('dom', 'Sing');
 		$this->assertSame('SingTrans', $translated);

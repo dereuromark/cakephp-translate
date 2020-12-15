@@ -3,9 +3,9 @@
 namespace Translate\Model\Table;
 
 use ArrayObject;
-use Cake\Database\Schema\TableSchema;
+use Cake\Database\Schema\TableSchemaInterface;
 use Cake\Datasource\EntityInterface;
-use Cake\Event\Event;
+use Cake\Event\EventInterface;
 use Cake\Http\Exception\InternalErrorException;
 use Cake\I18n\Time;
 use Cake\Log\Log;
@@ -14,20 +14,25 @@ use Tools\Model\Table\Table;
 use Translate\Translator\Translator;
 
 /**
- * @property \App\Model\Table\UsersTable|\Cake\ORM\Association\BelongsTo $Users
- * @property \Translate\Model\Table\TranslateTermsTable|\Cake\ORM\Association\HasMany $TranslateTerms
- * @property \Translate\Model\Table\TranslateDomainsTable|\Cake\ORM\Association\BelongsTo $TranslateDomains
+ * @property \App\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Users
+ * @property \Translate\Model\Table\TranslateTermsTable&\Cake\ORM\Association\HasMany $TranslateTerms
+ * @property \Translate\Model\Table\TranslateDomainsTable&\Cake\ORM\Association\BelongsTo $TranslateDomains
  *
  * @method \Translate\Model\Entity\TranslateString get($primaryKey, $options = [])
- * @method \Translate\Model\Entity\TranslateString newEntity($data = null, array $options = [])
+ * @method \Translate\Model\Entity\TranslateString newEntity(array $data, array $options = [])
  * @method \Translate\Model\Entity\TranslateString[] newEntities(array $data, array $options = [])
- * @method \Translate\Model\Entity\TranslateString|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \Translate\Model\Entity\TranslateString|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \Translate\Model\Entity\TranslateString patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \Translate\Model\Entity\TranslateString[] patchEntities($entities, array $data, array $options = [])
- * @method \Translate\Model\Entity\TranslateString findOrCreate($search, callable $callback = null, $options = [])
+ * @method \Translate\Model\Entity\TranslateString[] patchEntities(iterable $entities, array $data, array $options = [])
+ * @method \Translate\Model\Entity\TranslateString findOrCreate($search, ?callable $callback = null, $options = [])
  * @mixin \Shim\Model\Behavior\NullableBehavior
  * @mixin \Search\Model\Behavior\SearchBehavior
- * @method \Translate\Model\Entity\TranslateString|bool saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \Translate\Model\Entity\TranslateString saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \Translate\Model\Entity\TranslateString newEmptyEntity()
+ * @method \Translate\Model\Entity\TranslateString[]|\Cake\Datasource\ResultSetInterface|false saveMany(iterable $entities, $options = [])
+ * @method \Translate\Model\Entity\TranslateString[]|\Cake\Datasource\ResultSetInterface saveManyOrFail(iterable $entities, $options = [])
+ * @method \Translate\Model\Entity\TranslateString[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
+ * @method \Translate\Model\Entity\TranslateString[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
  */
 class TranslateStringsTable extends Table {
 
@@ -92,10 +97,10 @@ class TranslateStringsTable extends Table {
 	];
 
 	/**
-	 * @param \Cake\Database\Schema\TableSchema $schema
-	 * @return \Cake\Database\Schema\TableSchema
+	 * @param \Cake\Database\Schema\TableSchemaInterface $schema
+	 * @return \Cake\Database\Schema\TableSchemaInterface
 	 */
-	protected function _initializeSchema(TableSchema $schema) {
+	protected function _initializeSchema(TableSchemaInterface $schema): TableSchemaInterface {
 		$schema->setColumnType('flags', 'json');
 
 		return $schema;
@@ -106,7 +111,7 @@ class TranslateStringsTable extends Table {
 	 *
 	 * @return void
 	 */
-	public function initialize(array $config) {
+	public function initialize(array $config): void {
 		parent::initialize($config);
 
 		$this->addBehavior('Shim.Nullable');
@@ -117,12 +122,12 @@ class TranslateStringsTable extends Table {
 	}
 
 	/**
-	 * @param \Cake\Event\Event $event The beforeSave event that was fired
+	 * @param \Cake\Event\EventInterface $event The beforeSave event that was fired
 	 * @param \Translate\Model\Entity\TranslateString $entity The entity that is going to be saved
 	 * @param \ArrayObject $options the options passed to the save method
 	 * @return void
 	 */
-	public function beforeSave(Event $event, EntityInterface $entity, ArrayObject $options) {
+	public function beforeSave(EventInterface $event, EntityInterface $entity, ArrayObject $options) {
 		$user = $event->getData('_footprint');
 		if ($user) {
 			$entity->user_id = $user['id'];
@@ -151,7 +156,7 @@ class TranslateStringsTable extends Table {
 				'filterEmpty' => 0,
 			])
 			->like('search', [
-				'field' => [$this->aliasField('name'), 'plural', 'context'],
+				'fields' => [$this->aliasField('name'), 'plural', 'context'],
 			]);
 
 		return $searchManager;
@@ -163,7 +168,7 @@ class TranslateStringsTable extends Table {
 	 *   (defaults to ALL languages)
 	 * @return array coverage
 	 */
-	public function coverage($id, array $languages = null) {
+	public function coverage($id, ?array $languages = null) {
 		$res = [];
 		if ($languages === null) {
 			$languages = $this->TranslateTerms->TranslateLanguages->find()
@@ -187,6 +192,7 @@ class TranslateStringsTable extends Table {
 
 			$res[$lang] = $this->_coverage($total, $translated);
 		}
+
 		return $res;
 	}
 
@@ -200,6 +206,7 @@ class TranslateStringsTable extends Table {
 		if ($total < 1) {
 			return 0;
 		}
+
 		return (int)(($translated / $total) * 100);
 	}
 
@@ -232,7 +239,14 @@ class TranslateStringsTable extends Table {
 	public function getUntranslated() {
 		$query = $this->find();
 		$query->leftJoinWith('TranslateTerms');
-		$query->where(['TranslateTerms.content IS' => null])->orWhere(['TranslateStrings.plural IS NOT' => null, 'TranslateTerms.plural_2 IS' => null]);
+
+		$conditions = [
+			'OR' => [
+				['TranslateTerms.content IS' => null],
+				['TranslateStrings.plural IS NOT' => null, 'TranslateTerms.plural_2 IS' => null],
+			],
+		];
+		$query->where($conditions);
 
 		return $query;
 	}
@@ -240,8 +254,8 @@ class TranslateStringsTable extends Table {
 	/**
 	 * @param int $translate_language_id
 	 * @param array $translateLanguages
-	 * @return string
 	 * @throws \Cake\Http\Exception\InternalErrorException
+	 * @return string
 	 */
 	public function resolveLanguageKey($translate_language_id, $translateLanguages) {
 		foreach ($translateLanguages as $translateLanguage) {
@@ -283,7 +297,7 @@ class TranslateStringsTable extends Table {
 		}
 
 		if (!$this->save($translateString)) {
-			Log::write('info', 'String `' . $translateString->name . '`: ' . print_r($translateString->errors(), true), ['scope' => 'import']);
+			Log::write('info', 'String `' . $translateString->name . '`: ' . print_r($translateString->getErrors(), true), ['scope' => 'import']);
 
 			return null;
 		}
@@ -306,6 +320,7 @@ class TranslateStringsTable extends Table {
 		if (strpos($translation['plural'], '<') !== false || strpos($translation['plural'], '>') !== false) {
 			return true;
 		}
+
 		return false;
 	}
 

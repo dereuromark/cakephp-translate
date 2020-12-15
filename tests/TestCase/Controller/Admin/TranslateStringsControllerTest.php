@@ -6,8 +6,7 @@ use App\Translator\Engine\Test;
 use App\Translator\Engine\TestMore;
 use Cake\Core\Configure;
 use Cake\Filesystem\Folder;
-use Cake\ORM\TableRegistry;
-use Cake\TestSuite\IntegrationTestCase;
+use Shim\TestSuite\IntegrationTestCase;
 
 /**
  * Translate\Controller\Admin\TranslateStringsController Test Case
@@ -21,11 +20,12 @@ class TranslateStringsControllerTest extends IntegrationTestCase {
 	 *
 	 * @var array
 	 */
-	public $fixtures = [
+	protected $fixtures = [
 		'plugin.Translate.TranslateStrings',
 		'plugin.Translate.TranslateDomains',
 		'plugin.Translate.TranslateLanguages',
 		'plugin.Translate.TranslateProjects',
+		'plugin.Translate.TranslateTerms',
 		'plugin.Translate.Users',
 	];
 
@@ -35,7 +35,9 @@ class TranslateStringsControllerTest extends IntegrationTestCase {
 	 * @return void
 	 */
 	public function testIndex() {
-		$this->get(['prefix' => 'admin', 'plugin' => 'Translate', 'controller' => 'TranslateStrings', 'action' => 'index']);
+		$this->disableErrorHandlerMiddleware();
+
+		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateStrings', 'action' => 'index']);
 
 		$this->assertResponseCode(200);
 		$this->assertNoRedirect();
@@ -48,7 +50,7 @@ class TranslateStringsControllerTest extends IntegrationTestCase {
 	 */
 	public function testView() {
 		$id = 1;
-		$this->get(['prefix' => 'admin', 'plugin' => 'Translate', 'controller' => 'TranslateStrings', 'action' => 'view', $id]);
+		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateStrings', 'action' => 'view', $id]);
 
 		$this->assertResponseCode(200);
 		$this->assertNoRedirect();
@@ -60,7 +62,7 @@ class TranslateStringsControllerTest extends IntegrationTestCase {
 	 * @return void
 	 */
 	public function testExtract() {
-		$this->get(['prefix' => 'admin', 'plugin' => 'Translate', 'controller' => 'TranslateStrings', 'action' => 'extract']);
+		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateStrings', 'action' => 'extract']);
 
 		$this->assertResponseCode(200);
 		$this->assertNoRedirect();
@@ -72,13 +74,14 @@ class TranslateStringsControllerTest extends IntegrationTestCase {
 	 * @return void
 	 */
 	public function testExtractPost() {
-		$TranslateStrings = TableRegistry::getTableLocator()->get('Translate.TranslateStrings');
+		$this->disableErrorHandlerMiddleware();
+
+		$TranslateStrings = $this->getTableLocator()->get('Translate.TranslateStrings');
 		$count = $TranslateStrings->find()->count();
 
 		$folder = new Folder();
-		$folder->copy([
-			'from' => ROOT . DS . 'tests' . DS . 'test_files' . DS . 'Locale' . DS,
-			'to' => LOCALE,
+		$folder->copy(LOCALE, [
+			'from' => ROOT . DS . 'tests' . DS . 'test_files' . DS . 'locales' . DS,
 		]);
 
 		$data = [
@@ -88,7 +91,7 @@ class TranslateStringsControllerTest extends IntegrationTestCase {
 			'sel_po' => [
 			],
 		];
-		$this->post(['prefix' => 'admin', 'plugin' => 'Translate', 'controller' => 'TranslateStrings', 'action' => 'extract'], $data);
+		$this->post(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateStrings', 'action' => 'extract'], $data);
 
 		$this->assertResponseCode(200);
 		$this->assertNoRedirect();
@@ -117,7 +120,7 @@ Template/Account/foo.ctp:15', $translateString->references);
 	 * @return void
 	 */
 	public function testDump() {
-		$this->get(['prefix' => 'admin', 'plugin' => 'Translate', 'controller' => 'TranslateStrings', 'action' => 'dump']);
+		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateStrings', 'action' => 'dump']);
 
 		$this->assertResponseCode(200);
 		$this->assertNoRedirect();
@@ -129,16 +132,18 @@ Template/Account/foo.ctp:15', $translateString->references);
 	 * @return void
 	 */
 	public function testTranslate() {
+		$this->disableErrorHandlerMiddleware();
+
 		Configure::write('Translate.engine', [Test::class, TestMore::class]);
 
 		$id = 1;
-		$this->TranslateStrings = TableRegistry::getTableLocator()->get('Translate.TranslateStrings');
+		$this->TranslateStrings = $this->getTableLocator()->get('Translate.TranslateStrings');
 		$record = $this->TranslateStrings->get($id);
 
 		$groupId = $record->translate_domain_id;
 		$record = $this->TranslateStrings->TranslateDomains->get($groupId);
 
-		$this->get(['prefix' => 'admin', 'plugin' => 'Translate', 'controller' => 'TranslateStrings', 'action' => 'translate', $id]);
+		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateStrings', 'action' => 'translate', $id]);
 
 		$this->assertResponseCode(200);
 		$this->assertNoRedirect();
@@ -150,7 +155,7 @@ Template/Account/foo.ctp:15', $translateString->references);
 	 * @return void
 	 */
 	public function testAdd() {
-		$this->get(['prefix' => 'admin', 'plugin' => 'Translate', 'controller' => 'TranslateStrings', 'action' => 'add']);
+		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateStrings', 'action' => 'add']);
 
 		$this->assertResponseCode(200);
 		$this->assertNoRedirect();
@@ -163,7 +168,7 @@ Template/Account/foo.ctp:15', $translateString->references);
 	 */
 	public function testEdit() {
 		$id = 1;
-		$this->get(['prefix' => 'admin', 'plugin' => 'Translate', 'controller' => 'TranslateStrings', 'action' => 'edit', $id]);
+		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateStrings', 'action' => 'edit', $id]);
 
 		$this->assertResponseCode(200);
 		$this->assertNoRedirect();
@@ -176,7 +181,7 @@ Template/Account/foo.ctp:15', $translateString->references);
 	 */
 	public function testDelete() {
 		$id = 1;
-		$this->post(['prefix' => 'admin', 'plugin' => 'Translate', 'controller' => 'TranslateStrings', 'action' => 'delete', $id]);
+		$this->post(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateStrings', 'action' => 'delete', $id]);
 
 		$this->assertResponseCode(302);
 		$this->assertRedirect();

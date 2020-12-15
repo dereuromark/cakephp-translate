@@ -25,8 +25,6 @@ class Translator {
 	protected $_cache;
 
 	/**
-	 * Translator constructor.
-	 *
 	 * @param array $config
 	 */
 	public function __construct(array $config = []) {
@@ -60,6 +58,7 @@ class Translator {
 					continue;
 				}
 				$results[$engineName] = $cacheResult->value;
+
 				continue;
 			}
 
@@ -95,6 +94,7 @@ class Translator {
 				if ($cacheResult->value === null) {
 					continue;
 				}
+
 				return $cacheResult->value;
 			}
 

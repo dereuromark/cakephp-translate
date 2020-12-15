@@ -23,7 +23,7 @@ class TranslateLanguagesTableTest extends TestCase {
 	 *
 	 * @var array
 	 */
-	public $fixtures = [
+	protected $fixtures = [
 		'plugin.Translate.TranslateLanguages',
 		'plugin.Translate.TranslateTerms',
 		'plugin.Translate.TranslateStrings',
@@ -36,7 +36,7 @@ class TranslateLanguagesTableTest extends TestCase {
 	 *
 	 * @return void
 	 */
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$config = TableRegistry::exists('TranslateLanguages') ? [] : ['className' => 'Translate\Model\Table\TranslateLanguagesTable'];
 		$this->TranslateLanguages = TableRegistry::getTableLocator()->get('TranslateLanguages', $config);
@@ -47,7 +47,7 @@ class TranslateLanguagesTableTest extends TestCase {
 	 *
 	 * @return void
 	 */
-	public function tearDown() {
+	public function tearDown(): void {
 		unset($this->TranslateLanguages);
 
 		parent::tearDown();

@@ -4,24 +4,29 @@ namespace Translate\Model\Table;
 
 use ArrayObject;
 use Cake\Datasource\EntityInterface;
-use Cake\Event\Event;
+use Cake\Event\EventInterface;
 use Cake\Log\Log;
 use Tools\Model\Table\Table;
 
 /**
- * @property \Translate\Model\Table\TranslateStringsTable|\Cake\ORM\Association\BelongsTo $TranslateStrings
- * @property \Translate\Model\Table\TranslateLanguagesTable|\Cake\ORM\Association\BelongsTo $TranslateLanguages
+ * @property \Translate\Model\Table\TranslateStringsTable&\Cake\ORM\Association\BelongsTo $TranslateStrings
+ * @property \Translate\Model\Table\TranslateLanguagesTable&\Cake\ORM\Association\BelongsTo $TranslateLanguages
  *
  * @method \Translate\Model\Entity\TranslateTerm get($primaryKey, $options = [])
- * @method \Translate\Model\Entity\TranslateTerm newEntity($data = null, array $options = [])
+ * @method \Translate\Model\Entity\TranslateTerm newEntity(array $data, array $options = [])
  * @method \Translate\Model\Entity\TranslateTerm[] newEntities(array $data, array $options = [])
- * @method \Translate\Model\Entity\TranslateTerm|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \Translate\Model\Entity\TranslateTerm|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \Translate\Model\Entity\TranslateTerm patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \Translate\Model\Entity\TranslateTerm[] patchEntities($entities, array $data, array $options = [])
- * @method \Translate\Model\Entity\TranslateTerm findOrCreate($search, callable $callback = null, $options = [])
+ * @method \Translate\Model\Entity\TranslateTerm[] patchEntities(iterable $entities, array $data, array $options = [])
+ * @method \Translate\Model\Entity\TranslateTerm findOrCreate($search, ?callable $callback = null, $options = [])
  * @mixin \Shim\Model\Behavior\NullableBehavior
- * @method \Translate\Model\Entity\TranslateTerm|bool saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \Translate\Model\Entity\TranslateTerm saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @mixin \Search\Model\Behavior\SearchBehavior
+ * @method \Translate\Model\Entity\TranslateTerm newEmptyEntity()
+ * @method \Translate\Model\Entity\TranslateTerm[]|\Cake\Datasource\ResultSetInterface|false saveMany(iterable $entities, $options = [])
+ * @method \Translate\Model\Entity\TranslateTerm[]|\Cake\Datasource\ResultSetInterface saveManyOrFail(iterable $entities, $options = [])
+ * @method \Translate\Model\Entity\TranslateTerm[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
+ * @method \Translate\Model\Entity\TranslateTerm[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
  */
 class TranslateTermsTable extends Table {
 
@@ -146,7 +151,7 @@ class TranslateTermsTable extends Table {
 	 *
 	 * @return void
 	 */
-	public function initialize(array $config) {
+	public function initialize(array $config): void {
 		parent::initialize($config);
 
 		$this->addBehavior('Shim.Nullable');
@@ -162,19 +167,19 @@ class TranslateTermsTable extends Table {
 			->value('translate_language_id', [
 			])
 			->like('search', [
-				'field' => [$this->aliasField('content'), 'TranslateStrings.name'],
+				'fields' => [$this->aliasField('content'), 'TranslateStrings.name'],
 			]);
 
 		return $searchManager;
 	}
 
 	/**
-	 * @param \Cake\Event\Event $event The beforeSave event that was fired
+	 * @param \Cake\Event\EventInterface $event The beforeSave event that was fired
 	 * @param \Translate\Model\Entity\TranslateTerm $entity The entity that is going to be saved
 	 * @param \ArrayObject $options the options passed to the save method
 	 * @return void
 	 */
-	public function beforeSave(Event $event, EntityInterface $entity, ArrayObject $options) {
+	public function beforeSave(EventInterface $event, EntityInterface $entity, ArrayObject $options) {
 		$user = $event->getData('_footprint');
 		if ($user) {
 			$entity->user_id = $user['id'];
@@ -206,7 +211,7 @@ class TranslateTermsTable extends Table {
 		}
 
 		if (!$this->save($translateTerm)) {
-			Log::write('info', 'Term `' . $translateTerm->content . '` for String # `' . $translateStringId . '`: ' . print_r($translateTerm->errors(), true), ['scope' => 'import']);
+			Log::write('info', 'Term `' . $translateTerm->content . '` for String # `' . $translateStringId . '`: ' . print_r($translateTerm->getErrors(), true), ['scope' => 'import']);
 
 			return null;
 		}

@@ -5,18 +5,23 @@ namespace Translate\Model\Table;
 use Tools\Model\Table\Table;
 
 /**
- * @property \Translate\Model\Table\TranslateProjectsTable|\Cake\ORM\Association\BelongsTo $TranslateProjects
- * @property \Translate\Model\Table\TranslateStringsTable|\Cake\ORM\Association\HasMany $TranslateStrings
+ * @property \Translate\Model\Table\TranslateProjectsTable&\Cake\ORM\Association\BelongsTo $TranslateProjects
+ * @property \Translate\Model\Table\TranslateStringsTable&\Cake\ORM\Association\HasMany $TranslateStrings
  *
  * @method \Translate\Model\Entity\TranslateDomain get($primaryKey, $options = [])
- * @method \Translate\Model\Entity\TranslateDomain newEntity($data = null, array $options = [])
+ * @method \Translate\Model\Entity\TranslateDomain newEntity(array $data, array $options = [])
  * @method \Translate\Model\Entity\TranslateDomain[] newEntities(array $data, array $options = [])
- * @method \Translate\Model\Entity\TranslateDomain|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \Translate\Model\Entity\TranslateDomain|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \Translate\Model\Entity\TranslateDomain patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \Translate\Model\Entity\TranslateDomain[] patchEntities($entities, array $data, array $options = [])
- * @method \Translate\Model\Entity\TranslateDomain findOrCreate($search, callable $callback = null, $options = [])
+ * @method \Translate\Model\Entity\TranslateDomain[] patchEntities(iterable $entities, array $data, array $options = [])
+ * @method \Translate\Model\Entity\TranslateDomain findOrCreate($search, ?callable $callback = null, $options = [])
  * @mixin \Shim\Model\Behavior\NullableBehavior
- * @method \Translate\Model\Entity\TranslateDomain|bool saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \Translate\Model\Entity\TranslateDomain saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \Translate\Model\Entity\TranslateDomain newEmptyEntity()
+ * @method \Translate\Model\Entity\TranslateDomain[]|\Cake\Datasource\ResultSetInterface|false saveMany(iterable $entities, $options = [])
+ * @method \Translate\Model\Entity\TranslateDomain[]|\Cake\Datasource\ResultSetInterface saveManyOrFail(iterable $entities, $options = [])
+ * @method \Translate\Model\Entity\TranslateDomain[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
+ * @method \Translate\Model\Entity\TranslateDomain[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
  */
 class TranslateDomainsTable extends Table {
 
@@ -57,7 +62,7 @@ class TranslateDomainsTable extends Table {
 	 *
 	 * @return void
 	 */
-	public function initialize(array $config) {
+	public function initialize(array $config): void {
 		parent::initialize($config);
 
 		$this->addBehavior('Shim.Nullable');
@@ -101,13 +106,13 @@ class TranslateDomainsTable extends Table {
 	 *
 	 * @return array
 	 */
-	public function statistics($id, array $languages = null) {
+	public function statistics($id, ?array $languages = null) {
 		if ($languages === null) {
 			$languages = $this->TranslateStrings->TranslateTerms->TranslateLanguages->find('list', ['contain' => []])->toArray();
 		}
 
 		$count = [];
-		$count['groups'] = $this->find('list', ['fields' => [$this->alias() . '.id'], 'conditions' => [$this->alias() . '.translate_project_id' => $id]])->toArray();
+		$count['groups'] = $this->find('list', ['fields' => [$this->getAlias() . '.id'], 'conditions' => [$this->getAlias() . '.translate_project_id' => $id]])->toArray();
 		// recursive = 0;
 		//$this->TranslateStrings->bindModel(['belongsTo' => $this->TranslateStrings->habtmJoin], false);
 		$count['strings'] = $this->TranslateStrings->find()->where(['TranslateDomains.translate_project_id' => $id])->contain(['TranslateDomains'])->count();

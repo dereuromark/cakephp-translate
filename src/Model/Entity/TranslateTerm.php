@@ -9,23 +9,23 @@ use Tools\Model\Entity\Entity;
  *
  * @property int $id
  * @property string $content
- * @property string $comment
+ * @property string|null $comment
  * @property bool $confirmed
- * @property \Cake\I18n\Time $created
- * @property \Cake\I18n\Time $modified
+ * @property \Cake\I18n\FrozenTime|null $created
+ * @property \Cake\I18n\FrozenTime|null $modified
  *
  * @property \Translate\Model\Entity\TranslateString $translate_string
  * @property \Translate\Model\Entity\TranslateLanguage $translate_language
  * @property int $translate_string_id
  * @property int $translate_language_id
- * @property string $plural_2
- * @property int $user_id
- * @property int $confirmed_by
+ * @property string|null $plural_2
+ * @property int|null $user_id
+ * @property int|null $confirmed_by
  */
 class TranslateTerm extends Entity {
 
 	/**
-	 * Fields that can be mass assigned using newEntity() or patchEntity().
+	 * Fields that can be mass assigned using newEmptyEntity() or patchEntity().
 	 *
 	 * Note that when '*' is set to true, this allows all unspecified fields to
 	 * be mass assigned. For security purposes, it is advised to set '*' to false

@@ -9,15 +9,9 @@ use Translate\Translator\Translator;
 /**
  * @property \Translate\Model\Table\TranslateDomainsTable $TranslateDomains
  * @property \Translate\Model\Table\TranslateLanguagesTable $TranslateLanguages
+ * @property \Translate\Controller\Component\TranslationComponent $Translation
  */
 class TranslateController extends TranslateAppController {
-
-	/**
-	 * @var array
-	 */
-	public $helpers = [
-		'Translate.Translation',
-	];
 
 	/**
 	 * @var string
@@ -31,10 +25,10 @@ class TranslateController extends TranslateAppController {
 	 */
 	public function index() {
 		$this->loadModel('Translate.TranslateLanguages');
-		$languages = $this->TranslateLanguages->find('all', ['contain' => []]);
+		$languages = $this->TranslateLanguages->find('all')->toArray();
 
 		$id = $this->request->getSession()->read('TranslateProject.id');
-		$count = $this->TranslateDomains->statistics($id, $languages->toArray());
+		$count = $id ? $this->TranslateDomains->statistics($id, $languages) : 0;
 		$coverage = $this->TranslateDomains->TranslateStrings->coverage($this->Translation->currentProjectId());
 		$projectSwitchArray = $this->TranslateDomains->TranslateProjects->find('list')->toArray();
 		$this->set(compact('coverage', 'languages', 'count', 'projectSwitchArray'));
@@ -60,26 +54,33 @@ class TranslateController extends TranslateAppController {
 					switch ($sel) {
 						case 'terms':
 							$this->TranslateDomains->TranslateStrings->TranslateTerms->truncate();
+
 							break;
 						case 'strings':
 							$this->TranslateDomains->TranslateStrings->truncate();
+
 							break;
 						case 'groups':
 							$this->TranslateDomains->truncate();
+
 							break;
 						case 'languages':
 							$this->TranslateDomains->TranslateStrings->TranslateTerms->TranslateLanguages->truncate();
+
 							break;
 					}
 				}
 
 			}
 			$this->Flash->success('Done');
+
 			return $this->redirect(['action' => 'index']);
 		}
 
-		$this->request->data['Form']['sel'][] = 'terms';
-		$this->request->data['Form']['sel'][] = 'strings';
+		//FIXME
+		//$this->request->data['Form']['sel'][] = 'terms';
+		//$this->request->data['Form']['sel'][] = 'strings';
+
 		//$this->request->data['Form']['sel']['languages'] = 0;
 		//$this->request->data['Form']['sel']['groups'] = 0;
 	}

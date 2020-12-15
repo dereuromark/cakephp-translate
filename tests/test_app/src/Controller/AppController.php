@@ -2,18 +2,20 @@
 
 namespace App\Controller;
 
-use Cake\Controller\Controller;
+use Shim\Controller\Controller;
 
 class AppController extends Controller {
 
 	/**
-	 * @var array
+	 * @return void
 	 */
-	public $components = ['Flash', 'RequestHandler'];
+	public function initialize(): void {
+		parent::initialize();
 
-	/**
-	 * @var array
-	 */
-	public $helpers = ['Tools.Format'];
+		$this->loadComponent('Flash');
+		$this->loadComponent('RequestHandler');
+
+		$this->viewBuilder()->setHelpers(['Tools.Format']);
+	}
 
 }

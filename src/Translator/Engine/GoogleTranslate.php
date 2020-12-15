@@ -39,6 +39,7 @@ class GoogleTranslate {
 		// $response = self::getStringBetween("onmouseout=\"this.style.backgroundColor='#fff'\">", "</span></div>", strval($response));
 		// Clean translation
 		$translation = static::getSentencesFromJSON($response);
+
 		return $translation;
 	}
 
@@ -89,6 +90,7 @@ class GoogleTranslate {
 		$result = curl_exec($ch);
 		// Close connection
 		curl_close($ch);
+
 		return $result;
 	}
 
@@ -106,6 +108,7 @@ class GoogleTranslate {
 		foreach ($sentencesArray['sentences'] as $s) {
 			$sentences .= isset($s['trans']) ? $s['trans'] : '';
 		}
+
 		return $sentences;
 	}
 

@@ -33,9 +33,11 @@ class TranslationHelper extends Helper {
 					$options = array_merge($options, $attr);
 				}
 				$icon = str_replace('\\', '/', $icon);
+
 				return $this->Html->image('/translate/img/' . $icon, $options);
 			}
 		}
+
 		return '';
 	}
 
@@ -55,6 +57,7 @@ class TranslationHelper extends Helper {
 			$res += $c;
 		}
 		$res = $res / count($coverage);
+
 		return $res;
 	}
 

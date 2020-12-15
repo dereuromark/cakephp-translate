@@ -34,6 +34,7 @@ class Creator {
 				return $handle->errors();
 			}
 		}
+
 		return true;
 	}
 

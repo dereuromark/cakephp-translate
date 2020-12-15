@@ -8,16 +8,21 @@ use Translate\Model\Entity\TranslateProject;
 
 /**
  * @method \Translate\Model\Entity\TranslateProject get($primaryKey, $options = [])
- * @method \Translate\Model\Entity\TranslateProject newEntity($data = null, array $options = [])
+ * @method \Translate\Model\Entity\TranslateProject newEntity(array $data, array $options = [])
  * @method \Translate\Model\Entity\TranslateProject[] newEntities(array $data, array $options = [])
- * @method \Translate\Model\Entity\TranslateProject|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \Translate\Model\Entity\TranslateProject|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \Translate\Model\Entity\TranslateProject patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \Translate\Model\Entity\TranslateProject[] patchEntities($entities, array $data, array $options = [])
- * @method \Translate\Model\Entity\TranslateProject findOrCreate($search, callable $callback = null, $options = [])
+ * @method \Translate\Model\Entity\TranslateProject[] patchEntities(iterable $entities, array $data, array $options = [])
+ * @method \Translate\Model\Entity\TranslateProject findOrCreate($search, ?callable $callback = null, $options = [])
  * @mixin \Shim\Model\Behavior\NullableBehavior
- * @property \Translate\Model\Table\TranslateDomainsTable|\Cake\ORM\Association\HasMany $TranslateDomains
+ * @property \Translate\Model\Table\TranslateDomainsTable&\Cake\ORM\Association\HasMany $TranslateDomains
  * @property \Translate\Model\Table\TranslateTermsTable|\Cake\ORM\Association\HasMany $TranslateTerms
- * @method \Translate\Model\Entity\TranslateProject|bool saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \Translate\Model\Entity\TranslateProject saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \Translate\Model\Entity\TranslateProject newEmptyEntity()
+ * @method \Translate\Model\Entity\TranslateProject[]|\Cake\Datasource\ResultSetInterface|false saveMany(iterable $entities, $options = [])
+ * @method \Translate\Model\Entity\TranslateProject[]|\Cake\Datasource\ResultSetInterface saveManyOrFail(iterable $entities, $options = [])
+ * @method \Translate\Model\Entity\TranslateProject[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
+ * @method \Translate\Model\Entity\TranslateProject[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
  */
 class TranslateProjectsTable extends Table {
 
@@ -77,7 +82,7 @@ class TranslateProjectsTable extends Table {
 	 *
 	 * @return void
 	 */
-	public function initialize(array $config) {
+	public function initialize(array $config): void {
 		parent::initialize($config);
 
 		$this->addBehavior('Shim.Nullable');
@@ -92,11 +97,12 @@ class TranslateProjectsTable extends Table {
 			'conditions' => [$this->getAlias() . '.status >' => TranslateProject::STATUS_INACTIVE],
 			'order' => [$this->getAlias() . '.default' => 'DESC'],
 		];
-		$res = $this->find('first', $options);
+		$res = $this->find('all', $options)->first();
 		if (!$res) {
 			return null;
 		}
-		return $res['id'];
+
+		return $res->id;
 	}
 
 	/**
@@ -128,6 +134,7 @@ class TranslateProjectsTable extends Table {
 					];
 					# bug in deleteAll (cannot use containable/recursion)
 					$res = $this->TranslateTerms->deleteAll($options['conditions']);
+
 					/*
 					die(returns($res));
 					$res = $this->TranslateTerms->find('list', $options);
@@ -143,6 +150,7 @@ class TranslateProjectsTable extends Table {
 					//$this->TranslateTerms->TranslateStrings->recursive = 0;
 					//$this->TranslateTerms->TranslateStrings->bindModel(['belongsTo' => $x], false);
 					$res = $this->TranslateTerms->TranslateStrings->deleteAll($conditions);
+
 					//die(returns($res));
 					break;
 				case 'groups':
@@ -150,6 +158,7 @@ class TranslateProjectsTable extends Table {
 						'TranslateDomain.translate_project_id' => $id,
 					];
 					$this->TranslateDomains->deleteAll($conditions);
+
 					break;
 				default:
 					throw new Exception('Invalid type');

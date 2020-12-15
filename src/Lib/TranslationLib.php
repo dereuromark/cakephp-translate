@@ -12,12 +12,12 @@ class TranslationLib {
 	/**
 	 * Singular + plural!
 	 *
+	 * @param array $list
+	 *
 	 * @return array
 	 */
-	public function getResourceNames() {
+	public function getResourceNames(array $list = []) {
 		$names = [];
-
-		$list = [];
 
 		foreach ($list as $name) {
 			$name = Inflector::humanize(Inflector::underscore($name));
@@ -28,6 +28,7 @@ class TranslationLib {
 				$names[] = $singular;
 			}
 		}
+
 		return $names;
 	}
 
@@ -43,9 +44,12 @@ class TranslationLib {
 				if (pathinfo($file, PATHINFO_EXTENSION) !== 'pot') {
 					continue;
 				}
-				$potFiles[pathinfo($file, PATHINFO_FILENAME)] = pathinfo($file, PATHINFO_FILENAME);
+
+				$filename = pathinfo($file, PATHINFO_FILENAME);
+				$potFiles[$filename] = $filename;
 			}
 		}
+
 		return $potFiles;
 	}
 
@@ -60,6 +64,7 @@ class TranslationLib {
 		if (!empty($files[0])) {
 			$languages = $files[0];
 		}
+
 		return $languages;
 	}
 
@@ -81,6 +86,7 @@ class TranslationLib {
 				$poFiles[$lang . '_' . pathinfo($file, PATHINFO_FILENAME)] = pathinfo($file, PATHINFO_FILENAME);
 			}
 		}
+
 		return $poFiles;
 	}
 
@@ -257,9 +263,11 @@ class TranslationLib {
 			switch ($key) {
 				case 'ccomment':
 					$rows[] = '#. ' . $value;
+
 					break;
 				case 'tcomment':
 					$rows[] = '#  ' . $value;
+
 					break;
 			}
 		}

@@ -28,8 +28,8 @@ class TranslateApiTranslationsController extends AppController {
 	 * View method
 	 *
 	 * @param string|null $id Translate Api Translation id.
-	 * @return \Cake\Http\Response|null|void
 	 * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+	 * @return \Cake\Http\Response|null|void
 	 */
 	public function view($id = null) {
 		$translateApiTranslation = $this->TranslateApiTranslations->get($id, [
@@ -46,11 +46,12 @@ class TranslateApiTranslationsController extends AppController {
 	 * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
 	 */
 	public function add() {
-		$translateApiTranslation = $this->TranslateApiTranslations->newEntity();
+		$translateApiTranslation = $this->TranslateApiTranslations->newEmptyEntity();
 		if ($this->request->is('post')) {
 			$translateApiTranslation = $this->TranslateApiTranslations->patchEntity($translateApiTranslation, $this->request->getData());
 			if ($this->TranslateApiTranslations->save($translateApiTranslation)) {
 				$this->Flash->success(__('The translate api translation has been saved.'));
+
 				return $this->redirect(['action' => 'index']);
 			}
 
@@ -65,8 +66,8 @@ class TranslateApiTranslationsController extends AppController {
 	 * Edit method
 	 *
 	 * @param string|null $id Translate Api Translation id.
-	 * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
 	 * @throws \Cake\Http\Exception\NotFoundException When record not found.
+	 * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
 	 */
 	public function edit($id = null) {
 		$translateApiTranslation = $this->TranslateApiTranslations->get($id, [
@@ -76,6 +77,7 @@ class TranslateApiTranslationsController extends AppController {
 			$translateApiTranslation = $this->TranslateApiTranslations->patchEntity($translateApiTranslation, $this->request->getData());
 			if ($this->TranslateApiTranslations->save($translateApiTranslation)) {
 				$this->Flash->success(__('The translate api translation has been saved.'));
+
 				return $this->redirect(['action' => 'index']);
 			}
 
@@ -90,8 +92,8 @@ class TranslateApiTranslationsController extends AppController {
 	 * Delete method
 	 *
 	 * @param string|null $id Translate Api Translation id.
-	 * @return \Cake\Http\Response|null Redirects to index.
 	 * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+	 * @return \Cake\Http\Response|null Redirects to index.
 	 */
 	public function delete($id = null) {
 		$this->request->allowMethod(['post', 'delete']);
@@ -101,6 +103,7 @@ class TranslateApiTranslationsController extends AppController {
 		} else {
 			$this->Flash->error(__('The translate api translation could not be deleted. Please, try again.'));
 		}
+
 		return $this->redirect(['action' => 'index']);
 	}
 

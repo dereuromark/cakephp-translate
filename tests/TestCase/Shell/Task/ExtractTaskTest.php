@@ -6,7 +6,7 @@ use Cake\Console\ConsoleIo;
 use Cake\Core\Plugin;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
-use Tools\TestSuite\ConsoleOutput;
+use Shim\TestSuite\ConsoleOutput;
 use Translate\Shell\Task\ExtractTask;
 
 class ExtractTaskTest extends TestCase {
@@ -14,7 +14,7 @@ class ExtractTaskTest extends TestCase {
 	/**
 	 * @var array
 	 */
-	public $fixtures = [
+	protected $fixtures = [
 		'plugin.Translate.TranslateStrings',
 		'plugin.Translate.TranslateDomains',
 		'plugin.Translate.TranslateProjects',
@@ -26,7 +26,7 @@ class ExtractTaskTest extends TestCase {
 	public $Task;
 
 	/**
-	 * @var \Tools\TestSuite\ConsoleOutput
+	 * @var \Shim\TestSuite\ConsoleOutput
 	 */
 	protected $out;
 
@@ -35,7 +35,7 @@ class ExtractTaskTest extends TestCase {
 	 *
 	 * @return void
 	 */
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->out = new ConsoleOutput();
@@ -53,7 +53,7 @@ class ExtractTaskTest extends TestCase {
 	 *
 	 * @return void
 	 */
-	public function tearDown() {
+	public function tearDown(): void {
 		parent::tearDown();
 		unset($this->Task);
 	}

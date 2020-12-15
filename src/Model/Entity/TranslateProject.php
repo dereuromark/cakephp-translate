@@ -12,15 +12,15 @@ use Tools\Model\Entity\Entity;
  * @property int $type
  * @property bool $default
  * @property int $status
- * @property \Cake\I18n\Time $created
- * @property \Cake\I18n\Time $modified
+ * @property \Cake\I18n\FrozenTime|null $created
+ * @property \Cake\I18n\FrozenTime|null $modified
  *
  * @property \Translate\Model\Entity\TranslateDomain[] $translate_domains
  */
 class TranslateProject extends Entity {
 
 	/**
-	 * Fields that can be mass assigned using newEntity() or patchEntity().
+	 * Fields that can be mass assigned using newEmptyEntity() or patchEntity().
 	 *
 	 * Note that when '*' is set to true, this allows all unspecified fields to
 	 * be mass assigned. For security purposes, it is advised to set '*' to false
@@ -44,12 +44,13 @@ class TranslateProject extends Entity {
 			static::STATUS_HIDDEN => __d('translate', 'Hidden Project'),
 			static::STATUS_PUBLIC => __d('translate', 'Public Project'),
 		];
+
 		return parent::enum($value, $options);
 	}
 
-	const STATUS_INACTIVE = 0;
-	const STATUS_HIDDEN = 1;
-	const STATUS_PUBLIC = 2;
+	public const STATUS_INACTIVE = 0;
+	public const STATUS_HIDDEN = 1;
+	public const STATUS_PUBLIC = 2;
 
 	/**
 	 * @param int|null $value
@@ -62,12 +63,13 @@ class TranslateProject extends Entity {
 			static::TYPE_PLUGIN => __d('translate', 'CakePHP Plugin'),
 			static::TYPE_OTHER => __d('translate', 'Other Project'),
 		];
+
 		return parent::enum($value, $options);
 	}
 
-	const TYPE_APP = 0;
-	const TYPE_PLUGIN = 1;
+	public const TYPE_APP = 0;
+	public const TYPE_PLUGIN = 1;
 	//todo?
-	const TYPE_OTHER = 9;
+	public const TYPE_OTHER = 9;
 
 }

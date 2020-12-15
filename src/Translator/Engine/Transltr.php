@@ -7,7 +7,7 @@ use Yandex\Translate\Exception;
 
 class Transltr implements EngineInterface {
 
-	const URL = 'http://transltr.org/api/translate?text=%s&to=%s&from=%s';
+	public const URL = 'http://transltr.org/api/translate?text=%s&to=%s&from=%s';
 
 	/**
 	 * @param string $text Text
@@ -37,6 +37,7 @@ class Transltr implements EngineInterface {
 			$result = $response['translationText'];
 		} catch (Exception $e) {
 			trigger_error($e->getMessage());
+
 			return null;
 		}
 

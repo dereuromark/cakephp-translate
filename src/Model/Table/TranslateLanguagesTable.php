@@ -8,22 +8,28 @@ namespace Translate\Model\Table;
 
 use ArrayObject;
 use Cake\Core\Plugin;
-use Cake\Event\Event;
+use Cake\Event\EventInterface;
 use Tools\Model\Table\Table;
 
 /**
- * @property \Translate\Model\Table\TranslateTermsTable|\Cake\ORM\Association\HasMany $TranslateTerms
+ * @property \Translate\Model\Table\TranslateTermsTable&\Cake\ORM\Association\HasMany $TranslateTerms
  *
  * @method \Translate\Model\Entity\TranslateLanguage get($primaryKey, $options = [])
- * @method \Translate\Model\Entity\TranslateLanguage newEntity($data = null, array $options = [])
+ * @method \Translate\Model\Entity\TranslateLanguage newEntity(array $data, array $options = [])
  * @method \Translate\Model\Entity\TranslateLanguage[] newEntities(array $data, array $options = [])
- * @method \Translate\Model\Entity\TranslateLanguage|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \Translate\Model\Entity\TranslateLanguage|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \Translate\Model\Entity\TranslateLanguage patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \Translate\Model\Entity\TranslateLanguage[] patchEntities($entities, array $data, array $options = [])
- * @method \Translate\Model\Entity\TranslateLanguage findOrCreate($search, callable $callback = null, $options = [])
+ * @method \Translate\Model\Entity\TranslateLanguage[] patchEntities(iterable $entities, array $data, array $options = [])
+ * @method \Translate\Model\Entity\TranslateLanguage findOrCreate($search, ?callable $callback = null, $options = [])
  * @mixin \Shim\Model\Behavior\NullableBehavior
- * @property \Translate\Model\Table\TranslateProjectsTable|\Cake\ORM\Association\BelongsTo $TranslateProjects
- * @method \Translate\Model\Entity\TranslateLanguage|bool saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @property \Translate\Model\Table\TranslateProjectsTable&\Cake\ORM\Association\BelongsTo $TranslateProjects
+ * @method \Translate\Model\Entity\TranslateLanguage saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @property \Data\Model\Table\LanguagesTable&\Cake\ORM\Association\BelongsTo $Languages
+ * @method \Translate\Model\Entity\TranslateLanguage newEmptyEntity()
+ * @method \Translate\Model\Entity\TranslateLanguage[]|\Cake\Datasource\ResultSetInterface|false saveMany(iterable $entities, $options = [])
+ * @method \Translate\Model\Entity\TranslateLanguage[]|\Cake\Datasource\ResultSetInterface saveManyOrFail(iterable $entities, $options = [])
+ * @method \Translate\Model\Entity\TranslateLanguage[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
+ * @method \Translate\Model\Entity\TranslateLanguage[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
  */
 class TranslateLanguagesTable extends Table {
 
@@ -111,8 +117,6 @@ class TranslateLanguagesTable extends Table {
 	];
 
 	/**
-	 * TranslateLanguagesTable constructor.
-	 *
 	 * @param array $config
 	 */
 	public function __construct(array $config = []) {
@@ -126,12 +130,12 @@ class TranslateLanguagesTable extends Table {
 	/**
 	 * Preparing the data
 	 *
-	 * @param \Cake\Event\Event $event
+	 * @param \Cake\Event\EventInterface $event
 	 * @param \ArrayObject $data
 	 * @param \ArrayObject $options
 	 * @return void
 	 */
-	public function beforeMarshal(Event $event, ArrayObject $data, ArrayObject $options) {
+	public function beforeMarshal(EventInterface $event, ArrayObject $data, ArrayObject $options) {
 		if (isset($data['iso2'])) {
 			$data['iso2'] = strtolower($data['iso2']);
 		}
@@ -158,7 +162,7 @@ class TranslateLanguagesTable extends Table {
 	 *
 	 * @return void
 	 */
-	public function initialize(array $config) {
+	public function initialize(array $config): void {
 		parent::initialize($config);
 
 		$this->addBehavior('Shim.Nullable');
@@ -191,9 +195,10 @@ class TranslateLanguagesTable extends Table {
 	 * @return \Cake\ORM\Query
 	 */
 	public function getActive($type = 'all', $options = []) {
-		$defaults = ['conditions' => [$this->alias() . '.active' => 1]];
+		$defaults = ['conditions' => [$this->getAlias() . '.active' => 1]];
 
 		$options = array_merge($defaults, $options);
+
 		return $this->find($type, $options);
 	}
 

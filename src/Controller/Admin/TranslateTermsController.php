@@ -8,6 +8,8 @@ use Translate\Controller\TranslateAppController;
  * TranslateTerms Controller
  *
  * @property \Translate\Model\Table\TranslateTermsTable $TranslateTerms
+ * @property \Translate\Controller\Component\TranslationComponent $Translation
+ * @property \Search\Controller\Component\SearchComponent $Search
  */
 class TranslateTermsController extends TranslateAppController {
 
@@ -19,9 +21,10 @@ class TranslateTermsController extends TranslateAppController {
 	/**
 	 * @return void
 	 */
-	public function initialize() {
+	public function initialize(): void {
 		parent::initialize();
-		$this->loadComponent('Search.Prg', [
+
+		$this->loadComponent('Search.Search', [
 			'actions' => ['index'],
 			'emptyValues' => [
 			],
@@ -49,8 +52,8 @@ class TranslateTermsController extends TranslateAppController {
 	 * View method
 	 *
 	 * @param string|null $id Translate Term id.
-	 * @return \Cake\Http\Response|null|void
 	 * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+	 * @return \Cake\Http\Response|null|void
 	 */
 	public function view($id = null) {
 		$translateTerm = $this->TranslateTerms->get($id, [
@@ -65,8 +68,8 @@ class TranslateTermsController extends TranslateAppController {
 	 * Edit method
 	 *
 	 * @param string|null $id Translate Term id.
-	 * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
 	 * @throws \Cake\Http\Exception\NotFoundException When record not found.
+	 * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
 	 */
 	public function edit($id = null) {
 		$translateTerm = $this->TranslateTerms->get($id, [
@@ -76,6 +79,7 @@ class TranslateTermsController extends TranslateAppController {
 			$translateTerm = $this->TranslateTerms->patchEntity($translateTerm, $this->request->getData());
 			if ($this->TranslateTerms->save($translateTerm)) {
 				$this->Flash->success(__d('translate', 'The translate term has been saved.'));
+
 				return $this->redirect(['action' => 'index']);
 			}
 
@@ -92,8 +96,8 @@ class TranslateTermsController extends TranslateAppController {
 	 * Delete method
 	 *
 	 * @param string|null $id Translate Term id.
-	 * @return \Cake\Http\Response|null Redirects to index.
 	 * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+	 * @return \Cake\Http\Response|null Redirects to index.
 	 */
 	public function delete($id = null) {
 		$this->request->allowMethod(['post', 'delete']);
@@ -103,6 +107,7 @@ class TranslateTermsController extends TranslateAppController {
 		} else {
 			$this->Flash->error(__d('translate', 'The translate term could not be deleted. Please, try again.'));
 		}
+
 		return $this->redirect(['action' => 'index']);
 	}
 

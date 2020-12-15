@@ -1,9 +1,7 @@
 <?php
 /**
- * @license       http://www.opensource.org/licenses/mit-license.php MIT License
+ * @license http://www.opensource.org/licenses/mit-license.php MIT License
  */
-
-use Cake\Routing\DispatcherFactory;
 
 if (!defined('DS')) {
 	define('DS', DIRECTORY_SEPARATOR);
@@ -20,7 +18,8 @@ define('TMP', ROOT . DS . 'tmp' . DS);
 if (!is_dir(TMP)) {
 	mkdir(TMP, 0770, true);
 }
-define('CONFIG', ROOT . DS . 'config' . DS);
+define('TESTS', ROOT . DS . 'tests' . DS);
+define('CONFIG', TESTS . 'config' . DS);
 
 define('LOGS', TMP . 'logs' . DS);
 define('CACHE', TMP . 'cache' . DS);
@@ -34,9 +33,13 @@ define('WWW_ROOT', TMP . 'webroot' . DS);
 require dirname(__DIR__) . '/vendor/autoload.php';
 require CORE_PATH . 'config/bootstrap.php';
 
+require ROOT . DS . 'config' . DS . 'bootstrap.php';
+
 Cake\Core\Configure::write('App', [
+	'encoding' => 'UTF-8',
+	'namespace' => 'App',
 	'paths' => [
-		'templates' => [ROOT . DS . 'tests' . DS . 'test_app' . DS . 'src' . DS . 'Template' . DS],
+		'templates' => [ROOT . DS . 'tests' . DS . 'test_app' . DS . 'templates' . DS],
 	],
 ]);
 
@@ -47,7 +50,7 @@ Cake\Core\Configure::write('Transltr.live', env('TRANSLTR_LIVE'));
 
 $cache = [
 	'default' => [
-		'engine' => 'File',
+		'className' => 'File',
 	],
 	'_cake_core_' => [
 		'className' => 'File',
@@ -67,11 +70,11 @@ $cache = [
 
 Cake\Cache\Cache::setConfig($cache);
 
-Cake\Core\Plugin::load('Tools', ['path' => ROOT . DS . 'vendor/dereuromark/cakephp-tools/', 'autoload' => true, 'bootstrap' => true, 'routes' => true]);
-Cake\Core\Plugin::load('Translate', ['path' => ROOT . DS, 'autoload' => true, 'bootstrap' => true, 'routes' => true]);
+//Cake\Core\Plugin::getCollection()->add(new \Tools\Plugin());
+//Cake\Core\Plugin::getCollection()->add(new \Translate\Plugin());
 
-DispatcherFactory::add('Routing');
-DispatcherFactory::add('ControllerFactory');
+//DispatcherFactory::add('Routing');
+//DispatcherFactory::add('ControllerFactory');
 
 // Ensure default test connection is defined
 if (!getenv('db_class')) {
@@ -81,11 +84,8 @@ if (!getenv('db_class')) {
 
 Cake\Datasource\ConnectionManager::setConfig('test', [
 	'className' => 'Cake\Database\Connection',
-	'driver' => getenv('db_class'),
-	'dsn' => getenv('db_dsn'),
-	'database' => getenv('db_database'),
-	'username' => getenv('db_username'),
-	'password' => getenv('db_password'),
+	'driver' => getenv('db_class') ?: null,
+	'dsn' => getenv('db_dsn') ?: null,
 	'timezone' => 'UTC',
 	'quoteIdentifiers' => true,
 	'cacheMetadata' => true,
@@ -93,11 +93,8 @@ Cake\Datasource\ConnectionManager::setConfig('test', [
 
 Cake\Datasource\ConnectionManager::setConfig('test_database_log', [
 	'className' => 'Cake\Database\Connection',
-	'driver' => getenv('db_class'),
-	'dsn' => getenv('db_dsn'),
-	'database' => getenv('db_database'),
-	'username' => getenv('db_username'),
-	'password' => getenv('db_password'),
+	'driver' => getenv('db_class') ?: null,
+	'dsn' => getenv('db_dsn') ?: null,
 	'timezone' => 'UTC',
 	'quoteIdentifiers' => true,
 	'cacheMetadata' => true,

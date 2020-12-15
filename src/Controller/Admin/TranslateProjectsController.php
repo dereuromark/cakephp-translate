@@ -11,6 +11,7 @@ use Translate\Model\Entity\TranslateProject;
  * @property \Translate\Model\Table\TranslateProjectsTable $TranslateProjects
  * @property \Translate\Model\Table\TranslateLanguagesTable $TranslateLanguages
  * @method \Translate\Model\Entity\TranslateProject[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
+ * @property \Translate\Controller\Component\TranslationComponent $Translation
  */
 class TranslateProjectsController extends TranslateAppController {
 
@@ -34,8 +35,8 @@ class TranslateProjectsController extends TranslateAppController {
 	 * View method
 	 *
 	 * @param string|null $id Translate Project id.
-	 * @return \Cake\Http\Response|null|void
 	 * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+	 * @return \Cake\Http\Response|null|void
 	 */
 	public function view($id = null) {
 		$translateProject = $this->TranslateProjects->get($id, [
@@ -54,14 +55,16 @@ class TranslateProjectsController extends TranslateAppController {
 	public function add() {
 		if ($this->TranslateProjects->find()->count() > 0) {
 			$this->Flash->warning('Currently only one project is supported yet.');
+
 			return $this->Common->autoRedirect(['action' => 'index']);
 		}
 
-		$translateProject = $this->TranslateProjects->newEntity();
+		$translateProject = $this->TranslateProjects->newEmptyEntity();
 		if ($this->request->is('post')) {
 			$translateProject = $this->TranslateProjects->patchEntity($translateProject, $this->request->getData());
 			if ($this->TranslateProjects->save($translateProject)) {
 				$this->Flash->success(__d('translate', 'The translate project has been saved.'));
+
 				return $this->redirect(['action' => 'index']);
 			}
 
@@ -80,8 +83,8 @@ class TranslateProjectsController extends TranslateAppController {
 	 * Edit method
 	 *
 	 * @param string|null $id Translate Project id.
-	 * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
 	 * @throws \Cake\Http\Exception\NotFoundException When record not found.
+	 * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
 	 */
 	public function edit($id = null) {
 		$translateProject = $this->TranslateProjects->get($id, [
@@ -91,6 +94,7 @@ class TranslateProjectsController extends TranslateAppController {
 			$translateProject = $this->TranslateProjects->patchEntity($translateProject, $this->request->getData());
 			if ($this->TranslateProjects->save($translateProject)) {
 				$this->Flash->success(__d('translate', 'The translate project has been saved.'));
+
 				return $this->redirect(['action' => 'index']);
 			}
 
@@ -105,8 +109,8 @@ class TranslateProjectsController extends TranslateAppController {
 	 * Delete method
 	 *
 	 * @param string|null $id Translate Project id.
-	 * @return \Cake\Http\Response|null Redirects to index.
 	 * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+	 * @return \Cake\Http\Response|null Redirects to index.
 	 */
 	public function delete($id = null) {
 		$this->request->allowMethod(['post', 'delete']);
@@ -116,6 +120,7 @@ class TranslateProjectsController extends TranslateAppController {
 		} else {
 			$this->Flash->error(__d('translate', 'The translate project could not be deleted. Please, try again.'));
 		}
+
 		return $this->redirect(['action' => 'index']);
 	}
 
@@ -152,11 +157,12 @@ class TranslateProjectsController extends TranslateAppController {
 			//$this->Common->autoRedirect(array('controller'=>'translate', 'action'=>'index'));
 
 		} else {
-			$this->request->data['Form']['reset'][] = 'terms';
+			$formArray = [];
+			$formArray['Form']['reset'][] = 'terms';
 			foreach ($languages as $key => $language) {
-				$this->request->data['Form']['language'][] = $key;
+				$formArray['Form']['language'][] = $key;
 			}
-
+			$this->request = $this->request->withData('Form', $formArray);
 		}
 
 		$this->set(compact('removeOptions', 'languages'));

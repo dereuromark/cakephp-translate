@@ -4,35 +4,38 @@ namespace Translate\Controller;
 
 use App\Controller\AppController;
 use Cake\Core\Configure;
-use Cake\Event\Event;
+use Cake\Event\EventInterface;
 
 # fix for internal routing (sticky plugin name in url)
 Configure::write('Plugin.name', 'Translate');
 
 /**
  * @property \Tools\Controller\Component\CommonComponent $Common
- * @property \Shim\Controller\Component\SessionComponent $Session
  * @property \Translate\Model\Table\TranslateProjectsTable $TranslateProjects
  * @property \Translate\Controller\Component\TranslationComponent $Translation
  */
 class TranslateAppController extends AppController {
 
 	/**
-	 * @var array
+	 * @throws \Exception
+	 * @return void
 	 */
-	public $helpers = ['Translate.Translation', 'Tools.Format'];
+	public function initialize(): void {
+		parent::initialize();
+
+		$this->loadComponent('Translate.Translation');
+		$this->loadComponent('Tools.Common');
+
+		$this->viewBuilder()->addHelper('Translate.Translation');
+		$this->viewBuilder()->addHelper('Tools.Format');
+	}
 
 	/**
-	 * @var array
-	 */
-	public $components = ['Translate.Translation', 'Tools.Common'];
-
-	/**
-	 * @param \Cake\Event\Event $event
+	 * @param \Cake\Event\EventInterface $event
 	 *
 	 * @return \Cake\Http\Response|null
 	 */
-	public function beforeFilter(Event $event) {
+	public function beforeFilter(EventInterface $event) {
 		parent::beforeFilter($event);
 
 		/*

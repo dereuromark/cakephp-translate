@@ -27,7 +27,7 @@ class TranslateDomainsController extends TranslateAppController {
 		$this->paginate = [
 			'contain' => ['TranslateProjects'],
 		];
-		$translateDomains = $this->paginate();
+		$translateDomains = $this->paginate()->toArray();
 
 		$this->set(compact('translateDomains'));
 		$this->set('_serialize', ['translateDomains']);

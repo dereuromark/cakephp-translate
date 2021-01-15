@@ -107,7 +107,7 @@ class TranslateLanguagesController extends TranslateAppController {
 	 * @return \Cake\Http\Response|null|void
 	 */
 	public function index() {
-		$translateLanguages = $this->paginate();
+		$translateLanguages = $this->paginate()->toArray();
 
 		$this->set(compact('translateLanguages'));
 		$this->set('_serialize', ['translateLanguages']);

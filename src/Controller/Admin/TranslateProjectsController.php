@@ -21,9 +21,9 @@ class TranslateProjectsController extends TranslateAppController {
 	 * @return \Cake\Http\Response|null|void
 	 */
 	public function index() {
-		$translateProjects = $this->paginate();
+		$translateProjects = $this->paginate()->toArray();
 
-		if (!$translateProjects->count()) {
+		if (!$translateProjects) {
 		    return $this->redirect(['action' => 'add', '?' => ['name' => 'Default', 'default' => true, 'status' => TranslateProject::STATUS_HIDDEN]]);
 		}
 

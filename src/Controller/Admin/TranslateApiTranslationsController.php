@@ -18,7 +18,7 @@ class TranslateApiTranslationsController extends AppController {
 	 * @return \Cake\Http\Response|null|void
 	 */
 	public function index() {
-		$translateApiTranslations = $this->paginate();
+		$translateApiTranslations = $this->paginate()->toArray();
 
 		$this->set(compact('translateApiTranslations'));
 		$this->set('_serialize', ['translateApiTranslations']);

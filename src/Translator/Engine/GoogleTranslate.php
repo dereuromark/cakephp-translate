@@ -74,7 +74,7 @@ class GoogleTranslate {
 		foreach ($fields as $key => $value) {
 			$fields_string .= $key . '=' . $value . '&';
 		}
-		rtrim($fields_string, '&');
+		$fields_string = rtrim($fields_string, '&');
 		// Open connection
 		$ch = curl_init();
 		// Set the url, number of POST vars, POST data

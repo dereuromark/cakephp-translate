@@ -67,7 +67,7 @@ Current Translation-Coverage: <span style="color:#<?php echo $totalColor;?>;font
 <?php } else { ?>
 
 	<p>
-<?php echo __d('translate', 'Please create a project first'); ?>: <?php echo $this->Html->link('Project Index', ['prefix' => 'admin', 'controller' => 'TranslateProjects']); ?>
+<?php echo __d('translate', 'Please create a project first'); ?>: <?php echo $this->Html->link('Project Index', ['controller' => 'TranslateProjects']); ?>
 	</p>
 
 <?php } ?>

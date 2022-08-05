@@ -7,6 +7,8 @@ use Cake\Shell\Task\ExtractTask as CoreExtractTask;
 use RuntimeException;
 
 /**
+ * //FIXME
+ *
  * Extract shell task extension for import into DB.
  * Do not use this file from I18n shell - it is used inside the business logic of Translate directly.
  */
@@ -94,7 +96,7 @@ class ExtractTask extends CoreExtractTask {
 						$msgid,
 						$details['msgid_plural'] === false ? null : $details['msgid_plural'],
 						$context ?: null,
-						$references
+						$references,
 					);
 				}
 			}

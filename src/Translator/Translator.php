@@ -109,7 +109,7 @@ class Translator {
 	}
 
 	/**
-	 * @return \Translate\Translator\EngineInterface[]
+	 * @return array<\Translate\Translator\EngineInterface>
 	 */
 	protected function _getEngines() {
 		$engineClasses = (array)$this->getConfig('engine');

@@ -9,7 +9,7 @@ use Sepia\PoParser;
 class Dumper {
 
 	/**
-	 * @param \Translate\Model\Entity\TranslateTerm[] $translations
+	 * @param array<\Translate\Model\Entity\TranslateTerm> $translations
 	 * @param string $domain
 	 * @param string $lang
 	 * @param string|null $folder
@@ -35,7 +35,7 @@ class Dumper {
 	}
 
 	/**
-	 * @param \Translate\Model\Entity\TranslateTerm[] $translations $translations
+	 * @param array<\Translate\Model\Entity\TranslateTerm> $translations $translations
 	 * @param string $file
 	 *
 	 * @return string

@@ -10,12 +10,12 @@ use Exception;
 class PoParser {
 
 	/**
-	 * @var string[]
+	 * @var array<string>
 	 */
 	protected $headers = [];
 
 	/**
-	 * @var \Translate\Parser\Entry[]
+	 * @var array<\Translate\Parser\Entry>
 	 */
 	protected $entries = [];
 
@@ -45,7 +45,7 @@ class PoParser {
 	protected $justNewEntry = true;
 
 	/**
-	 * @return \Translate\Parser\Entry[]
+	 * @return array<\Translate\Parser\Entry>
 	 */
 	public function getEntries(): array {
 		return $this->entries;
@@ -155,7 +155,7 @@ class PoParser {
 
 		return [
 			'key' => $split[0],
-			'value' => isset($split[1]) ? $split[1] : null,
+			'value' => $split[1] ?? null,
 		];
 	}
 
@@ -342,7 +342,7 @@ class PoParser {
 	}
 
 	/**
-	 * @param string|array $entry
+	 * @param array|string $entry
 	 *
 	 * @return string|null
 	 */
@@ -420,7 +420,7 @@ class PoParser {
 	/**
 	 * @param array $entry
 	 *
-	 * @return string[]
+	 * @return array<string>
 	 */
 	protected function parseHeaders(array $entry) {
 		$headers = [];
@@ -544,7 +544,7 @@ class PoParser {
 	}
 
 	/**
-	 * @param string|bool|array $value
+	 * @param array|string|bool $value
 	 *
 	 * @return array|string|bool
 	 */
@@ -565,14 +565,14 @@ class PoParser {
 	}
 
 	/**
-	 * @return string[]
+	 * @return array<string>
 	 */
 	public function getHeaders(): array {
 		return $this->headers;
 	}
 
 	/**
-	 * @param string[] $headers
+	 * @param array<string> $headers
 	 * @return void
 	 */
 	public function setHeaders($headers): void {

@@ -16,30 +16,30 @@ use Tools\Model\Table\Table;
  *
  * @method \Translate\Model\Entity\TranslateLanguage get($primaryKey, $options = [])
  * @method \Translate\Model\Entity\TranslateLanguage newEntity(array $data, array $options = [])
- * @method \Translate\Model\Entity\TranslateLanguage[] newEntities(array $data, array $options = [])
+ * @method array<\Translate\Model\Entity\TranslateLanguage> newEntities(array $data, array $options = [])
  * @method \Translate\Model\Entity\TranslateLanguage|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \Translate\Model\Entity\TranslateLanguage patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \Translate\Model\Entity\TranslateLanguage[] patchEntities(iterable $entities, array $data, array $options = [])
+ * @method array<\Translate\Model\Entity\TranslateLanguage> patchEntities(iterable $entities, array $data, array $options = [])
  * @method \Translate\Model\Entity\TranslateLanguage findOrCreate($search, ?callable $callback = null, $options = [])
  * @mixin \Shim\Model\Behavior\NullableBehavior
  * @property \Translate\Model\Table\TranslateProjectsTable&\Cake\ORM\Association\BelongsTo $TranslateProjects
  * @method \Translate\Model\Entity\TranslateLanguage saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @property \Data\Model\Table\LanguagesTable&\Cake\ORM\Association\BelongsTo $Languages
  * @method \Translate\Model\Entity\TranslateLanguage newEmptyEntity()
- * @method \Translate\Model\Entity\TranslateLanguage[]|\Cake\Datasource\ResultSetInterface|false saveMany(iterable $entities, $options = [])
- * @method \Translate\Model\Entity\TranslateLanguage[]|\Cake\Datasource\ResultSetInterface saveManyOrFail(iterable $entities, $options = [])
- * @method \Translate\Model\Entity\TranslateLanguage[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
- * @method \Translate\Model\Entity\TranslateLanguage[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
+ * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateLanguage>|false saveMany(iterable $entities, $options = [])
+ * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateLanguage> saveManyOrFail(iterable $entities, $options = [])
+ * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateLanguage>|false deleteMany(iterable $entities, $options = [])
+ * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateLanguage> deleteManyOrFail(iterable $entities, $options = [])
  */
 class TranslateLanguagesTable extends Table {
 
 	/**
-	 * @var array
+	 * @var array<int|string, mixed>|string|null
 	 */
 	public $order = ['name' => 'ASC'];
 
 	/**
-	 * @var array
+	 * @var array<mixed>
 	 */
 	public $validate = [
 		'name' => [
@@ -175,7 +175,7 @@ class TranslateLanguagesTable extends Table {
 	 * @param int $projectId
 	 * @param array $data
 	 *
-	 * @return bool|\Translate\Model\Entity\TranslateLanguage
+	 * @return \Translate\Model\Entity\TranslateLanguage|bool
 	 */
 	public function init($name, $locale, $iso2, $projectId, array $data = []) {
 		$translateLanguage = $this->newEntity([
@@ -240,7 +240,7 @@ class TranslateLanguagesTable extends Table {
 	}
 
 	/**
-	 * @param \Translate\Model\Entity\TranslateLanguage[] $translateLanguages
+	 * @param array<\Translate\Model\Entity\TranslateLanguage> $translateLanguages
 	 *
 	 * @return string
 	 */

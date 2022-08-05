@@ -47,7 +47,7 @@ class MessagesDbLoaderTest extends TestCase {
 		I18n::config('default', function ($domain, $locale) {
 			return new MessagesDbLoader(
 				$domain,
-				$locale
+				$locale,
 			);
 		});
 		I18n::setLocale('de');
@@ -72,7 +72,7 @@ class MessagesDbLoaderTest extends TestCase {
 		I18n::config('dom', function ($domain, $locale) {
 			return new MessagesDbLoader(
 				$domain,
-				$locale
+				$locale,
 			);
 		});
 		I18n::setLocale('de');

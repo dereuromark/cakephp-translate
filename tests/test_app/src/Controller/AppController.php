@@ -7,7 +7,7 @@ use Shim\Controller\Controller;
 class AppController extends Controller {
 
 	/**
-	 * @return \Cake\Http\Response|null|void
+	 * @return void
 	 */
 	public function initialize(): void {
 		parent::initialize();

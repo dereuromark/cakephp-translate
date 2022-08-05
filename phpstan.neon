@@ -1,8 +1,11 @@
 parameters:
+	level: 5
+	paths:
+		- src/
+
 	bootstrapFiles:
-		- bootstrap.php
+		- tests/bootstrap.php
 		- %rootDir%/../../../config/bootstrap.php
 	ignoreErrors:
 		- '#Property Translate\\Translator\\Translator::\$_cache \(.+TranslateApiTranslationsTable\) does not accept Cake\\ORM\\Table.#'
 		- '#Access to an undefined property .+BehaviorRegistry::\$Search.#'
-		- '#Call to an undefined method .+FlashComponent::warning\(\).#'

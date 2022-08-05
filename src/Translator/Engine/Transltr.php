@@ -7,6 +7,9 @@ use Yandex\Translate\Exception;
 
 class Transltr implements EngineInterface {
 
+	/**
+	 * @var string
+	 */
 	public const URL = 'http://transltr.org/api/translate?text=%s&to=%s&from=%s';
 
 	/**

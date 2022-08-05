@@ -14,24 +14,24 @@ use Tools\Model\Table\Table;
  *
  * @method \Translate\Model\Entity\TranslateTerm get($primaryKey, $options = [])
  * @method \Translate\Model\Entity\TranslateTerm newEntity(array $data, array $options = [])
- * @method \Translate\Model\Entity\TranslateTerm[] newEntities(array $data, array $options = [])
+ * @method array<\Translate\Model\Entity\TranslateTerm> newEntities(array $data, array $options = [])
  * @method \Translate\Model\Entity\TranslateTerm|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \Translate\Model\Entity\TranslateTerm patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \Translate\Model\Entity\TranslateTerm[] patchEntities(iterable $entities, array $data, array $options = [])
+ * @method array<\Translate\Model\Entity\TranslateTerm> patchEntities(iterable $entities, array $data, array $options = [])
  * @method \Translate\Model\Entity\TranslateTerm findOrCreate($search, ?callable $callback = null, $options = [])
  * @mixin \Shim\Model\Behavior\NullableBehavior
  * @method \Translate\Model\Entity\TranslateTerm saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @mixin \Search\Model\Behavior\SearchBehavior
  * @method \Translate\Model\Entity\TranslateTerm newEmptyEntity()
- * @method \Translate\Model\Entity\TranslateTerm[]|\Cake\Datasource\ResultSetInterface|false saveMany(iterable $entities, $options = [])
- * @method \Translate\Model\Entity\TranslateTerm[]|\Cake\Datasource\ResultSetInterface saveManyOrFail(iterable $entities, $options = [])
- * @method \Translate\Model\Entity\TranslateTerm[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
- * @method \Translate\Model\Entity\TranslateTerm[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
+ * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateTerm>|false saveMany(iterable $entities, $options = [])
+ * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateTerm> saveManyOrFail(iterable $entities, $options = [])
+ * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateTerm>|false deleteMany(iterable $entities, $options = [])
+ * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateTerm> deleteManyOrFail(iterable $entities, $options = [])
  */
 class TranslateTermsTable extends Table {
 
 	/**
-	 * @var array
+	 * @var array<int|string, mixed>|string|null
 	 */
 	public $order = ['modified' => 'DESC'];
 
@@ -41,7 +41,7 @@ class TranslateTermsTable extends Table {
 	public $displayField = 'content';
 
 	/**
-	 * @var array
+	 * @var array<mixed>
 	 */
 	public $validate = [
 		'translate_string_id' => ['numeric'],
@@ -222,7 +222,7 @@ class TranslateTermsTable extends Table {
 	/**
 	 * @param int $languageId
 	 *
-	 * @param int|array|null $groupId
+	 * @param array|int|null $groupId
 	 *
 	 * @return \Cake\ORM\Query
 	 */
@@ -241,7 +241,7 @@ class TranslateTermsTable extends Table {
 	/**
 	 * @param int $stringId
 	 *
-	 * @return \Translate\Model\Entity\TranslateTerm[]
+	 * @return array<\Translate\Model\Entity\TranslateTerm>
 	 */
 	public function getTranslatedArray($stringId) {
 		$terms = $this->getTranslated($stringId);
@@ -268,7 +268,7 @@ class TranslateTermsTable extends Table {
 	/**
 	 * @param array $data
 	 *
-	 * @return bool|\Translate\Model\Entity\TranslateTerm
+	 * @return \Translate\Model\Entity\TranslateTerm|bool
 	 */
 	public function process(array $data) {
 		$translateTerm = $this->newEntity($data);

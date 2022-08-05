@@ -15,7 +15,7 @@ use Tools\Model\Entity\Entity;
  * @property \Cake\I18n\FrozenTime|null $created
  * @property \Cake\I18n\FrozenTime|null $modified
  *
- * @property \Translate\Model\Entity\TranslateDomain[] $translate_domains
+ * @property array<\Translate\Model\Entity\TranslateDomain> $translate_domains
  */
 class TranslateProject extends Entity {
 
@@ -26,7 +26,7 @@ class TranslateProject extends Entity {
 	 * be mass assigned. For security purposes, it is advised to set '*' to false
 	 * (or remove it), and explicitly make individual fields accessible as needed.
 	 *
-	 * @var array
+	 * @var array<string, bool>
 	 */
 	protected $_accessible = [
 		'*' => true,
@@ -48,8 +48,19 @@ class TranslateProject extends Entity {
 		return parent::enum($value, $options);
 	}
 
+	/**
+	 * @var int
+	 */
 	public const STATUS_INACTIVE = 0;
+
+	/**
+	 * @var int
+	 */
 	public const STATUS_HIDDEN = 1;
+
+	/**
+	 * @var int
+	 */
 	public const STATUS_PUBLIC = 2;
 
 	/**
@@ -67,9 +78,20 @@ class TranslateProject extends Entity {
 		return parent::enum($value, $options);
 	}
 
+	/**
+	 * @var int
+	 */
 	public const TYPE_APP = 0;
+
+	/**
+	 * @var int
+	 */
 	public const TYPE_PLUGIN = 1;
+
 	//todo?
+	/**
+	 * @var int
+	 */
 	public const TYPE_OTHER = 9;
 
 }

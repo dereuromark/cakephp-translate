@@ -280,7 +280,7 @@ class TranslateStringsController extends TranslateAppController {
 		if ($this->Common->isPosted() && $this->request->getData('domains')) {
 			$count = 0;
 			$errors = [];
-			/** @var string[] $postedDomains */
+			/** @var array<string> $postedDomains */
 			$postedDomains = (array)$this->request->getData('domains');
 			foreach ($postedDomains as $key => $domain) {
 				[$lang, $domain] = explode('_', $domain, 2);
@@ -431,12 +431,12 @@ class TranslateStringsController extends TranslateAppController {
 			$path = ROOT . DS . $path;
 		}
 		$path = rtrim(realpath($path), '/') . '/';
-		if (!$path || !is_dir($path)) {
+		if (!is_dir($path)) {
 			throw new NotFoundException('Path not found: ' . $translateString->translate_domain->path);
 		}
 
 		$file = $path . $reference;
-		if (!$file || !file_exists($file)) {
+		if (!file_exists($file)) {
 			throw new NotFoundException('File not found: ' . $file);
 		}
 

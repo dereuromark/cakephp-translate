@@ -24,8 +24,7 @@ class Application extends BaseApplication {
 	 *
 	 * @return \Cake\Core\PluginCollection
 	 */
-	public function getPlugins(): PluginCollection
-	{
+	public function getPlugins(): PluginCollection {
 		$this->addPlugin('Tools');
 
 		return $this->plugins;

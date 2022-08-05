@@ -15,7 +15,7 @@ use Tools\Model\Entity\Entity;
  * @property bool $active
  *
  * @property \Data\Model\Entity\Language|null $language
- * @property \Translate\Model\Entity\TranslateTerm[] $translate_terms
+ * @property array<\Translate\Model\Entity\TranslateTerm> $translate_terms
  * @property int $translate_project_id
  * @property bool $base
  * @property bool $primary
@@ -30,7 +30,7 @@ class TranslateLanguage extends Entity {
 	 * be mass assigned. For security purposes, it is advised to set '*' to false
 	 * (or remove it), and explicitly make individual fields accessible as needed.
 	 *
-	 * @var array
+	 * @var array<string, bool>
 	 */
 	protected $_accessible = [
 		'*' => true,

@@ -13,12 +13,12 @@ class Entry {
 	protected $context;
 
 	/**
-	 * @var string|string[]
+	 * @var array<string>|string
 	 */
 	protected $msgId;
 
 	/**
-	 * @var string|string[]|null
+	 * @var array<string>|string|null
 	 */
 	protected $msgIdPlural;
 
@@ -38,7 +38,7 @@ class Entry {
 	protected $header = false;
 
 	/**
-	 * @var string[]
+	 * @var array<string>
 	 */
 	protected $flags = [];
 
@@ -70,7 +70,7 @@ class Entry {
 		$this->translatorComment = $properties['tcomment'];
 		$this->extractedComment = $properties['ccomment'];
 		$this->msgId = $properties['msgid'];
-		$this->msgIdPlural = isset($properties['msgid_plural']) ? $properties['msgid_plural'] : null;
+		$this->msgIdPlural = $properties['msgid_plural'] ?? null;
 		$this->fuzzy = $properties['fuzzy'] === true;
 		$this->obsolete = $properties['obsolete'] === true;
 		$this->header = $properties['header'] === true;
@@ -168,7 +168,7 @@ class Entry {
 	}
 
 	/**
-	 * @return string[]
+	 * @return array<string>
 	 */
 	public function getFlags(): array {
 		return $this->flags;

@@ -9,30 +9,30 @@ use Translate\Model\Entity\TranslateProject;
 /**
  * @method \Translate\Model\Entity\TranslateProject get($primaryKey, $options = [])
  * @method \Translate\Model\Entity\TranslateProject newEntity(array $data, array $options = [])
- * @method \Translate\Model\Entity\TranslateProject[] newEntities(array $data, array $options = [])
+ * @method array<\Translate\Model\Entity\TranslateProject> newEntities(array $data, array $options = [])
  * @method \Translate\Model\Entity\TranslateProject|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \Translate\Model\Entity\TranslateProject patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \Translate\Model\Entity\TranslateProject[] patchEntities(iterable $entities, array $data, array $options = [])
+ * @method array<\Translate\Model\Entity\TranslateProject> patchEntities(iterable $entities, array $data, array $options = [])
  * @method \Translate\Model\Entity\TranslateProject findOrCreate($search, ?callable $callback = null, $options = [])
  * @mixin \Shim\Model\Behavior\NullableBehavior
  * @property \Translate\Model\Table\TranslateDomainsTable&\Cake\ORM\Association\HasMany $TranslateDomains
  * @property \Translate\Model\Table\TranslateTermsTable|\Cake\ORM\Association\HasMany $TranslateTerms
  * @method \Translate\Model\Entity\TranslateProject saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \Translate\Model\Entity\TranslateProject newEmptyEntity()
- * @method \Translate\Model\Entity\TranslateProject[]|\Cake\Datasource\ResultSetInterface|false saveMany(iterable $entities, $options = [])
- * @method \Translate\Model\Entity\TranslateProject[]|\Cake\Datasource\ResultSetInterface saveManyOrFail(iterable $entities, $options = [])
- * @method \Translate\Model\Entity\TranslateProject[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
- * @method \Translate\Model\Entity\TranslateProject[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
+ * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateProject>|false saveMany(iterable $entities, $options = [])
+ * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateProject> saveManyOrFail(iterable $entities, $options = [])
+ * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateProject>|false deleteMany(iterable $entities, $options = [])
+ * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateProject> deleteManyOrFail(iterable $entities, $options = [])
  */
 class TranslateProjectsTable extends Table {
 
 	/**
-	 * @var array
+	 * @var array<int|string, mixed>|string|null
 	 */
 	public $order = ['status' => 'DESC', 'default' => 'DESC', 'name' => 'ASC'];
 
 	/**
-	 * @var array
+	 * @var array<mixed>
 	 */
 	public $validate = [
 		'name' => [
@@ -107,8 +107,8 @@ class TranslateProjectsTable extends Table {
 
 	/**
 	 * @param int $id
-	 * @param string[] $types
-	 * @param int[] $languages
+	 * @param array<string> $types
+	 * @param array<int> $languages
 	 *
 	 * @throws \Exception
 	 *

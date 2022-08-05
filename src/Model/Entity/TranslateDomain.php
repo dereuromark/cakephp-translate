@@ -16,7 +16,7 @@ use Tools\Model\Entity\Entity;
  * @property \Cake\I18n\FrozenTime|null $modified
  *
  * @property \Translate\Model\Entity\TranslateProject $translate_project
- * @property \Translate\Model\Entity\TranslateString[] $translate_strings
+ * @property array<\Translate\Model\Entity\TranslateString> $translate_strings
  * @property int $translate_project_id
  */
 class TranslateDomain extends Entity {
@@ -28,7 +28,7 @@ class TranslateDomain extends Entity {
 	 * be mass assigned. For security purposes, it is advised to set '*' to false
 	 * (or remove it), and explicitly make individual fields accessible as needed.
 	 *
-	 * @var array
+	 * @var array<string, bool>
 	 */
 	protected $_accessible = [
 		'*' => true,

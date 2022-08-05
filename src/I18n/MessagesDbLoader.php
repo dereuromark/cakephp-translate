@@ -29,7 +29,7 @@ class MessagesDbLoader {
 	/**
 	 * The model name to use for loading messages or model instance.
 	 *
-	 * @var string|\Translate\Model\Table\TranslateTermsTable
+	 * @var \Translate\Model\Table\TranslateTermsTable|string
 	 */
 	protected $_model = 'Translate.TranslateTerms';
 
@@ -77,7 +77,7 @@ class MessagesDbLoader {
 		$fields = $model->getSchema()->columns();
 		$fields = array_flip(array_diff(
 			$fields,
-			$model->getSchema()->getPrimaryKey()
+			$model->getSchema()->getPrimaryKey(),
 		));
 		unset($fields['domain'], $fields['locale']);
 		$query->select(array_flip($fields));
@@ -165,7 +165,7 @@ class MessagesDbLoader {
 			$model = TableRegistry::getTableLocator()->get($this->_model);
 			if (!$model) {
 				throw new RuntimeException(
-					sprintf('Unable to load model "%s".', $this->_model)
+					sprintf('Unable to load model "%s".', $this->_model),
 				);
 			}
 			$this->_model = $model;

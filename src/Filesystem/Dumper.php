@@ -3,8 +3,7 @@
 namespace Translate\Filesystem;
 
 use Cake\Core\Configure;
-use Sepia\FileHandler;
-use Sepia\PoParser;
+use Translate\Parser\PoParser;
 
 class Dumper {
 
@@ -29,22 +28,20 @@ class Dumper {
 			touch($file);
 		}
 
-		$content = $this->_compile($translations, $file);
-
-		return (bool)file_put_contents($file, $content);
+		return $this->_dump($translations, $file);
 	}
 
 	/**
 	 * @param array<\Translate\Model\Entity\TranslateTerm> $translations $translations
 	 * @param string $file
 	 *
-	 * @return string
+	 * @return bool
 	 */
-	protected function _compile(array $translations, $file) {
+	protected function _dump(array $translations, $file) {
 		$max = Configure::read('Translate.plurals') ?: 2;
 		$pluralExpression = Configure::read('Translate.pluralExpression') ?: 'n != 1';
 
-		$po = new PoParser(new FileHandler($file));
+		$po = new PoParser();
 		$newHeaders = [
 			'"Project-Id-Version: \n"',
 			'"POT-Creation-Date: \n"',
@@ -80,15 +77,15 @@ class Dumper {
 				//$entry['flags'] = explode(',', $translation->translate_string->flags);
 			}
 
-			$po->setEntry($translation->translate_string->name, $entry);
+			$po->setEntries([$translation->translate_string->name => $entry]);
 			if ($translation->translate_string->plural !== null) {
 				//$po->setEntryPlural($translation->translate_string->name, $entry['msgstr']);
 			}
 		}
 
-		$content = $po->compile();
+		$po->write($file);
 
-		return $content;
+		return true;
 	}
 
 }

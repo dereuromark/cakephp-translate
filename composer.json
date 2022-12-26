@@ -26,6 +26,7 @@
 		"ext-json": "*",
 		"dereuromark/cakephp-queue": "^5.0",
 		"phpunit/phpunit": "^9.5",
+		"sepia/po-parser": "^6.0.1",
 		"yandex/translate-api": "dev-master",
 		"fig-r/psr2r-sniffer": "dev-master"
 	},

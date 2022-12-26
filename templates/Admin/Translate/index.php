@@ -23,7 +23,7 @@ Easily manage i18n/translations from your backend.
 	</p>
 
 
-<table style="text-align: top"><tr>
+<table style="vertical-align: top"><tr>
 <td>
 <h3>Features</h3>
 
@@ -56,7 +56,7 @@ Current Translation-Coverage: <span style="color:#<?php echo $totalColor;?>;font
 	</p>
 
 <?php
-	if (!empty($coverage)) {
+	if (!empty($coverage) && is_array($count)) {
 ?>
 
 <?php echo $this->element('coverage_table', [])?>

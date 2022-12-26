@@ -35,6 +35,7 @@ class TranslationLibTest extends TestCase {
 		$expected = [
 			'cake' => 'cake',
 			'default' => 'default',
+			'translate' => 'translate',
 		];
 		$this->assertSame($expected, $is);
 	}

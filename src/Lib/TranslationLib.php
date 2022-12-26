@@ -5,7 +5,7 @@ namespace Translate\Lib;
 use Cake\Filesystem\Folder;
 use Cake\I18n\Parser\PoFileParser;
 use Cake\Utility\Inflector;
-use PoParser\Parser;
+use Translate\Parser\PoParser;
 
 class TranslationLib {
 
@@ -103,7 +103,7 @@ class TranslationLib {
 		$content = [];
 
 		if (file_exists($file)) {
-			$poParser = new Parser();
+			$poParser = new PoParser();
 			$poParser->read($file);
 			$entries = $poParser->getEntriesAsArrays();
 
@@ -127,7 +127,7 @@ class TranslationLib {
 		$content = [];
 
 		if (file_exists($file)) {
-			$poParser = new Parser();
+			$poParser = new PoParser();
 			$poParser->read($file);
 			$entries = $poParser->getEntriesAsArrays();
 

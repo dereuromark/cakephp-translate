@@ -430,7 +430,7 @@ class TranslateStringsController extends TranslateAppController {
 		if (substr($path, 0, 1) !== '/') {
 			$path = ROOT . DS . $path;
 		}
-		$path = rtrim(realpath($path), '/') . '/';
+		$path = rtrim((string)realpath($path), '/') . '/';
 		if (!is_dir($path)) {
 			throw new NotFoundException('Path not found: ' . $translateString->translate_domain->path);
 		}

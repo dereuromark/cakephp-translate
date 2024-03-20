@@ -118,7 +118,7 @@ class Translator {
 		foreach ($engineClasses as $engineClass) {
 			$engine = new $engineClass($this->getConfig());
 			if (!($engine instanceof EngineInterface)) {
-				throw new RuntimeException('Not a valid engine: ' . $engine);
+				throw new RuntimeException('Not a valid engine: ' . $engineClass);
 			}
 			$engines[] = $engine;
 		}

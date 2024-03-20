@@ -30,6 +30,7 @@ class Transltr implements EngineInterface {
 			curl_setopt($handler, CURLOPT_URL, $url);
 			curl_setopt($handler, CURLOPT_SSL_VERIFYPEER, false);
 
+			/** @var string|false $remoteResult */
 			$remoteResult = curl_exec($handler);
 			if ($remoteResult === false) {
 				throw new Exception(curl_error($handler), curl_errno($handler));

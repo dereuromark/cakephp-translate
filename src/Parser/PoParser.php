@@ -92,7 +92,7 @@ class PoParser {
 
 		$handle = $this->openFile($filePath);
 		while (!feof($handle)) {
-			$line = trim(fgets($handle));
+			$line = trim((string)fgets($handle));
 			$this->processLine($line);
 		}
 		fclose($handle);
@@ -152,6 +152,9 @@ class PoParser {
 	 */
 	protected function parseLine($line) {
 		$split = preg_split('/\s/', $line, 2);
+		if (!$split) {
+			return [];
+		}
 
 		return [
 			'key' => $split[0],
@@ -165,7 +168,7 @@ class PoParser {
 	 * @return array
 	 */
 	protected function parseFlags($data) {
-		return preg_split('/,\s*/', $data);
+		return (array)preg_split('/,\s*/', $data);
 	}
 
 	/**

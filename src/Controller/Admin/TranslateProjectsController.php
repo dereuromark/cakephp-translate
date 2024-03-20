@@ -23,7 +23,7 @@ class TranslateProjectsController extends TranslateAppController {
 	public function index() {
 		$translateProjects = $this->paginate();
 
-		if (!$translateProjects) {
+		if (!$translateProjects->count()) {
 		    return $this->redirect(['action' => 'add', '?' => ['name' => 'Default', 'default' => true, 'status' => TranslateProject::STATUS_HIDDEN]]);
 		}
 

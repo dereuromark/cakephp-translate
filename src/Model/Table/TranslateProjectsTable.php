@@ -149,7 +149,7 @@ class TranslateProjectsTable extends Table {
 					];
 					//$this->TranslateTerms->TranslateStrings->recursive = 0;
 					//$this->TranslateTerms->TranslateStrings->bindModel(['belongsTo' => $x], false);
-					$res = $this->TranslateTerms->TranslateStrings->deleteAll($conditions);
+					//$res = $this->TranslateTerms->TranslateStrings->deleteAll($conditions);
 
 					//die(returns($res));
 					break;

@@ -91,7 +91,7 @@ class GoogleTranslate {
 		// Close connection
 		curl_close($ch);
 
-		return $result;
+		return (string)$result;
 	}
 
 	/**

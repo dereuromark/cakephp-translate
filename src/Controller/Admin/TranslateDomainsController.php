@@ -24,10 +24,9 @@ class TranslateDomainsController extends TranslateAppController {
 	 * @return \Cake\Http\Response|null|void
 	 */
 	public function index() {
-		$this->paginate = [
-			'contain' => ['TranslateProjects'],
-		];
-		$translateDomains = $this->paginate();
+		$query = $this->TranslateDomains->find()
+			->contain(['TranslateProjects']);
+		$translateDomains = $this->paginate($query);
 
 		$this->set(compact('translateDomains'));
 		//$this->set('_serialize', ['translateDomains']);

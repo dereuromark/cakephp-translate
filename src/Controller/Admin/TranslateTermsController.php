@@ -37,11 +37,8 @@ class TranslateTermsController extends TranslateAppController {
 	 * @return \Cake\Http\Response|null|void
 	 */
 	public function index() {
-		$this->paginate = [
-			'contain' => ['TranslateStrings', 'TranslateLanguages'],
-		];
-
-		$query = $this->TranslateTerms->find('search', ['search' => $this->request->getQuery()]);
+		$query = $this->TranslateTerms->find('search', ['search' => $this->request->getQuery()])
+			->contain(['TranslateStrings', 'TranslateLanguages']);
 		$translateTerms = $this->paginate($query);
 
 		$this->set(compact('translateTerms'));

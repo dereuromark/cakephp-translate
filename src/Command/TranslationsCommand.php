@@ -8,7 +8,7 @@ use Shim\Command\Command;
 /**
  * @property \Translate\Model\Table\TranslateStringsTable $TranslateStrings
  */
-class TranslateCommand extends Command {
+class TranslationsCommand extends Command {
 
 	/**
 	 * @var string|null

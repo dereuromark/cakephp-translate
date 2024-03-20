@@ -6,14 +6,14 @@ use Cake\Console\ConsoleIo;
 use Cake\Console\TestSuite\ConsoleIntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use Shim\TestSuite\ConsoleOutput;
-use Translate\Command\TranslateCommand;
+use Translate\Command\TranslationsCommand;
 
-class TranslateCommandTest extends TestCase {
+class TranslationsCommandTest extends TestCase {
 
 	use ConsoleIntegrationTestTrait;
 
 	/**
-	 * @var \Translate\Command\TranslateCommand|\PHPUnit\Framework\MockObject\MockObject
+	 * @var \Translate\Command\TranslationsCommand|\PHPUnit\Framework\MockObject\MockObject
 	 */
 	public $command;
 
@@ -34,7 +34,7 @@ class TranslateCommandTest extends TestCase {
 		$this->err = new ConsoleOutput();
 		$io = new ConsoleIo($this->out, $this->err);
 
-		$this->command = $this->getMockBuilder(TranslateCommand::class)
+		$this->command = $this->getMockBuilder(TranslationsCommand::class)
 			->getMock();
 	}
 

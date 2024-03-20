@@ -169,6 +169,10 @@ class TranslateStringsTable extends Table {
 	 * @return array coverage
 	 */
 	public function coverage($id, ?array $languages = null) {
+		if (!$id) {
+			return [];
+		}
+
 		$res = [];
 		if ($languages === null) {
 			$languages = $this->TranslateTerms->TranslateLanguages->find()

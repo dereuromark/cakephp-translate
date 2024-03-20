@@ -2,6 +2,7 @@
 
 namespace Translate;
 
+use Cake\Console\CommandCollection;
 use Cake\Core\BasePlugin;
 use Cake\Routing\Route\DashedRoute;
 use Cake\Routing\RouteBuilder;
@@ -24,6 +25,18 @@ class TranslatePlugin extends BasePlugin {
 				$routes->fallbacks(DashedRoute::class);
 			});
 		});
+	}
+
+	/**
+	 * @param \Cake\Console\CommandCollection $commands
+	 *
+	 * @return \Cake\Console\CommandCollection
+	 */
+	public function console(CommandCollection $commands): CommandCollection {
+		$commands = parent::console($commands);
+		//$commands->add('translations import', TranslationsCommand::class);
+
+		return $commands;
 	}
 
 }

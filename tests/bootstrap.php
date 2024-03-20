@@ -5,10 +5,10 @@
 
 use Cake\Core\Configure;
 use Cake\TestSuite\Fixture\SchemaLoader;
+use Templating\View\Icon\FontAwesome5Icon;
 use TestApp\Application;
 use TestApp\Controller\AppController;
 use TestApp\View\AppView;
-use Templating\View\Icon\FontAwesome5Icon;
 
 if (!defined('DS')) {
 	define('DS', DIRECTORY_SEPARATOR);

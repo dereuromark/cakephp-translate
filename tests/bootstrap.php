@@ -32,6 +32,7 @@ define('WWW_ROOT', TMP . 'webroot' . DS);
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 require CORE_PATH . 'config/bootstrap.php';
+require CAKE . 'functions.php';
 
 require ROOT . DS . 'config' . DS . 'bootstrap.php';
 

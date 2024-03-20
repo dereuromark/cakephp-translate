@@ -20,16 +20,16 @@
 		"source": "https://github.com/dereuromark/cakephp-translate"
 	},
 	"require": {
-		"php": ">=7.3",
-		"cakephp/cakephp": "^4.2.0",
-		"dereuromark/cakephp-tools": "^2.0",
-		"friendsofcake/search": "^6.0"
+		"php": ">=8.1",
+		"cakephp/cakephp": "^5.0.0",
+		"dereuromark/cakephp-tools": "^3.0",
+		"friendsofcake/search": "^7.0"
 	},
 	"require-dev": {
 		"ext-json": "*",
-		"dereuromark/cakephp-queue": "^5.0",
+		"dereuromark/cakephp-queue": "^8.0",
 		"fig-r/psr2r-sniffer": "dev-master",
-		"phpunit/phpunit": "^9.5",
+		"phpunit/phpunit": "^10.5",
 		"sepia/po-parser": "^6.0.1",
 		"yandex/translate-api": "dev-master"
 	},

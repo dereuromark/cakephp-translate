@@ -17,9 +17,9 @@ use Translate\Lib\TranslationLib;
 class TranslateStringsController extends TranslateAppController {
 
 	/**
-	 * @var array
+	 * @var array<string, mixed>
 	 */
-	public $paginate = ['order' => ['TranslateStrings.modified' => 'DESC']];
+	protected array $paginate = ['order' => ['TranslateStrings.modified' => 'DESC']];
 
 	/**
 	 * @return void
@@ -51,7 +51,7 @@ class TranslateStringsController extends TranslateAppController {
 		$options = ['conditions' => ['translate_project_id' => $this->Translation->currentProjectId()]];
 		$translateDomains = $this->TranslateStrings->getRelatedInUse('TranslateDomains', 'translate_domain_id', 'list', $options);
 		$this->set(compact('translateStrings', 'translateDomains'));
-		$this->set('_serialize', ['translateStrings']);
+		//$this->set('_serialize', ['translateStrings']);
 	}
 
 	/**
@@ -67,7 +67,7 @@ class TranslateStringsController extends TranslateAppController {
 		]);
 
 		$this->set(compact('translateString'));
-		$this->set('_serialize', ['translateString']);
+		//$this->set('_serialize', ['translateString']);
 	}
 
 	/**
@@ -94,7 +94,7 @@ class TranslateStringsController extends TranslateAppController {
 		$translateDomains = $this->TranslateStrings->TranslateDomains->find('list', ['limit' => 200]);
 
 		$this->set(compact('translateString', 'translateDomains'));
-		$this->set('_serialize', ['translateString']);
+		//$this->set('_serialize', ['translateString']);
 	}
 
 	/**
@@ -130,7 +130,7 @@ class TranslateStringsController extends TranslateAppController {
 		$translateDomains = $this->TranslateStrings->TranslateDomains->find('list', ['limit' => 200]);
 
 		$this->set(compact('translateString', 'translateDomains'));
-		$this->set('_serialize', ['translateString']);
+		//$this->set('_serialize', ['translateString']);
 	}
 
 	/**

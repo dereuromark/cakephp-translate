@@ -3,6 +3,13 @@
  * @license http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
+use Cake\Core\Configure;
+use Cake\TestSuite\Fixture\SchemaLoader;
+use TestApp\Application;
+use TestApp\Controller\AppController;
+use TestApp\View\AppView;
+use Templating\View\Icon\FontAwesome5Icon;
+
 if (!defined('DS')) {
 	define('DS', DIRECTORY_SEPARATOR);
 }
@@ -38,7 +45,7 @@ require ROOT . DS . 'config' . DS . 'bootstrap.php';
 
 Cake\Core\Configure::write('App', [
 	'encoding' => 'UTF-8',
-	'namespace' => 'App',
+	'namespace' => 'TestApp',
 	'paths' => [
 		'templates' => [ROOT . DS . 'tests' . DS . 'test_app' . DS . 'templates' . DS],
 	],
@@ -71,6 +78,18 @@ $cache = [
 
 Cake\Cache\Cache::setConfig($cache);
 
+Configure::write('Icon', [
+	'sets' => [
+		'fas' => [
+			'class' => FontAwesome5Icon::class,
+		],
+	],
+]);
+
+class_alias(Application::class, 'App\Application');
+class_alias(AppController::class, 'App\Controller\AppController');
+class_alias(AppView::class, 'App\View\AppView');
+
 //Cake\Core\Plugin::getCollection()->add(new \Tools\Plugin());
 //Cake\Core\Plugin::getCollection()->add(new \Translate\Plugin());
 
@@ -78,25 +97,18 @@ Cake\Cache\Cache::setConfig($cache);
 //DispatcherFactory::add('ControllerFactory');
 
 // Ensure default test connection is defined
-if (!getenv('db_class')) {
-	putenv('db_class=Cake\Database\Driver\Sqlite');
-	putenv('db_dsn=sqlite::memory:');
+if (!getenv('DB_URL')) {
+	putenv('DB_URL=sqlite:///:memory:');
 }
 
 Cake\Datasource\ConnectionManager::setConfig('test', [
-	'className' => 'Cake\Database\Connection',
-	'driver' => getenv('db_class') ?: null,
-	'dsn' => getenv('db_dsn') ?: null,
+	'url' => getenv('DB_URL') ?: null,
 	'timezone' => 'UTC',
 	'quoteIdentifiers' => true,
 	'cacheMetadata' => true,
 ]);
 
-Cake\Datasource\ConnectionManager::setConfig('test_database_log', [
-	'className' => 'Cake\Database\Connection',
-	'driver' => getenv('db_class') ?: null,
-	'dsn' => getenv('db_dsn') ?: null,
-	'timezone' => 'UTC',
-	'quoteIdentifiers' => true,
-	'cacheMetadata' => true,
-]);
+if (env('FIXTURE_SCHEMA_METADATA')) {
+	$loader = new SchemaLoader();
+	$loader->loadInternalFile(env('FIXTURE_SCHEMA_METADATA'));
+}

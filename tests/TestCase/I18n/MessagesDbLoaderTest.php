@@ -2,10 +2,10 @@
 
 namespace Translate\Test\TestCase\I18n;
 
-use Cake\Filesystem\Folder;
 use Cake\I18n\I18n;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
+use Shim\Filesystem\Folder;
 use Translate\I18n\MessagesDbLoader;
 
 class MessagesDbLoaderTest extends TestCase {
@@ -13,7 +13,7 @@ class MessagesDbLoaderTest extends TestCase {
 	/**
 	 * @var array
 	 */
-	protected $fixtures = [
+	protected array $fixtures = [
 		'plugin.Translate.TranslateTerms',
 		'plugin.Translate.TranslateStrings',
 		'plugin.Translate.TranslateDomains',

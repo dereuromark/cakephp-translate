@@ -26,9 +26,9 @@ use Tools\Model\Table\Table;
 class TranslateDomainsTable extends Table {
 
 	/**
-	 * @var array<int|string, mixed>|string|null
+	 * @var array
 	 */
-	public $order = ['prio' => 'DESC'];
+	public array $order = ['prio' => 'DESC'];
 
 	/**
 	 * @var array<mixed>

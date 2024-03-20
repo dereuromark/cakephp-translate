@@ -58,18 +58,18 @@ use Cake\Core\Plugin;
 				<td>
 					<?php echo h($this->Text->truncate($translateString['name'])); ?>
 				</td>
-				<td><?= $this->Format->yesNo($translateString->active) ?></td>
 				<td><?= $this->Format->yesNo($translateString->is_html) ?></td>
+				<td><?= $this->Format->yesNo($translateString->active) ?></td>
 				<td><?= $this->Format->yesNo($translateString->plural, ['title' => $translateString->plural]) ?></td>
 				<td><?= $this->Format->yesNo($translateString->context, ['title' => $translateString->context]) ?></td>
 				<td><?= $this->Time->nice($translateString->last_import) ?></td>
 				<td><?= $this->Time->nice($translateString->created) ?></td>
 				<td><?= $this->Time->nice($translateString->modified) ?></td>
 				<td class="actions">
-				<?php echo $this->Html->link($this->Format->icon('translate'), ['action'=>'translate', $translateString['id']], ['escape'=>false]); ?>
-				<?= $this->Html->link($this->Format->icon('view'), ['action' => 'view', $translateString->id], ['escape' => false]); ?>
-				<?= $this->Html->link($this->Format->icon('edit'), ['action' => 'edit', $translateString->id], ['escape' => false]); ?>
-				<?= $this->Form->postLink($this->Format->icon('delete'), ['action' => 'delete', $translateString->id], ['escape' => false, 'confirm' => __d('translate', 'Are you sure you want to delete # {0}?', $translateString->id)]); ?>
+				<?php echo $this->Html->link($this->Icon->render('translate'), ['action'=>'translate', $translateString['id']], ['escape'=>false]); ?>
+				<?= $this->Html->link($this->Icon->render('view'), ['action' => 'view', $translateString->id], ['escape' => false]); ?>
+				<?= $this->Html->link($this->Icon->render('edit'), ['action' => 'edit', $translateString->id], ['escape' => false]); ?>
+				<?= $this->Form->postLink($this->Icon->render('delete'), ['action' => 'delete', $translateString->id], ['escape' => false, 'confirm' => __d('translate', 'Are you sure you want to delete # {0}?', $translateString->id)]); ?>
 				</td>
 			</tr>
 			<?php endforeach; ?>

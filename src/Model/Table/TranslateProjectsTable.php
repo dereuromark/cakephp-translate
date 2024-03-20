@@ -27,9 +27,9 @@ use Translate\Model\Entity\TranslateProject;
 class TranslateProjectsTable extends Table {
 
 	/**
-	 * @var array<int|string, mixed>|string|null
+	 * @var array
 	 */
-	public $order = ['status' => 'DESC', 'default' => 'DESC', 'name' => 'ASC'];
+	public array $order = ['status' => 'DESC', 'default' => 'DESC', 'name' => 'ASC'];
 
 	/**
 	 * @var array<mixed>

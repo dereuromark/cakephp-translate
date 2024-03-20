@@ -1,30 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit bootstrap="tests/bootstrap.php">
+<phpunit bootstrap="tests/bootstrap.php" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.2/phpunit.xsd">
 	<php>
 		<ini name="memory_limit" value="-1"/>
 		<ini name="apc.enable_cli" value="1"/>
 		<!-- E_ALL => 32767 -->
 		<!-- E_ALL & ~E_USER_DEPRECATED => 16383 -->
 		<ini name="error_reporting" value="16383"/>
+
+		<env name="FIXTURE_SCHEMA_METADATA" value="tests/schema.php"/>
 	</php>
+
+	<!-- Add any additional test suites you want to run here -->
 	<testsuites>
 		<testsuite name="translate">
-			<directory>tests/</directory>
+			<directory>tests/TestCase/</directory>
 		</testsuite>
 	</testsuites>
-		<listeners>
-		<listener class="Cake\TestSuite\Fixture\FixtureInjector">
-			<arguments>
-				<object class="Cake\TestSuite\Fixture\FixtureManager"/>
-			</arguments>
-		</listener>
-	</listeners>
-	<filter>
-		<whitelist>
+
+	<!-- Setup a listener for fixtures -->
+	<extensions>
+		<bootstrap class="Cake\TestSuite\Fixture\Extension\PHPUnitExtension"/>
+	</extensions>
+
+	<source>
+		<include>
 			<directory suffix=".php">src/</directory>
-			<exclude>
-				<directory suffix=".php">src/Translator/Engine/</directory>
-			</exclude>
-		</whitelist>
-	</filter>
+		</include>
+	</source>
+
 </phpunit>

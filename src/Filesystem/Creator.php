@@ -2,7 +2,7 @@
 
 namespace Translate\Filesystem;
 
-use Cake\Filesystem\Folder;
+use Shim\Filesystem\Folder;
 
 class Creator {
 

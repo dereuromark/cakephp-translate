@@ -2,8 +2,10 @@
 
 namespace Translate\Shell\Task;
 
+use Cake\Command\I18nExtractCommand;
+use Cake\Console\Arguments;
+use Cake\Console\ConsoleIo;
 use Cake\ORM\TableRegistry;
-use Cake\Shell\Task\ExtractTask as CoreExtractTask;
 use RuntimeException;
 
 /**
@@ -12,12 +14,7 @@ use RuntimeException;
  * Extract shell task extension for import into DB.
  * Do not use this file from I18n shell - it is used inside the business logic of Translate directly.
  */
-class ExtractTask extends CoreExtractTask {
-
-	/**
-	 * @var bool
-	 */
-	public $interactive = false;
+class ExtractTask extends I18nExtractCommand {
 
 	/**
 	 * @var \Translate\Model\Table\TranslateStringsTable
@@ -28,13 +25,6 @@ class ExtractTask extends CoreExtractTask {
 	 * @var int
 	 */
 	protected $_projectId;
-
-	/**
-	 * @return void
-	 */
-	public function main() {
-		parent::main();
-	}
 
 	/**
 	 * @param int $id
@@ -55,12 +45,13 @@ class ExtractTask extends CoreExtractTask {
 	}
 
 	/**
-	 * Extract text.
+	 * @param \Cake\Console\Arguments $args
+	 * @param \Cake\Console\ConsoleIo $io
 	 *
 	 * @return void
 	 */
-	protected function _extract() {
-		$this->_extractTokens();
+	protected function _extract(Arguments $args, ConsoleIo $io): void {
+		$this->_extractTokens($args, $io);
 		$this->_write();
 		$this->_paths = $this->_files = $this->_storage = [];
 		$this->_translations = $this->_tokens = [];

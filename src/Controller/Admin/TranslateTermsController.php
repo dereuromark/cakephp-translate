@@ -14,9 +14,9 @@ use Translate\Controller\TranslateAppController;
 class TranslateTermsController extends TranslateAppController {
 
 	/**
-	 * @var array
+	 * @var array<string, mixed>
 	 */
-	public $paginate = ['order' => ['TranslateTerms.modified' => 'DESC']];
+	protected array $paginate = ['order' => ['TranslateTerms.modified' => 'DESC']];
 
 	/**
 	 * @return void
@@ -45,7 +45,7 @@ class TranslateTermsController extends TranslateAppController {
 		$translateTerms = $this->paginate($query);
 
 		$this->set(compact('translateTerms'));
-		$this->set('_serialize', ['translateTerms']);
+		//$this->set('_serialize', ['translateTerms']);
 	}
 
 	/**
@@ -61,7 +61,7 @@ class TranslateTermsController extends TranslateAppController {
 		]);
 
 		$this->set(compact('translateTerm'));
-		$this->set('_serialize', ['translateTerm']);
+		//$this->set('_serialize', ['translateTerm']);
 	}
 
 	/**
@@ -89,7 +89,7 @@ class TranslateTermsController extends TranslateAppController {
 		$translateLanguages = $this->TranslateTerms->TranslateLanguages->find('list', ['limit' => 200]);
 
 		$this->set(compact('translateTerm', 'translateStrings', 'translateLanguages'));
-		$this->set('_serialize', ['translateTerm']);
+		//$this->set('_serialize', ['translateTerm']);
 	}
 
 	/**

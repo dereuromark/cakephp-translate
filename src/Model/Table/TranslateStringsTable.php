@@ -7,7 +7,7 @@ use Cake\Database\Schema\TableSchemaInterface;
 use Cake\Datasource\EntityInterface;
 use Cake\Event\EventInterface;
 use Cake\Http\Exception\InternalErrorException;
-use Cake\I18n\Time;
+use Cake\I18n\DateTime;
 use Cake\Log\Log;
 use Cake\ORM\Query;
 use Tools\Model\Table\Table;
@@ -37,12 +37,12 @@ use Translate\Translator\Translator;
 class TranslateStringsTable extends Table {
 
 	/**
-	 * @var array<int|string, mixed>|string|null
+	 * @var array
 	 */
-	public $order = ['name' => 'ASC'];
+	public array $order = ['name' => 'ASC'];
 
 	/**
-	 * @var \DateTime|null
+	 * @var \Cake\I18n\DateTime|null
 	 */
 	protected $lastImported;
 
@@ -274,7 +274,7 @@ class TranslateStringsTable extends Table {
 	 */
 	public function import(array $translation, $groupId) {
 		if (!isset($this->lastImported)) {
-			$this->lastImported = new Time();
+			$this->lastImported = new DateTime();
 		}
 
 		$translation += [

@@ -23,7 +23,7 @@ class TranslateApiTranslationsTableTest extends TestCase {
 	 *
 	 * @var array
 	 */
-	protected $fixtures = [
+	protected array $fixtures = [
 		'plugin.Translate.TranslateApiTranslations',
 	];
 
@@ -34,7 +34,7 @@ class TranslateApiTranslationsTableTest extends TestCase {
 	 */
 	public function setUp(): void {
 		parent::setUp();
-		$config = TableRegistry::exists('TranslateApiTranslations') ? [] : ['className' => 'Translate\Model\Table\TranslateApiTranslationsTable'];
+		$config = TableRegistry::getTableLocator()->exists('TranslateApiTranslations') ? [] : ['className' => 'Translate\Model\Table\TranslateApiTranslationsTable'];
 		$this->TranslateApiTranslations = TableRegistry::getTableLocator()->get('TranslateApiTranslations', $config);
 	}
 

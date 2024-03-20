@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Controller;
+namespace TestApp\Controller;
 
 use Shim\Controller\Controller;
+use Templating\TemplatingPlugin;
 
 class AppController extends Controller {
 
@@ -13,9 +14,12 @@ class AppController extends Controller {
 		parent::initialize();
 
 		$this->loadComponent('Flash');
-		$this->loadComponent('RequestHandler');
 
 		$this->viewBuilder()->setHelpers(['Tools.Format']);
+		if (class_exists(TemplatingPlugin::class)) {
+			$this->viewBuilder()->addHelper('Templating.Icon');
+			$this->viewBuilder()->addHelper('Templating.IconSnippet');
+		}
 	}
 
 }

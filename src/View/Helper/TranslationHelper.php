@@ -14,7 +14,7 @@ class TranslationHelper extends Helper {
 	/**
 	 * @var array
 	 */
-	public $helpers = ['Html'];
+	protected array $helpers = ['Html'];
 
 	/**
 	 * Flag icon

@@ -23,7 +23,7 @@ class TranslateStringsTableTest extends TestCase {
 	 *
 	 * @var array
 	 */
-	protected $fixtures = [
+	protected array $fixtures = [
 		'plugin.Translate.TranslateStrings',
 		'plugin.Translate.TranslateTerms',
 		'plugin.Translate.TranslateLanguages',
@@ -38,7 +38,7 @@ class TranslateStringsTableTest extends TestCase {
 	 */
 	public function setUp(): void {
 		parent::setUp();
-		$config = TableRegistry::exists('TranslateStrings') ? [] : ['className' => 'Translate\Model\Table\TranslateStringsTable'];
+		$config = TableRegistry::getTableLocator()->exists('TranslateStrings') ? [] : ['className' => 'Translate\Model\Table\TranslateStringsTable'];
 		$this->TranslateStrings = TableRegistry::getTableLocator()->get('TranslateStrings', $config);
 	}
 

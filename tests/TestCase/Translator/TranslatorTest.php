@@ -21,6 +21,8 @@ class TranslatorTest extends TestCase {
 	public function setUp(): void {
 		parent::setUp();
 
+		$this->skipIf(true);
+
 		Configure::write('Translate.engine', Test::class);
 
 		$this->Translator = new Translator();

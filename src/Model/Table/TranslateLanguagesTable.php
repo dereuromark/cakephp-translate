@@ -34,9 +34,9 @@ use Tools\Model\Table\Table;
 class TranslateLanguagesTable extends Table {
 
 	/**
-	 * @var array<int|string, mixed>|string|null
+	 * @var array
 	 */
-	public $order = ['name' => 'ASC'];
+	public array $order = ['name' => 'ASC'];
 
 	/**
 	 * @var array<mixed>

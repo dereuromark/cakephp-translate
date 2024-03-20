@@ -5,7 +5,7 @@ namespace Translate\Test\TestCase\Controller\Admin;
 use App\Translator\Engine\Test;
 use App\Translator\Engine\TestMore;
 use Cake\Core\Configure;
-use Cake\Filesystem\Folder;
+use Shim\Filesystem\Folder;
 use Shim\TestSuite\IntegrationTestCase;
 
 /**
@@ -20,7 +20,7 @@ class TranslateStringsControllerTest extends IntegrationTestCase {
 	 *
 	 * @var array
 	 */
-	protected $fixtures = [
+	protected array $fixtures = [
 		'plugin.Translate.TranslateStrings',
 		'plugin.Translate.TranslateDomains',
 		'plugin.Translate.TranslateLanguages',
@@ -167,6 +167,8 @@ Template/Account/foo.ctp:15', $translateString->references);
 	 * @return void
 	 */
 	public function testEdit() {
+		$this->disableErrorHandlerMiddleware();
+
 		$id = 1;
 		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateStrings', 'action' => 'edit', $id]);
 
@@ -180,6 +182,8 @@ Template/Account/foo.ctp:15', $translateString->references);
 	 * @return void
 	 */
 	public function testDelete() {
+		$this->disableErrorHandlerMiddleware();
+
 		$id = 1;
 		$this->post(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateStrings', 'action' => 'delete', $id]);
 

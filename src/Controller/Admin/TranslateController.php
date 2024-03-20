@@ -14,9 +14,9 @@ use Translate\Translator\Translator;
 class TranslateController extends TranslateAppController {
 
 	/**
-	 * @var string
+	 * @var string|null
 	 */
-	public $modelClass = 'Translate.TranslateDomains';
+	protected ?string $defaultTable = 'Translate.TranslateDomains';
 
 	/**
 	 * Initial page / overview
@@ -24,8 +24,8 @@ class TranslateController extends TranslateAppController {
 	 * @return void
 	 */
 	public function index() {
-		$this->loadModel('Translate.TranslateLanguages');
-		$languages = $this->TranslateLanguages->find('all')->toArray();
+		$translateLanguagesTable = $this->fetchTable('Translate.TranslateLanguages');
+		$languages = $translateLanguagesTable->find('all')->toArray();
 
 		$id = $this->request->getSession()->read('TranslateProject.id');
 		$count = $id ? $this->TranslateDomains->statistics($id, $languages) : 0;
@@ -99,7 +99,7 @@ class TranslateController extends TranslateAppController {
 		$translation = $translator->translate($text, $to, $from);
 
 		$this->set(compact('translation'));
-		$this->set('_serialize', true);
+		//$this->set('_serialize', true);
 	}
 
 	/**

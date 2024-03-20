@@ -15,9 +15,9 @@ use Translate\Filesystem\Creator;
 class TranslateLanguagesController extends TranslateAppController {
 
 	/**
-	 * @var array
+	 * @var array<string, mixed>
 	 */
-	public $paginate = ['order' => ['TranslateLanguages.name' => 'ASC']];
+	protected array $paginate = ['order' => ['TranslateLanguages.name' => 'ASC']];
 
 	/**
 	 * @return \Cake\Http\Response|null|void
@@ -107,10 +107,10 @@ class TranslateLanguagesController extends TranslateAppController {
 	 * @return \Cake\Http\Response|null|void
 	 */
 	public function index() {
-		$translateLanguages = $this->paginate()->toArray();
+		$translateLanguages = $this->paginate();
 
 		$this->set(compact('translateLanguages'));
-		$this->set('_serialize', ['translateLanguages']);
+		//$this->set('_serialize', ['translateLanguages']);
 	}
 
 	/**
@@ -126,7 +126,7 @@ class TranslateLanguagesController extends TranslateAppController {
 		]);
 
 		$this->set(compact('translateLanguage'));
-		$this->set('_serialize', ['translateLanguage']);
+		//$this->set('_serialize', ['translateLanguage']);
 	}
 
 	/**
@@ -151,7 +151,7 @@ class TranslateLanguagesController extends TranslateAppController {
 		}
 
 		$this->set(compact('translateLanguage'));
-		$this->set('_serialize', ['translateLanguage']);
+		//$this->set('_serialize', ['translateLanguage']);
 	}
 
 	/**
@@ -177,7 +177,7 @@ class TranslateLanguagesController extends TranslateAppController {
 		}
 
 		$this->set(compact('translateLanguage'));
-		$this->set('_serialize', ['translateLanguage']);
+		//$this->set('_serialize', ['translateLanguage']);
 	}
 
 	/**

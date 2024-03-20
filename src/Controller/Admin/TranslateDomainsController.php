@@ -14,9 +14,9 @@ use Translate\Controller\TranslateAppController;
 class TranslateDomainsController extends TranslateAppController {
 
 	/**
-	 * @var array
+	 * @var array<string, mixed>
 	 */
-	public $paginate = ['order' => ['TranslateDomains.modified' => 'DESC']];
+	protected array $paginate = ['order' => ['TranslateDomains.modified' => 'DESC']];
 
 	/**
 	 * Index method
@@ -27,10 +27,10 @@ class TranslateDomainsController extends TranslateAppController {
 		$this->paginate = [
 			'contain' => ['TranslateProjects'],
 		];
-		$translateDomains = $this->paginate()->toArray();
+		$translateDomains = $this->paginate();
 
 		$this->set(compact('translateDomains'));
-		$this->set('_serialize', ['translateDomains']);
+		//$this->set('_serialize', ['translateDomains']);
 	}
 
 	/**
@@ -46,7 +46,7 @@ class TranslateDomainsController extends TranslateAppController {
 		]);
 
 		$this->set(compact('translateDomain'));
-		$this->set('_serialize', ['translateDomain']);
+		//$this->set('_serialize', ['translateDomain']);
 	}
 
 	/**
@@ -100,7 +100,7 @@ class TranslateDomainsController extends TranslateAppController {
 		$translateStrings = $this->TranslateDomains->TranslateStrings->find('list', ['limit' => 200]);
 
 		$this->set(compact('translateDomain', 'translateProjects', 'translateStrings'));
-		$this->set('_serialize', ['translateDomain']);
+		//$this->set('_serialize', ['translateDomain']);
 	}
 
 	/**

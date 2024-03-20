@@ -41,9 +41,9 @@ use Cake\Core\Plugin;
 				<td><?= $this->Time->nice($translateProject->created) ?></td>
 				<td><?= $this->Time->nice($translateProject->modified) ?></td>
 				<td class="actions">
-				<?= $this->Html->link($this->Format->icon('view'), ['action' => 'view', $translateProject->id], ['escape' => false]); ?>
-				<?= $this->Html->link($this->Format->icon('edit'), ['action' => 'edit', $translateProject->id], ['escape' => false]); ?>
-				<?= $this->Form->postLink($this->Format->icon('delete'), ['action' => 'delete', $translateProject->id], ['escape' => false, 'confirm' => __d('translate', 'Are you sure you want to delete # {0}?', $translateProject->id)]); ?>
+				<?= $this->Html->link($this->Icon->render('view'), ['action' => 'view', $translateProject->id], ['escape' => false]); ?>
+				<?= $this->Html->link($this->Icon->render('edit'), ['action' => 'edit', $translateProject->id], ['escape' => false]); ?>
+				<?= $this->Form->postLink($this->Icon->render('delete'), ['action' => 'delete', $translateProject->id], ['escape' => false, 'confirm' => __d('translate', 'Are you sure you want to delete # {0}?', $translateProject->id)]); ?>
 				</td>
 			</tr>
 			<?php endforeach; ?>

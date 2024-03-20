@@ -35,9 +35,9 @@ use Cake\Core\Plugin;
 				<td><?= h($translateApiTranslation->engine) ?></td>
 				<td><?= $this->Time->nice($translateApiTranslation->created) ?></td>
 				<td class="actions">
-				<?= $this->Html->link($this->Format->icon('view'), ['action' => 'view', $translateApiTranslation->id], ['escape' => false]); ?>
-				<?= $this->Html->link($this->Format->icon('edit'), ['action' => 'edit', $translateApiTranslation->id], ['escape' => false]); ?>
-				<?= $this->Form->postLink($this->Format->icon('delete'), ['action' => 'delete', $translateApiTranslation->id], ['escape' => false, 'confirm' => __('Are you sure you want to delete # {0}?', $translateApiTranslation->id)]); ?>
+				<?= $this->Html->link($this->Icon->render('view'), ['action' => 'view', $translateApiTranslation->id], ['escape' => false]); ?>
+				<?= $this->Html->link($this->Icon->render('edit'), ['action' => 'edit', $translateApiTranslation->id], ['escape' => false]); ?>
+				<?= $this->Form->postLink($this->Icon->render('delete'), ['action' => 'delete', $translateApiTranslation->id], ['escape' => false, 'confirm' => __('Are you sure you want to delete # {0}?', $translateApiTranslation->id)]); ?>
 				</td>
 			</tr>
 			<?php endforeach; ?>

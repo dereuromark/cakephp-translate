@@ -14,7 +14,7 @@ class ExtractTaskTest extends TestCase {
 	/**
 	 * @var array
 	 */
-	protected $fixtures = [
+	protected array $fixtures = [
 		'plugin.Translate.TranslateStrings',
 		'plugin.Translate.TranslateDomains',
 		'plugin.Translate.TranslateProjects',
@@ -43,8 +43,6 @@ class ExtractTaskTest extends TestCase {
 		$io = new ConsoleIo($this->out, $this->err);
 
 		$this->Task = $this->getMockBuilder(ExtractTask::class)
-			->setMethods(['_stop'])
-			->setConstructorArgs([$io])
 			->getMock();
 	}
 

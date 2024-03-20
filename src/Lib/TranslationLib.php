@@ -2,9 +2,9 @@
 
 namespace Translate\Lib;
 
-use Cake\Filesystem\Folder;
 use Cake\I18n\Parser\PoFileParser;
 use Cake\Utility\Inflector;
+use Shim\Filesystem\Folder;
 use Translate\Parser\PoParser;
 
 class TranslationLib {

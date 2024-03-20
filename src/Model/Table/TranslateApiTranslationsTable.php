@@ -52,19 +52,19 @@ class TranslateApiTranslationsTable extends Table {
 	public function validationDefault(Validator $validator): Validator {
 		$validator
 			->add('id', 'valid', ['rule' => 'integer'])
-			->allowEmpty('id', 'create');
+			->allowEmptyString('id', 'create');
 
 		$validator
 			->requirePresence('key', 'create')
-			->notEmpty('key');
+			->notEmptyString('key');
 
 		$validator
 			->requirePresence('value', 'create');
-			//->notEmpty('value');
+			//->notEmptyString('value');
 
 		$validator
 			->requirePresence('engine', 'create')
-			->notEmpty('engine');
+			->notEmptyString('engine');
 
 		return $validator;
 	}

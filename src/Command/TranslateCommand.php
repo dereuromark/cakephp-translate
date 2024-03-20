@@ -1,19 +1,19 @@
 <?php
 
-namespace Translate\Shell;
+namespace Translate\Command;
 
 use Cake\Console\ConsoleOptionParser;
-use Cake\Console\Shell;
+use Shim\Command\Command;
 
 /**
  * @property \Translate\Model\Table\TranslateStringsTable $TranslateStrings
  */
-class TranslateShell extends Shell {
+class TranslateCommand extends Command {
 
 	/**
-	 * @var string
+	 * @var string|null
 	 */
-	public $modelClass = 'Translate.TranslateStrings';
+	protected ?string $defaultTable = 'Translate.TranslateStrings';
 
 	/**
 	 * Output some basic usage Info.
@@ -21,28 +21,28 @@ class TranslateShell extends Shell {
 	 * @return void
 	 */
 	public function help() {
-		$this->out('CakePHP Translate Plugin:');
-		$this->out('');
+		//$this->out('CakePHP Translate Plugin:');
+		//$this->out('');
 
-		$this->out('Run `bin/cake i18n extract` first to create POT files.');
-		$this->out('Import them then via `bin/cake translate import`.');
-		$this->out('When done translating, you can export them via `bin/cake translate export`.');
+		//$this->out('Run `bin/cake i18n extract` first to create POT files.');
+		//$this->out('Import them then via `bin/cake translate import`.');
+		//$this->out('When done translating, you can export them via `bin/cake translate export`.');
 
-		$this->hr();
+		//$this->hr();
 	}
 
 	/**
 	 * @return void
 	 */
 	public function import() {
-		$this->out('TODO - Done via controller right now.');
+		//$this->out('TODO - Done via controller right now.');
 	}
 
 	/**
 	 * @return void
 	 */
 	public function export() {
-		$this->out('TODO - Done via controller right now.');
+		//$this->out('TODO - Done via controller right now.');
 	}
 
 	/**
@@ -54,16 +54,14 @@ class TranslateShell extends Shell {
 		$consoleOptionParser = parent::getOptionParser();
 		$consoleOptionParser->setDescription('Tooling for translation management.');
 
+		/*
 		$consoleOptionParser->addSubcommand('import', [
 			'help' => 'Import from POT files.',
 		]);
 		$consoleOptionParser->addSubcommand('export', [
 			'help' => 'Export into PO files.',
 		]);
-
-		$consoleOptionParser->addSubcommand('help', [
-			'help' => 'Display some help.',
-		]);
+		*/
 
 		return $consoleOptionParser;
 	}

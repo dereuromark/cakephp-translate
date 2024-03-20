@@ -41,9 +41,9 @@ use Cake\Core\Plugin;
 				<td><?= h($translateLanguage->locale) ?></td>
 				<td><?= $this->Format->yesNo($translateLanguage->active) ?></td>
 				<td class="actions">
-				<?= $this->Html->link($this->Format->icon('view'), ['action' => 'view', $translateLanguage->id], ['escape' => false]); ?>
-				<?= $this->Html->link($this->Format->icon('edit'), ['action' => 'edit', $translateLanguage->id], ['escape' => false]); ?>
-				<?= $this->Form->postLink($this->Format->icon('delete'), ['action' => 'delete', $translateLanguage->id], ['escape' => false, 'confirm' => __d('translate', 'Are you sure you want to delete # {0}?', $translateLanguage->id)]); ?>
+				<?= $this->Html->link($this->Icon->render('view'), ['action' => 'view', $translateLanguage->id], ['escape' => false]); ?>
+				<?= $this->Html->link($this->Icon->render('edit'), ['action' => 'edit', $translateLanguage->id], ['escape' => false]); ?>
+				<?= $this->Form->postLink($this->Icon->render('delete'), ['action' => 'delete', $translateLanguage->id], ['escape' => false, 'confirm' => __d('translate', 'Are you sure you want to delete # {0}?', $translateLanguage->id)]); ?>
 				</td>
 			</tr>
 			<?php endforeach; ?>

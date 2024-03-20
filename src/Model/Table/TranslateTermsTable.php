@@ -31,9 +31,9 @@ use Tools\Model\Table\Table;
 class TranslateTermsTable extends Table {
 
 	/**
-	 * @var array<int|string, mixed>|string|null
+	 * @var array
 	 */
-	public $order = ['modified' => 'DESC'];
+	public array $order = ['modified' => 'DESC'];
 
 	/**
 	 * @var string

@@ -1,18 +1,21 @@
 <?php
 
-namespace Translate\Test\TestCase\Shell;
+namespace Translate\Test\TestCase\Command;
 
 use Cake\Console\ConsoleIo;
+use Cake\Console\TestSuite\ConsoleIntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use Shim\TestSuite\ConsoleOutput;
-use Translate\Shell\TranslateShell;
+use Translate\Command\TranslateCommand;
 
-class TranslateShellTest extends TestCase {
+class TranslateCommandTest extends TestCase {
+
+	use ConsoleIntegrationTestTrait;
 
 	/**
-	 * @var \Translate\Shell\TranslateShell|\PHPUnit\Framework\MockObject\MockObject
+	 * @var \Translate\Command\TranslateCommand|\PHPUnit\Framework\MockObject\MockObject
 	 */
-	public $Shell;
+	public $command;
 
 	/**
 	 * @var \Shim\TestSuite\ConsoleOutput
@@ -31,9 +34,7 @@ class TranslateShellTest extends TestCase {
 		$this->err = new ConsoleOutput();
 		$io = new ConsoleIo($this->out, $this->err);
 
-		$this->Shell = $this->getMockBuilder(TranslateShell::class)
-			->setMethods(['in', 'err', '_stop'])
-			->setConstructorArgs([$io])
+		$this->command = $this->getMockBuilder(TranslateCommand::class)
 			->getMock();
 	}
 
@@ -44,14 +45,14 @@ class TranslateShellTest extends TestCase {
 	 */
 	public function tearDown(): void {
 		parent::tearDown();
-		unset($this->Shell);
+		unset($this->command);
 	}
 
 	/**
 	 * @return void
 	 */
 	public function testHelp() {
-		$this->Shell->runCommand(['help']);
+		$this->command->executeCommand('help');
 		$output = $this->out->output();
 
 		$expected = 'Run `bin/cake i18n extract` first';

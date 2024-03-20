@@ -5,6 +5,7 @@ namespace Translate\Controller;
 use App\Controller\AppController;
 use Cake\Core\Configure;
 use Cake\Event\EventInterface;
+use Templating\TemplatingPlugin;
 
 # fix for internal routing (sticky plugin name in url)
 Configure::write('Plugin.name', 'Translate');
@@ -28,6 +29,10 @@ class TranslateAppController extends AppController {
 
 		$this->viewBuilder()->addHelper('Translate.Translation');
 		$this->viewBuilder()->addHelper('Tools.Format');
+		if (class_exists(TemplatingPlugin::class)) {
+			$this->viewBuilder()->addHelper('Templating.Icon');
+			$this->viewBuilder()->addHelper('Templating.IconSnippet');
+		}
 	}
 
 	/**

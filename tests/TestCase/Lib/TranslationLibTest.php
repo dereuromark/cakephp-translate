@@ -2,8 +2,8 @@
 
 namespace Translate\Test\TestCase\Lib;
 
-use Cake\Filesystem\Folder;
 use Cake\TestSuite\TestCase;
+use Shim\Filesystem\Folder;
 use Translate\Lib\TranslationLib;
 
 class TranslationLibTest extends TestCase {

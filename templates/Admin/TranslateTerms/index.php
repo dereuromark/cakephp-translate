@@ -58,7 +58,7 @@ use Cake\Core\Plugin;
 					<?= $translateTerm->has('translate_string') ? $this->Html->link($this->Text->truncate($translateTerm->translate_string->name), ['controller' => 'TranslateStrings', 'action' => 'view', $translateTerm->translate_string->id]) : '' ?>
 
 					<?php if ($translateTerm->comment) {
-						echo $this->Format->icon('comment', ['title' => $translateTerm->comment]);
+						echo $this->Icon->render('comment', ['title' => $translateTerm->comment]);
 					} ?>
 				</td>
 				<td>
@@ -73,9 +73,9 @@ use Cake\Core\Plugin;
 				<td><?= $this->Time->nice($translateTerm->created) ?></td>
 				<td><?= $this->Time->nice($translateTerm->modified) ?></td>
 				<td class="actions">
-				<?= $this->Html->link($this->Format->icon('view'), ['action' => 'view', $translateTerm->id], ['escape' => false]); ?>
-				<?= $this->Html->link($this->Format->icon('edit'), ['action' => 'edit', $translateTerm->id], ['escape' => false]); ?>
-				<?= $this->Form->postLink($this->Format->icon('delete'), ['action' => 'delete', $translateTerm->id], ['escape' => false, 'confirm' => __d('translate', 'Are you sure you want to delete # {0}?', $translateTerm->id)]); ?>
+				<?= $this->Html->link($this->Icon->render('view'), ['action' => 'view', $translateTerm->id], ['escape' => false]); ?>
+				<?= $this->Html->link($this->Icon->render('edit'), ['action' => 'edit', $translateTerm->id], ['escape' => false]); ?>
+				<?= $this->Form->postLink($this->Icon->render('delete'), ['action' => 'delete', $translateTerm->id], ['escape' => false, 'confirm' => __d('translate', 'Are you sure you want to delete # {0}?', $translateTerm->id)]); ?>
 				</td>
 			</tr>
 			<?php endforeach; ?>

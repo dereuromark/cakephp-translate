@@ -16,7 +16,7 @@ class TranslateTermsControllerTest extends IntegrationTestCase {
 	 *
 	 * @var array
 	 */
-	protected $fixtures = [
+	protected array $fixtures = [
 		'plugin.Translate.TranslateTerms',
 		'plugin.Translate.TranslateStrings',
 		'plugin.Translate.TranslateLanguages',
@@ -51,6 +51,8 @@ class TranslateTermsControllerTest extends IntegrationTestCase {
 	 * @return void
 	 */
 	public function testEdit() {
+		$this->disableErrorHandlerMiddleware();
+
 		$id = 1;
 		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateTerms', 'action' => 'edit', $id]);
 
@@ -64,6 +66,8 @@ class TranslateTermsControllerTest extends IntegrationTestCase {
 	 * @return void
 	 */
 	public function testDelete() {
+		$this->disableErrorHandlerMiddleware();
+
 		$id = 1;
 		$this->post(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateTerms', 'action' => 'delete', $id]);
 

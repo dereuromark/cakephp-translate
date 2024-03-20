@@ -16,7 +16,7 @@ class TranslateLanguagesControllerTest extends IntegrationTestCase {
 	 *
 	 * @var array
 	 */
-	protected $fixtures = [
+	protected array $fixtures = [
 		'plugin.Translate.TranslateLanguages',
 		'plugin.Translate.TranslateTerms',
 	];

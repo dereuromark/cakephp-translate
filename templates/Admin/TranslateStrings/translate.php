@@ -20,7 +20,7 @@
 <h3>String</h3>
 
 <div style="float: right">
-	<?= $this->Html->link($this->Format->icon('edit'), ['action' => 'edit', $translateString->id, '?' => ['translate_afterwards' => true]], ['escape' => false]); ?>
+	<?= $this->Html->link($this->Icon->render('edit'), ['action' => 'edit', $translateString->id, '?' => ['translate_afterwards' => true]], ['escape' => false]); ?>
 </div>
 <code>
 	 <?php echo h($translateString['name'])?>

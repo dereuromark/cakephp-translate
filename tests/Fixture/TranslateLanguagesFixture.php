@@ -34,7 +34,7 @@ class TranslateLanguagesFixture extends TestFixture {
 	 *
 	 * @var array
 	 */
-	public $records = [
+	public array $records = [
 		[
 			'id' => 1,
 			'translate_project_id' => 1,

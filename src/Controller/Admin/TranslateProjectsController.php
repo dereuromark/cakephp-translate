@@ -21,14 +21,14 @@ class TranslateProjectsController extends TranslateAppController {
 	 * @return \Cake\Http\Response|null|void
 	 */
 	public function index() {
-		$translateProjects = $this->paginate()->toArray();
+		$translateProjects = $this->paginate();
 
 		if (!$translateProjects) {
 		    return $this->redirect(['action' => 'add', '?' => ['name' => 'Default', 'default' => true, 'status' => TranslateProject::STATUS_HIDDEN]]);
 		}
 
 		$this->set(compact('translateProjects'));
-		$this->set('_serialize', ['translateProjects']);
+		//$this->set('_serialize', ['translateProjects']);
 	}
 
 	/**
@@ -44,7 +44,7 @@ class TranslateProjectsController extends TranslateAppController {
 		]);
 
 		$this->set(compact('translateProject'));
-		$this->set('_serialize', ['translateProject']);
+		//$this->set('_serialize', ['translateProject']);
 	}
 
 	/**
@@ -76,7 +76,7 @@ class TranslateProjectsController extends TranslateAppController {
 		}
 
 		$this->set(compact('translateProject'));
-		$this->set('_serialize', ['translateProject']);
+		//$this->set('_serialize', ['translateProject']);
 	}
 
 	/**
@@ -102,7 +102,7 @@ class TranslateProjectsController extends TranslateAppController {
 		}
 
 		$this->set(compact('translateProject'));
-		$this->set('_serialize', ['translateProject']);
+		//$this->set('_serialize', ['translateProject']);
 	}
 
 	/**
@@ -146,8 +146,8 @@ class TranslateProjectsController extends TranslateAppController {
 			'strings' => __d('translate', 'Translate Strings'),
 			'groups' => __d('translate', 'Translate Domains'),
 		];
-		$this->loadModel('Translate.TranslateLanguages');
-		$languages = $this->TranslateLanguages->find('list');
+		$translateLanguagesTable = $this->fetchTable('Translate.TranslateLanguages');
+		$languages = $translateLanguagesTable->find('list');
 		$id = $this->request->getSession()->read('TranslateProject.id');
 
 		if ($this->Common->isPosted()) {

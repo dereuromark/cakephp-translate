@@ -18,10 +18,10 @@ class TranslateApiTranslationsController extends AppController {
 	 * @return \Cake\Http\Response|null|void
 	 */
 	public function index() {
-		$translateApiTranslations = $this->paginate()->toArray();
+		$translateApiTranslations = $this->paginate();
 
 		$this->set(compact('translateApiTranslations'));
-		$this->set('_serialize', ['translateApiTranslations']);
+		//$this->set('_serialize', ['translateApiTranslations']);
 	}
 
 	/**
@@ -37,7 +37,7 @@ class TranslateApiTranslationsController extends AppController {
 		]);
 
 		$this->set(compact('translateApiTranslation'));
-		$this->set('_serialize', ['translateApiTranslation']);
+		//$this->set('_serialize', ['translateApiTranslation']);
 	}
 
 	/**
@@ -59,7 +59,7 @@ class TranslateApiTranslationsController extends AppController {
 		}
 
 		$this->set(compact('translateApiTranslation'));
-		$this->set('_serialize', ['translateApiTranslation']);
+		//$this->set('_serialize', ['translateApiTranslation']);
 	}
 
 	/**
@@ -85,7 +85,7 @@ class TranslateApiTranslationsController extends AppController {
 		}
 
 		$this->set(compact('translateApiTranslation'));
-		$this->set('_serialize', ['translateApiTranslation']);
+		//$this->set('_serialize', ['translateApiTranslation']);
 	}
 
 	/**

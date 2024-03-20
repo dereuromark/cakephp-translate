@@ -32,11 +32,11 @@ use Cake\Core\Plugin;
 			<?php foreach ($translateLanguages as $translateLanguage): ?>
 			<tr>
 				<td>
-<?php	if (!empty($translateLanguage->language['code'])) {
+				<?php if (!empty($translateLanguage->language['code'])) {
 					echo $this->Translation->flag($translateLanguage->language['code']);
-			} ?>
+				} ?>
 
-<?= $this->Number->format($translateLanguage->language_id) ?></td>
+				<?= h($translateLanguage->language_id) ?></td>
 				<td><?= h($translateLanguage->name) ?></td>
 				<td><?= h($translateLanguage->locale) ?></td>
 				<td><?= $this->element('Translate.yes_no', ['value' => $translateLanguage->active]) ?></td>

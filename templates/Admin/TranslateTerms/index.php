@@ -65,7 +65,7 @@ use Cake\Core\Plugin;
 					<?php echo $this->Text->truncate($translateTerm->content); ?>
 				</td>
 				<td><?= $translateTerm->has('translate_language') ? $this->Html->link($translateTerm->translate_language->name, ['controller' => 'TranslateLanguages', 'action' => 'view', $translateTerm->translate_language->id]) : '' ?></td>
-				<td><?= $this->Format->yesNo($translateTerm->confirmed) ?>
+				<td><?= $this->element('Translate.yes_no', ['value' => $translateTerm->confirmed]) ?>
 					<div>
 						<small><?= h($translateTerm->confirmed_by) ?></small>
 					</div>

@@ -35,8 +35,8 @@ use Cake\Core\Plugin;
 			<?php foreach ($translateDomains as $translateDomain): ?>
 			<tr>
 				<td><?= h($translateDomain->name) ?></td>
-				<td><?= $this->Format->yesNo($translateDomain->active) ?></td>
-				<td><?= $this->Format->yesNo((bool)$translateDomain->path) ?></td>
+				<td><?= $this->element('Translate.yes_no', ['value' => $translateDomain->active]) ?></td>
+				<td><?= $this->element('Translate.yes_no', ['value' => (bool)$translateDomain->path]) ?></td>
 				<td><?= $this->Time->nice($translateDomain->created) ?></td>
 				<td><?= $this->Time->nice($translateDomain->modified) ?></td>
 				<td class="actions">

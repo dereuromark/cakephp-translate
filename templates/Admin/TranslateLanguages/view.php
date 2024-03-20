@@ -34,7 +34,7 @@
 		</tr>
 		<tr>
 			<th><?= __d('translate', 'Active') ?></th>
-			<td><?= $this->Format->yesNo($translateLanguage->active) ?></td>
+			<td><?= $this->element('Translate.yes_no', ['value' => $translateLanguage->active]) ?></td>
 		</tr>
 	</table>
 

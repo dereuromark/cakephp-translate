@@ -39,7 +39,7 @@ use Cake\Core\Plugin;
 <?= $this->Number->format($translateLanguage->language_id) ?></td>
 				<td><?= h($translateLanguage->name) ?></td>
 				<td><?= h($translateLanguage->locale) ?></td>
-				<td><?= $this->Format->yesNo($translateLanguage->active) ?></td>
+				<td><?= $this->element('Translate.yes_no', ['value' => $translateLanguage->active]) ?></td>
 				<td class="actions">
 				<?= $this->Html->link($this->Icon->render('view'), ['action' => 'view', $translateLanguage->id], ['escape' => false]); ?>
 				<?= $this->Html->link($this->Icon->render('edit'), ['action' => 'edit', $translateLanguage->id], ['escape' => false]); ?>

@@ -28,7 +28,7 @@
 		</tr>
 		<tr>
 			<th><?= __d('translate', 'Default') ?></th>
-			<td><?= $this->Format->yesNo($translateProject->default) ?></td>
+			<td><?= $this->element('Translate.yes_no', ['value' => $translateProject->default]) ?></td>
 		</tr>
 		<tr>
 			<th><?= __d('translate', 'Status') ?></th>

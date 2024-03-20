@@ -36,7 +36,7 @@ use Cake\Core\Plugin;
 			<tr>
 				<td><?= h($translateProject->name) ?></td>
 				<td><?= $translateProject::types($translateProject->type) ?></td>
-				<td><?= $this->Format->yesNo($translateProject->default) ?></td>
+				<td><?= $this->element('Translate.yes_no', ['value' => $translateProject->default]) ?></td>
 				<td><?= $translateProject::statuses($translateProject->status) ?></td>
 				<td><?= $this->Time->nice($translateProject->created) ?></td>
 				<td><?= $this->Time->nice($translateProject->modified) ?></td>

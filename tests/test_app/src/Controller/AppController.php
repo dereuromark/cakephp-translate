@@ -15,7 +15,6 @@ class AppController extends Controller {
 
 		$this->loadComponent('Flash');
 
-		$this->viewBuilder()->setHelpers(['Tools.Format']);
 		if (class_exists(TemplatingPlugin::class)) {
 			$this->viewBuilder()->addHelper('Templating.Icon');
 			$this->viewBuilder()->addHelper('Templating.IconSnippet');

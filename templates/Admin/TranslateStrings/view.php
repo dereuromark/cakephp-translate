@@ -22,11 +22,11 @@
 		</tr>
 		<tr>
 			<th><?= __d('translate', 'Active') ?></th>
-			<td><?= $this->Format->yesNo($translateString->active) ?></td>
+			<td><?= $this->element('Translate.yes_no', ['value' => $translateString->active]) ?></td>
 		</tr>
 		<tr>
 			<th><?= __d('translate', 'Is Html') ?></th>
-			<td><?= $this->Format->yesNo($translateString->is_html) ?></td>
+			<td><?= $this->element('Translate.yes_no', ['value' => $translateString->is_html]) ?></td>
 		</tr>
 		<tr>
 			<th><?= __d('translate', 'Last Import') ?></th>

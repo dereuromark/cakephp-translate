@@ -58,10 +58,10 @@ use Cake\Core\Plugin;
 				<td>
 					<?php echo h($this->Text->truncate($translateString['name'])); ?>
 				</td>
-				<td><?= $this->Format->yesNo($translateString->is_html) ?></td>
-				<td><?= $this->Format->yesNo($translateString->active) ?></td>
-				<td><?= $this->Format->yesNo($translateString->plural, ['title' => $translateString->plural]) ?></td>
-				<td><?= $this->Format->yesNo($translateString->context, ['title' => $translateString->context]) ?></td>
+				<td><?= $this->element('Translate.yes_no', ['value' => $translateString->is_html]) ?></td>
+				<td><?= $this->element('Translate.yes_no', ['value' => $translateString->active]) ?></td>
+				<td><?= $this->element('Translate.yes_no', ['value' => $translateString->plural, 'title' => $translateString->plural]) ?></td>
+				<td><?= $this->element('Translate.yes_no', ['value' => $translateString->context, 'title' => $translateString->context]) ?></td>
 				<td><?= $this->Time->nice($translateString->last_import) ?></td>
 				<td><?= $this->Time->nice($translateString->created) ?></td>
 				<td><?= $this->Time->nice($translateString->modified) ?></td>

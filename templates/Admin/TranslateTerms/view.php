@@ -34,7 +34,7 @@
 		</tr>
 		<tr>
 			<th><?= __d('translate', 'Confirmed') ?></th>
-			<td><?= $this->Format->yesNo($translateTerm->confirmed) ?></td>
+			<td><?= $this->element('Translate.yes_no', ['value' => $translateTerm->confirmed]) ?></td>
 		</tr>
 		<tr>
 			<th><?= __d('translate', 'Confirmed By') ?></th>

@@ -26,7 +26,7 @@
 		</tr>
 		<tr>
 			<th><?= __d('translate', 'Active') ?></th>
-			<td><?= $this->Format->yesNo($translateDomain->active) ?></td>
+			<td><?= $this->element('Translate.yes_no', ['value' => $translateDomain->active]) ?></td>
 		</tr>
 		<tr>
 			<th><?= __d('translate', 'Path') ?></th>

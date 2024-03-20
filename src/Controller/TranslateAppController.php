@@ -28,7 +28,6 @@ class TranslateAppController extends AppController {
 		$this->loadComponent('Tools.Common');
 
 		$this->viewBuilder()->addHelper('Translate.Translation');
-		$this->viewBuilder()->addHelper('Tools.Format');
 		if (class_exists(TemplatingPlugin::class)) {
 			$this->viewBuilder()->addHelper('Templating.Icon');
 			$this->viewBuilder()->addHelper('Templating.IconSnippet');

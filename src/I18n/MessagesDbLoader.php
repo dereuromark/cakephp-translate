@@ -2,59 +2,68 @@
 
 namespace Translate\I18n;
 
-use Aura\Intl\Package;
+//use Aura\Intl\Package;
+use Cake\Datasource\RepositoryInterface;
 use Cake\Datasource\ResultSetInterface;
-use Cake\ORM\TableRegistry;
-use RuntimeException;
+use Cake\I18n\Package;
+use Cake\ORM\Locator\LocatorAwareTrait;
 
 /**
+ * DbMessages loader.
+ *
  * Returns translation messages stored in database.
  */
-class MessagesDbLoader {
+class MessagesDbLoader extends Package {
+
+	use LocatorAwareTrait;
 
 	/**
 	 * The domain name.
 	 *
 	 * @var string
 	 */
-	protected $_domain;
+	protected string $domain;
 
 	/**
 	 * The locale to load messages for.
 	 *
 	 * @var string
 	 */
-	protected $_locale;
+	protected string $locale;
 
 	/**
 	 * The model name to use for loading messages or model instance.
 	 *
-	 * @var \Translate\Model\Table\TranslateTermsTable|string
+	 * @var \Cake\Datasource\RepositoryInterface|string
 	 */
-	protected $_model = 'Translate.TranslateTerms';
+	protected string|RepositoryInterface $model;
 
 	/**
 	 * Formatting used for messages.
 	 *
 	 * @var string
 	 */
-	protected $_formatter;
+	protected string $formatter;
 
 	/**
 	 * Constructor.
 	 *
 	 * @param string $domain Domain name.
 	 * @param string $locale Locale string.
+	 * @param \Cake\Datasource\RepositoryInterface|string|null $model Model name or instance.
+	 *   Defaults to 'I18nMessages'.
 	 * @param string $formatter Formatter name. Defaults to 'default' (ICU formatter).
 	 */
 	public function __construct(
-		$domain,
-		$locale,
-		$formatter = 'default'
+		string $domain,
+		string $locale,
+		string|RepositoryInterface|null $model = null,
+		string $formatter = 'default',
 	) {
-		$this->_domain = $domain;
-		$this->_locale = $locale;
-		$this->_formatter = $formatter;
+		$this->domain = $domain;
+		$this->locale = $locale;
+		$this->model = $model ?: 'I18nMessages';
+		$this->formatter = $formatter;
 	}
 
 	/**
@@ -62,15 +71,19 @@ class MessagesDbLoader {
 	 * messages.
 	 *
 	 * @throws \RuntimeException If model could not be loaded.
-	 *
-	 * @return \Aura\Intl\Package
+	 * @return \Cake\I18n\Package
 	 */
-	public function __invoke() {
+	public function __invoke(): Package {
+		/** @var \Cake\ORM\Table $model */
 		$model = $this->_getModel();
 
-		$translateProject = $this->_model->TranslateLanguages->TranslateProjects->find()->where(['default' => true])->firstOrFail();
+		$translateProject = $model->get('TranslateLanguages')->get('TranslateProjects')
+			->find()
+			->where(['default' => true])
+			->firstOrFail();
 		$translateProjectId = $translateProject->id;
 
+		/** @var \Cake\ORM\Query\SelectQuery $query */
 		$query = $model->find();
 
 		// Get list of fields without primaryKey, domain, locale.
@@ -85,25 +98,35 @@ class MessagesDbLoader {
 		$query->contain(['TranslateStrings' => 'TranslateDomains', 'TranslateLanguages']);
 		$query->select(['TranslateStrings.name', 'TranslateStrings.plural', 'TranslateStrings.context']);
 
+		// Get list of fields without primaryKey, domain, locale.
+		$fields = $model->getSchema()->columns();
+		$fields = array_flip(array_diff(
+			$fields,
+			$model->getSchema()->getPrimaryKey(),
+		));
+		unset($fields['domain'], $fields['locale']);
+		$query->select(array_flip($fields));
+
 		$results = $query
 			->where(['TranslateDomains.translate_project_id' => $translateProjectId])
 			->where(['TranslateLanguages.translate_project_id' => $translateProjectId])
-			->where(['TranslateDomains.name' => $this->_domain, 'TranslateLanguages.locale' => $this->_locale])
+			->where(['TranslateDomains.name' => $this->domain, 'TranslateLanguages.locale' => $this->locale])
 			->where(['TranslateStrings.active' => true])
 			->enableHydration(false)
+			->where(['domain' => $this->domain, 'locale' => $this->locale])
+			->disableHydration()
 			->all();
 
-		return new Package($this->_formatter, null, $this->_messages($results));
+		return new Package($this->formatter, null, $this->_messages($results));
 	}
 
 	/**
 	 * Converts DB resultset to messages array.
 	 *
 	 * @param \Cake\Datasource\ResultSetInterface $results ResultSet instance.
-	 *
 	 * @return array
 	 */
-	protected function _messages(ResultSetInterface $results) {
+	protected function _messages(ResultSetInterface $results): array {
 		if (!$results->count()) {
 			return [];
 		}
@@ -154,24 +177,18 @@ class MessagesDbLoader {
 	}
 
 	/**
-	 * @throws \RuntimeException
+	 * Get model instance
 	 *
-	 * @return \Translate\Model\Table\TranslateTermsTable
+	 * @return \Cake\Datasource\RepositoryInterface
 	 */
-	protected function _getModel() {
-		$model = $this->_model;
-		if (is_string($model)) {
+	protected function _getModel(): RepositoryInterface {
+		if (is_string($this->model)) {
 			/** @var \Translate\Model\Table\TranslateTermsTable|null $model */
-			$model = TableRegistry::getTableLocator()->get($this->_model);
-			if (!$model) {
-				throw new RuntimeException(
-					sprintf('Unable to load model "%s".', $this->_model),
-				);
-			}
-			$this->_model = $model;
+			$model = $this->getTableLocator()->get($this->model);
+			$this->model = $model;
 		}
 
-		return $model;
+		return $this->model;
 	}
 
 }

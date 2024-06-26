@@ -9,7 +9,7 @@ use Cake\Event\EventInterface;
 use Cake\Http\Exception\InternalErrorException;
 use Cake\I18n\DateTime;
 use Cake\Log\Log;
-use Cake\ORM\Query;
+use Cake\ORM\Query\SelectQuery;
 use Tools\Model\Table\Table;
 use Translate\Translator\Translator;
 
@@ -127,7 +127,7 @@ class TranslateStringsTable extends Table {
 	 * @param \ArrayObject $options the options passed to the save method
 	 * @return void
 	 */
-	public function beforeSave(EventInterface $event, EntityInterface $entity, ArrayObject $options) {
+	public function beforeSave(EventInterface $event, EntityInterface $entity, ArrayObject $options): void {
 		$user = $event->getData('_footprint');
 		if ($user) {
 			$entity->user_id = $user['id'];
@@ -143,7 +143,7 @@ class TranslateStringsTable extends Table {
 			->value('translate_domain_id', [
 			])
 			->callback('missing_translation', [
-				'callback' => function (Query $query, array $args, $filter) {
+				'callback' => function (SelectQuery $query, array $args, $filter) {
 					if (empty($args['missing_translation'])) {
 						return false;
 					}

@@ -32,7 +32,7 @@ The live server would then pull those new translations right on deployment.
 ## Important database config
 Use `'quoteIdentifiers' => true` for your Datasources config.
 
-The TranslateStrings DB fields `context` and `name` must be case sensitive, all other fields should not be.
+The TranslateStrings DB fields `context` and `name` must be case-sensitive, all other fields should not be.
 This is important when dealing with the same string in different casings, as otherwise one of those would be translated, all others would (silently) not.
 
 When using MySQL that means those two should be `utf8_bin`, whereas the rest should become `utf8mb4_unicode_ci` as per migration file and the right table collation defaults.
@@ -40,7 +40,7 @@ When using MySQL that means those two should be `utf8_bin`, whereas the rest sho
 When using Postgres, make sure the CI extension is installed (as here everything is by default case sensitive) and make all non CS fields CI with it.
 
 ## Configuration
-Adjust your app.php and add Translate configuration: 
+Adjust your app.php and add Translate configuration:
 ```php
 'Translate' => [
     'noComments' => true, // Do not output references, tags, ... into PO files
@@ -61,7 +61,7 @@ Add `plural_3` up to `plural_6` if needed to the "translation_terms".
 Use the ExtractTask of this plugin in your business logic.
 
 ## Directly read translations from the DB.
-Configure I18n to use the Translate MessagesDbLoader for default domain: 
+Configure I18n to use the Translate MessagesDbLoader for default domain:
 
 ```php
 I18n::config('default', function ($domain, $locale) {
@@ -78,14 +78,14 @@ If you have more than just default domain, you will need to do this for each dom
 By default it uses a simple Google API translation.
 This has a few limitations, however.
 
-You can use any [other translation service](https://www.programmableweb.com/news/63-translation-apis-bing-google-translate-and-google-ajax-language/2013/01/15) by just switching out the `'engine'` config. 
+You can use any [other translation service](https://www.programmableweb.com/news/63-translation-apis-bing-google-translate-and-google-ajax-language/2013/01/15) by just switching out the `'engine'` config.
 Provide a class name to an engine that extends the `Translate\Translator\EngineInterface`.
 
 You can provide an array if you want to leverage multiple engines at once.
 For auto-translating it would take the first engine result it finds, for suggest it will ask all engines for a suggestion and provide all results in the view to pick.
 
-All API translations will be internally cached, so a 2nd lookup for the same translation will always read from this cache table. 
-This saves a lot expensive API calls (many translations services charge per lookup). 
+All API translations will be internally cached, so a 2nd lookup for the same translation will always read from this cache table.
+This saves a lot expensive API calls (many translations services charge per lookup).
 
 See [Translator Engines](TranslatorEngines.md) for plugin implemented ones to chose from.
 

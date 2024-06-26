@@ -1,6 +1,6 @@
 <?php
 
-namespace Translate\Test\TestCase\Transltr;
+namespace Translate\Test\TestCase\Translator\Engine;
 
 use Cake\Core\Configure;
 use Cake\TestSuite\TestCase;

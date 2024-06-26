@@ -2,6 +2,7 @@
 
 namespace Translate\Controller\Admin;
 
+use Cake\View\JsonView;
 use Translate\Controller\TranslateAppController;
 use Translate\Lib\ConvertLib;
 use Translate\Translator\Translator;
@@ -17,6 +18,16 @@ class TranslateController extends TranslateAppController {
 	 * @var string|null
 	 */
 	protected ?string $defaultTable = 'Translate.TranslateDomains';
+
+	/**
+	 * Get alternate view classes that can be used in
+	 * content-type negotiation.
+	 *
+	 * @return list<string>
+	 */
+	public function viewClasses(): array {
+		return [JsonView::class];
+	}
 
 	/**
 	 * Initial page / overview
@@ -99,7 +110,8 @@ class TranslateController extends TranslateAppController {
 		$translation = $translator->translate($text, $to, $from);
 
 		$this->set(compact('translation'));
-		//$this->set('_serialize', true);
+		$serialize = true;
+		$this->viewBuilder()->setOptions(compact('serialize'));
 	}
 
 	/**

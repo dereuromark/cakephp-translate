@@ -179,7 +179,7 @@ class TranslateTermsTable extends Table {
 	 * @param \ArrayObject $options the options passed to the save method
 	 * @return void
 	 */
-	public function beforeSave(EventInterface $event, EntityInterface $entity, ArrayObject $options) {
+	public function beforeSave(EventInterface $event, EntityInterface $entity, ArrayObject $options): void {
 		$user = $event->getData('_footprint');
 		if ($user) {
 			$entity->user_id = $user['id'];

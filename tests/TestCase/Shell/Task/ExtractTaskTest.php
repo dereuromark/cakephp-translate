@@ -1,6 +1,6 @@
 <?php
 
-namespace Translate\Test\TestCase\Shell;
+namespace Translate\Test\TestCase\Shell\Task;
 
 use Cake\Console\ConsoleIo;
 use Cake\Core\Plugin;

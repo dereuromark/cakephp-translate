@@ -2,10 +2,10 @@
 
 namespace Translate\Test\TestCase\Translator;
 
-use App\Translator\Engine\Test;
-use App\Translator\Engine\TestMore;
 use Cake\Core\Configure;
 use Cake\TestSuite\TestCase;
+use TestApp\Translator\Engine\Test;
+use TestApp\Translator\Engine\TestMore;
 use Translate\Translator\Translator;
 
 class TranslatorTest extends TestCase {

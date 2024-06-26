@@ -135,7 +135,7 @@ class TranslateLanguagesTable extends Table {
 	 * @param \ArrayObject $options
 	 * @return void
 	 */
-	public function beforeMarshal(EventInterface $event, ArrayObject $data, ArrayObject $options) {
+	public function beforeMarshal(EventInterface $event, ArrayObject $data, ArrayObject $options): void {
 		if (isset($data['iso2'])) {
 			$data['iso2'] = strtolower($data['iso2']);
 		}

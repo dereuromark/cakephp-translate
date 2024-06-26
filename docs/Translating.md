@@ -11,7 +11,7 @@ You can start translating.
 
 
 ## Validation
-By default the translate view validates the input, e.g. matching placeholders.
+By default, the translate view validates the input, e.g. matching placeholders.
 If you do not want that in certain cases, deactive it via checkbox.
 
 

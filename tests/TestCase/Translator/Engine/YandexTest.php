@@ -1,6 +1,6 @@
 <?php
 
-namespace Translate\Test\TestCase\Yandex;
+namespace Translate\Test\TestCase\Translator\Engine;
 
 use Cake\Core\Configure;
 use Cake\TestSuite\TestCase;

@@ -2,11 +2,11 @@
 
 namespace Translate\Test\TestCase\Controller\Admin;
 
-use App\Translator\Engine\Test;
 use Cake\Core\Configure;
 use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
 use Shim\TestSuite\IntegrationTestCase;
+use TestApp\Translator\Engine\Test;
 
 /**
  * @uses \Translate\Controller\Admin\TranslateController
@@ -79,6 +79,8 @@ class TranslateControllerTest extends IntegrationTestCase {
 	 * @return void
 	 */
 	public function testTranslate() {
+		$this->disableErrorHandlerMiddleware();
+
 		Router::extensions(['json']);
 		Configure::write('Translate.engine', Test::class);
 

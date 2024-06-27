@@ -69,12 +69,12 @@ class TranslationLib {
 	}
 
 	/**
-	 * @param string $lang
+	 * @param string $locale
 	 *
 	 * @return array
 	 */
-	public function getPoFiles($lang) {
-		$folder = new Folder(LOCALE . $lang . DS);
+	public function getPoFiles($locale) {
+		$folder = new Folder(LOCALE . $locale . DS);
 		$files = $folder->read(true, true);
 
 		$poFiles = [];
@@ -83,7 +83,7 @@ class TranslationLib {
 				if (pathinfo($file, PATHINFO_EXTENSION) !== 'po') {
 					continue;
 				}
-				$poFiles[$lang . '_' . pathinfo($file, PATHINFO_FILENAME)] = pathinfo($file, PATHINFO_FILENAME);
+				$poFiles[$locale . '-' . pathinfo($file, PATHINFO_FILENAME)] = pathinfo($file, PATHINFO_FILENAME);
 			}
 		}
 

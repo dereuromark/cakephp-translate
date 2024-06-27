@@ -17,8 +17,8 @@
 	<h2><?= h($translateLanguage->name) ?></h2>
 	<table class="table vertical-table">
 		<tr>
-			<th><?= __d('translate', 'Language Id') ?></th>
-			<td><?= $this->Number->format($translateLanguage->language_id) ?></td>
+			<th><?= __d('translate', 'Language Relation') ?></th>
+			<td><?= $translateLanguage->language_id ? h($translateLanguage->language->name) : '-' ?></td>
 		</tr>
 		<tr>
 			<th><?= __d('translate', 'Name') ?></th>

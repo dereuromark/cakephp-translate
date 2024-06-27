@@ -41,13 +41,15 @@ class TranslateStringsController extends TranslateAppController {
 	 * @return \Cake\Http\Response|null|void
 	 */
 	public function index() {
-		$query = $this->TranslateStrings->find('search', ['search' => $this->request->getQuery()]);
+		$query = $this->TranslateStrings->find('search', ...['search' => $this->request->getQuery()]);
+		$query->contain([
+			'TranslateDomains',
+		]);
 		$translateStrings = $this->paginate($query);
 
 		$options = ['conditions' => ['translate_project_id' => $this->Translation->currentProjectId()]];
 		$translateDomains = $this->TranslateStrings->getRelatedInUse('TranslateDomains', 'translate_domain_id', 'list', $options);
 		$this->set(compact('translateStrings', 'translateDomains'));
-		//$this->set('_serialize', ['translateStrings']);
 	}
 
 	/**
@@ -87,7 +89,7 @@ class TranslateStringsController extends TranslateAppController {
 
 			$this->Flash->error(__d('translate', 'The translate string could not be saved. Please, try again.'));
 		}
-		$translateDomains = $this->TranslateStrings->TranslateDomains->find('list', ['limit' => 200]);
+		$translateDomains = $this->TranslateStrings->TranslateDomains->find('list');
 
 		$this->set(compact('translateString', 'translateDomains'));
 		//$this->set('_serialize', ['translateString']);
@@ -123,7 +125,7 @@ class TranslateStringsController extends TranslateAppController {
 			}
 		}
 
-		$translateDomains = $this->TranslateStrings->TranslateDomains->find('list', ['limit' => 200]);
+		$translateDomains = $this->TranslateStrings->TranslateDomains->find('list');
 
 		$this->set(compact('translateString', 'translateDomains'));
 		//$this->set('_serialize', ['translateString']);
@@ -197,19 +199,20 @@ class TranslateStringsController extends TranslateAppController {
 				}
 			}
 
-			foreach ((array)$this->request->getData('sel_po') as $key => $domain) {
+			foreach ((array)$this->request->getData('sel_po') as $key => $name) {
+				[$locale, $domain] = explode('-', $name, 2);
 				if (!$domain) {
 					continue;
 				}
-				[$lang, $domain] = explode('_', $domain, 2);
-				if (!isset($poFiles[$lang][$lang . '_' . $domain])) {
+				if (!isset($poFiles[$locale][$locale . '-' . $domain])) {
 					continue;
 				}
+				$separatorPos = strpos($locale, '_');
+				$lang = $separatorPos ? substr($locale, 0, $separatorPos) : $locale;
 				if (!isset($translateLanguages[$lang])) {
 					continue;
 				}
-
-				$translations = $translationLib->extractPoFile($domain, $lang);
+				$translations = $translationLib->extractPoFile($domain, $locale);
 
 				$translationDomain = $this->TranslateStrings->TranslateDomains->getDomain($this->Translation->currentProjectId(), $domain);
 
@@ -245,8 +248,8 @@ class TranslateStringsController extends TranslateAppController {
 			$this->request = $this->request->withData('sel_pot', $selPot);
 
 			$selPo = [];
-			foreach ($poFiles as $lang => $val) {
-				if (!isset($translateLanguages[$lang])) {
+			foreach ($poFiles as $locale => $val) {
+				if (!isset($translateLanguages[$locale])) {
 					continue;
 				}
 				foreach ($val as $k => $v) {

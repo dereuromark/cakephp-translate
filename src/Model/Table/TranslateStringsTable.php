@@ -97,10 +97,10 @@ class TranslateStringsTable extends Table {
 	];
 
 	/**
-	 * @param \Cake\Database\Schema\TableSchemaInterface $schema
 	 * @return \Cake\Database\Schema\TableSchemaInterface
 	 */
-	protected function _initializeSchema(TableSchemaInterface $schema): TableSchemaInterface {
+	public function getSchema(): TableSchemaInterface {
+		$schema = parent::getSchema();
 		$schema->setColumnType('flags', 'json');
 
 		return $schema;
@@ -151,12 +151,12 @@ class TranslateStringsTable extends Table {
 					$query->leftJoinWith('TranslateTerms')
 						->where(['TranslateTerms.content IS' => null]);
 
-					return $query;
+					return true;
 				},
-				'filterEmpty' => 0,
+				'filterEmpty' => true,
 			])
 			->like('search', [
-				'fields' => [$this->aliasField('name'), 'plural', 'context'],
+				'fields' => [$this->aliasField('name'), $this->aliasField('plural'), $this->aliasField('context')],
 			]);
 
 		return $searchManager;

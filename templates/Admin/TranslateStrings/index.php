@@ -33,6 +33,8 @@ use Cake\Core\Plugin;
 			echo ' ' . $this->Html->link(__d('translate', 'Reset'), ['action' => 'index'], ['class' => 'btn btn-default']);
 		}
 		?>
+
+		<p><small>Please note that name/context are case sensitive by default!</small></p>
 	</div>
 	<?php
 	echo $this->Form->end();
@@ -56,6 +58,8 @@ use Cake\Core\Plugin;
 			<?php foreach ($translateStrings as $translateString): ?>
 			<tr>
 				<td>
+					<span class="badge badge-primary bg-dark"><?php echo h($translateString->translate_domain->name); ?></span>
+
 					<?php echo h($this->Text->truncate($translateString['name'])); ?>
 				</td>
 				<td><?= $this->element('Translate.yes_no', ['value' => $translateString->is_html]) ?></td>

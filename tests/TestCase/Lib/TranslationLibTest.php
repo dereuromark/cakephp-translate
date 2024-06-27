@@ -59,8 +59,8 @@ class TranslationLibTest extends TestCase {
 
 		$this->assertTrue(!empty($is));
 		$expected = [
-			'de_cake' => 'cake',
-			'de_default' => 'default',
+			'de-cake' => 'cake',
+			'de-default' => 'default',
 		];
 		$this->assertSame($expected, $is);
 	}

@@ -95,8 +95,8 @@ class TranslateDomainsController extends TranslateAppController {
 
 			$this->Flash->error(__d('translate', 'The translate domain could not be saved. Please, try again.'));
 		}
-		$translateProjects = $this->TranslateDomains->TranslateProjects->find('list', ['limit' => 200]);
-		$translateStrings = $this->TranslateDomains->TranslateStrings->find('list', ['limit' => 200]);
+		$translateProjects = $this->TranslateDomains->TranslateProjects->find('list');
+		$translateStrings = $this->TranslateDomains->TranslateStrings->find('list');
 
 		$this->set(compact('translateDomain', 'translateProjects', 'translateStrings'));
 		//$this->set('_serialize', ['translateDomain']);

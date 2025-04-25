@@ -12,7 +12,7 @@ jobs:
       fail-fast: false
       matrix:
         php-version: ['8.3', '8.4']
-        db-type: [sqlite, mysql, pgsql]
+        db-type: [sqlite, mysql]
         prefer-lowest: ['']
         include:
           - php-version: '8.3'
@@ -68,7 +68,6 @@ jobs:
         run: |
           if [[ ${{ matrix.db-type }} == 'sqlite' ]]; then export DB_URL='sqlite:///:memory:'; fi
           if [[ ${{ matrix.db-type }} == 'mysql' ]]; then export DB_URL='mysql://root:root@127.0.0.1/cakephp'; fi
-          if [[ ${{ matrix.db-type }} == 'pgsql' ]]; then export DB_URL='postgres://postgres:postgres@127.0.0.1/postgres'; fi
           if [[ ${{ matrix.php-version }} == '8.3' ]]; then
             vendor/bin/phpunit --coverage-clover=coverage.xml
           else

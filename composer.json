@@ -20,7 +20,7 @@
 		"source": "https://github.com/dereuromark/cakephp-translate"
 	},
 	"require": {
-		"php": ">=8.1",
+		"php": ">=8.3",
 		"cakephp/cakephp": "^5.0.0",
 		"dereuromark/cakephp-tools": "^3.0",
 		"friendsofcake/search": "^7.0"
@@ -31,7 +31,7 @@
 		"dereuromark/cakephp-templating": "dev-master",
 		"dereuromark/cakephp-queue": "^8.0",
 		"fig-r/psr2r-sniffer": "dev-master",
-		"phpunit/phpunit": "^10.5",
+		"phpunit/phpunit": "^12.1",
 		"sepia/po-parser": "^6.0.1",
 		"yandex/translate-api": "dev-master"
 	},

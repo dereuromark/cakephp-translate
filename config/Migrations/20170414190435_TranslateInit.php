@@ -40,6 +40,7 @@ class TranslateInit extends AbstractMigration {
 				'limit' => null,
 				'null' => true,
 			])
+			->addIndex(['name'], ['unique' => true])
 			->create();
 
 		$table = $this->table('translate_languages');
@@ -48,11 +49,13 @@ class TranslateInit extends AbstractMigration {
 				'default' => null,
 				'limit' => 10,
 				'null' => false,
+				'signed' => false,
 			])
 			->addColumn('language_id', 'integer', [
 				'default' => null,
 				'limit' => 10,
-				'null' => true,
+				'null' => false,
+				'signed' => false,
 			])
 			->addColumn('name', 'string', [
 				'default' => null,
@@ -84,6 +87,13 @@ class TranslateInit extends AbstractMigration {
 				'limit' => null,
 				'null' => false,
 			])
+			->addIndex(['translate_project_id', 'iso2'], ['unique' => true])
+			->addIndex(['translate_project_id'])
+			->addIndex(['iso2'])
+			->addForeignKey('translate_project_id', 'translate_projects', 'id', [
+				'delete' => 'CASCADE',
+				'update' => 'NO_ACTION',
+			])
 			->create();
 
 		$table = $this->table('translate_domains');
@@ -97,6 +107,7 @@ class TranslateInit extends AbstractMigration {
 				'default' => null,
 				'limit' => 10,
 				'null' => false,
+				'signed' => false,
 			])
 			->addColumn('active', 'boolean', [
 				'default' => 0,
@@ -122,6 +133,12 @@ class TranslateInit extends AbstractMigration {
 				'default' => null,
 				'limit' => null,
 				'null' => true,
+			])
+			->addIndex(['translate_project_id', 'name'], ['unique' => true])
+			->addIndex(['translate_project_id'])
+			->addForeignKey('translate_project_id', 'translate_projects', 'id', [
+				'delete' => 'CASCADE',
+				'update' => 'NO_ACTION',
 			])
 			->create();
 
@@ -164,11 +181,13 @@ class TranslateInit extends AbstractMigration {
 				'default' => null,
 				'limit' => 10,
 				'null' => false,
+				'signed' => false,
 			])
 			->addColumn('user_id', 'integer', [
 				'default' => null,
 				'limit' => 10,
 				'null' => true,
+				'signed' => false,
 			])
 			->addColumn('active', 'boolean', [
 				'default' => 0,
@@ -195,6 +214,12 @@ class TranslateInit extends AbstractMigration {
 				'limit' => null,
 				'null' => true,
 			])
+			->addIndex(['translate_domain_id'])
+			//->addIndex(['context'])
+			->addForeignKey('translate_domain_id', 'translate_domains', 'id', [
+				'delete' => 'CASCADE',
+				'update' => 'NO_ACTION',
+			])
 			->create();
 
 		$table = $this->table('translate_terms');
@@ -203,6 +228,7 @@ class TranslateInit extends AbstractMigration {
 				'default' => null,
 				'limit' => 10,
 				'null' => false,
+				'signed' => false,
 			])
 			->addColumn('content', 'text', [
 				'default' => null,
@@ -223,11 +249,13 @@ class TranslateInit extends AbstractMigration {
 				'default' => null,
 				'limit' => 10,
 				'null' => false,
+				'signed' => false,
 			])
 			->addColumn('user_id', 'integer', [
 				'default' => null,
 				'limit' => 10,
 				'null' => true,
+				'signed' => false,
 			])
 			->addColumn('confirmed', 'boolean', [
 				'default' => 0,
@@ -238,6 +266,7 @@ class TranslateInit extends AbstractMigration {
 				'default' => null,
 				'limit' => 10,
 				'null' => true,
+				'signed' => false,
 			])
 			->addColumn('created', 'datetime', [
 				'default' => null,
@@ -248,6 +277,15 @@ class TranslateInit extends AbstractMigration {
 				'default' => null,
 				'limit' => null,
 				'null' => true,
+			])
+			->addIndex(['translate_string_id', 'translate_language_id'], ['unique' => true])
+			->addForeignKey('translate_string_id', 'translate_strings', 'id', [
+				'delete' => 'CASCADE',
+				'update' => 'NO_ACTION',
+			])
+			->addForeignKey('translate_language_id', 'translate_languages', 'id', [
+				'delete' => 'CASCADE',
+				'update' => 'NO_ACTION',
 			])
 			->create();
 

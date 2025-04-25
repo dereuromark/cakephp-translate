@@ -122,7 +122,7 @@ class TranslateTermsTable extends Table {
 		preg_match_all('/\{\d\}/', $context['data']['string'], $expectedMatches);
 
 		preg_match_all('/\{\d\}/', $text, $matches);
-		if (!$expectedMatches && !$matches) {
+		if (!$expectedMatches[0] && !$matches[0]) {
 			return true;
 		}
 

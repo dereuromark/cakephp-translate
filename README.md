@@ -22,7 +22,7 @@ WARNING: Not fully upgraded yet, help needed!
 
 ## Benefits over normal PO editing
 - Prevent duplicates, missing translations, collisions.
-- Auto-Features like `trim()`, `h()`, newlines to `<p>/<br>`, espacing of `%s`.
+- Auto-Features like `trim()`, `h()`, newlines to `<p>/<br>`, escaping of `%s`.
 - Validate placeholders (`{0}`, `%s`, ...).
 - Preview and code excerpts of references.
 - Auto-Add Controller names (singular + plural).

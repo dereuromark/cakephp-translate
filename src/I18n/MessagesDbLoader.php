@@ -183,7 +183,7 @@ class MessagesDbLoader extends Package {
 	 */
 	protected function _getModel(): RepositoryInterface {
 		if (is_string($this->model)) {
-			/** @var \Translate\Model\Table\TranslateTermsTable|null $model */
+			/** @var \Translate\Model\Table\TranslateTermsTable $model */
 			$model = $this->getTableLocator()->get($this->model);
 			$this->model = $model;
 		}

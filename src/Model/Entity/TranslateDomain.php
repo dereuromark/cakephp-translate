@@ -12,8 +12,8 @@ use Tools\Model\Entity\Entity;
  * @property bool $active
  * @property int $prio
  * @property string|null $path
- * @property \Cake\I18n\FrozenTime|null $created
- * @property \Cake\I18n\FrozenTime|null $modified
+ * @property \Cake\I18n\DateTime|null $created
+ * @property \Cake\I18n\DateTime|null $modified
  *
  * @property \Translate\Model\Entity\TranslateProject $translate_project
  * @property array<\Translate\Model\Entity\TranslateString> $translate_strings

@@ -5,6 +5,9 @@ namespace Translate\Controller\Component;
 use Cake\Controller\Component;
 use Cake\ORM\TableRegistry;
 
+/**
+ * @method \App\Controller\AppController getController()
+ */
 class TranslationComponent extends Component {
 
 	/**

@@ -511,7 +511,6 @@ class PoParser {
 	public function updateEntry(string $msgid, string $translation, int $positionMsgstr = 0): void {
 		if (
 			!isset($this->entriesAsArrays[$msgid])
-			|| !is_string($translation)
 			|| !isset($this->entriesAsArrays[$msgid]['msgstr'][$positionMsgstr])
 		) {
 			throw new Exception('Cannot update entry translation');

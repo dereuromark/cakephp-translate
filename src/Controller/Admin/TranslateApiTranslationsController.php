@@ -8,7 +8,7 @@ use App\Controller\AppController;
  * TranslateApiTranslations Controller
  *
  * @property \Translate\Model\Table\TranslateApiTranslationsTable $TranslateApiTranslations
- * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateApiTranslation> paginate($object = null, array $settings = [])
+ * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateApiTranslation> paginate(\Cake\Datasource\RepositoryInterface|\Cake\Datasource\QueryInterface|string|null $object = null, array $settings = [])
  */
 class TranslateApiTranslationsController extends AppController {
 

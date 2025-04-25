@@ -8,6 +8,9 @@ use Cake\TestSuite\TestCase;
 use Shim\TestSuite\ConsoleOutput;
 use Translate\Command\TranslationsCommand;
 
+/**
+ * @uses \Translate\Command\TranslationsCommand
+ */
 class TranslationsCommandTest extends TestCase {
 
 	use ConsoleIntegrationTestTrait;

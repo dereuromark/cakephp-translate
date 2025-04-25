@@ -11,8 +11,8 @@ use Tools\Model\Entity\Entity;
  * @property string $content
  * @property string|null $comment
  * @property bool $confirmed
- * @property \Cake\I18n\FrozenTime|null $created
- * @property \Cake\I18n\FrozenTime|null $modified
+ * @property \Cake\I18n\DateTime|null $created
+ * @property \Cake\I18n\DateTime|null $modified
  *
  * @property \Translate\Model\Entity\TranslateString $translate_string
  * @property \Translate\Model\Entity\TranslateLanguage $translate_language

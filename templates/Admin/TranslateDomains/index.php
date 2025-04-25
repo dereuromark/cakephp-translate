@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \Translate\Model\Entity\TranslateDomain[]|\Cake\Collection\CollectionInterface $translateDomains
+ * @var iterable<\Translate\Model\Entity\TranslateDomain> $translateDomains
  */
 
 use Cake\Core\Plugin;

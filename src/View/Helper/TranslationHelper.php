@@ -24,12 +24,12 @@ class TranslationHelper extends Helper {
 	 * @param bool $checkExistence (defaults to FALSE)
 	 * @return string imageTag or empty string on failure
 	 */
-	public function flag($iso2Code = null, array $attr = [], $checkExistence = false) {
-		if (!empty($iso2Code)) {
+	public function flag($iso2Code = null, array $attr = [], bool $checkExistence = false) {
+		if ($iso2Code) {
 			$icon = 'language_flags' . DS . $iso2Code . '.gif';
 			if ($checkExistence === false || file_exists(WWW_ROOT . 'img' . DS . $icon)) {
 				$options = ['alt' => strtoupper($iso2Code), 'title' => strtoupper($iso2Code), 'class' => 'languageFlag'];
-				if (!empty($attr) && is_array($attr)) {
+				if ($attr) {
 					$options = array_merge($options, $attr);
 				}
 				$icon = str_replace('\\', '/', $icon);

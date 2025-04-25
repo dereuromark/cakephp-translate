@@ -13,7 +13,7 @@ use Tools\Model\Entity\Entity;
  * @property string $from
  * @property string $to
  * @property string $engine
- * @property \Cake\I18n\FrozenTime|null $created
+ * @property \Cake\I18n\DateTime|null $created
  */
 class TranslateApiTranslation extends Entity {
 

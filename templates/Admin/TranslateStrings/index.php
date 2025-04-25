@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \Translate\Model\Entity\TranslateString[]|\Cake\Collection\CollectionInterface $translateStrings
+ * @var iterable<\Translate\Model\Entity\TranslateString> $translateStrings
  * @var bool $_isSearch
  */
 

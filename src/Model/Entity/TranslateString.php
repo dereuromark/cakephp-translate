@@ -13,9 +13,9 @@ use Tools\Model\Entity\Entity;
  * @property string|null $references
  * @property bool $active
  * @property bool $is_html
- * @property \Cake\I18n\FrozenDate|null $last_import
- * @property \Cake\I18n\FrozenTime|null $created
- * @property \Cake\I18n\FrozenTime|null $modified
+ * @property \Cake\I18n\Date|null $last_import
+ * @property \Cake\I18n\DateTime|null $created
+ * @property \Cake\I18n\DateTime|null $modified
  *
  * @property \App\Model\Entity\User|null $user
  * @property array<\Translate\Model\Entity\TranslateTerm> $translate_terms

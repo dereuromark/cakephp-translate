@@ -21,6 +21,7 @@ class Transltr implements EngineInterface {
 	 */
 	public function translate($text, $to, $from) {
 		$text = urlencode($text);
+		/** @var non-empty-string $url */
 		$url = sprintf(static::URL, $text, $to, $from);
 
 		try {

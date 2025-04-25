@@ -31,6 +31,11 @@ class ExtractTaskTest extends TestCase {
 	protected $out;
 
 	/**
+	 * @var \Shim\TestSuite\ConsoleOutput
+	 */
+	protected $err;
+
+	/**
 	 * setUp method
 	 *
 	 * @return void

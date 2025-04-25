@@ -137,11 +137,11 @@ Template/Account/foo.ctp:15', $translateString->references);
 		Configure::write('Translate.engine', [Test::class, TestMore::class]);
 
 		$id = 1;
-		$this->TranslateStrings = $this->getTableLocator()->get('Translate.TranslateStrings');
-		$record = $this->TranslateStrings->get($id);
+		$TranslateStrings = $this->getTableLocator()->get('Translate.TranslateStrings');
+		$record = $TranslateStrings->get($id);
 
 		$groupId = $record->translate_domain_id;
-		$record = $this->TranslateStrings->TranslateDomains->get($groupId);
+		$record = $TranslateStrings->TranslateDomains->get($groupId);
 
 		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateStrings', 'action' => 'translate', $id]);
 

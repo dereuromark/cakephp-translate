@@ -51,6 +51,8 @@ Cake\Core\Configure::write('App', [
 	],
 ]);
 
+Configure::write('TestSuite.errorLevel', E_ALL & ~E_USER_DEPRECATED);
+
 Cake\Core\Configure::write('debug', true);
 
 Cake\Core\Configure::write('Yandex.key', env('YANDEX_KEY'));

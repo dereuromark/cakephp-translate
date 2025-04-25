@@ -29,6 +29,20 @@ So if you want to workaround this, you could set up a staging server, that serve
 Here you extract, translate and export into a (free) translation online storage, or translation tool like [weblate](https://docs.weblate.org/en/latest/about.html).
 The live server would then pull those new translations right on deployment.
 
+## General table overview
+
+The structure of the plugin is as follows:
+
+![Diagram](diagram.svg)
+
+- By default, you only need one project.
+- You can import the strings per language and domain.
+- Those get translated in the terms.
+
+The api_translations table holds any engine related imports.
+So on update you know what changed.
+
+
 ## Important database config
 Use `'quoteIdentifiers' => true` for your Datasources config.
 

@@ -12,10 +12,10 @@ You can start translating.
 
 ## Validation
 By default, the translate view validates the input, e.g. matching placeholders.
-If you do not want that in certain cases, deactive it via checkbox.
+If you do not want that in certain cases, deactivate it via checkbox.
 
 
-## Working with HTML tanslations
+## Working with HTML translations
 The plugin tries to auto-detect HTML by `<` / `>` chars.
 You can also manually declare them as such.
 

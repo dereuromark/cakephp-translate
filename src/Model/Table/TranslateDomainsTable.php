@@ -8,20 +8,21 @@ use Tools\Model\Table\Table;
  * @property \Cake\ORM\Association\BelongsTo<\Translate\Model\Table\TranslateProjectsTable> $TranslateProjects
  * @property \Cake\ORM\Association\HasMany<\Translate\Model\Table\TranslateStringsTable> $TranslateStrings
  *
- * @method \Translate\Model\Entity\TranslateDomain get($primaryKey, $options = [])
+ * @method \Translate\Model\Entity\TranslateDomain get(mixed $primaryKey, array|string $finder = 'all', \Psr\SimpleCache\CacheInterface|string|null $cache = null, \Closure|string|null $cacheKey = null, mixed ...$args)
  * @method \Translate\Model\Entity\TranslateDomain newEntity(array $data, array $options = [])
  * @method array<\Translate\Model\Entity\TranslateDomain> newEntities(array $data, array $options = [])
- * @method \Translate\Model\Entity\TranslateDomain|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \Translate\Model\Entity\TranslateDomain|false save(\Cake\Datasource\EntityInterface $entity, array $options = [])
  * @method \Translate\Model\Entity\TranslateDomain patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method array<\Translate\Model\Entity\TranslateDomain> patchEntities(iterable $entities, array $data, array $options = [])
- * @method \Translate\Model\Entity\TranslateDomain findOrCreate($search, ?callable $callback = null, $options = [])
+ * @method \Translate\Model\Entity\TranslateDomain findOrCreate(\Cake\ORM\Query\SelectQuery|callable|array $search, ?callable $callback = null, array $options = [])
  * @mixin \Shim\Model\Behavior\NullableBehavior
- * @method \Translate\Model\Entity\TranslateDomain saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \Translate\Model\Entity\TranslateDomain saveOrFail(\Cake\Datasource\EntityInterface $entity, array $options = [])
  * @method \Translate\Model\Entity\TranslateDomain newEmptyEntity()
- * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateDomain>|false saveMany(iterable $entities, $options = [])
- * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateDomain> saveManyOrFail(iterable $entities, $options = [])
- * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateDomain>|false deleteMany(iterable $entities, $options = [])
- * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateDomain> deleteManyOrFail(iterable $entities, $options = [])
+ * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateDomain>|false saveMany(iterable $entities, array $options = [])
+ * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateDomain> saveManyOrFail(iterable $entities, array $options = [])
+ * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateDomain>|false deleteMany(iterable $entities, array $options = [])
+ * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateDomain> deleteManyOrFail(iterable $entities, array $options = [])
+ * @extends \Tools\Model\Table\Table<array{Nullable: \Shim\Model\Behavior\NullableBehavior}>
  */
 class TranslateDomainsTable extends Table {
 

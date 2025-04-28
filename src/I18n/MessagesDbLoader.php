@@ -188,6 +188,7 @@ class MessagesDbLoader extends Package {
 			$this->model = $model;
 		}
 
+		/** @var \Translate\Model\Table\TranslateTermsTable */
 		return $this->model;
 	}
 

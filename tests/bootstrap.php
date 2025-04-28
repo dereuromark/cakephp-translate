@@ -91,6 +91,8 @@ Configure::write('Icon', [
 class_alias(Application::class, 'App\Application');
 class_alias(AppController::class, 'App\Controller\AppController');
 class_alias(AppView::class, 'App\View\AppView');
+class_alias(\TestApp\Model\Table\UsersTable::class, 'App\Model\Table\UsersTable');
+class_alias(\TestApp\Model\Entity\User::class, 'App\Model\Entity\User');
 
 //Cake\Core\Plugin::getCollection()->add(new \Tools\Plugin());
 //Cake\Core\Plugin::getCollection()->add(new \Translate\Plugin());

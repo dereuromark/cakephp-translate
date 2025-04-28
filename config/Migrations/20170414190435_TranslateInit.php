@@ -54,7 +54,7 @@ class TranslateInit extends AbstractMigration {
 			->addColumn('language_id', 'integer', [
 				'default' => null,
 				'limit' => 10,
-				'null' => false,
+				'null' => true,
 				'signed' => false,
 			])
 			->addColumn('name', 'string', [

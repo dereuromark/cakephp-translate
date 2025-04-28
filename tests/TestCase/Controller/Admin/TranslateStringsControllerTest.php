@@ -62,6 +62,8 @@ class TranslateStringsControllerTest extends IntegrationTestCase {
 	 * @return void
 	 */
 	public function testExtract() {
+		$this->disableErrorHandlerMiddleware();
+
 		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateStrings', 'action' => 'extract']);
 
 		$this->assertResponseCode(200);

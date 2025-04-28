@@ -3,11 +3,12 @@
  * @var \App\View\AppView $this
  * @var array $count
  * @var mixed $coverage
+ * @var array $projectSwitchArray
  */
 
 use Cake\Core\Configure;
 
-$totalCoverage =(int)$this->Translation->totalCoverage($coverage);
+$totalCoverage = (int)$this->Translation->totalCoverage($coverage);
 $totalColor = $this->Translation->getColor($totalCoverage);
 ?>
 
@@ -56,25 +57,35 @@ Current Translation-Coverage: <span style="color:#<?php echo $totalColor;?>;font
 	</p>
 
 <?php
-	if (!empty($coverage) && is_array($count)) {
-?>
+if (!empty($coverage) && is_array($count)) {
+	?>
 
-<?php echo $this->element('coverage_table', [])?>
+	<?php echo $this->element('coverage_table', [])?>
 		<p>
-<?php echo $count['groups']?> <?php echo $this->Html->link(__d('translate', 'Groups'), ['controller'=>'TranslateDomains']);?>
-			with <?php echo $count['strings']?> <?php echo $this->Html->link(__d('translate', 'Strings'), ['controller'=>'TranslateStrings']);?>
-			in <?php echo $count['languages']?> different <?php echo $this->Html->link(__d('translate', 'Languages'), ['controller'=>'TranslateLanguages']);?>
-			= <?php echo $count['translations']?> <?php echo $this->Html->link(__d('translate', 'Translations'), ['controller'=>'TranslateTerms']);?>
+	<?php echo $count['groups']?> <?php echo $this->Html->link(__d('translate', 'Groups'), ['controller' => 'TranslateDomains']);?>
+			with <?php echo $count['strings']?> <?php echo $this->Html->link(__d('translate', 'Strings'), ['controller' => 'TranslateStrings']);?>
+			in <?php echo $count['languages']?> different <?php echo $this->Html->link(__d('translate', 'Languages'), ['controller' => 'TranslateLanguages']);?>
+			= <?php echo $count['translations']?> <?php echo $this->Html->link(__d('translate', 'Translations'), ['controller' => 'TranslateTerms']);?>
 		</p>
+
+<?php } elseif (count($projectSwitchArray)) { ?>
+
+	<p style="color: red">
+	<?php echo __d('translate', 'Please add languages you want to support'); ?>:
+		<?php if (\Cake\Core\Plugin::isLoaded('Data')) {
+			echo $this->Html->link('Languages', ['plugin' => 'Data', 'controller' => 'Languages']);
+		} else {
+			echo $this->Html->link('Languages', ['controller' => 'TranslateLanguages']);
+		} ?>
+	</p>
 
 <?php } else { ?>
 
-	<p>
-<?php echo __d('translate', 'Please create a project first'); ?>: <?php echo $this->Html->link('Project Index', ['controller' => 'TranslateProjects']); ?>
+	<p style="color: red">
+		<?php echo __d('translate', 'Please create a project first'); ?>: <?php echo $this->Html->link('Projects', ['controller' => 'TranslateProjects']); ?>
 	</p>
 
-<?php } ?>
-
+	<?php } ?>
 
 <h3>How to Translate</h3>
 <ol>

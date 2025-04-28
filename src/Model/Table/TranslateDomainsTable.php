@@ -5,8 +5,8 @@ namespace Translate\Model\Table;
 use Tools\Model\Table\Table;
 
 /**
- * @property \Translate\Model\Table\TranslateProjectsTable&\Cake\ORM\Association\BelongsTo $TranslateProjects
- * @property \Translate\Model\Table\TranslateStringsTable&\Cake\ORM\Association\HasMany $TranslateStrings
+ * @property \Cake\ORM\Association\BelongsTo<\Translate\Model\Table\TranslateProjectsTable> $TranslateProjects
+ * @property \Cake\ORM\Association\HasMany<\Translate\Model\Table\TranslateStringsTable> $TranslateStrings
  *
  * @method \Translate\Model\Entity\TranslateDomain get($primaryKey, $options = [])
  * @method \Translate\Model\Entity\TranslateDomain newEntity(array $data, array $options = [])

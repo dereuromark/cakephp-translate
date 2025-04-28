@@ -21,10 +21,17 @@
 			'groups' => 'groups',
 			'languages' => 'languages',
 		];
-		echo $this->Form->control('Form.sel', ['multiple'=>'checkbox', 'label' => __d('translate', 'Selection'), 'options' => $resetOptions]);
+		echo $this->Form->control('selection', ['multiple'=>'checkbox', 'label' => __d('translate', 'Selection'), 'options' => $resetOptions]);
 
 	?>
 	</fieldset>
 
 <?php echo $this->Form->submit(__d('translate', 'Reset')); echo $this->Form->end();?>
+
+
+	<p>
+		or
+		<?php echo $this->Form->postLink('Hard reset Translate (fully truncate all tables)', ['?' => ['hard-reset' => '1']], ['confirm' => 'Sure?']); ?>
+	</p>
+
 </div>

@@ -1,13 +1,13 @@
 <?php
 
-namespace Translate\Lib;
+namespace Translate\Service;
 
 use Cake\I18n\Parser\PoFileParser;
 use Cake\Utility\Inflector;
 use Shim\Filesystem\Folder;
 use Translate\Parser\PoParser;
 
-class TranslationLib {
+class ExtractService {
 
 	/**
 	 * Singular + plural!

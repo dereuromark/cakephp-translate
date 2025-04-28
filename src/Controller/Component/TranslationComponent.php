@@ -3,6 +3,7 @@
 namespace Translate\Controller\Component;
 
 use Cake\Controller\Component;
+use Cake\Datasource\ConnectionManager;
 use Cake\ORM\TableRegistry;
 
 /**
@@ -24,6 +25,33 @@ class TranslationComponent extends Component {
 		}
 
 		return $id;
+	}
+
+	/**
+	 * @return void
+	 */
+	public function hardReset(): void {
+		/** @var \Cake\Database\Connection $connection */
+		$connection = ConnectionManager::get('default');
+
+		$tables = [
+			'translate_domains',
+			'translate_strings',
+			'translate_languages',
+			'translate_terms',
+			'translate_api_translations',
+		];
+
+		$tableTruncates = 'TRUNCATE TABLE ' . implode(';' . PHP_EOL . 'TRUNCATE TABLE ', $tables) . ';';
+
+		$sql = <<<SQL
+SET FOREIGN_KEY_CHECKS = 0;
+
+$tableTruncates
+
+SET FOREIGN_KEY_CHECKS = 1;
+SQL;
+		$connection->execute($sql);
 	}
 
 }

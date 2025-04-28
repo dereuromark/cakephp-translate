@@ -5,7 +5,7 @@ namespace Translate\Controller\Admin;
 use Cake\Http\Exception\NotFoundException;
 use Translate\Controller\TranslateAppController;
 use Translate\Filesystem\Dumper;
-use Translate\Lib\TranslationLib;
+use Translate\Service\ExtractService;
 
 /**
  * TranslateStrings Controller
@@ -161,16 +161,17 @@ class TranslateStringsController extends TranslateAppController {
 	}
 
 	/**
+	 * @param \Translate\Service\ExtractService $extractService
+	 *
 	 * @return void
 	 */
-	public function extract() {
-		$translationLib = new TranslationLib();
-		$potFiles = $translationLib->getPotFiles();
+	public function extract(ExtractService $extractService) {
+		$potFiles = $extractService->getPotFiles();
 		$translateLanguages = $this->TranslateStrings->TranslateTerms->TranslateLanguages->getExtractableAsList($this->Translation->currentProjectId());
-		$poFileLanguages = $translationLib->getPoFileLanguages();
+		$poFileLanguages = $extractService->getPoFileLanguages();
 		$poFiles = [];
 		foreach ($poFileLanguages as $poFileLanguage) {
-			$poFiles[$poFileLanguage] = $translationLib->getPoFiles($poFileLanguage);
+			$poFiles[$poFileLanguage] = $extractService->getPoFiles($poFileLanguage);
 		}
 
 		if ($this->Common->isPosted()) {
@@ -184,7 +185,7 @@ class TranslateStringsController extends TranslateAppController {
 				if (!in_array($domain, $potFiles, true)) {
 					continue;
 				}
-				$translations = $translationLib->extractPotFile($domain);
+				$translations = $extractService->extractPotFile($domain);
 
 				$translationDomain = $this->TranslateStrings->TranslateDomains->getDomain($this->Translation->currentProjectId(), $domain);
 
@@ -212,16 +213,14 @@ class TranslateStringsController extends TranslateAppController {
 				if (!isset($translateLanguages[$lang])) {
 					continue;
 				}
-				$translations = $translationLib->extractPoFile($domain, $locale);
+				$translations = $extractService->extractPoFile($domain, $locale);
 
 				$translationDomain = $this->TranslateStrings->TranslateDomains->getDomain($this->Translation->currentProjectId(), $domain);
 
-				foreach ($translations as $name => $translation) {
+				foreach ($translations as $translation) {
 					$translationString = $this->TranslateStrings->import($translation, $translationDomain->id);
 					if (!$translationString) {
 						$errors[] = '`' . h($translation['name']) . '`';
-
-						continue;
 					}
 
 					$success = (bool)$this->TranslateStrings->TranslateTerms->import($translation, $translationString->id, $translateLanguages[$lang]);

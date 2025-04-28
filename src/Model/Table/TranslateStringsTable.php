@@ -57,8 +57,8 @@ class TranslateStringsTable extends Table {
 				'message' => 'This name is already in use',
 			],
 			'minLength' => [
-				'rule' => ['minLength', 2],
-				'message' => 'Should have at least 2 characters',
+				'rule' => ['minLength', 1],
+				'message' => 'Should have at least 1 characters',
 			],
 		],
 		'user_id' => [

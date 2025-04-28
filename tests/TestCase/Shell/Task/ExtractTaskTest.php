@@ -72,9 +72,9 @@ class ExtractTaskTest extends TestCase {
 		$TranslateStrings = TableRegistry::getTableLocator()->get('Translate.TranslateStrings');
 		$TranslateStrings->truncate();
 
-		$this->Task->main();
+		$this->Task->run();
 
-		$translateStrings = $TranslateStrings->find()->orderDesc('id')->all()->toArray();
+		$translateStrings = $TranslateStrings->find()->orderByDesc('id')->all()->toArray();
 
 		$this->assertTextContains('foobar', $translateStrings[0]->name);
 		$this->assertTextContains('Controller/FooController.php:13', $translateStrings[1]->references);

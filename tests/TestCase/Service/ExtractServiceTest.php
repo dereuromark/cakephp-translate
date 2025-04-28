@@ -1,24 +1,24 @@
 <?php
 
-namespace Translate\Test\TestCase\Lib;
+namespace Translate\Test\TestCase\Service;
 
 use Cake\TestSuite\TestCase;
 use Shim\Filesystem\Folder;
-use Translate\Lib\TranslationLib;
+use Translate\Service\ExtractService;
 
-class TranslationLibTest extends TestCase {
+class ExtractServiceTest extends TestCase {
 
 	/**
-	 * @var \Translate\Lib\TranslationLib
+	 * @var \Translate\Service\ExtractService
 	 */
-	protected $TranslationLib;
+	protected $service;
 
 	/**
 	 * @return void
 	 */
 	public function setUp(): void {
 		parent::setUp();
-		$this->TranslationLib = new TranslationLib();
+		$this->service = new ExtractService();
 
 		$folder = new Folder();
 		$folder->copy(LOCALE, [
@@ -30,7 +30,7 @@ class TranslationLibTest extends TestCase {
 	 * @return void
 	 */
 	public function testGetPotFiles() {
-		$is = $this->TranslationLib->getPotFiles();
+		$is = $this->service->getPotFiles();
 		$this->assertTrue(!empty($is));
 		$expected = [
 			'cake' => 'cake',
@@ -44,7 +44,7 @@ class TranslationLibTest extends TestCase {
 	 * @return void
 	 */
 	public function testExtractPoFileLanguages() {
-		$is = $this->TranslationLib->getPoFileLanguages();
+		$is = $this->service->getPoFileLanguages();
 		$expected = [
 			'de',
 		];
@@ -55,7 +55,7 @@ class TranslationLibTest extends TestCase {
 	 * @return void
 	 */
 	public function testGetPoFiles() {
-		$is = $this->TranslationLib->getPoFiles('de');
+		$is = $this->service->getPoFiles('de');
 
 		$this->assertTrue(!empty($is));
 		$expected = [
@@ -69,9 +69,9 @@ class TranslationLibTest extends TestCase {
 	 * @return void
 	 */
 	public function testExtractPotFile() {
-		$is = $this->TranslationLib->getPotFiles();
+		$is = $this->service->getPotFiles();
 		$file = array_shift($is);
-		$is = $this->TranslationLib->extractPotFile($file);
+		$is = $this->service->extractPotFile($file);
 
 		$this->assertTrue(!empty($is));
 
@@ -85,9 +85,9 @@ class TranslationLibTest extends TestCase {
 	 * @return void
 	 */
 	public function testExtractPoFile() {
-		$is = $this->TranslationLib->getPoFiles('de');
+		$is = $this->service->getPoFiles('de');
 		$file = array_pop($is);
-		$is = $this->TranslationLib->extractPoFile($file, 'de');
+		$is = $this->service->extractPoFile($file, 'de');
 
 		$this->assertTrue(!empty($is));
 
@@ -107,9 +107,9 @@ class TranslationLibTest extends TestCase {
 	 * @return void
 	 */
 	public function testParsePotFile() {
-		$is = $this->TranslationLib->getPotFiles();
+		$is = $this->service->getPotFiles();
 		$file = array_shift($is);
-		$is = $this->TranslationLib->parseFile(LOCALE . $file . '.pot');
+		$is = $this->service->parseFile(LOCALE . $file . '.pot');
 
 		$this->assertTrue(!empty($is));
 		$this->assertArrayHasKey('December', $is);
@@ -128,9 +128,9 @@ class TranslationLibTest extends TestCase {
 	 * @return void
 	 */
 	public function testParsePoFile() {
-		$is = $this->TranslationLib->getPoFiles('de');
+		$is = $this->service->getPoFiles('de');
 		$file = array_pop($is);
-		$is = $this->TranslationLib->parseFile(LOCALE . 'de' . DS . $file . '.po');
+		$is = $this->service->parseFile(LOCALE . 'de' . DS . $file . '.po');
 
 		$this->assertTrue(!empty($is));
 		$this->assertArrayHasKey('Your {0}.', $is);
@@ -157,9 +157,9 @@ class TranslationLibTest extends TestCase {
 	 * @return void
 	 */
 	public function testParsePoFilePlural() {
-		$is = $this->TranslationLib->getPoFiles('de');
+		$is = $this->service->getPoFiles('de');
 		$file = array_shift($is);
-		$is = $this->TranslationLib->parseFile(LOCALE . 'de' . DS . $file . '.po');
+		$is = $this->service->parseFile(LOCALE . 'de' . DS . $file . '.po');
 
 		$this->assertTrue(!empty($is));
 		$expected = [
@@ -194,7 +194,7 @@ class TranslationLibTest extends TestCase {
 	 * @return void
 	 */
 	public function testResourceNames() {
-		$is = $this->TranslationLib->getResourceNames();
+		$is = $this->service->getResourceNames();
 
 		//$this->assertTrue(!empty($is));
 		$this->assertSame([], $is);

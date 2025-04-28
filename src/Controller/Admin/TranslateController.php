@@ -60,23 +60,30 @@ class TranslateController extends TranslateAppController {
 	public function reset() {
 		if ($this->Common->isPosted()) {
 			$selection = (array)$this->request->getData('Form.sel');
+			if ($this->request->getQuery('hard-reset')) {
+				$this->Translation->hardReset();
+				$this->Flash->success('Hard reset done.');
+
+				return $this->redirect(['action' => 'index']);
+			}
+
 			foreach ($selection as $sel) {
 				if (!empty($sel)) {
 					switch ($sel) {
 						case 'terms':
-							$this->TranslateDomains->TranslateStrings->TranslateTerms->truncate();
+							$this->TranslateDomains->TranslateStrings->TranslateTerms->deleteAll('1=1');
 
 							break;
 						case 'strings':
-							$this->TranslateDomains->TranslateStrings->truncate();
+							$this->TranslateDomains->TranslateStrings->deleteAll('1=1');
 
 							break;
 						case 'groups':
-							$this->TranslateDomains->truncate();
+							$this->TranslateDomains->deleteAll('1=1');
 
 							break;
 						case 'languages':
-							$this->TranslateDomains->TranslateStrings->TranslateTerms->TranslateLanguages->truncate();
+							$this->TranslateDomains->TranslateStrings->TranslateTerms->TranslateLanguages->deleteAll('1=1');
 
 							break;
 					}

@@ -35,17 +35,17 @@ Easily manage i18n/translations from your backend.
 	<li>Auto-Translate and Auto-Suggest with GoogleTranslateAPI (PHP/JS)</li>
 	<li>Validate placeholders ({0})</li>
 	<li>Prevent doublettes, missing translations, collisions</li>
-	<li>Auto-Add Controller names (singular + plural)</li>
 	<li>Manage in domains (and export/enable/disable them)</li>
 	<li>Creates clean pot files with all translations in usage</li>
+	<li>Extract from source code directly (triggering cake i18n internally)</li>
 </ul>
 
 <h3>Todos/Ideas</h3>
 <ul>
-<li>Guests/Visitors can help, too (translations need approval from admins)</li>
-<li>Extract from source code directly (triggering cake i18n internally)</li>
-<li>Change strings in the source code directly from the plugin and correct spelling errors etc with this (all references will be translated ).</li>
-<li>Plugin support __d() and for other __d('translate', ) methods</li>
+	<li>Auto-Add Controller names (singular + plural)</li>
+	<li>Guests/Visitors can help, too (translations need approval from admins)</li>
+	<li>Change strings in the source code directly from the plugin and correct spelling errors etc with this (all references will be translated ).</li>
+	<li>Plugin support __d() and for other __d('translate', ) methods</li>
 </ul>
 </td>
 

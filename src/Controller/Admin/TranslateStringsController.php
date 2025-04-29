@@ -347,7 +347,7 @@ class TranslateStringsController extends TranslateAppController {
 		if ($this->Common->isPosted()) {
 			$success = true;
 			foreach ($translateLanguages as $translateLanguage) {
-				$key = $translateLanguage->locale;
+				$key = strtolower($translateLanguage->locale);
 				$term = $this->request->getData('content_' . $key);
 				if ($term !== null) {
 					if (!isset($translateTerms[$translateLanguage->id])) {
@@ -361,6 +361,7 @@ class TranslateStringsController extends TranslateAppController {
 						'translate_language_id' => $translateLanguage->id,
 						'content' => $term,
 						//'user_id' => $this->AuthUser->id()
+						'string' => $translateString->name,
 					];
 					if ($translateString->plural !== null) {
 						//TODO allow more plurals
@@ -383,12 +384,11 @@ class TranslateStringsController extends TranslateAppController {
 					}
 				}
 
-				return $this->redirect(['action' => 'index']);
+				return $this->redirect(['action' => 'view', $id]);
 			}
 		} else {
 			foreach ($translateTerms as $translateTerm) {
 				$key = $this->TranslateStrings->resolveLanguageKey($translateTerm->translate_language_id, $translateLanguages);
-
 				$this->request = $this->request->withData('content_' . $key, $translateTerm->content);
 				$this->request = $this->request->withData('plural_2_' . $key, $translateTerm->plural_2);
 			}

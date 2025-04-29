@@ -46,7 +46,7 @@
 		foreach ($translateLanguages as $translateLanguage) {
 			$key = $translateLanguage->locale;
 			$formKey = str_replace('_', '-', strtolower($translateLanguage->locale));
-			echo $this->Form->control('content_'.$formKey, ['type'=>'text', 'label'=> __d('translate', 'Singular'). ' ' . $translateLanguage->locale, 'rel'=>$formKey]);
+			echo $this->Form->control('content_'.strtolower($translateLanguage->locale), ['type'=>'text', 'label'=> __d('translate', 'Singular'). ' ' . $translateLanguage->locale, 'rel'=>$formKey]);
 			if (!empty($suggestions[$key])) {
 				echo $this->element('suggestions', ['suggestions' => $suggestions[$key], 'key' => $formKey]);
 			}
@@ -56,7 +56,7 @@
 			$key = $translateLanguage->locale;
 			$formKey = str_replace('_', '-', strtolower($translateLanguage->locale));
 			//TODO add plural 3 to 6 if necessary
-			echo $this->Form->control('plural_2_'.$key, ['type'=>'text', 'label'=>__d('translate', 'Plural') . ' ' . $translateLanguage->locale, 'rel' => 'p' . $formKey]);
+			echo $this->Form->control('plural_2_'.strtolower($translateLanguage->locale), ['type'=>'text', 'label'=>__d('translate', 'Plural') . ' ' . $translateLanguage->locale, 'rel' => 'p' . $formKey]);
 
 		}
 
@@ -65,7 +65,7 @@
 		foreach ($translateLanguages as $translateLanguage) {
 			$key = $translateLanguage->locale;
 			$formKey = str_replace('_', '-', strtolower($translateLanguage->locale));
-			echo $this->Form->control('content_'.$formKey, ['type'=>'textarea','label'=>h($translateLanguage['name']), 'rel'=>$formKey]);
+			echo $this->Form->control('content_'.strtolower($translateLanguage->locale), ['type'=>'textarea','label'=>h($translateLanguage->locale), 'rel'=>$formKey]);
 			if (!empty($suggestions[$key])) {
 				echo $this->element('suggestions', ['suggestions' => $suggestions[$key], 'key' => $formKey]);
 			}

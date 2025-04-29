@@ -265,7 +265,7 @@ class TranslateStringsTable extends Table {
 	public function resolveLanguageKey(int $translateLanguageId, array $translateLanguages) {
 		foreach ($translateLanguages as $translateLanguage) {
 			if ($translateLanguage->id === $translateLanguageId) {
-				return $translateLanguage->locale;
+				return strtolower($translateLanguage->locale);
 			}
 		}
 

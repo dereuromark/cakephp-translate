@@ -28,6 +28,7 @@ use Tools\Model\Entity\Entity;
  * @property string|null $comment
  * @property bool $unused
  * @property bool $manual
+ * @property bool skipped
  */
 class TranslateString extends Entity {
 

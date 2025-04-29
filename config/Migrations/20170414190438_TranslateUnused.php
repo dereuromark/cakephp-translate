@@ -15,6 +15,10 @@ class TranslateUnused extends AbstractMigration {
 
 		$table = $this->table('translate_strings');
 		$table
+			->addColumn('skipped', 'boolean', [
+				'default' => 0,
+				'null' => false,
+			])
 			->addColumn('unused', 'boolean', [
 				'default' => 0,
 				'null' => false,

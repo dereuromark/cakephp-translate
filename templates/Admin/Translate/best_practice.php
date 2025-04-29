@@ -15,7 +15,7 @@
 
 <h3>Common things</h3>
 <ul>
-<li>Always code in english (not only the code - all translation strings should be that way as well)</li>
+<li>Always code in English (not only the code - all translation strings should be that way as well)</li>
 <li>Use short terminology for sentences and longer translations - camelCased ideally: "breadcrumpTrail"</li>
 <li>Group them together by their meaning, like "valErr..." for Validation Errors, or "textWhy.." for some long text/explanation on the website</li>
 </ul>

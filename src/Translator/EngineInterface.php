@@ -11,6 +11,6 @@ interface EngineInterface {
 	 *
 	 * @return string|null
 	 */
-	public function translate($text, $to, $from);
+	public function translate(string $text, string $to, string $from): ?string;
 
 }

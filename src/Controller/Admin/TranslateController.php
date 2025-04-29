@@ -128,7 +128,7 @@ class TranslateController extends TranslateAppController {
 	 */
 	public function convert() {
 		if ($this->Common->isPosted()) {
-			$settings = $this->request->getData('Translate');
+			$settings = (array)$this->request->getData();
 			$text = $this->request->getData('input');
 
 			$ConvertLib = new ConvertLib();

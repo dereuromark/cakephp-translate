@@ -16,7 +16,7 @@ class Yandex implements EngineInterface {
 	 *
 	 * @return string|null
 	 */
-	public function translate($text, $to, $from) {
+	public function translate(string $text, string $to, string $from): ?string {
 		try {
 			$translator = new Translator(Configure::read('Yandex.key')); // ['sslVerifyPeer' => false]
 			/** @var \Yandex\Translate\Translation $translation */

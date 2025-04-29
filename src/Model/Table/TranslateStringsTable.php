@@ -259,8 +259,8 @@ class TranslateStringsTable extends Table {
 	/**
 	 * @param int $translateLanguageId
 	 * @param array<\Translate\Model\Entity\TranslateLanguage> $translateLanguages
-	 * @return string
 	 *@throws \Cake\Http\Exception\InternalErrorException
+	 * @return string
 	 */
 	public function resolveLanguageKey(int $translateLanguageId, array $translateLanguages) {
 		foreach ($translateLanguages as $translateLanguage) {

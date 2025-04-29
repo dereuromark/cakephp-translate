@@ -44,27 +44,30 @@
 
 	if ($translateString->plural) {
 		foreach ($translateLanguages as $translateLanguage) {
-			$key = $translateLanguage['iso2'];
-			echo $this->Form->control('content_'.$key, ['type'=>'text', 'label'=> __d('translate', 'Singular'). ' ' . $translateLanguage['iso2'], 'rel'=>$key]);
+			$key = $translateLanguage->locale;
+			$formKey = str_replace('_', '-', strtolower($translateLanguage->locale));
+			echo $this->Form->control('content_'.$formKey, ['type'=>'text', 'label'=> __d('translate', 'Singular'). ' ' . $translateLanguage->locale, 'rel'=>$formKey]);
 			if (!empty($suggestions[$key])) {
-				echo $this->element('suggestions', ['suggestions' => $suggestions[$key], 'key' => $key]);
+				echo $this->element('suggestions', ['suggestions' => $suggestions[$key], 'key' => $formKey]);
 			}
 		}
 
 		foreach ($translateLanguages as $translateLanguage) {
-			$key = $translateLanguage['iso2'];
+			$key = $translateLanguage->locale;
+			$formKey = str_replace('_', '-', strtolower($translateLanguage->locale));
 			//TODO add plural 3 to 6 if necessary
-			echo $this->Form->control('plural_2_'.$key, ['type'=>'text', 'label'=>__d('translate', 'Plural') . ' ' . $translateLanguage['iso2'], 'rel' => 'p' . $key]);
+			echo $this->Form->control('plural_2_'.$key, ['type'=>'text', 'label'=>__d('translate', 'Plural') . ' ' . $translateLanguage->locale, 'rel' => 'p' . $formKey]);
 
 		}
 
 	} else {
 
 		foreach ($translateLanguages as $translateLanguage) {
-			$key = $translateLanguage['iso2'];
-			echo $this->Form->control('content_'.$key, ['type'=>'textarea','label'=>h($translateLanguage['name']), 'rel'=>$key]);
+			$key = $translateLanguage->locale;
+			$formKey = str_replace('_', '-', strtolower($translateLanguage->locale));
+			echo $this->Form->control('content_'.$formKey, ['type'=>'textarea','label'=>h($translateLanguage['name']), 'rel'=>$formKey]);
 			if (!empty($suggestions[$key])) {
-				echo $this->element('suggestions', ['suggestions' => $suggestions[$key], 'key' => $key]);
+				echo $this->element('suggestions', ['suggestions' => $suggestions[$key], 'key' => $formKey]);
 			}
 		}
 	}

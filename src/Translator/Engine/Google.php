@@ -13,7 +13,7 @@ class Google implements EngineInterface {
 	 *
 	 * @return string|null
 	 */
-	public function translate($text, $to, $from) {
+	public function translate(string $text, string $to, string $from): ?string {
 		$result = GoogleTranslate::translate($from, $to, $text);
 		if ($result === '') {
 			return null;

@@ -91,16 +91,17 @@ if (!empty($coverage) && is_array($count)) {
 
 <h3>How to Translate</h3>
 <ol>
-<li>Select domain you want to translate</li>
-<li>Select language you want to translate into (or from)</li>
-<li>Translate and submit the form</li>
+	<li>Select "group" you want to translate</li>
+	<li>Select language you want to translate into (or from)</li>
+	<li>Translate and submit the form</li>
 </ol>
 
 
 <h3>How to Administer</h3>
 <ol>
-<li>Extract Translate String via "cake i18n" console script</li>
-<li>Importing them in Translate-Strings</li>
+	<li>Extract Translate String via "cake i18n" console script</li>
+	<li>Importing POT/PO files</li>
+	<li>Export them back to PO files</li>
 </ol>
 
 

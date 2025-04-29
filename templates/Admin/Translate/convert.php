@@ -25,7 +25,7 @@
 
 <h3>Input</h3>
 
-<?php echo $this->Form->create($translate);?>
+<?php echo $this->Form->create();?>
 	<fieldset>
 		<legend><?php echo __d('translate', 'Convert text');?></legend>
 	<?php

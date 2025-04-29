@@ -62,6 +62,12 @@ class TranslateAppController extends AppController {
 	public function beforeRender(EventInterface $event): void {
 		$layout = Configure::read('Translate.layout', 'Translate.simple');
 		$this->viewBuilder()->setLayout($layout);
+
+		$map = Configure::read('Translate.iconMap');
+		if ($map) {
+			$map += (array)Configure::read('Icon.map');
+			Configure::write('Icon.map', $map);
+		}
 	}
 
 }

@@ -6,7 +6,7 @@ return [
 		'plurals' => 2,
 		'languagesTable' => null,
 		'usersTable' => null,
-
+		'defaultLocale' => null, // E.g. `en` or `en_US`
 		'layout' => null, // Defaults to own layout
 	],
 ];

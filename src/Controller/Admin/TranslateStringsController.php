@@ -41,7 +41,7 @@ class TranslateStringsController extends TranslateAppController {
 	 * @return \Cake\Http\Response|null|void
 	 */
 	public function index() {
-		$query = $this->TranslateStrings->find('search', ...['search' => $this->request->getQuery()]);
+		$query = $this->TranslateStrings->find('search', search: $this->request->getQuery());
 		$query->contain([
 			'TranslateDomains',
 		]);
@@ -61,7 +61,7 @@ class TranslateStringsController extends TranslateAppController {
 	 */
 	public function view($id = null) {
 		$translateString = $this->TranslateStrings->get($id, [
-			'contain' => ['TranslateDomains', 'TranslateTerms'],
+			'contain' => ['TranslateDomains', 'TranslateTerms' => 'TranslateLanguages'],
 		]);
 
 		$this->set(compact('translateString'));

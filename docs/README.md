@@ -75,7 +75,7 @@ Add `plural_3` up to `plural_6` if needed to the "translation_terms".
 TODO
 
 ## Directly read translations from the DB.
-Configure I18n to use the Translate MessagesDbLoader for default domain:
+Configure I18n to use the Translate DbMessagesLoader for default domain:
 
 ```php
 I18n::config('default', function ($domain, $locale) {

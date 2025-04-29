@@ -17,7 +17,7 @@
 <h3>Dumping</h3>
 
 Files are stored in
-<code>...<?php echo substr(APP, -20) . 'Locale/' ;?> + <b>{locale}</b> + <?php echo '/'?> + <b>{domain}</b>.po</code>
+<code>...<?php echo h(str_replace(ROOT, '', LOCALE)) ;?> + <b>{locale}</b> + <?php echo '/'?> + <b>{domain}</b>.po</code>
 
 
 <?php echo $this->Form->create(null);?>

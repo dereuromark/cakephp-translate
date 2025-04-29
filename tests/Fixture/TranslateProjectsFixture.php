@@ -34,7 +34,6 @@ class TranslateProjectsFixture extends TestFixture {
 	 */
 	public array $records = [
 		[
-			'id' => 1,
 			'name' => 'Lorem ipsum dolor sit amet',
 			'type' => 1,
 			'default' => 1,

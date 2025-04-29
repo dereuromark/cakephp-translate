@@ -15,7 +15,7 @@ foreach ($suggestions as $engine => $suggestion) {
 	$suggestionsArray[$suggestion][] = substr($engine, strrpos($engine, '\\') + 1);
 }
 
-//$target = 'content-' .$key;
+$target = 'content-' . $key;
 
 ?>
 <div class="form-group suggestions">
@@ -23,7 +23,7 @@ foreach ($suggestions as $engine => $suggestion) {
 	<div class="col-md-8 col-lg-9">
 		<ul>
 	<?php foreach ($suggestionsArray as $suggestion => $engines) { ?>
-		<li><span class="suggest" rel="<?php echo $suggestion; ?>" title="Click to insert"><?php echo h($suggestion); ?></span> <small>(<?php echo implode(', ', $engines); ?>)</small></li>
+		<li><span class="suggest" rel="<?php echo h($key); ?>" title="Click to insert"><?php echo h($suggestion); ?></span> <small>(<?php echo implode(', ', $engines); ?>)</small></li>
 	<?php } ?>
 		</ul>
 	</div>

@@ -31,7 +31,6 @@ class UsersFixture extends TestFixture {
 	 */
 	public array $records = [
 		[
-			'id' => 1,
 			'username' => 'Lorem ipsum dolor sit amet',
 			'password' => 'Lorem ipsum dolor sit amet',
 			'email' => 'Lorem ipsum dolor sit amet',

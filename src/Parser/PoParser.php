@@ -62,7 +62,7 @@ class PoParser {
 	 * Reads and parses strings in a .po file.
 	 *
 	 *  return An array of entries located in the file:
-	 *  Format: array(
+	 *  Format: [
 	 *      'msgid' => <string> ID of the message.
 	 *      'msgctxt' => <string> Message context.
 	 *      'msgstr' => <string> Message translation.
@@ -72,7 +72,7 @@ class PoParser {
 	 *      'obsolete' => <bool> Is the message obsolete?
 	 *      'fuzzy' => <bool> Is the message "fuzzy"?
 	 *      'flags' => <array> Flags of the entry. Internal usage.
-	 *  )
+	 *  ]
 	 *
 	 *   #~ (old entry)
 	 *   # @ default
@@ -528,7 +528,7 @@ class PoParser {
 	 */
 	public function write(string $filePath): void {
 		$writer = new Writer();
-		$writer->write($filePath, $this->entriesAsArrays);
+		$writer->write($filePath, $this->entriesAsArrays, $this->headers);
 	}
 
 	/**

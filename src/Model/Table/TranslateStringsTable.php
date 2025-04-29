@@ -277,7 +277,7 @@ class TranslateStringsTable extends Table {
 	 * @param int $groupId
 	 * @return \Translate\Model\Entity\TranslateString|null
 	 */
-	public function import(array $translation, $groupId) {
+	public function import(array $translation, int $groupId) {
 		if (!isset($this->lastImported)) {
 			$this->lastImported = new DateTime();
 		}

@@ -47,7 +47,7 @@
 			$key = $translateLanguage['iso2'];
 			echo $this->Form->control('content_'.$key, ['type'=>'text', 'label'=> __d('translate', 'Singular'). ' ' . $translateLanguage['iso2'], 'rel'=>$key]);
 			if (!empty($suggestions[$key])) {
-				echo $this->element('suggestions', ['suggestions' => $suggestions[$key], 'target' => 'content-' . $key]);
+				echo $this->element('suggestions', ['suggestions' => $suggestions[$key], 'key' => $key]);
 			}
 		}
 

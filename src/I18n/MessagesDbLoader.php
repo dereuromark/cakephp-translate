@@ -7,6 +7,7 @@ use Cake\Datasource\RepositoryInterface;
 use Cake\Datasource\ResultSetInterface;
 use Cake\I18n\Package;
 use Cake\ORM\Locator\LocatorAwareTrait;
+use Translate\Model\Entity\TranslateProject;
 
 /**
  * DbMessages loader.
@@ -79,18 +80,18 @@ class MessagesDbLoader extends Package {
 
 		$translateProject = $model->get('TranslateLanguages')->get('TranslateProjects')
 			->find()
-			->where(['default' => true])
+			->where(['type' => TranslateProject::TYPE_APP, 'default' => true])
 			->firstOrFail();
 		$translateProjectId = $translateProject->id;
-
-		/** @var \Cake\ORM\Query\SelectQuery $query */
 		$query = $model->find();
 
 		// Get list of fields without primaryKey, domain, locale.
-		$fields = $model->getSchema()->columns();
+		/** @var \Cake\Database\Schema\TableSchema $schema */
+		$schema = $model->getSchema();
+		$fields = $schema->columns();
 		$fields = array_flip(array_diff(
 			$fields,
-			$model->getSchema()->getPrimaryKey(),
+			$schema->getPrimaryKey(),
 		));
 		unset($fields['domain'], $fields['locale']);
 		$query->select(array_flip($fields));

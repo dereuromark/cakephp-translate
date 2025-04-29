@@ -3,7 +3,6 @@
 namespace Translate\Test\TestCase\I18n;
 
 use Cake\I18n\I18n;
-use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Shim\Filesystem\Folder;
 use Translate\I18n\MessagesDbLoader;
@@ -95,7 +94,7 @@ class MessagesDbLoaderTest extends TestCase {
 	 */
 	protected function _setUpData() {
 		/** @var \Translate\Model\Table\TranslateStringsTable $TranslateStrings */
-		$TranslateStrings = TableRegistry::getTableLocator()->get('Translate.TranslateStrings');
+		$TranslateStrings = $this->fetchTable('Translate.TranslateStrings');
 
 		$de = $TranslateStrings->TranslateTerms->TranslateLanguages->init('DE', 'de', 'de', 1);
 		$default = $TranslateStrings->TranslateDomains->getDomain(1);

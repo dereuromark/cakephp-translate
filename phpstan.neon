@@ -6,7 +6,8 @@ parameters:
 		- tests/bootstrap.php
 		- %rootDir%/../../../config/bootstrap.php
 	ignoreErrors:
-		- '#Property Translate\\Translator\\Translator::\$_cache \(.+TranslateApiTranslationsTable\) does not accept Cake\\ORM\\Table.#'
-		- '#Access to an undefined property .+BehaviorRegistry::\$Search.#'
 		- identifier: missingType.generics
 		- identifier: missingType.iterableValue
+		- '#.+ contains unknown class Data\\Model\\.+#'
+		- '#Property Translate\\Translator\\Translator::\$_cache \(.+TranslateApiTranslationsTable\) does not accept Cake\\ORM\\Table.#'
+		- '#Access to an undefined property .+BehaviorRegistry::\$Search.#'

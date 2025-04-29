@@ -2,12 +2,17 @@
 
 namespace TestApp;
 
+use Cake\Console\CommandCollection;
+use Cake\Core\Configure;
+use Cake\Core\ContainerInterface;
 use Cake\Core\PluginCollection;
 use Cake\Http\BaseApplication;
 use Cake\Http\MiddlewareQueue;
 use Cake\Routing\Middleware\RoutingMiddleware;
 use Cake\Routing\Route\DashedRoute;
 use Cake\Routing\RouteBuilder;
+use League\Container\ReflectionContainer;
+use Translate\Command\I18nExtractCommand;
 
 class Application extends BaseApplication {
 
@@ -15,6 +20,27 @@ class Application extends BaseApplication {
 	 * @return void
 	 */
 	public function bootstrap(): void {
+	}
+
+	/**
+	 * @param \Cake\Console\CommandCollection $commands
+	 * @return \Cake\Console\CommandCollection
+	 */
+	public function console(CommandCollection $commands): CommandCollection {
+		$commands = parent::console($commands);
+
+		return $commands
+			->add('i18n extract', new I18nExtractCommand());
+	}
+
+	/**
+	 * @param \Cake\Core\ContainerInterface $container The container to add services to.
+	 * @return void
+	 */
+	public function services(ContainerInterface $container): void {
+		$container->delegate(
+			new ReflectionContainer(Configure::read('debug')),
+		);
 	}
 
 	/**

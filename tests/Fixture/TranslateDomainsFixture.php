@@ -34,7 +34,6 @@ class TranslateDomainsFixture extends TestFixture {
 	 */
 	public array $records = [
 		[
-			'id' => 1,
 			'name' => 'Lorem ipsum dolor sit amet',
 			'translate_project_id' => 1,
 			'active' => 1,

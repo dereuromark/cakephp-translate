@@ -15,7 +15,7 @@ class Dumper {
 	 *
 	 * @return bool
 	 */
-	public function dump(array $translations, $domain, $lang, $folder = null) {
+	public function dump(array $translations, string $domain, string $lang, ?string $folder = null) {
 		if ($folder === null) {
 			$folder = LOCALE;
 		}
@@ -37,7 +37,7 @@ class Dumper {
 	 *
 	 * @return bool
 	 */
-	protected function _dump(array $translations, $file) {
+	protected function _dump(array $translations, string $file) {
 		$max = Configure::read('Translate.plurals') ?: 2;
 		$pluralExpression = Configure::read('Translate.pluralExpression') ?: 'n != 1';
 
@@ -46,8 +46,6 @@ class Dumper {
 			'"Project-Id-Version: \n"',
 			'"POT-Creation-Date: \n"',
 			'"PO-Revision-Date: \n"',
-			'"Last-Translator: none\n"',
-			'"Language-Team: \n"',
 			'"MIME-Version: 1.0\n"',
 			'"Content-Type: text/plain; charset=utf-8\n"',
 			'"Content-Transfer-Encoding: 8bit\n"',
@@ -56,6 +54,12 @@ class Dumper {
 
 		$po->setHeaders($newHeaders);
 
+		$entries = [
+			'' => [
+				'msgid' => '',
+				'msgstr' => '',
+			],
+		];
 		foreach ($translations as $translation) {
 			$entry = [
 				'msgid' => $translation->translate_string->name,
@@ -77,11 +81,14 @@ class Dumper {
 				//$entry['flags'] = explode(',', $translation->translate_string->flags);
 			}
 
-			$po->setEntries([$translation->translate_string->name => $entry]);
 			if ($translation->translate_string->plural !== null) {
 				//$po->setEntryPlural($translation->translate_string->name, $entry['msgstr']);
 			}
+
+			$entries[$translation->translate_string->name] = $entry;
 		}
+		dd($entries);
+		$po->setEntries($entries);
 
 		$po->write($file);
 

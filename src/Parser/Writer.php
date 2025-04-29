@@ -12,12 +12,19 @@ class Writer {
 	/**
 	 * @param string $filePath
 	 * @param array $entries
-	 *
+	 * @param array $headers
 	 * @throws \Exception
 	 * @return void
 	 */
-	public function write(string $filePath, array $entries): void {
+	public function write(string $filePath, array $entries, array $headers = []): void {
 		$handle = $this->openFile($filePath);
+
+		foreach ($headers as $header) {
+			fwrite($handle, $header . "\n");
+		}
+		if ($headers) {
+			fwrite($handle, "\n");
+		}
 
 		$entriesCount = count($entries);
 		$counter = 0;
@@ -86,11 +93,11 @@ class Writer {
 	protected function writeComments(array $entry) {
 		$result = '';
 
-		if ($entry['tcomment'] !== '') {
+		if (isset($entry['tcomment']) && $entry['tcomment'] !== '') {
 			$result .= '# ' . $entry['tcomment'] . "\n";
 		}
 
-		if ($entry['ccomment'] !== '') {
+		if (isset($entry['ccomment']) && $entry['ccomment'] !== '') {
 			$result .= '#. ' . $entry['ccomment'] . "\n";
 		}
 
@@ -105,7 +112,7 @@ class Writer {
 	protected function writeFlags(array $entry) {
 		$result = '';
 
-		if (count($entry['flags']) > 0) {
+		if (!empty($entry['flags'])) {
 			$result .= '#, ' . implode(', ', $entry['flags']) . "\n";
 		}
 
@@ -124,7 +131,7 @@ class Writer {
 	protected function writeReferences(array $entry) {
 		$result = '';
 
-		if (count($entry['references']) > 0) {
+		if (!empty($entry['references'])) {
 			foreach ($entry['references'] as $ref) {
 				$result .= '#: ' . $ref . "\n";
 			}
@@ -141,7 +148,7 @@ class Writer {
 	protected function writeContext(array $entry) {
 		$result = '';
 
-		if ($entry['msgctxt'] !== '') {
+		if (isset($entry['msgctxt']) && $entry['msgctxt'] !== '') {
 			$result .= 'msgctxt ' . $this->cleanExport($entry['msgctxt']) . "\n";
 		}
 
@@ -154,7 +161,7 @@ class Writer {
 	 * @return string
 	 */
 	protected function writeObsolete(array $entry) {
-		return ($entry['obsolete']) ? '#~ ' : '';
+		return (!empty($entry['obsolete'])) ? '#~ ' : '';
 	}
 
 	/**
@@ -196,8 +203,8 @@ class Writer {
 
 		$isPlural = isset($entry['msgid_plural']);
 
-		foreach ($entry['msgstr'] as $i => $value) {
-			if ($entry['obsolete']) {
+		foreach ((array)$entry['msgstr'] as $i => $value) {
+			if (!empty($entry['obsolete'])) {
 				$result .= '#~ ';
 			}
 

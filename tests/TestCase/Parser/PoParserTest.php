@@ -13,7 +13,7 @@ class PoParserTest extends TestCase {
 	public function testDump() {
 		$poParser = new PoParser();
 
-		$poParser->setHeaders([
+		$poParser->setFileHeaders([
 			'# Language translation',
 		]);
 		$poParser->setEntries([

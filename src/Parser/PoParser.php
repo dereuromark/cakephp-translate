@@ -12,6 +12,11 @@ class PoParser {
 	/**
 	 * @var array<string>
 	 */
+	protected $fileHeaders = [];
+
+	/**
+	 * @var array<string>
+	 */
 	protected $headers = [];
 
 	/**
@@ -528,7 +533,7 @@ class PoParser {
 	 */
 	public function write(string $filePath): void {
 		$writer = new Writer();
-		$writer->write($filePath, $this->entriesAsArrays, $this->headers);
+		$writer->write($filePath, $this->entriesAsArrays, $this->fileHeaders);
 	}
 
 	/**
@@ -577,8 +582,16 @@ class PoParser {
 	 * @param array<string> $headers
 	 * @return void
 	 */
-	public function setHeaders($headers): void {
+	public function setHeaders(array $headers): void {
 		$this->headers = $headers;
+	}
+
+	/**
+	 * @param array<string> $headers
+	 * @return void
+	 */
+	public function setFileHeaders(array $headers): void {
+		$this->fileHeaders = $headers;
 	}
 
 }

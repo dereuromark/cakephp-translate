@@ -87,7 +87,6 @@ class Dumper {
 
 			$entries[$translation->translate_string->name] = $entry;
 		}
-		dd($entries);
 		$po->setEntries($entries);
 
 		$po->write($file);

@@ -68,6 +68,14 @@ class MessagesDbLoaderTest extends TestCase {
 	 * @return void
 	 */
 	public function testDomain() {
+		/*
+		I18n::setTranslator('dom', function () {
+			return new MessagesDbLoader(
+				'default',
+				'de',
+			);
+		}, 'de');
+		*/
 		I18n::config('dom', function ($domain, $locale) {
 			return new MessagesDbLoader(
 				$domain,

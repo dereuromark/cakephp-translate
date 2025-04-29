@@ -227,11 +227,9 @@ class I18nExtractCommand extends CoreI18nExtractCommand {
 	 * @return int|null
 	 */
 	protected function findProjectId(string $plugin): ?int {
-		$type = $plugin ? TranslateProject::TYPE_PLUGIN : TranslateProject::TYPE_APP;
-
 		$project = $this->fetchTable('Translate.TranslateProjects')
 			->find()
-			->where(['type' => $type])
+			->where(['type' => TranslateProject::TYPE_APP, 'default' => true])
 			->first();
 		if (!$project) {
 			$project = $this->fetchTable('Translate.TranslateProjects')

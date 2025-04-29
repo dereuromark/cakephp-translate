@@ -14,7 +14,7 @@ use Translate\Model\Entity\TranslateProject;
  *
  * Returns translation messages stored in database.
  */
-class MessagesDbLoader extends Package {
+class MessagesDbLoader {
 
 	use LocatorAwareTrait;
 
@@ -63,7 +63,7 @@ class MessagesDbLoader extends Package {
 	) {
 		$this->domain = $domain;
 		$this->locale = $locale;
-		$this->model = $model ?: 'I18nMessages';
+		$this->model = $model ?: 'Translate.TranslateTerms';
 		$this->formatter = $formatter;
 	}
 
@@ -75,10 +75,9 @@ class MessagesDbLoader extends Package {
 	 * @return \Cake\I18n\Package
 	 */
 	public function __invoke(): Package {
-		/** @var \Cake\ORM\Table $model */
-		$model = $this->_getModel();
+		$model = $this->fetchTable('Translate.TranslateTerms');
 
-		$translateProject = $model->get('TranslateLanguages')->get('TranslateProjects')
+		$translateProject = $this->fetchTable('Translate.TranslateProjects')
 			->find()
 			->where(['type' => TranslateProject::TYPE_APP, 'default' => true])
 			->firstOrFail();

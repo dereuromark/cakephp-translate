@@ -9,6 +9,7 @@ use Cake\Core\ContainerInterface;
 use Cake\Routing\Route\DashedRoute;
 use Cake\Routing\RouteBuilder;
 use League\Container\ReflectionContainer;
+use Translate\Command\I18nDumpCommand;
 use Translate\Command\I18nExtractCommand;
 
 /**
@@ -38,7 +39,8 @@ class TranslatePlugin extends BasePlugin {
 	 */
 	public function console(CommandCollection $commands): CommandCollection {
 		//$commands->add('translations import', TranslationsCommand::class);
-		$commands->add('i18n extract', I18nExtractCommand::class);
+		$commands->add('i18n extract_to_db', I18nExtractCommand::class);
+		$commands->add('i18n dump_from_db', I18nDumpCommand::class);
 
 		return $commands;
 	}

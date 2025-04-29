@@ -3,6 +3,7 @@
 namespace Translate\Test\Fixture;
 
 use Cake\TestSuite\Fixture\TestFixture;
+use Translate\Model\Entity\TranslateProject;
 
 /**
  * TranslateProjectsFixture
@@ -35,9 +36,9 @@ class TranslateProjectsFixture extends TestFixture {
 	public array $records = [
 		[
 			'name' => 'Lorem ipsum dolor sit amet',
-			'type' => 1,
+			'type' => TranslateProject::TYPE_APP,
 			'default' => 1,
-			'status' => 1,
+			'status' => TranslateProject::STATUS_HIDDEN,
 			'created' => '2017-04-15 01:23:08',
 			'modified' => '2017-04-15 01:23:08'
 		],

@@ -178,7 +178,7 @@ class TranslateLanguagesTable extends Table {
 	 *
 	 * @return \Translate\Model\Entity\TranslateLanguage|bool
 	 */
-	public function init($name, $locale, $iso2, $projectId, array $data = []) {
+	public function init(string $name, string $locale, string $iso2, int $projectId, array $data = []) {
 		$translateLanguage = $this->newEntity([
 			'name' => $name,
 			'locale' => $locale,

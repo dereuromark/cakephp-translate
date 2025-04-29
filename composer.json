@@ -30,6 +30,7 @@
 		"cakephp/migrations": "^4.6.3",
 		"dereuromark/cakephp-templating": "dev-master",
 		"dereuromark/cakephp-queue": "^8.0",
+		"dereuromark/cakephp-data": "@stable",
 		"fig-r/psr2r-sniffer": "dev-master",
 		"phpunit/phpunit": "^12.1",
 		"sepia/po-parser": "^6.0.1",
@@ -63,7 +64,7 @@
 		"cs-check": "phpcs --extensions=php",
 		"cs-fix": "phpcbf --extensions=php",
 		"stan": "phpstan analyse",
-		"stan-setup": "cp composer.json composer.backup && composer require --dev phpstan/phpstan:^2.0.0 && mv composer.backup composer.json",
+		"stan-setup": "cp composer.json composer.backup && composer require --dev phpstan/phpstan:^2.0.0 cakephp-phpstan phpstan/extension-installer && mv composer.backup composer.json",
 		"test": "vendor/bin/phpunit",
 		"test-coverage": "vendor/bin/phpunit --log-junit tmp/coverage/unitreport.xml --coverage-html tmp/coverage --coverage-clover tmp/coverage/coverage.xml"
 	}

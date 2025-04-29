@@ -8,5 +8,6 @@ return [
 		'usersTable' => null,
 		'defaultLocale' => null, // E.g. `en` or `en_US`
 		'layout' => null, // Defaults to own layout
+		'flags' => null, // Set to gif for custom gif images
 	],
 ];

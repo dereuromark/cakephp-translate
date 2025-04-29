@@ -21,15 +21,16 @@
 	<fieldset>
 		<legend><?= __d('translate', 'Edit Translate Language') ?></legend>
 		<?php
+		echo $this->Form->control('name');
+		echo $this->Form->control('locale');
+
 		if (!empty($Languages)) {
 			echo $this->Form->control('language_id', ['empty'=>true]);
 		} else {
 			echo $this->Form->control('iso2');
 		}
 
-			echo $this->Form->control('name');
-			echo $this->Form->control('locale');
-			echo $this->Form->control('active');
+		echo $this->Form->control('active');
 		?>
 	</fieldset>
 	<?= $this->Form->button(__d('translate', 'Submit')) ?>

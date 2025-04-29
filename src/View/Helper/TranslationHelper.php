@@ -2,6 +2,7 @@
 
 namespace Translate\View\Helper;
 
+use Cake\Core\Configure;
 use Cake\View\Helper;
 use RuntimeException;
 use Translate\Model\Entity\TranslateDomain;
@@ -24,8 +25,12 @@ class TranslationHelper extends Helper {
 	 * @param bool $checkExistence (defaults to FALSE)
 	 * @return string imageTag or empty string on failure
 	 */
-	public function flag($iso2Code = null, array $attr = [], bool $checkExistence = false) {
+	public function flag(?string $iso2Code = null, array $attr = [], bool $checkExistence = false) {
 		if ($iso2Code) {
+			if (Configure::read('Translate.flags') !== 'gif') {
+				return '<i class="fi fi-' . strtolower($iso2Code) . '" title="' . strtolower($iso2Code) . '"></i>';
+			}
+
 			$icon = 'language_flags' . DS . $iso2Code . '.gif';
 			if ($checkExistence === false || file_exists(WWW_ROOT . 'img' . DS . $icon)) {
 				$options = ['alt' => strtoupper($iso2Code), 'title' => strtoupper($iso2Code), 'class' => 'languageFlag'];

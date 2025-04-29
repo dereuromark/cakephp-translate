@@ -25,12 +25,12 @@
 			<td><?= h($translateLanguage->name) ?></td>
 		</tr>
 		<tr>
-			<th><?= __d('translate', 'Iso2') ?></th>
-			<td><?= h($translateLanguage->iso2) ?></td>
-		</tr>
-		<tr>
 			<th><?= __d('translate', 'Locale') ?></th>
 			<td><?= h($translateLanguage->locale) ?></td>
+		</tr>
+		<tr>
+			<th><?= __d('translate', 'Iso2') ?></th>
+			<td><?= h($translateLanguage->iso2) ?></td>
 		</tr>
 		<tr>
 			<th><?= __d('translate', 'Active') ?></th>

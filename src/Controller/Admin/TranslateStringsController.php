@@ -334,6 +334,7 @@ class TranslateStringsController extends TranslateAppController {
 	public function translate($id = null) {
 		$translateString = $this->TranslateStrings->get($id, ['contain' => 'TranslateDomains']);
 
+		/** @var \Translate\Model\Entity\TranslateLanguage[] $translateLanguages */
 		$translateLanguages = $this->TranslateStrings->TranslateTerms->TranslateLanguages->find()->all()->toArray();
 		if (!$translateLanguages) {
 			$this->Flash->error(__d('translate', 'You need at least one language to translate'));
@@ -346,7 +347,7 @@ class TranslateStringsController extends TranslateAppController {
 		if ($this->Common->isPosted()) {
 			$success = true;
 			foreach ($translateLanguages as $translateLanguage) {
-				$key = $translateLanguage->iso2;
+				$key = $translateLanguage->locale;
 				$term = $this->request->getData('content_' . $key);
 				if ($term !== null) {
 					if (!isset($translateTerms[$translateLanguage->id])) {

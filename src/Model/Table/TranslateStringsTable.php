@@ -257,19 +257,19 @@ class TranslateStringsTable extends Table {
 	}
 
 	/**
-	 * @param int $translate_language_id
-	 * @param array $translateLanguages
-	 * @throws \Cake\Http\Exception\InternalErrorException
+	 * @param int $translateLanguageId
+	 * @param array<\Translate\Model\Entity\TranslateLanguage> $translateLanguages
 	 * @return string
+	 *@throws \Cake\Http\Exception\InternalErrorException
 	 */
-	public function resolveLanguageKey($translate_language_id, $translateLanguages) {
+	public function resolveLanguageKey(int $translateLanguageId, array $translateLanguages) {
 		foreach ($translateLanguages as $translateLanguage) {
-			if ($translateLanguage->id === $translate_language_id) {
-				return $translateLanguage->iso2;
+			if ($translateLanguage->id === $translateLanguageId) {
+				return $translateLanguage->locale;
 			}
 		}
 
-		throw new InternalErrorException('Language not found');
+		throw new InternalErrorException('Locale not found');
 	}
 
 	/**
@@ -339,16 +339,16 @@ class TranslateStringsTable extends Table {
 	public function getSuggestions($translateString, array $translateLanguages, array $translateTerms) {
 		$translator = new Translator();
 
-		$baseLanguage = $this->TranslateTerms->TranslateLanguages->getBaseLanguage($translateLanguages);
+		$baseLocale = $this->TranslateTerms->TranslateLanguages->getBaseLocale($translateLanguages);
 
 		$result = [];
 		foreach ($translateLanguages as $translateLanguage) {
-			if ($translateLanguage->iso2 === $baseLanguage) {
+			if ($translateLanguage->locale === $baseLocale) {
 				continue;
 			}
 
-			$translations = $translator->suggest($translateString->name, $translateLanguage->iso2, $baseLanguage);
-			$result[$translateLanguage->iso2] = $translations;
+			$translations = $translator->suggest($translateString->name, $translateLanguage->locale, $baseLocale);
+			$result[$translateLanguage->locale] = $translations;
 		}
 
 		return $result;

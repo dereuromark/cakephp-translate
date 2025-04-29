@@ -68,7 +68,7 @@ class TranslateLanguagesTableTest extends TestCase {
 			'translate_project_id' => 1,
 			'name' => 'Deutsch',
 			'iso2' => 'DE',
-			'locale' => 'de',
+			'locale' => 'DE_DE',
 		];
 		$entity = $this->TranslateLanguages->newEntity($data);
 		$result = $this->TranslateLanguages->save($entity);
@@ -76,6 +76,7 @@ class TranslateLanguagesTableTest extends TestCase {
 		$this->assertTrue((bool)$result);
 
 		$entity = $this->TranslateLanguages->get($result->id);
+		$this->assertSame('de_DE', $entity->locale);
 		$this->assertSame('de', $entity->iso2);
 	}
 
@@ -109,12 +110,12 @@ class TranslateLanguagesTableTest extends TestCase {
 	/**
 	 * @return void
 	 */
-	public function testGetBaseLanguage() {
-		$result = $this->TranslateLanguages->getBaseLanguage([]);
+	public function testGetBaseLocale() {
+		$result = $this->TranslateLanguages->getBaseLocale([]);
 		$this->assertSame('en', $result);
 
-		$result = $this->TranslateLanguages->getBaseLanguage($this->TranslateLanguages->find()->all()->toArray());
-		$this->assertSame('Lo', $result);
+		$result = $this->TranslateLanguages->getBaseLocale($this->TranslateLanguages->find()->all()->toArray());
+		$this->assertSame('en_US', $result);
 	}
 
 }

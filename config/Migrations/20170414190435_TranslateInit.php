@@ -62,15 +62,15 @@ class TranslateInit extends AbstractMigration {
 				'limit' => 12,
 				'null' => false,
 			])
-			->addColumn('iso2', 'string', [
-				'default' => null,
-				'limit' => 2,
-				'null' => false,
-			])
 			->addColumn('locale', 'string', [
 				'default' => null,
 				'limit' => 10,
 				'null' => false,
+			])
+			->addColumn('iso2', 'string', [
+				'default' => null,
+				'limit' => 2,
+				'null' => true,
 			])
 			->addColumn('active', 'boolean', [
 				'default' => 1,
@@ -87,7 +87,7 @@ class TranslateInit extends AbstractMigration {
 				'limit' => null,
 				'null' => false,
 			])
-			->addIndex(['translate_project_id', 'iso2'], ['unique' => true])
+			->addIndex(['translate_project_id', 'locale'], ['unique' => true])
 			->addIndex(['translate_project_id'])
 			->addIndex(['iso2'])
 			->addForeignKey('translate_project_id', 'translate_projects', 'id', [

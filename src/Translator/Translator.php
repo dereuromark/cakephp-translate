@@ -41,12 +41,12 @@ class Translator {
 	 * It will use all provided engines.
 	 *
 	 * @param string $text Text up to 5000 chars
-	 * @param string $to Iso2 code (e.g.: de)
-	 * @param string $from Iso2 code (e.g.: en)
+	 * @param string $to Locale (e.g.: de)
+	 * @param string $from Locale (e.g.: en)
 	 *
 	 * @return array
 	 */
-	public function suggest($text, $to, $from) {
+	public function suggest(string $text, string $to, string $from): array {
 		$engines = $this->_getEngines();
 
 		$results = [];

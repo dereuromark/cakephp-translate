@@ -26,6 +26,8 @@ use Tools\Model\Entity\Entity;
  * @property int $translate_domain_id
  * @property array|null $flags
  * @property string|null $comment
+ * @property bool $unused
+ * @property bool $manual
  */
 class TranslateString extends Entity {
 

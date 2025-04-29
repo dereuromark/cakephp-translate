@@ -10,8 +10,8 @@ use Tools\Model\Entity\Entity;
  * @property int $id
  * @property int|null $language_id
  * @property string $name
- * @property string $iso2
  * @property string $locale
+ * @property string|null $iso2
  * @property bool $active
  *
  * @property \Data\Model\Entity\Language|null $language

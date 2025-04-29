@@ -71,7 +71,7 @@ class TranslateLanguagesTable extends Table {
 		'locale' => [ // For Locale folder import/export
 			'notEmpty' => [
 				'rule' => ['notEmpty'],
-				'message' => 'Please insert a abbreviation / folder-name',
+				'message' => 'Format: xx or xx_YY',
 				'last' => true,
 			],
 			'isUnique' => [
@@ -142,6 +142,13 @@ class TranslateLanguagesTable extends Table {
 		}
 		if (isset($data['name'])) {
 			$data['name'] = ucfirst($data['name']);
+		}
+		if (isset($data['locale'])) {
+			$data['locale'] = strtolower($data['locale']);
+			if (str_contains($data['locale'], '_')) {
+				[$lang, $region] = explode('_', $data['locale'], 2);
+				$data['locale'] = $lang . '_' . strtoupper($region);
+			}
 		}
 	}
 
@@ -245,10 +252,10 @@ class TranslateLanguagesTable extends Table {
 	 *
 	 * @return string
 	 */
-	public function getBaseLanguage(array $translateLanguages) {
+	public function getBaseLocale(array $translateLanguages) {
 		foreach ($translateLanguages as $translateLanguage) {
 			if ($translateLanguage->base) {
-				return $translateLanguage->iso2;
+				return $translateLanguage->locale;
 			}
 		}
 

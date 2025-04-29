@@ -68,9 +68,12 @@ class I18nDumpCommand extends Command {
 		$this->_projectId = $this->findProjectId($plugin);
 
 		/** @var \Translate\Model\Entity\TranslateLanguage[] $languages */
-		$languages = $this->fetchTable('Translate.TranslateLanguages')->getExtractable($this->_projectId)->all();
+		$languages = $this->fetchTable('Translate.TranslateLanguages')->getExtractable($this->_projectId)->all()->toArray();
 		/** @var \Translate\Model\Entity\TranslateDomain[] $domains */
-		$domains = $this->fetchTable('Translate.TranslateDomains')->getActive()->all();
+		$domains = $this->fetchTable('Translate.TranslateDomains')->getActive()->all()->toArray();
+		if (!$domains) {
+			$io->abort('No active domains found to dump.');
+		}
 
 		$count = 0;
 		foreach ($domains as $domain) {
@@ -83,8 +86,8 @@ class I18nDumpCommand extends Command {
 
 				$dumper = new Dumper();
 				$folder = array_shift($this->_paths) ?: null;
-				if (!$dumper->dump($translations, $domain->name, $language->iso2, $folder)) {
-					$io->err('Error: ' . $language->iso2 . '/' . $domain->name);
+				if (!$dumper->dump($translations, $domain->name, $language->locale, $folder)) {
+					$io->err('Error: ' . $language->locale . '/' . $domain->name);
 				}
 			}
 

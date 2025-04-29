@@ -64,18 +64,20 @@ if (!empty($coverage) && is_array($count)) {
 		<p>
 	<?php echo $count['groups']?> <?php echo $this->Html->link(__d('translate', 'Groups'), ['controller' => 'TranslateDomains']);?>
 			with <?php echo $count['strings']?> <?php echo $this->Html->link(__d('translate', 'Strings'), ['controller' => 'TranslateStrings']);?>
-			in <?php echo $count['languages']?> different <?php echo $this->Html->link(__d('translate', 'Languages'), ['controller' => 'TranslateLanguages']);?>
+			in <?php echo $count['languages']?> different <?php echo $this->Html->link(__d('translate', 'Locales'), ['controller' => 'TranslateLanguages']);?>
 			= <?php echo $count['translations']?> <?php echo $this->Html->link(__d('translate', 'Translations'), ['controller' => 'TranslateTerms']);?>
 		</p>
 
 <?php } elseif (count($projectSwitchArray)) { ?>
 
 	<p style="color: red">
-	<?php echo __d('translate', 'Please add languages you want to support'); ?>:
+	<?php echo __d('translate', 'Please add locales you want to support'); ?>:
 		<?php if (\Cake\Core\Plugin::isLoaded('Data')) {
+			echo $this->Html->link('Locales', ['controller' => 'TranslateLanguages']);
+			echo ' | ';
 			echo $this->Html->link('Languages', ['plugin' => 'Data', 'controller' => 'Languages']);
 		} else {
-			echo $this->Html->link('Languages', ['controller' => 'TranslateLanguages']);
+			echo $this->Html->link('Locales', ['controller' => 'TranslateLanguages']);
 		} ?>
 	</p>
 
@@ -106,7 +108,7 @@ if (!empty($coverage) && is_array($count)) {
 
 <ul>
 	<li><?php echo $this->Html->link(__d('translate', 'Best Practice'), ['action' => 'bestPractice']);?> </li>
-	<li><?php echo $this->Html->link(__d('translate', 'Extract'), ['controller' => 'TranslateStrings', 'action' => 'extract']);?> </li>
+	<li><?php echo $this->Html->link(__d('translate', 'Import from PO/POT'), ['controller' => 'TranslateStrings', 'action' => 'extract']);?> </li>
 	<li><?php echo $this->Html->link(__d('translate', 'Dump'), ['controller' => 'TranslateStrings', 'action' => 'dump']);?> </li>
 <?php if (Configure::read('debug')) { ?>
 	<li><?php echo $this->Html->link(__d('translate', 'Reset'), ['controller' => 'Translate', 'action' => 'reset']);?> </li>

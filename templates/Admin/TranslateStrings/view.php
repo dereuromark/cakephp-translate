@@ -64,7 +64,7 @@ use Cake\Core\Configure;
 				</td>
 				<td>
 					<?php echo h($translateTerm->content); ?>
-					<?php if ($translateTerm->content === '' && $translateTerm->translate_language->iso2 === Configure::read('Translate.defaultLocale')) { ?>
+					<?php if ($translateTerm->content === '' && $translateTerm->translate_language->locale === Configure::read('Translate.defaultLocale')) { ?>
 						<div class="defaulting" title="Default value"><?php echo h($translateString->name); ?></div>
 					<?php } ?>
 				</td>

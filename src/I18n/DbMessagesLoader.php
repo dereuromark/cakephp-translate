@@ -2,7 +2,6 @@
 
 namespace Translate\I18n;
 
-//use Aura\Intl\Package;
 use Cake\Datasource\RepositoryInterface;
 use Cake\Datasource\ResultSetInterface;
 use Cake\I18n\Package;
@@ -14,7 +13,7 @@ use Translate\Model\Entity\TranslateProject;
  *
  * Returns translation messages stored in database.
  */
-class MessagesDbLoader {
+class DbMessagesLoader {
 
 	use LocatorAwareTrait;
 
@@ -113,8 +112,6 @@ class MessagesDbLoader {
 			->where(['TranslateDomains.name' => $this->domain, 'TranslateLanguages.locale' => $this->locale])
 			->where(['TranslateStrings.active' => true])
 			->enableHydration(false)
-			->where(['domain' => $this->domain, 'locale' => $this->locale])
-			->disableHydration()
 			->all();
 
 		return new Package($this->formatter, null, $this->_messages($results));

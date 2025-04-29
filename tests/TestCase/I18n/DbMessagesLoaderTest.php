@@ -5,9 +5,9 @@ namespace Translate\Test\TestCase\I18n;
 use Cake\I18n\I18n;
 use Cake\TestSuite\TestCase;
 use Shim\Filesystem\Folder;
-use Translate\I18n\MessagesDbLoader;
+use Translate\I18n\DbMessagesLoader;
 
-class MessagesDbLoaderTest extends TestCase {
+class DbMessagesLoaderTest extends TestCase {
 
 	/**
 	 * @var array
@@ -21,9 +21,9 @@ class MessagesDbLoaderTest extends TestCase {
 	];
 
 	/**
-	 * @var \Translate\I18n\MessagesDbLoader
+	 * @var \Translate\I18n\DbMessagesLoader
 	 */
-	protected $MessagesDbLoader;
+	protected $messagesLoader;
 
 	/**
 	 * @return void
@@ -42,9 +42,18 @@ class MessagesDbLoaderTest extends TestCase {
 	/**
 	 * @return void
 	 */
+	public function tearDown(): void {
+		parent::tearDown();
+
+		I18n::clear();
+	}
+
+	/**
+	 * @return void
+	 */
 	public function testDefault() {
 		I18n::config('default', function ($domain, $locale) {
-			return new MessagesDbLoader(
+			return new DbMessagesLoader(
 				$domain,
 				$locale,
 			);
@@ -77,7 +86,7 @@ class MessagesDbLoaderTest extends TestCase {
 		}, 'de');
 		*/
 		I18n::config('dom', function ($domain, $locale) {
-			return new MessagesDbLoader(
+			return new DbMessagesLoader(
 				$domain,
 				$locale,
 			);

@@ -7,19 +7,34 @@
 use Cake\Core\Plugin;
 
 ?>
-<nav class="actions col-md-3 col-sm-4 col-xs-12">
-	<ul class="side-nav nav nav-pills nav-stacked">
-		<li class="heading"><?= __d('translate', 'Actions') ?></li>
-		<li><?= $this->Html->link(__d('translate', 'Overview'), ['controller' => 'Translate', 'action' => 'index']) ?></li>
-		<li><?= $this->Html->link(__d('translate', 'New Translate Domain'), ['action' => 'add']) ?></li>
-		<li><?= $this->Html->link(__d('translate', 'List Translate Projects'), ['controller' => 'TranslateProjects', 'action' => 'index']) ?></li>
-		<li><?= $this->Html->link(__d('translate', 'New Translate Project'), ['controller' => 'TranslateProjects', 'action' => 'add']) ?></li>
-		<li><?= $this->Html->link(__d('translate', 'List Translate Strings'), ['controller' => 'TranslateStrings', 'action' => 'index']) ?></li>
-		<li><?= $this->Html->link(__d('translate', 'New Translate String'), ['controller' => 'TranslateStrings', 'action' => 'add']) ?></li>
+<nav class="actions col-md-3 col-sm-4 col-12">
+	<ul class="nav flex-column nav-pills">
+		<li class="nav-item">
+			<span class="nav-link disabled fw-bold"><?= __d('translate', 'Actions') ?></span>
+		</li>
+		<li class="nav-item">
+			<?= $this->Html->link(__d('translate', 'Overview'), ['controller' => 'Translate', 'action' => 'index'], ['class' => 'nav-link']) ?>
+		</li>
+		<li class="nav-item">
+			<?= $this->Html->link(__d('translate', 'New Translate Domain'), ['action' => 'add'], ['class' => 'nav-link']) ?>
+		</li>
+		<li class="nav-item">
+			<?= $this->Html->link(__d('translate', 'List Translate Projects'), ['controller' => 'TranslateProjects', 'action' => 'index'], ['class' => 'nav-link']) ?>
+		</li>
+		<li class="nav-item">
+			<?= $this->Html->link(__d('translate', 'New Translate Project'), ['controller' => 'TranslateProjects', 'action' => 'add'], ['class' => 'nav-link']) ?>
+		</li>
+		<li class="nav-item">
+			<?= $this->Html->link(__d('translate', 'List Translate Strings'), ['controller' => 'TranslateStrings', 'action' => 'index'], ['class' => 'nav-link']) ?>
+		</li>
+		<li class="nav-item">
+			<?= $this->Html->link(__d('translate', 'New Translate String'), ['controller' => 'TranslateStrings', 'action' => 'add'], ['class' => 'nav-link']) ?>
+		</li>
 	</ul>
 </nav>
+
 <div class="translateDomains index col-md-9 col-sm-8 col-xs-12">
-	<h2><?= __d('translate', 'Translate Domains') ?></h2>
+	<h2><?= __d('translate', 'Groups') ?> aka <?= __d('translate', 'Translate Domains') ?></h2>
 	<table class="table table-striped">
 		<thead>
 			<tr>

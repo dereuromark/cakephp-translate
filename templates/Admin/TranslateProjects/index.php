@@ -7,16 +7,29 @@
 use Cake\Core\Plugin;
 
 ?>
-<nav class="actions col-md-3 col-sm-4 col-xs-12">
-	<ul class="side-nav nav nav-pills nav-stacked">
-		<li class="heading"><?= __d('translate', 'Actions') ?></li>
-		<li><?= $this->Html->link(__d('translate', 'Overview'), ['controller' => 'Translate', 'action' => 'index']) ?></li>
-		<li><?= $this->Html->link(__d('translate', 'New Translate Project'), ['action' => 'add']) ?></li>
-		<li><?= $this->Html->link(__d('translate', 'List Translate Languages'), ['controller' => 'TranslateLanguages', 'action' => 'index']) ?> </li>
-		<li><?= $this->Html->link(__d('translate', 'List Translate Domains'), ['controller' => 'TranslateDomains', 'action' => 'index']) ?> </li>
-		<li><?= $this->Html->link(__d('translate', 'List Translate Strings'), ['controller' => 'TranslateStrings', 'action' => 'index']) ?></li>
+<nav class="actions col-md-3 col-sm-4 col-12">
+	<ul class="nav flex-column nav-pills">
+		<li class="nav-item">
+			<span class="nav-link disabled fw-bold"><?= __d('translate', 'Actions') ?></span>
+		</li>
+		<li class="nav-item">
+			<?= $this->Html->link(__d('translate', 'Overview'), ['controller' => 'Translate', 'action' => 'index'], ['class' => 'nav-link']) ?>
+		</li>
+		<li class="nav-item">
+			<?= $this->Html->link(__d('translate', 'New Translate Project'), ['action' => 'add'], ['class' => 'nav-link']) ?>
+		</li>
+		<li class="nav-item">
+			<?= $this->Html->link(__d('translate', 'List Translate Languages'), ['controller' => 'TranslateLanguages', 'action' => 'index'], ['class' => 'nav-link']) ?>
+		</li>
+		<li class="nav-item">
+			<?= $this->Html->link(__d('translate', 'List Translate Domains'), ['controller' => 'TranslateDomains', 'action' => 'index'], ['class' => 'nav-link']) ?>
+		</li>
+		<li class="nav-item">
+			<?= $this->Html->link(__d('translate', 'List Translate Strings'), ['controller' => 'TranslateStrings', 'action' => 'index'], ['class' => 'nav-link']) ?>
+		</li>
 	</ul>
 </nav>
+
 <div class="translateProjects index col-md-9 col-sm-8 col-xs-12">
 	<h2><?= __d('translate', 'Translate Projects') ?></h2>
 	<table class="table table-striped">

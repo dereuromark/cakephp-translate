@@ -55,4 +55,13 @@ class TranslateAppController extends AppController {
 		return null;
 	}
 
+	/**
+	 * @param \Cake\Event\EventInterface $event
+	 * @return void
+	 */
+	public function beforeRender(EventInterface $event): void {
+		$layout = Configure::read('Translate.layout', 'Translate.simple');
+		$this->viewBuilder()->setLayout($layout);
+	}
+
 }

@@ -34,6 +34,7 @@ Easily manage i18n/translations from your backend.
 	<li>Auto-Features like trim(), h(), newlines to <?php echo h('<p>/<br>'); ?></li>
 	<li>Auto-Translate and Auto-Suggest with GoogleTranslateAPI (PHP/JS)</li>
 	<li>Validate placeholders ({0})</li>
+	<li>Directly open the code (references) to quickly see the scope/context of the translation string.</li>
 	<li>Prevent doublettes, missing translations, collisions</li>
 	<li>Manage in domains (and export/enable/disable them)</li>
 	<li>Creates clean pot files with all translations in usage</li>
@@ -95,6 +96,8 @@ if (!empty($coverage) && is_array($count)) {
 	<li>Select language you want to translate into (or from)</li>
 	<li>Translate and submit the form</li>
 </ol>
+
+	<p><?php echo $this->Html->link('Continue translating', ['controller' => 'TranslateStrings', 'action' => 'translate']); ?></p>
 
 
 <h3>How to Administer</h3>

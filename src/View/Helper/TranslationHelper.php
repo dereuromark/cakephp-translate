@@ -6,6 +6,7 @@ use Cake\Core\Configure;
 use Cake\View\Helper;
 use RuntimeException;
 use Translate\Model\Entity\TranslateDomain;
+use Translate\Model\Entity\TranslateProject;
 
 /**
  * @property \Cake\View\Helper\HtmlHelper $Html
@@ -126,7 +127,7 @@ class TranslationHelper extends Helper {
 	 * @return bool
 	 */
 	public function canDisplayReference(TranslateDomain $translateDomain) {
-		return (bool)$translateDomain->path;
+		return (bool)$translateDomain->path || in_array($translateDomain->translate_project->type, [TranslateProject::TYPE_APP], true);
 	}
 
 }

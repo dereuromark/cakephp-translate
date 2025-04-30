@@ -3,12 +3,10 @@
 namespace Translate\Controller;
 
 use App\Controller\AppController;
+use BootstrapUI\View\Helper\FormHelper;
 use Cake\Core\Configure;
 use Cake\Event\EventInterface;
 use Templating\TemplatingPlugin;
-
-# fix for internal routing (sticky plugin name in url)
-Configure::write('Plugin.name', 'Translate');
 
 /**
  * @property \Tools\Controller\Component\CommonComponent $Common
@@ -67,6 +65,11 @@ class TranslateAppController extends AppController {
 		if ($map) {
 			$map += (array)Configure::read('Icon.map');
 			Configure::write('Icon.map', $map);
+		}
+
+		if (class_exists(FormHelper::class)) {
+			$this->viewBuilder()->addHelper('BootstrapUi.Form', [
+			]);
 		}
 	}
 

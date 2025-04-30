@@ -74,7 +74,7 @@ class TranslateDomainsTable extends Table {
 	}
 
 	/**
-	 * @return \Cake\ORM\Query
+	 * @return \Cake\ORM\Query\SelectQuery
 	 */
 	public function getActive() {
 		return $this->find()

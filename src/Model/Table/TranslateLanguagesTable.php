@@ -200,7 +200,7 @@ class TranslateLanguagesTable extends Table {
 	 * @param string $type
 	 * @param array $options
 	 *
-	 * @return \Cake\ORM\Query
+	 * @return \Cake\ORM\Query\SelectQuery
 	 */
 	public function getActive($type = 'all', $options = []) {
 		$defaults = ['conditions' => [$this->getAlias() . '.active' => 1]];
@@ -224,7 +224,7 @@ class TranslateLanguagesTable extends Table {
 	/**
 	 * @param int $translateProjectId
 	 *
-	 * @return \Cake\ORM\Query
+	 * @return \Cake\ORM\Query\SelectQuery
 	 */
 	public function getExtractable($translateProjectId) {
 		return $this->find()

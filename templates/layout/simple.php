@@ -14,14 +14,22 @@
 		href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/css/flag-icons.min.css"
 	/>
 	<style>
+		.wrapper {
+			padding: 10px;
+		}
+
 		.defaulting {
 			color: #999;
+		}
+
+		.highlight {
+			background-color: #F2FF9F;
 		}
 	</style>
 </head>
 <body>
 
-<section class="content">
+<section class="wrapper">
 
 	<div class="row messages">
 		<?= $this->Flash->render() ?>

@@ -4,12 +4,10 @@
  * @var \Translate\Model\Entity\TranslateLanguage[] $translateLanguages
  * @var \Translate\Model\Entity\TranslateString $translateString
  * @var array $fileArray
- * @var mixed $lines
+ * @var array<int> $lines
  * @var string $reference
  */
-
 use Cake\Core\Configure;
-
 ?>
 
 <div class="code-excerpt">

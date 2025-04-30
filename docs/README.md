@@ -64,7 +64,7 @@ Adjust your app.php and add Translate configuration:
 ```
 
 It is recommended to not output the references into the PO files for easier diffing.
-They usually are already in the POT files anyway - and then inside Translate, as well.
+They are usually already in the POT files anyway - and then inside Translate, as well.
 
 If you need to use more than 2 plurals (for some languages), make sure you extend the database table, as well.
 Add `plural_3` up to `plural_6` if needed to the "translation_terms".
@@ -72,7 +72,9 @@ Add `plural_3` up to `plural_6` if needed to the "translation_terms".
 
 ## Extract right into DB instead of the POT file detour.
 
-TODO
+```
+bin/cake i18n extract_to_db
+```
 
 ## Directly read translations from the DB.
 Configure I18n to use the Translate DbMessagesLoader for default domain:
@@ -89,7 +91,7 @@ If you have more than just default domain, you will need to do this for each dom
 
 ## Translation Auto-Suggest
 
-By default it uses a simple Google API translation.
+By default, it uses a simple Google API translation.
 This has a few limitations, however.
 
 You can use any [other translation service](https://www.programmableweb.com/news/63-translation-apis-bing-google-translate-and-google-ajax-language/2013/01/15) by just switching out the `'engine'` config.
@@ -119,7 +121,7 @@ class MyClassName implements EngineInterface {
      *
      * @return string|null
      */
-    public function translate($text, $to, $from) {
+    public function translate(string $text, string $to, string $from): ?string {
         ...
 
         return $result;
@@ -131,8 +133,14 @@ It should not throw exceptions, instead use try/catch if needed and log the mess
 
 
 ## Layout adjustments
-The default layout is based on Twitter Bootstrap v3.
+The default layout is based on Twitter Bootstrap v5.
 It uses fontawesome for the action buttons. Please make sure you include this CSS library, if you are using the default templates.
+For best results also
+- `composer require friendsofcake/bootstrap-ui` - no need to load it, it just has to be present.
+
+Optional dependencies:
+- dereuromark/cakephp-data plugin for Languages relation
+- dereuromark/cakphp-queue plugin for background processing
 
 You can customize templates by moving them into the right folder in project level.
 See [CakePHP docs](https://book.cakephp.org/3.0/en/plugins.html#overriding-plugin-templates-from-inside-your-application).

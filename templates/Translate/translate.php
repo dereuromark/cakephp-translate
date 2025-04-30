@@ -11,20 +11,16 @@
 	<ul class="side-nav nav nav-pills nav-stacked">
 		<li class="heading"><?= __d('translate', 'Actions') ?></li>
 		<li><?= $this->Html->link(__d('translate', 'Overview'), ['controller' => 'Translate', 'action' => 'index']) ?></li>
-		<li><?= $this->Html->link(__d('translate', 'List Translate Strings'), ['controller' => 'TranslateStrings', 'action' => 'index', '?' => $this->request->getQuery()]) ?></li>
-		<li><?php echo $this->Html->link(__d('translate', 'Edit Translate String'), ['action'=>'edit', $translateString['id']]);?></li>
 	</ul>
 </nav>
 <div class="translateStrings index col-md-9 col-sm-8 col-xs-12">
 
 <h3>String</h3>
 
-<div style="float: right">
-	<?= $this->Html->link($this->Icon->render('edit'), ['action' => 'edit', $translateString->id, '?' => ['translate_afterwards' => true]], ['escape' => false]); ?>
-</div>
 <code>
-	 <?php echo h($translateString['name'])?>
+	 <?php echo h($translateString->name)?>
 </code>
+
 	<?php if ($translateString->plural) { ?>
 		/ <code>
 			<?php echo h($translateString->plural)?>
@@ -100,7 +96,7 @@ foreach ($sep as $s) {
 ?>
 
 <h3>Additional Infos</h3>
-Group: <?php echo $this->Html->link($translateString->translate_domain->name, ['action' => 'index', '?' => ['translate_domain_id' => $translateString->translate_domain_id]]); ?><br/>
+Group: <code><?php echo h($translateString->translate_domain->name); ?></code><br/>
 
 References: <?php echo count($references)?>x
 	<?php if ($references) { ?>
@@ -116,6 +112,7 @@ References: <?php echo count($references)?>x
 	<?php } ?>
 
 </div>
+
 
 
 <!-- Modal -->

@@ -218,18 +218,25 @@ class TranslateStringsTable extends Table {
 	/**
 	 * Get next string that needs to be worked on
 	 *
-	 * @param int $id
+	 * @param int|null $domainId
+	 * @param int|null $stringId
 	 * @param array $options
 	 *
-	 * @return \Cake\ORM\Query
+	 * @return \Cake\ORM\Query\SelectQuery
 	 */
-	public function getNext($id, array $options = []) {
-		$options = [
-			'conditions' => [
-				'TranslateStrings.id !=' => $id,
-			],
-		] + $options;
-		$query = $this->find('all', $options);
+	public function getNext(?int $domainId, ?int $stringId, array $options = []): SelectQuery {
+		$conditions = [
+				'TranslateStrings.skipped' => false,
+		];
+		if ($domainId) {
+			$conditions['TranslateStrings.translate_domain_id'] = $domainId;
+		}
+		if ($stringId) {
+			$conditions['TranslateStrings.id'] = $stringId;
+		}
+
+		$options = ['conditions' => $conditions] + $options;
+		$query = $this->find('all', ...$options);
 		$query->leftJoinWith('TranslateTerms');
 		$query->andWhere(['TranslateTerms.content IS' => null]);
 
@@ -239,7 +246,7 @@ class TranslateStringsTable extends Table {
 	/**
 	 * Get next string that needs to be worked on
 	 *
-	 * @return \Cake\ORM\Query
+	 * @return \Cake\ORM\Query\SelectQuery
 	 */
 	public function getUntranslated() {
 		$query = $this->find();

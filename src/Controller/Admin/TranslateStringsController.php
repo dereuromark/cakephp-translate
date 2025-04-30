@@ -332,7 +332,18 @@ class TranslateStringsController extends TranslateAppController {
 	 * @return \Cake\Http\Response|null|void
 	 */
 	public function translate($id = null) {
-		$translateString = $this->TranslateStrings->get($id, ['contain' => 'TranslateDomains']);
+		if (!$id) {
+			$next = $this->TranslateStrings->getNext(null, null)->first();
+			if (!empty($next['id'])) {
+				return $this->redirect([$next['id']]);
+			}
+
+			$this->Flash->success('No more open translations.');
+
+			return $this->redirect(['controller' => 'Translate', 'action' => 'index']);
+		}
+
+		$translateString = $this->TranslateStrings->get($id, ['contain' => ['TranslateDomains' => 'TranslateProjects']]);
 
 		/** @var \Translate\Model\Entity\TranslateLanguage[] $translateLanguages */
 		$translateLanguages = $this->TranslateStrings->TranslateTerms->TranslateLanguages->find()->all()->toArray();
@@ -345,6 +356,20 @@ class TranslateStringsController extends TranslateAppController {
 		$translateTerms = $this->TranslateStrings->TranslateTerms->getTranslatedArray($id);
 
 		if ($this->Common->isPosted()) {
+			if ($this->request->getData('skip')) {
+				$translateString->skipped = true;
+				$this->TranslateStrings->saveOrFail($translateString);
+
+				$next = $this->TranslateStrings->getNext($translateString->translate_domain_id, $translateString->id)->first();
+				if (!empty($next['id'])) {
+					return $this->redirect([$next['id']]);
+				}
+
+				$this->Flash->success('No more open translations for group `' . h($translateString->translate_domain->name) . '`.');
+
+				return $this->redirect(['action' => 'view', $id]);
+			}
+
 			$success = true;
 			foreach ($translateLanguages as $translateLanguage) {
 				$key = strtolower($translateLanguage->locale);
@@ -378,10 +403,12 @@ class TranslateStringsController extends TranslateAppController {
 
 			if ($success) {
 				if (array_key_exists('next', $this->request->getData())) {
-					$next = $this->TranslateStrings->getNext($id)->first();
+					$next = $this->TranslateStrings->getNext($translateString->translate_domain_id, $id)->first();
 					if (!empty($next['id'])) {
 						return $this->redirect([$next['id']]);
 					}
+
+					$this->Flash->success('No more open translations for group `' . h($translateString->translate_domain->name) . '`.');
 				}
 
 				return $this->redirect(['action' => 'view', $id]);
@@ -406,7 +433,7 @@ class TranslateStringsController extends TranslateAppController {
 	 * @throws \Cake\Http\Exception\NotFoundException
 	 * @return void
 	 */
-	public function displayReference($id, $reference) {
+	public function displayReference(int $id, int $reference) {
 		$translateString = $this->TranslateStrings->get($id, ['contain' => ['TranslateDomains']]);
 
 		$sep = explode(PHP_EOL, $translateString['references']);
@@ -417,16 +444,16 @@ class TranslateStringsController extends TranslateAppController {
 				$occ[] = $s;
 			}
 		}
-		if (!isset($occ[(int)$reference])) {
+		if (!isset($occ[$reference])) {
 			throw new NotFoundException('Could not find reference `' . $reference . '`');
 		}
 
-		$reference = $occ[(int)$reference];
+		$reference = $occ[$reference];
 		[$reference, $lines] = explode(':', $reference);
 		$lines = explode(';', $lines);
 
 		$path = $translateString->translate_domain->path;
-		if (substr($path, 0, 1) !== '/') {
+		if (!str_starts_with($path, '/')) {
 			$path = ROOT . DS . $path;
 		}
 		$path = rtrim((string)realpath($path), '/') . '/';
@@ -441,7 +468,7 @@ class TranslateStringsController extends TranslateAppController {
 
 		$fileArray = file($file);
 
-		$this->set(compact('fileArray', 'lines'));
+		$this->set(compact('fileArray', 'lines', 'reference'));
 	}
 
 	/**

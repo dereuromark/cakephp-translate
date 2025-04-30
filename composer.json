@@ -21,7 +21,7 @@
 	},
 	"require": {
 		"php": ">=8.3",
-		"cakephp/cakephp": "^5.0.0",
+		"cakephp/cakephp": "^5.0.7",
 		"dereuromark/cakephp-tools": "^3.0",
 		"friendsofcake/search": "^7.0"
 	},

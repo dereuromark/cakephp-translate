@@ -9,7 +9,7 @@
 
 A CakePHP plugin for managing translations DB driven.
 
-This branch is for use with **CakePHP 5.0+**. For details see [version map](https://github.com/dereuromark/cakephp-translate/wiki#cakephp-version-map).
+This branch is for use with **CakePHP 5.1+**. For details see [version map](https://github.com/dereuromark/cakephp-translate/wiki#cakephp-version-map).
 
 WARNING: Not fully upgraded yet, help needed!
 

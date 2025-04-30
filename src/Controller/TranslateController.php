@@ -39,6 +39,8 @@ class TranslateController extends TranslateAppController {
 	}
 
 	/**
+	 * @param string|null $domain
+	 * @param int|null $id
 	 * @return \Cake\Http\Response|null|void
 	 */
 	public function translate(?string $domain = null, ?int $id = null) {

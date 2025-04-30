@@ -21,8 +21,8 @@
 	},
 	"require": {
 		"php": ">=8.3",
-		"cakephp/cakephp": "^5.0.7",
-		"dereuromark/cakephp-tools": "^3.0",
+		"cakephp/cakephp": "^5.1.5",
+		"dereuromark/cakephp-tools": "^3.9",
 		"friendsofcake/search": "^7.0"
 	},
 	"require-dev": {
@@ -31,6 +31,7 @@
 		"friendsofcake/bootstrap-ui": "^5.1.1",
 		"dereuromark/cakephp-templating": "^0.2.7",
 		"dereuromark/cakephp-queue": "^8.0",
+		"dereuromark/cakephp-shim": "^3.3.0",
 		"dereuromark/cakephp-data": "@stable",
 		"fig-r/psr2r-sniffer": "dev-master",
 		"phpunit/phpunit": "^12.1",
@@ -67,6 +68,8 @@
 		"cs-fix": "phpcbf --extensions=php",
 		"stan": "phpstan analyse",
 		"stan-setup": "cp composer.json composer.backup && composer require --dev phpstan/phpstan:^2.0.0 cakedc/cakephp-phpstan phpstan/extension-installer && mv composer.backup composer.json",
+		"lowest": "validate-prefer-lowest",
+		"lowest-setup": "composer update --prefer-lowest --prefer-stable --prefer-dist --no-interaction && cp composer.json composer.backup && composer require --dev dereuromark/composer-prefer-lowest && mv composer.backup composer.json",
 		"test": "vendor/bin/phpunit",
 		"test-coverage": "vendor/bin/phpunit --log-junit tmp/coverage/unitreport.xml --coverage-html tmp/coverage --coverage-clover tmp/coverage/coverage.xml"
 	}

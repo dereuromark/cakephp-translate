@@ -11,7 +11,7 @@ use Translate\I18n\DbMessagesLoader;
 class DbMessagesLoaderTest extends TestCase {
 
 	/**
-	 * @var array
+	 * @var array<string>
 	 */
 	protected array $fixtures = [
 		'plugin.Translate.TranslateTerms',
@@ -32,7 +32,7 @@ class DbMessagesLoaderTest extends TestCase {
 	public function setUp(): void {
 		parent::setUp();
 
-		$this->skipIf(!version_compare(Configure::version(), '5.2.4', '>=', 'Only for CakePHP 5.2.4+'));
+		$this->skipIf(!version_compare(Configure::version(), '5.2.4', '>='), 'Only for CakePHP 5.2.4+');
 
 		$folder = new Folder();
 		$folder->copy(LOCALE, [

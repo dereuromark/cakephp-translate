@@ -21,7 +21,7 @@ class TranslateTermsTableTest extends TestCase {
 	/**
 	 * Fixtures
 	 *
-	 * @var array
+	 * @var array<string>
 	 */
 	protected array $fixtures = [
 		'plugin.Translate.TranslateTerms',

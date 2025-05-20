@@ -18,7 +18,7 @@ class TranslateStringsControllerTest extends IntegrationTestCase {
 	/**
 	 * Fixtures
 	 *
-	 * @var array
+	 * @var array<string>
 	 */
 	protected array $fixtures = [
 		'plugin.Translate.TranslateStrings',
@@ -78,7 +78,7 @@ class TranslateStringsControllerTest extends IntegrationTestCase {
 	public function testExtractPost() {
 		$this->disableErrorHandlerMiddleware();
 
-		$TranslateStrings = $this->getTableLocator()->get('Translate.TranslateStrings');
+		$TranslateStrings = $this->fetchTable('Translate.TranslateStrings');
 		$count = $TranslateStrings->find()->count();
 
 		$folder = new Folder();
@@ -139,7 +139,7 @@ Template/Account/foo.ctp:15', $translateString->references);
 		Configure::write('Translate.engine', [Test::class, TestMore::class]);
 
 		$id = 1;
-		$TranslateStrings = $this->getTableLocator()->get('Translate.TranslateStrings');
+		$TranslateStrings = $this->fetchTable('Translate.TranslateStrings');
 		$record = $TranslateStrings->get($id);
 
 		$groupId = $record->translate_domain_id;

@@ -2,6 +2,7 @@
 
 namespace Translate\Test\TestCase\I18n;
 
+use Cake\Core\Configure;
 use Cake\I18n\I18n;
 use Cake\TestSuite\TestCase;
 use Shim\Filesystem\Folder;
@@ -30,6 +31,8 @@ class DbMessagesLoaderTest extends TestCase {
 	 */
 	public function setUp(): void {
 		parent::setUp();
+
+		$this->skipIf(!version_compare(Configure::version(), '5.2.4', '>=', 'Only for CakePHP 5.2.4+'));
 
 		$folder = new Folder();
 		$folder->copy(LOCALE, [

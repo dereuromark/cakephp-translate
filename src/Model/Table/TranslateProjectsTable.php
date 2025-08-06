@@ -69,16 +69,6 @@ class TranslateProjectsTable extends Table {
 	];
 
 	/**
-	 * @var array
-	 */
-	public $hasMany = [
-		'TranslateDomain' => [
-			'className' => 'Translate.TranslateDomain',
-			'dependent' => true,
-		],
-	];
-
-	/**
 	 * @param array $config
 	 *
 	 * @return void
@@ -87,6 +77,11 @@ class TranslateProjectsTable extends Table {
 		parent::initialize($config);
 
 		$this->addBehavior('Shim.Nullable');
+
+		$this->hasMany('TranslateDomains', [
+			'className' => 'Translate.TranslateDomains',
+			'dependent' => true,
+		]);
 	}
 
 	/**

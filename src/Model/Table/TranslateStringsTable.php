@@ -77,27 +77,6 @@ class TranslateStringsTable extends Table {
 	];
 
 	/**
-	 * @var array
-	 */
-	public $belongsTo = [
-		'User' => [
-			'className' => 'User',
-			'foreignKey' => 'user_id',
-		],
-
-	];
-
-	/**
-	 * @var array
-	 */
-	public $hasMany = [
-		'TranslateTerm' => [
-			'className' => 'Translate.TranslateTerm',
-			'dependent' => true,
-		],
-	];
-
-	/**
 	 * @return \Cake\Database\Schema\TableSchemaInterface
 	 */
 	public function getSchema(): TableSchemaInterface {
@@ -117,8 +96,19 @@ class TranslateStringsTable extends Table {
 
 		$this->addBehavior('Shim.Nullable');
 		$this->addBehavior('Search.Search');
+
+		$this->belongsTo('Users', [
+			'className' => 'Users',
+			'foreignKey' => 'user_id',
+		]);
+
 		$this->belongsTo('TranslateDomains', [
 			'className' => 'Translate.TranslateDomains',
+		]);
+
+		$this->hasMany('TranslateTerms', [
+			'className' => 'Translate.TranslateTerms',
+			'dependent' => true,
 		]);
 	}
 

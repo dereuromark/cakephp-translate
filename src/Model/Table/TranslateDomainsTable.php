@@ -47,18 +47,6 @@ class TranslateDomainsTable extends Table {
 	];
 
 	/**
-	 * @var array
-	 */
-	public $belongsTo = [
-		'TranslateProject' => [
-			'className' => 'Translate.TranslateProject',
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-		],
-	];
-
-	/**
 	 * @param array $config
 	 *
 	 * @return void
@@ -67,6 +55,11 @@ class TranslateDomainsTable extends Table {
 		parent::initialize($config);
 
 		$this->addBehavior('Shim.Nullable');
+
+		$this->belongsTo('TranslateProjects', [
+			'className' => 'Translate.TranslateProjects',
+		]);
+
 		$this->hasMany('TranslateStrings', [
 			'className' => 'Translate.TranslateStrings',
 			'dependent' => true,

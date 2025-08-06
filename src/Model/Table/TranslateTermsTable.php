@@ -83,33 +83,6 @@ class TranslateTermsTable extends Table {
 	];
 
 	/**
-	 * @var array
-	 */
-	public $belongsTo = [
-		'TranslateString' => [
-			'className' => 'Translate.TranslateString',
-		],
-		'TranslateLanguage' => [
-			'className' => 'Translate.TranslateLanguage',
-		],
-		/*
-		'User' => array(
-			'className' => 'User',
-			'foreignKey' => 'user_id',
-			'conditions' => '',
-			'fields' => array('id', 'username'),
-			'order' => ''
-		),
-		'ConfirmedBy' => array(
-			'className' => 'User',
-			'foreignKey' => 'confirmed_by',
-			'conditions' => '',
-			'fields' => array('id', 'username'),
-			'order' => ''
-		)*/
-	];
-
-	/**
 	 * @param string $text
 	 * @param array $context
 	 *
@@ -157,7 +130,28 @@ class TranslateTermsTable extends Table {
 
 		$this->addBehavior('Shim.Nullable');
 		$this->addBehavior('Search.Search');
-	}
+
+		$this->belongsTo('TranslateStrings', [
+			'className' => 'Translate.TranslateStrings',
+		]);
+		$this->belongsTo('TranslateLanguages', [
+			'className' => 'Translate.TranslateLanguages',
+		]);
+		/*
+        'User' => array(
+            'className' => 'User',
+            'foreignKey' => 'user_id',
+            'conditions' => '',
+            'fields' => array('id', 'username'),
+            'order' => ''
+        ),
+        'ConfirmedBy' => array(
+            'className' => 'User',
+            'foreignKey' => 'confirmed_by',
+            'conditions' => '',
+            'fields' => array('id', 'username'),
+            'order' => ''
+        )*/ }
 
 	/**
 	 * @return \Search\Manager

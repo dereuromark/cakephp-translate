@@ -92,43 +92,6 @@ class TranslateLanguagesTable extends Table {
 	];
 
 	/**
-	 * @var array
-	 */
-	public $hasMany = [
-		'TranslateTerm' => [
-			'className' => 'Translate.TranslateTerm',
-			'dependent' => true,
-		],
-	];
-
-	/**
-	 * @var array
-	 */
-	public $belongsTo = [
-		'Language' => [
-			'className' => 'Data.Language',
-			'foreignKey' => 'language_id',
-		],
-		'TranslateProject' => [
-			'className' => 'Translate.TranslateProject',
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-		],
-	];
-
-	/**
-	 * @param array $config
-	 */
-	public function __construct(array $config = []) {
-		if (!Plugin::isLoaded('Data')) {
-			unset($this->belongsTo['Language']);
-		}
-
-		parent::__construct($config);
-	}
-
-	/**
 	 * Preparing the data
 	 *
 	 * @param \Cake\Event\EventInterface $event
@@ -174,6 +137,22 @@ class TranslateLanguagesTable extends Table {
 		parent::initialize($config);
 
 		$this->addBehavior('Shim.Nullable');
+
+		$this->hasMany('TranslateTerms', [
+			'className' => 'Translate.TranslateTerms',
+			'dependent' => true,
+		]);
+
+		if (Plugin::isLoaded('Data')) {
+			$this->belongsTo('Languages', [
+				'className' => 'Data.Languages',
+				'foreignKey' => 'language_id',
+			]);
+		}
+
+		$this->belongsTo('TranslateProjects', [
+			'className' => 'Translate.TranslateProjects',
+		]);
 	}
 
 	/**

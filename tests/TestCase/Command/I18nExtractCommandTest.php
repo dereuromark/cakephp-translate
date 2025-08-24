@@ -43,10 +43,10 @@ class I18nExtractCommandTest extends TestCase {
 	 */
 	public function testExecute() {
 		$this->exec(
-			'i18n extract ' .
-			'--extract-core=no ' .
-			'--merge=no ' .
-			'--paths=' . Plugin::path('Translate') . 'tests' . DS . 'test_files' . DS . 'src' . DS,
+			'i18n extract '
+			. '--extract-core=no '
+			. '--merge=no '
+			. '--paths=' . Plugin::path('Translate') . 'tests' . DS . 'test_files' . DS . 'src' . DS,
 		);
 		$this->assertExitSuccess();
 

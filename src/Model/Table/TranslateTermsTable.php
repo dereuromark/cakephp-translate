@@ -46,8 +46,7 @@ class TranslateTermsTable extends Table {
 	 */
 	public $validate = [
 		'translate_string_id' => ['numeric'],
-		'comment' => [
-		],
+		'comment' => [],
 		'content' => [
 			'isUnique' => [
 				'rule' => ['validateUnique', ['scope' => ['translate_string_id', 'translate_language_id']]],
@@ -159,8 +158,7 @@ class TranslateTermsTable extends Table {
 	public function searchManager() {
 		$searchManager = $this->behaviors()->Search->searchManager();
 		$searchManager
-			->value('translate_language_id', [
-			])
+			->value('translate_language_id', [])
 			->like('search', [
 				'fields' => [$this->aliasField('content'), 'TranslateStrings.name'],
 			]);

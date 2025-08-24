@@ -131,8 +131,7 @@ class TranslateStringsTable extends Table {
 	public function searchManager() {
 		$searchManager = $this->behaviors()->Search->searchManager();
 		$searchManager
-			->value('translate_domain_id', [
-			])
+			->value('translate_domain_id', [])
 			->callback('missing_translation', [
 				'callback' => function (SelectQuery $query, array $args, $filter) {
 					if (empty($args['missing_translation'])) {
@@ -216,7 +215,7 @@ class TranslateStringsTable extends Table {
 	 */
 	public function getNext(?int $domainId, ?int $stringId, array $options = []): SelectQuery {
 		$conditions = [
-				'TranslateStrings.skipped' => false,
+			'TranslateStrings.skipped' => false,
 		];
 		if ($domainId) {
 			$conditions['TranslateStrings.translate_domain_id'] = $domainId;

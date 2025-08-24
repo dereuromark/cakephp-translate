@@ -90,8 +90,7 @@ class TranslateStringsControllerTest extends IntegrationTestCase {
 			'sel_pot' => [
 				'default',
 			],
-			'sel_po' => [
-			],
+			'sel_po' => [],
 		];
 		$this->post(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateStrings', 'action' => 'extract'], $data);
 

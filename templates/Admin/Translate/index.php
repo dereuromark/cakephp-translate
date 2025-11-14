@@ -14,10 +14,6 @@ $totalColor = $this->Translation->getColor($totalCoverage);
 
 <div class="col-md-12">
 
-<div style="float: right;">
-<?php echo $this->element('project_switch', [])?>
-</div>
-
 <h2><?php echo __d('translate', 'Translate Plugin');?></h2>
 	<p>
 Easily manage i18n/translations from your backend.

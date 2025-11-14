@@ -30,3 +30,6 @@ From with in the plugin:
 ### Updating POT translations file
 This needs to be run from your application:
 - `bin cake i18n extract --plugin Translate --overwrite --merge no --extract-core no`
+
+### Details
+- [Layout](contribute/layout.md)

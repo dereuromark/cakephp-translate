@@ -11,19 +11,14 @@ $totalColor = $this->Translation->getColor($totalCoverage);
 ?>
 
 <div class="translate-index">
-	<div class="d-flex justify-content-between align-items-center mb-4">
-		<div class="page-header">
-			<h1>
-				<i class="fas fa-language"></i>
-				<?= __d('translate', 'Translate Plugin'); ?>
-			</h1>
-			<p class="lead text-muted">
-				<?= __d('translate', 'Easily manage i18n/translations from your backend.') ?>
-			</p>
-		</div>
-		<div>
-			<?= $this->element('project_switch', []) ?>
-		</div>
+	<div class="page-header mb-4">
+		<h1>
+			<i class="fas fa-language"></i>
+			<?= __d('translate', 'Translate Plugin'); ?>
+		</h1>
+		<p class="lead text-muted">
+			<?= __d('translate', 'Easily manage i18n/translations from your backend.') ?>
+		</p>
 	</div>
 
 	<div class="row g-4">

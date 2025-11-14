@@ -88,7 +88,7 @@ if (!empty($coverage) && is_array($count)) {
 		<?php echo __d('translate', 'Please create a project first'); ?>: <?php echo $this->Html->link('Projects', ['controller' => 'TranslateProjects']); ?>
 	</p>
 
-	<?php } ?>
+<?php } ?>
 
 <h3>How to Translate</h3>
 <ol>

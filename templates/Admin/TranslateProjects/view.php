@@ -46,7 +46,7 @@
 
 	<div class="related">
 		<h3><?= __d('translate', 'Related Translate Domains') ?></h3>
-		<?php if (!empty($translateProject->translate_domains)): ?>
+		<?php if (!empty($translateProject->translate_domains)) : ?>
 		<table class="table table-horizontal">
 									<tr>
 			<th><?= __d('translate', 'Name') ?></th>
@@ -62,7 +62,7 @@
 			<th><?= __d('translate', 'Modified') ?></th>
 				<th class="actions"><?= __d('translate', 'Actions') ?></th>
 			</tr>
-			<?php foreach ($translateProject->translate_domains as $translateDomains): ?>
+			<?php foreach ($translateProject->translate_domains as $translateDomains) : ?>
 			<tr>
 				<td><?= h($translateDomains->id) ?></td>
 				<td><?= h($translateDomains->name) ?></td>
@@ -82,6 +82,6 @@
 			</tr>
 			<?php endforeach; ?>
 		</table>
-	<?php endif; ?>
+	    <?php endif; ?>
 	</div>
 </div>

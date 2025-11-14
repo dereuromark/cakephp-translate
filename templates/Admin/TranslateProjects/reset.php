@@ -12,14 +12,15 @@
 	<fieldset>
 		<legend><?php echo __d('translate', 'Reset {0}', __d('translate', 'Translate Project')); ?></legend>
 	<?php
-		echo $this->Form->control('reset', ['multiple'=>'checkbox', 'options'=>$removeOptions]);
+		echo $this->Form->control('reset', ['multiple' => 'checkbox', 'options' => $removeOptions]);
 	?>
 
 	<?php
-		echo $this->Form->control('language', ['multiple'=>'checkbox', 'options'=>$languages, 'after'=>__d('translate', 'only relevant for resetting terms')]);
+		echo $this->Form->control('language', ['multiple' => 'checkbox', 'options' => $languages, 'after' => __d('translate', 'only relevant for resetting terms')]);
 	?>
 	</fieldset>
-<?php echo $this->Form->submit(__d('translate', 'Submit')); echo $this->Form->end();?>
+<?php echo $this->Form->submit(__d('translate', 'Submit'));
+echo $this->Form->end();?>
 </div>
 
 <div class="actions">

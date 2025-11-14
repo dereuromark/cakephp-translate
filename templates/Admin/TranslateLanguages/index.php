@@ -29,7 +29,7 @@ use Cake\Core\Plugin;
 			</tr>
 		</thead>
 		<tbody>
-			<?php foreach ($translateLanguages as $translateLanguage): ?>
+			<?php foreach ($translateLanguages as $translateLanguage) : ?>
 			<tr>
 				<td>
 				<?php if ($translateLanguage->language && $translateLanguage->language->code) {

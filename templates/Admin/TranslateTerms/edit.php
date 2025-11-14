@@ -9,11 +9,11 @@
 	<ul class="side-nav nav nav-pills nav-stacked">
 		<li class="heading"><?= __d('translate', 'Actions') ?></li>
 		<li><?= $this->Form->postLink(
-				__d('translate', 'Delete'),
-				['action' => 'delete', $translateTerm->id],
-				['confirm' => __d('translate', 'Are you sure you want to delete # {0}?', $translateTerm->id)]
-			)
-		?></li>
+			__d('translate', 'Delete'),
+			['action' => 'delete', $translateTerm->id],
+			['confirm' => __d('translate', 'Are you sure you want to delete # {0}?', $translateTerm->id)],
+		)
+							?></li>
 		<li><?= $this->Html->link(__d('translate', 'List Translate Strings'), ['controller' => 'TranslateStrings', 'action' => 'index']) ?></li>
 		<li><?= $this->Html->link(__d('translate', 'New Translate String'), ['controller' => 'TranslateStrings', 'action' => 'add']) ?></li>
 	</ul>

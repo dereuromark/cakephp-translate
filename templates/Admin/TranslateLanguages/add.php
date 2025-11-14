@@ -19,11 +19,11 @@
 			echo $this->Form->control('name');
 			echo $this->Form->control('locale');
 
-			if (!empty($Languages)) {
-				echo $this->Form->control('language_id', ['empty'=>true]);
-			} else {
-				echo $this->Form->control('iso2');
-			}
+		if (!empty($Languages)) {
+			echo $this->Form->control('language_id', ['empty' => true]);
+		} else {
+			echo $this->Form->control('iso2');
+		}
 
 			echo $this->Form->control('active');
 		?>

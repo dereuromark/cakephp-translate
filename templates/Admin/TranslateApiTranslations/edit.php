@@ -7,11 +7,11 @@
 	<ul class="side-nav nav nav-pills nav-stacked">
 		<li class="heading"><?= __('Actions') ?></li>
 		<li><?= $this->Form->postLink(
-				__('Delete'),
-				['action' => 'delete', $translateApiTranslation->id],
-				['confirm' => __('Are you sure you want to delete # {0}?', $translateApiTranslation->id)]
-			)
-		?></li>
+			__('Delete'),
+			['action' => 'delete', $translateApiTranslation->id],
+			['confirm' => __('Are you sure you want to delete # {0}?', $translateApiTranslation->id)],
+		)
+							?></li>
 		<li><?= $this->Html->link(__('List Translate Api Translations'), ['action' => 'index']) ?></li>
 	</ul>
 </nav>

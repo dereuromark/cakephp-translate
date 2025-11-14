@@ -27,7 +27,7 @@ use Cake\Core\Plugin;
 			</tr>
 		</thead>
 		<tbody>
-			<?php foreach ($translateApiTranslations as $translateApiTranslation): ?>
+			<?php foreach ($translateApiTranslations as $translateApiTranslation) : ?>
 			<tr>
 				<td><?= h($this->Text->truncate($translateApiTranslation->key)) ?></td>
 				<td><?= h($translateApiTranslation->from) ?></td>

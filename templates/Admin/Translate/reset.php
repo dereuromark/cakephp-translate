@@ -21,12 +21,13 @@
 			'groups' => 'groups',
 			'languages' => 'languages',
 		];
-		echo $this->Form->control('selection', ['multiple'=>'checkbox', 'label' => __d('translate', 'Selection'), 'options' => $resetOptions]);
+		echo $this->Form->control('selection', ['multiple' => 'checkbox', 'label' => __d('translate', 'Selection'), 'options' => $resetOptions]);
 
-	?>
+		?>
 	</fieldset>
 
-<?php echo $this->Form->submit(__d('translate', 'Reset')); echo $this->Form->end();?>
+<?php echo $this->Form->submit(__d('translate', 'Reset'));
+echo $this->Form->end();?>
 
 
 	<p>

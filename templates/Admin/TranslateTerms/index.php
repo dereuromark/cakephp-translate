@@ -52,7 +52,7 @@ use Cake\Core\Plugin;
 			</tr>
 		</thead>
 		<tbody>
-			<?php foreach ($translateTerms as $translateTerm): ?>
+			<?php foreach ($translateTerms as $translateTerm) : ?>
 			<tr>
 				<td>
 					<?= $translateTerm->has('translate_string') ? $this->Html->link($this->Text->truncate($translateTerm->translate_string->name), ['controller' => 'TranslateStrings', 'action' => 'view', $translateTerm->translate_string->id]) : '' ?>

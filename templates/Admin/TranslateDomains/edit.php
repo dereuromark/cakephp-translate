@@ -7,11 +7,11 @@
 	<ul class="side-nav nav nav-pills nav-stacked">
 		<li class="heading"><?= __d('translate', 'Actions') ?></li>
 		<li><?= $this->Form->postLink(
-				__d('translate', 'Delete'),
-				['action' => 'delete', $translateDomain->id],
-				['confirm' => __d('translate', 'Are you sure you want to delete # {0}?', $translateDomain->id)]
-			)
-		?></li>
+			__d('translate', 'Delete'),
+			['action' => 'delete', $translateDomain->id],
+			['confirm' => __d('translate', 'Are you sure you want to delete # {0}?', $translateDomain->id)],
+		)
+							?></li>
 		<li><?= $this->Html->link(__d('translate', 'List Translate Domains'), ['action' => 'index']) ?></li>
 		<li><?= $this->Html->link(__d('translate', 'List Translate Projects'), ['controller' => 'TranslateProjects', 'action' => 'index']) ?></li>
 		<li><?= $this->Html->link(__d('translate', 'New Translate Project'), ['controller' => 'TranslateProjects', 'action' => 'add']) ?></li>

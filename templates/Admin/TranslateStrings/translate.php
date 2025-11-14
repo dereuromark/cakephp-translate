@@ -12,7 +12,7 @@
 		<li class="heading"><?= __d('translate', 'Actions') ?></li>
 		<li><?= $this->Html->link(__d('translate', 'Overview'), ['controller' => 'Translate', 'action' => 'index']) ?></li>
 		<li><?= $this->Html->link(__d('translate', 'List Translate Strings'), ['controller' => 'TranslateStrings', 'action' => 'index', '?' => $this->request->getQuery()]) ?></li>
-		<li><?php echo $this->Html->link(__d('translate', 'Edit Translate String'), ['action'=>'edit', $translateString['id']]);?></li>
+		<li><?php echo $this->Html->link(__d('translate', 'Edit Translate String'), ['action' => 'edit', $translateString['id']]);?></li>
 	</ul>
 </nav>
 <div class="translateStrings index col-md-9 col-sm-8 col-xs-12">
@@ -46,7 +46,7 @@
 		foreach ($translateLanguages as $translateLanguage) {
 			$key = $translateLanguage->locale;
 			$formKey = str_replace('_', '-', strtolower($translateLanguage->locale));
-			echo $this->Form->control('content_'.strtolower($translateLanguage->locale), ['type'=>'text', 'label'=> __d('translate', 'Singular'). ' ' . $translateLanguage->locale, 'rel'=>$formKey]);
+			echo $this->Form->control('content_' . strtolower($translateLanguage->locale), ['type' => 'text', 'label' => __d('translate', 'Singular') . ' ' . $translateLanguage->locale, 'rel' => $formKey]);
 			if (!empty($suggestions[$key])) {
 				echo $this->element('suggestions', ['suggestions' => $suggestions[$key], 'key' => $formKey]);
 			}
@@ -56,7 +56,7 @@
 			$key = $translateLanguage->locale;
 			$formKey = str_replace('_', '-', strtolower($translateLanguage->locale));
 			//TODO add plural 3 to 6 if necessary
-			echo $this->Form->control('plural_2_'.strtolower($translateLanguage->locale), ['type'=>'text', 'label'=>__d('translate', 'Plural') . ' ' . $translateLanguage->locale, 'rel' => 'p' . $formKey]);
+			echo $this->Form->control('plural_2_' . strtolower($translateLanguage->locale), ['type' => 'text', 'label' => __d('translate', 'Plural') . ' ' . $translateLanguage->locale, 'rel' => 'p' . $formKey]);
 
 		}
 
@@ -65,7 +65,7 @@
 		foreach ($translateLanguages as $translateLanguage) {
 			$key = $translateLanguage->locale;
 			$formKey = str_replace('_', '-', strtolower($translateLanguage->locale));
-			echo $this->Form->control('content_'.strtolower($translateLanguage->locale), ['type'=>'textarea','label'=>h($translateLanguage->locale), 'rel'=>$formKey]);
+			echo $this->Form->control('content_' . strtolower($translateLanguage->locale), ['type' => 'textarea', 'label' => h($translateLanguage->locale), 'rel' => $formKey]);
 			if (!empty($suggestions[$key])) {
 				echo $this->element('suggestions', ['suggestions' => $suggestions[$key], 'key' => $formKey]);
 			}
@@ -79,7 +79,7 @@
 		<div class="col-md-offset-4 col-lg-offset-3 col-md-8 col-lg-9">
 <?php echo $this->Form->button(__d('translate', 'Save'), ['name' => 'save', 'value' => 'Task', 'class' => 'btn btn-primary']);?>
 
-<?php echo $this->Form->button(__d('translate', 'Save').' + '.__d('translate', 'Next'), ['name' => 'next', 'value' => 'Task', 'class' => 'btn btn-success']);?>
+<?php echo $this->Form->button(__d('translate', 'Save') . ' + ' . __d('translate', 'Next'), ['name' => 'next', 'value' => 'Task', 'class' => 'btn btn-success']);?>
 
 <?php echo $this->Form->button(__d('translate', 'Skip'), ['name' => 'skip', 'value' => 'skip', 'class' => 'btn btn-secondary']);?>
 
@@ -106,12 +106,12 @@ References: <?php echo count($references)?>x
 	<?php if ($references) { ?>
 	<ul class="references">
 		<?php foreach ($references as $key => $reference) { ?>
-		<?php if ($this->Translation->canDisplayReference($translateString->translate_domain)) { ?>
-			<li><?php echo $this->Html->link($reference, ['action' => 'displayReference', $translateString->id, $key], ['class' => 'reference-link', 'target'=> '_blank']); ?></li>
-		<?php } else { ?>
+			<?php if ($this->Translation->canDisplayReference($translateString->translate_domain)) { ?>
+			<li><?php echo $this->Html->link($reference, ['action' => 'displayReference', $translateString->id, $key], ['class' => 'reference-link', 'target' => '_blank']); ?></li>
+		    <?php } else { ?>
 			<li><?php echo h($reference); ?></li>
-		<?php } ?>
-	<?php } ?>
+		    <?php } ?>
+	    <?php } ?>
 	</ul>
 	<?php } ?>
 
@@ -156,4 +156,4 @@ References: <?php echo count($references)?>x
 			});
 		});
 	</script>
-<?php $this->end(); ?>
+<?php $this->end();

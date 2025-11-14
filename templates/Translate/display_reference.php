@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @var \App\View\AppView $this
  * @var \Translate\Model\Entity\TranslateLanguage[] $translateLanguages
@@ -8,6 +9,7 @@
  * @var string $reference
  */
 use Cake\Core\Configure;
+
 ?>
 
 <div class="code-excerpt">
@@ -19,7 +21,7 @@ foreach ($lines as $k => $line) {
 
 	$start = max($line - 3, 0);
 	$end = min($line + 3, $max - 1);
-	for($i = $start; $i <= $end; $i++) {
+	for ($i = $start; $i <= $end; $i++) {
 		$class = '';
 		if ($i === $line) {
 			$class = ' class="highlight"';
@@ -45,4 +47,4 @@ foreach ($lines as $k => $line) {
 	}
 	?>
 	<?php echo $this->Html->link('See online', $url, ['target' => '_blank']); ?>
-<?php } ?>
+<?php }

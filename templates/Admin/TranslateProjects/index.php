@@ -45,7 +45,7 @@ use Cake\Core\Plugin;
 			</tr>
 		</thead>
 		<tbody>
-			<?php foreach ($translateProjects as $translateProject): ?>
+			<?php foreach ($translateProjects as $translateProject) : ?>
 			<tr>
 				<td><?= h($translateProject->name) ?></td>
 				<td><?= $translateProject::types($translateProject->type) ?></td>

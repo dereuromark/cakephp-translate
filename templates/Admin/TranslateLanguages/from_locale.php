@@ -11,7 +11,7 @@
 	<ul class="side-nav nav nav-pills nav-stacked">
 		<li class="heading"><?= __d('translate', 'Actions') ?></li>
 		<li><?= $this->Html->link(__d('translate', 'Overview'), ['controller' => 'Translate', 'action' => 'index']) ?></li>
-		<li><?php echo $this->Html->link(__d('translate', 'List Translate Languages'), ['action'=>'index']);?></li>
+		<li><?php echo $this->Html->link(__d('translate', 'List Translate Languages'), ['action' => 'index']);?></li>
 	</ul>
 </nav>
 <div class="translateLanguages index col-md-9 col-sm-8 col-xs-12">
@@ -29,17 +29,18 @@
 	<?php
 	foreach ($folders as $key => $folder) {
 		if (array_key_exists($folder, $existingLanguages)) {
-			echo '<li>'.$folder.'</li> (already exists)';
+			echo '<li>' . $folder . '</li> (already exists)';
 		} else {
 			echo '<li>';
-			echo $this->Form->control('language.'.$folder.'.confirm', ['type'=>'checkbox','label'=>$folder]);
-			echo $this->Form->control('language.'.$folder.'.name', ['label'=> __d('translate', 'Language name')]);
+			echo $this->Form->control('language.' . $folder . '.confirm', ['type' => 'checkbox', 'label' => $folder]);
+			echo $this->Form->control('language.' . $folder . '.name', ['label' => __d('translate', 'Language name')]);
 			echo '</li>';
 		}
 	}
 	?>
 	</ul>
 	</fieldset>
-<?php echo $this->Form->submit(__d('translate', 'Submit')); echo $this->Form->end();?>
+<?php echo $this->Form->submit(__d('translate', 'Submit'));
+echo $this->Form->end();?>
 
 </div>

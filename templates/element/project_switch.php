@@ -5,17 +5,32 @@
  */
 ?>
 <?php if (!empty($projectSwitchArray)) { ?>
-<div style="border: 1px solid red; margin-left:10px; float: right">
-<?php
-echo $this->Form->create(null, ['url' => ['controller'=>'TranslateProjects', 'action'=>'switchProject']]);
+<div class="card border-primary" style="min-width: 250px;">
+	<div class="card-body p-3">
+		<?php
+		echo $this->Form->create(null, ['url' => ['controller' => 'TranslateProjects', 'action' => 'switchProject']]);
 
-$selected = '-1';
-if ($s = $this->request->getSession()->read('TranslateProject.id')) {
-	$selected = $s;
-}
+		$s = $this->request->getSession()->read('TranslateProject.id');
+		$selected = '-1';
+		if ($s) {
+			$selected = $s;
+		}
 
-echo $this->Form->control('project_switch', ['value' => $selected, 'options' => $projectSwitchArray, 'empty'=>['-1'=>'- '.__d('translate', 'pleaseSelect').' -'], 'div'=>false, 'label'=>false, 'onchange'=>'submit();']);
-echo $this->Form->end();
-?>
+		echo $this->Form->control('project_switch', [
+			'value' => $selected,
+			'options' => $projectSwitchArray,
+			'empty' => ['-1' => '- ' . __d('translate', 'pleaseSelect') . ' -'],
+			'div' => false,
+			'label' => [
+				'text' => '<i class="fas fa-project-diagram"></i> ' . __d('translate', 'Switch Project'),
+				'escape' => false,
+				'class' => 'form-label fw-bold',
+			],
+			'class' => 'form-select form-select-sm',
+			'onchange' => 'this.form.submit();',
+		]);
+		echo $this->Form->end();
+		?>
+	</div>
 </div>
-<?php } ?>
+<?php }

@@ -47,7 +47,7 @@ use Cake\Core\Plugin;
 			</tr>
 		</thead>
 		<tbody>
-			<?php foreach ($translateDomains as $translateDomain): ?>
+			<?php foreach ($translateDomains as $translateDomain) : ?>
 			<tr>
 				<td><?= h($translateDomain->name) ?></td>
 				<td><?= $this->element('Translate.yes_no', ['value' => $translateDomain->active]) ?></td>

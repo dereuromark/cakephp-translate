@@ -8,11 +8,11 @@
 	<ul class="side-nav nav nav-pills nav-stacked">
 		<li class="heading"><?= __d('translate', 'Actions') ?></li>
 		<li><?= $this->Form->postLink(
-				__d('translate', 'Delete'),
-				['action' => 'delete', $translateLanguage->id],
-				['confirm' => __d('translate', 'Are you sure you want to delete # {0}?', $translateLanguage->id)]
-			)
-		?></li>
+			__d('translate', 'Delete'),
+			['action' => 'delete', $translateLanguage->id],
+			['confirm' => __d('translate', 'Are you sure you want to delete # {0}?', $translateLanguage->id)],
+		)
+							?></li>
 		<li><?= $this->Html->link(__d('translate', 'List Translate Languages'), ['action' => 'index']) ?></li>
 	</ul>
 </nav>
@@ -25,7 +25,7 @@
 		echo $this->Form->control('locale');
 
 		if (!empty($Languages)) {
-			echo $this->Form->control('language_id', ['empty'=>true]);
+			echo $this->Form->control('language_id', ['empty' => true]);
 		} else {
 			echo $this->Form->control('iso2');
 		}

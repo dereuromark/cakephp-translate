@@ -25,8 +25,7 @@
 			//echo $this->Form->control('user_id');
 			echo $this->Form->control('is_html');
 
-
-			echo $this->Form->control('translate_afterwards', ['type'=>'checkbox']);
+			echo $this->Form->control('translate_afterwards', ['type' => 'checkbox']);
 		?>
 	</fieldset>
 	<?= $this->Form->button(__d('translate', 'Submit')) ?>

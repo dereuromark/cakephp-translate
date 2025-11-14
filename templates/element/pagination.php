@@ -14,16 +14,16 @@ if (!isset($separator)) {
 }
 
 if (empty($first)) {
-	$first = __d('translate', 'first');
+	$first = '<i class="fas fa-angle-double-left"></i> ' . __d('translate', 'First');
 }
 if (empty($last)) {
-	$last = __d('translate', 'last');
+	$last = __d('translate', 'Last') . ' <i class="fas fa-angle-double-right"></i>';
 }
 if (empty($prev)) {
-	$prev = __d('translate', 'previous');
+	$prev = '<i class="fas fa-angle-left"></i> ' . __d('translate', 'Previous');
 }
 if (empty($next)) {
-	$next = __d('translate', 'next');
+	$next = __d('translate', 'Next') . ' <i class="fas fa-angle-right"></i>';
 }
 if (!isset($format)) {
 	$format = __d('translate', 'Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total');
@@ -37,55 +37,25 @@ if (!empty($reverse)) {
 	$prev = $next;
 	$next = $tmp;
 }
-if (!empty($addArrows)) {
-	$prev = '« ' . $prev;
-	$next .= ' »';
-}
-$escape = isset($escape) ? $escape : true;
+
+$escape = $escape ?? false;
 ?>
 
-<div class="paginator paging row">
-	<div class="col-lg-6">
+<div class="paginator paging">
+	<nav aria-label="Page navigation" class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+		<div class="pagination-info">
+			<small class="text-muted">
+				<i class="fas fa-info-circle"></i>
+				<?= $this->Paginator->counter($format); ?>
+			</small>
+		</div>
 
-	<ul class="pagination">
-	<?php echo $this->Paginator->first($first, ['escape' => $escape]);?>
- <?php echo $separator; ?>
-	<?php echo $this->Paginator->prev($prev, ['escape' => $escape, 'disabledTitle' => false]);?>
- <?php echo $separator; ?>
-	<?php echo $this->Paginator->numbers(['escape' => $escape, 'separator' => $separator]);?>
- <?php echo $separator; ?>
-	<?php echo $this->Paginator->next($next, ['escape' => $escape, 'disabledTitle' => false]);?>
- <?php echo $separator; ?>
-	<?php echo $this->Paginator->last($last, ['escape' => $escape]);?>
-	</ul>
-
-	</div>
-	<div class="col-lg-6">
-	<p class="paging-description">
-		<?php echo $this->Paginator->counter($format); ?>
-	</p>
-	</div>
+		<ul class="pagination pagination-sm mb-0">
+			<?= $this->Paginator->first($first, ['escape' => $escape]); ?>
+			<?= $this->Paginator->prev($prev, ['escape' => $escape, 'disabledTitle' => false]); ?>
+			<?= $this->Paginator->numbers(['escape' => $escape, 'separator' => $separator]); ?>
+			<?= $this->Paginator->next($next, ['escape' => $escape, 'disabledTitle' => false]); ?>
+			<?= $this->Paginator->last($last, ['escape' => $escape]); ?>
+		</ul>
+	</nav>
 </div>
-<?php if (!empty($options['ajaxPagination'])) {
-	$ajaxContainer = !empty($options['paginationContainer']) ? $options['paginationContainer'] : '.page';
-
-	$script = "$(document).ready(function() {
-	$('div.pagination a').live('click', function () {
-		$('$ajaxContainer').fadeTo(300, 0);
-
-		var thisHref = $(this).attr('href');
-
-		$('$ajaxContainer').load(thisHref, function() {
-			$(this).fadeTo(200, 1);
-			$('html, body').animate({
-				scrollTop: $('$ajaxContainer').offset().top
-			}, 200);
-		});
-		return false;
-	});
-});";
-
-	if (isset($this->Js)) {
-		$this->Js->buffer($script);
-	}
-} ?>

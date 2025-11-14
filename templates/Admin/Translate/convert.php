@@ -17,9 +17,9 @@
 
 <?php if (!empty($text)) { ?>
 <h3>Result</h3>
-<?php
-		echo $this->Form->control('text', ['value' => $text, 'class' => 'form-control', 'type'=>'textarea', 'rows' => 5]);
-?>
+	<?php
+		echo $this->Form->control('text', ['value' => $text, 'class' => 'form-control', 'type' => 'textarea', 'rows' => 5]);
+	?>
 
 <?php } ?>
 
@@ -29,12 +29,13 @@
 	<fieldset>
 		<legend><?php echo __d('translate', 'Convert text');?></legend>
 	<?php
-		echo $this->Form->control('direction', ['type'=>'select', 'options' => ['From Text to PO content', 'From PO content to text']]);
-		echo $this->Form->control('quotes', ['type'=>'select', 'options' => ['Do nothing', 'Remove smart quotes', 'Add smart quotes']]);
-		echo $this->Form->control('newline', ['type'=>'select', 'options' => ['\n', '<br/>']]);
-		echo $this->Form->control('input', ['type'=>'textarea', 'rows' => 20]);
+		echo $this->Form->control('direction', ['type' => 'select', 'options' => ['From Text to PO content', 'From PO content to text']]);
+		echo $this->Form->control('quotes', ['type' => 'select', 'options' => ['Do nothing', 'Remove smart quotes', 'Add smart quotes']]);
+		echo $this->Form->control('newline', ['type' => 'select', 'options' => ['\n', '<br/>']]);
+		echo $this->Form->control('input', ['type' => 'textarea', 'rows' => 20]);
 	?>
 	</fieldset>
 
-<?php echo $this->Form->submit(__d('translate', 'Submit')); echo $this->Form->end();?>
+<?php echo $this->Form->submit(__d('translate', 'Submit'));
+echo $this->Form->end();?>
 </div>

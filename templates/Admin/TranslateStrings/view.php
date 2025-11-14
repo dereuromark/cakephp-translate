@@ -82,7 +82,7 @@ use Cake\Core\Configure;
 
 	<div class="related">
 		<h3><?= __d('translate', 'Related Translate Domains') ?></h3>
-		<?php if (!empty($translateString->translate_domain)): ?>
+		<?php if (!empty($translateString->translate_domain)) : ?>
 		<table class="table table-horizontal">
 			<tr>
 			<th><?= __d('translate', 'Name') ?></th>
@@ -108,6 +108,6 @@ use Cake\Core\Configure;
 				</td>
 			</tr>
 		</table>
-	<?php endif; ?>
+	    <?php endif; ?>
 	</div>
 </div>

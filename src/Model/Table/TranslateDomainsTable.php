@@ -105,7 +105,7 @@ class TranslateDomainsTable extends Table {
 		if ($translateDomain->name === 'default') {
 			$translateDomain->active = true;
 		}
-		$this->TranslateProjects->saveOrFail($translateDomain);
+		$this->saveOrFail($translateDomain);
 
 		return $translateDomain;
 	}

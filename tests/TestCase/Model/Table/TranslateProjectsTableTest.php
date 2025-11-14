@@ -4,6 +4,7 @@ namespace Translate\Test\TestCase\Model\Table;
 
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
+use Translate\Model\Entity\TranslateProject;
 use Translate\Model\Table\TranslateProjectsTable;
 
 /**
@@ -76,7 +77,10 @@ class TranslateProjectsTableTest extends TestCase {
 	 * @return void
 	 */
 	public function testGetDefaultProjectId() {
-		$this->markTestIncomplete('Not implemented yet.');
+		$result = $this->TranslateProjects->getDefaultProjectId();
+
+		$this->assertIsInt($result);
+		$this->assertEquals(1, $result);
 	}
 
 	/**
@@ -85,7 +89,10 @@ class TranslateProjectsTableTest extends TestCase {
 	 * @return void
 	 */
 	public function testReset() {
-		$this->markTestIncomplete('Not implemented yet.');
+		$this->expectException(\Exception::class);
+		$this->expectExceptionMessage('Invalid type');
+
+		$this->TranslateProjects->reset(1, ['invalid_type'], [1]);
 	}
 
 	/**
@@ -94,7 +101,13 @@ class TranslateProjectsTableTest extends TestCase {
 	 * @return void
 	 */
 	public function testStatuses() {
-		$this->markTestIncomplete('Not implemented yet.');
+		$result = TranslateProject::statuses();
+
+		$this->assertIsArray($result);
+		$this->assertNotEmpty($result);
+		$this->assertArrayHasKey(0, $result);
+		$this->assertArrayHasKey(1, $result);
+		$this->assertArrayHasKey(2, $result);
 	}
 
 	/**
@@ -103,7 +116,13 @@ class TranslateProjectsTableTest extends TestCase {
 	 * @return void
 	 */
 	public function testTypes() {
-		$this->markTestIncomplete('Not implemented yet.');
+		$result = TranslateProject::types();
+
+		$this->assertIsArray($result);
+		$this->assertNotEmpty($result);
+		$this->assertArrayHasKey(0, $result);
+		$this->assertArrayHasKey(1, $result);
+		$this->assertArrayHasKey(9, $result);
 	}
 
 }

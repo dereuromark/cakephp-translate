@@ -78,7 +78,13 @@ class TranslateDomainsTableTest extends TestCase {
 	 * @return void
 	 */
 	public function testStatistics() {
-		$this->markTestIncomplete('Not implemented yet.');
+		$result = $this->TranslateDomains->statistics(1);
+
+		$this->assertIsArray($result);
+		$this->assertArrayHasKey('groups', $result);
+		$this->assertArrayHasKey('strings', $result);
+		$this->assertArrayHasKey('languages', $result);
+		$this->assertArrayHasKey('translations', $result);
 	}
 
 }

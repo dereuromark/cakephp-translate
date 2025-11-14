@@ -18,7 +18,7 @@
 	<table class="table vertical-table">
 		<tr>
 			<th><?= __d('translate', 'Language Relation') ?></th>
-			<td><?= $translateLanguage->language_id ? h($translateLanguage->language->name) : '-' ?></td>
+			<td><?= $translateLanguage->language_id && !empty($translateLanguage->language) ? h($translateLanguage->language->name) : ($translateLanguage->language_id ?: '-') ?></td>
 		</tr>
 		<tr>
 			<th><?= __d('translate', 'Name') ?></th>

@@ -110,7 +110,9 @@ class TranslateStringsTableTest extends TestCase {
 	 * @return void
 	 */
 	public function testCoverage() {
-		$this->markTestIncomplete('Not implemented yet.');
+		$result = $this->TranslateStrings->coverage(1);
+
+		$this->assertIsArray($result);
 	}
 
 	/**
@@ -119,7 +121,24 @@ class TranslateStringsTableTest extends TestCase {
 	 * @return void
 	 */
 	public function testGetNext() {
-		$this->markTestIncomplete('Not implemented yet.');
+		// Create an untranslated string
+		$data = [
+			'name' => 'Untranslated String',
+			'translate_domain_id' => 1,
+			'skipped' => false,
+		];
+		$entity = $this->TranslateStrings->newEntity($data);
+		$savedString = $this->TranslateStrings->save($entity);
+		$this->assertNotFalse($savedString);
+
+		// Now test getNext retrieves it
+		$query = $this->TranslateStrings->getNext(null, $savedString->id);
+		$this->assertInstanceOf('Cake\ORM\Query\SelectQuery', $query);
+
+		$result = $query->first();
+		$this->assertInstanceOf('Translate\Model\Entity\TranslateString', $result);
+		$this->assertEquals('Untranslated String', $result->name);
+		$this->assertEquals($savedString->id, $result->id);
 	}
 
 }

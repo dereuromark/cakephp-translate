@@ -42,7 +42,13 @@ class TranslateTermsControllerTest extends IntegrationTestCase {
 	 * @return void
 	 */
 	public function testView() {
-		$this->markTestIncomplete('Not implemented yet.');
+		$this->disableErrorHandlerMiddleware();
+
+		$id = 1;
+		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateTerms', 'action' => 'view', $id]);
+
+		$this->assertResponseCode(200);
+		$this->assertNoRedirect();
 	}
 
 	/**

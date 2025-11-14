@@ -19,6 +19,7 @@ class TranslateLanguagesControllerTest extends IntegrationTestCase {
 	protected array $fixtures = [
 		'plugin.Translate.TranslateLanguages',
 		'plugin.Translate.TranslateTerms',
+		'plugin.Translate.TranslateProjects',
 	];
 
 	/**
@@ -39,7 +40,11 @@ class TranslateLanguagesControllerTest extends IntegrationTestCase {
 	 * @return void
 	 */
 	public function testView() {
-		$this->markTestIncomplete('Not implemented yet.');
+		$id = 1;
+		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateLanguages', 'action' => 'view', $id]);
+
+		$this->assertResponseCode(200);
+		$this->assertNoRedirect();
 	}
 
 	/**

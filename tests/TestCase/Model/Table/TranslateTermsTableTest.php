@@ -96,7 +96,11 @@ class TranslateTermsTableTest extends TestCase {
 	 * @return void
 	 */
 	public function testGetTranslations() {
-		$this->markTestIncomplete('Not implemented yet.');
+		$query = $this->TranslateTerms->getTranslations(1);
+		$this->assertInstanceOf('Cake\ORM\Query\SelectQuery', $query);
+
+		$results = $query->toArray();
+		$this->assertNotEmpty($results);
 	}
 
 	/**
@@ -105,7 +109,11 @@ class TranslateTermsTableTest extends TestCase {
 	 * @return void
 	 */
 	public function testGetTranslated() {
-		$this->markTestIncomplete('Not implemented yet.');
+		$query = $this->TranslateTerms->getTranslated(1);
+		$this->assertInstanceOf('Cake\ORM\Query\SelectQuery', $query);
+
+		$results = $query->toArray();
+		$this->assertNotEmpty($results);
 	}
 
 	/**
@@ -114,7 +122,15 @@ class TranslateTermsTableTest extends TestCase {
 	 * @return void
 	 */
 	public function testProcess() {
-		$this->markTestIncomplete('Not implemented yet.');
+		$data = [
+			'content' => 'Test Translation',
+			'translate_string_id' => 1,
+			'translate_language_id' => 1,
+		];
+		$result = $this->TranslateTerms->process($data);
+
+		$this->assertTrue((bool)$result);
+		$this->assertEquals('Test Translation', $result->content);
 	}
 
 }

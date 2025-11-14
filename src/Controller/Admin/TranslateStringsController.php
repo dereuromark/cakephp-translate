@@ -211,7 +211,20 @@ class TranslateStringsController extends TranslateAppController {
 				$separatorPos = strpos($locale, '_');
 				$lang = $separatorPos ? substr($locale, 0, $separatorPos) : $locale;
 				if (!isset($translateLanguages[$lang])) {
-					continue;
+					// Auto-create language if it doesn't exist
+					$languageName = ucfirst($lang);
+					/** @var \Translate\Model\Entity\TranslateLanguage|null $translateLanguage */
+					$translateLanguage = $this->TranslateStrings->TranslateTerms->TranslateLanguages->init(
+						$languageName,
+						$locale,
+						$lang,
+						$this->Translation->currentProjectId(),
+					);
+					if ($translateLanguage) {
+						$translateLanguages[$lang] = $translateLanguage->id;
+					} else {
+						continue;
+					}
 				}
 				$translations = $extractService->extractPoFile($domain, $locale);
 

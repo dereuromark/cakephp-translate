@@ -116,6 +116,51 @@ Template/Account/foo.ctp:15', $translateString->references);
 	}
 
 	/**
+	 * Test extract with PO files auto-creates missing languages
+	 *
+	 * @return void
+	 */
+	public function testExtractPostWithPoFilesAutoCreatesLanguage() {
+		$this->disableErrorHandlerMiddleware();
+
+		$TranslateStrings = $this->fetchTable('Translate.TranslateStrings');
+		$TranslateLanguages = $this->fetchTable('Translate.TranslateLanguages');
+		$TranslateTerms = $this->fetchTable('Translate.TranslateTerms');
+
+		// Verify "de" language doesn't exist
+		$deLanguage = $TranslateLanguages->find()->where(['iso2' => 'de'])->first();
+		$this->assertNull($deLanguage, 'German language should not exist yet');
+
+		$folder = new Folder();
+		$folder->copy(LOCALE, [
+			'from' => ROOT . DS . 'tests' . DS . 'test_files' . DS . 'locales' . DS,
+		]);
+
+		$data = [
+			'sel_pot' => [],
+			'sel_po' => [
+				'de-default',
+			],
+		];
+		$this->post(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateStrings', 'action' => 'extract'], $data);
+
+		$this->assertResponseCode(200);
+		$this->assertNoRedirect();
+
+		// Verify "de" language was auto-created
+		$deLanguage = $TranslateLanguages->find()->where(['iso2' => 'de'])->first();
+		$this->assertNotNull($deLanguage, 'German language should be auto-created');
+		$this->assertSame('De', $deLanguage->name);
+		$this->assertSame('de', $deLanguage->iso2);
+		$this->assertSame('de', $deLanguage->locale);
+		$this->assertTrue($deLanguage->active);
+
+		// Verify translations were imported
+		$termCount = $TranslateTerms->find()->where(['translate_language_id' => $deLanguage->id])->count();
+		$this->assertGreaterThan(0, $termCount, 'Should have imported some German translations');
+	}
+
+	/**
 	 * Test view method
 	 *
 	 * @return void

@@ -30,6 +30,10 @@ class TranslateAppController extends AppController {
 			$this->viewBuilder()->addHelper('Templating.Icon');
 			$this->viewBuilder()->addHelper('Templating.IconSnippet');
 		}
+
+		if (!$this->components()->has('Flash')) {
+			$this->loadComponent('Flash');
+		}
 	}
 
 	/**

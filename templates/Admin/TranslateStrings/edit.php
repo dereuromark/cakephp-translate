@@ -72,12 +72,12 @@
 				<div class="mt-4 d-flex gap-2">
 					<?= $this->Form->button(
 						'<i class="fas fa-save"></i> ' . __d('translate', 'Submit'),
-						['class' => 'btn btn-primary', 'escape' => false],
+						['class' => 'btn btn-primary', 'escapeTitle' => false],
 					) ?>
 					<?= $this->Html->link(
 						'<i class="fas fa-times"></i> ' . __d('translate', 'Cancel'),
 						['action' => 'index'],
-						['class' => 'btn btn-outline-secondary', 'escape' => false],
+						['class' => 'btn btn-outline-secondary', 'escapeTitle' => false],
 					) ?>
 				</div>
 				<?= $this->Form->end() ?>

@@ -270,8 +270,12 @@ class PoParser {
 				$this->currentEntry['msgstr'][] = trim($line, '"');
 
 				break;
+			case null:
+				// Skip lines that appear before any state is established
+				// This can happen with malformed PO files or unexpected content
+				break;
 			default:
-				throw new Exception('Parse error!');
+				throw new Exception('Parse error! Unexpected state "' . $this->state . '" for line: ' . $line);
 		}
 	}
 

@@ -66,7 +66,7 @@ use Cake\Core\Plugin;
 						<div class="btn-group">
 							<?= $this->Form->button(
 								'<i class="fas fa-filter"></i> ' . __d('translate', 'Filter'),
-								['type' => 'submit', 'class' => 'btn btn-primary', 'escape' => false],
+								['type' => 'submit', 'class' => 'btn btn-primary', 'escapeTitle' => false],
 							) ?>
 							<?php if (!empty($_isSearch)) { ?>
 								<?= $this->Html->link(

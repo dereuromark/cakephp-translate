@@ -15,8 +15,8 @@ class TranslateProjectsFixture extends TestFixture {
 	 *
 	 * @var array
 	 */
-	// @codingStandardsIgnoreStart
-	public $fields = [
+	// phpcs:disable
+	public array $fields = [
 		'id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'autoIncrement' => true, 'precision' => null],
 		'name' => ['type' => 'string', 'length' => 60, 'null' => false, 'default' => null, 'collate' => 'utf8mb4_unicode_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
 		'type' => ['type' => 'integer', 'length' => 2, 'unsigned' => false, 'null' => false, 'default' => '0', 'comment' => '', 'precision' => null, 'autoIncrement' => null],
@@ -25,7 +25,7 @@ class TranslateProjectsFixture extends TestFixture {
 		'created' => ['type' => 'datetime', 'length' => null, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null],
 		'modified' => ['type' => 'datetime', 'length' => null, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null],
 		'_constraints' => ['primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []]],
-		'_options' => ['engine' => 'InnoDB', 'collation' => 'utf8mb4_unicode_ci']
+		'_options' => ['engine' => 'InnoDB', 'collation' => 'utf8mb4_unicode_ci'],
 	];
 
 	/**
@@ -40,7 +40,7 @@ class TranslateProjectsFixture extends TestFixture {
 			'default' => 1,
 			'status' => TranslateProject::STATUS_HIDDEN,
 			'created' => '2017-04-15 01:23:08',
-			'modified' => '2017-04-15 01:23:08'
+			'modified' => '2017-04-15 01:23:08',
 		],
 	];
 

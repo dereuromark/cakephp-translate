@@ -86,7 +86,7 @@ class TranslateDomainsTable extends Table {
 			'translate_project_id' => $projectId,
 		]);
 		// The default one should always be active
-		if ($translateDomain['name'] === 'default') {
+		if ($translateDomain->name === 'default') {
 			$translateDomain->active = true;
 		}
 		$this->TranslateProjects->saveOrFail($translateDomain);

@@ -24,7 +24,7 @@ class TranslateProjectsController extends TranslateAppController {
 		$translateProjects = $this->paginate();
 
 		if (!$translateProjects->count()) {
-		    return $this->redirect(['action' => 'add', '?' => ['name' => 'Default', 'default' => true, 'status' => TranslateProject::STATUS_HIDDEN]]);
+			return $this->redirect(['action' => 'add', '?' => ['name' => 'Default', 'default' => true, 'status' => TranslateProject::STATUS_HIDDEN]]);
 		}
 
 		$this->set(compact('translateProjects'));
@@ -71,7 +71,7 @@ class TranslateProjectsController extends TranslateAppController {
 			$this->Flash->error(__d('translate', 'The translate project could not be saved. Please, try again.'));
 		} else {
 			foreach ($this->request->getQuery() as $key => $value) {
-		    	$this->request = $this->request->withData((string)$key, (string)$value);
+				$this->request = $this->request->withData((string)$key, (string)$value);
 			}
 		}
 

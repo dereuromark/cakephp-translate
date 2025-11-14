@@ -14,14 +14,14 @@ class UsersFixture extends TestFixture {
 	 *
 	 * @var array
 	 */
-	// @codingStandardsIgnoreStart
-	public $fields = [
+	// phpcs:disable
+	public array $fields = [
 		'id' => ['type' => 'integer', 'length' => 10, 'unsigned' => true, 'null' => false, 'default' => null, 'comment' => '', 'autoIncrement' => true, 'precision' => null],
 		'username' => ['type' => 'string', 'length' => 30, 'null' => true, 'default' => null, 'collate' => 'utf8_unicode_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
 		'password' => ['type' => 'string', 'length' => 255, 'null' => false, 'default' => null, 'collate' => 'utf8_unicode_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
 		'email' => ['type' => 'string', 'length' => 80, 'null' => false, 'default' => null, 'collate' => 'utf8_unicode_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
 		'_constraints' => ['primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []]],
-		'_options' => ['engine' => 'InnoDB', 'collation' => 'utf8_unicode_ci']
+		'_options' => ['engine' => 'InnoDB', 'collation' => 'utf8_unicode_ci'],
 	];
 
 	/**

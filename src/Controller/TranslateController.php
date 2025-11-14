@@ -148,7 +148,7 @@ class TranslateController extends TranslateAppController {
 	public function displayReference(int $id, int $reference) {
 		$translateString = $this->fetchTable('Translate.TranslateStrings')->get($id, ['contain' => ['TranslateDomains']]);
 
-		$sep = explode(PHP_EOL, $translateString['references']);
+		$sep = explode(PHP_EOL, $translateString->references);
 		$occ = [];
 		foreach ($sep as $s) {
 			$s = trim($s);

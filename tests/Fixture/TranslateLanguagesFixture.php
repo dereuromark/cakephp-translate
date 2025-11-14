@@ -14,8 +14,8 @@ class TranslateLanguagesFixture extends TestFixture {
 	 *
 	 * @var array
 	 */
-	// @codingStandardsIgnoreStart
-	public $fields = [
+	// phpcs:disable
+	public array $fields = [
 		'id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'autoIncrement' => true, 'precision' => null],
 		'translate_project_id' => ['type' => 'integer', 'length' => 10, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
 		'language_id' => ['type' => 'integer', 'length' => 10, 'unsigned' => false, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
@@ -26,7 +26,7 @@ class TranslateLanguagesFixture extends TestFixture {
 		'base' => ['type' => 'boolean', 'length' => null, 'null' => false, 'default' => '0', 'comment' => '', 'precision' => null],
 		'primary' => ['type' => 'boolean', 'length' => null, 'null' => false, 'default' => '0', 'comment' => '', 'precision' => null],
 		'_constraints' => ['primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []]],
-		'_options' => ['engine' => 'InnoDB', 'collation' => 'utf8mb4_unicode_ci']
+		'_options' => ['engine' => 'InnoDB', 'collation' => 'utf8mb4_unicode_ci'],
 	];
 
 	/**
@@ -43,7 +43,7 @@ class TranslateLanguagesFixture extends TestFixture {
 			'iso2' => 'en',
 			'active' => 1,
 			'base' => 1,
-			'primary' => 1
+			'primary' => 1,
 		],
 	];
 

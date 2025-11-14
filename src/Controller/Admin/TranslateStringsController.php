@@ -266,7 +266,8 @@ class TranslateStringsController extends TranslateAppController {
 	 */
 	public function dump() {
 		$translateLanguages = $this->TranslateStrings->TranslateTerms->TranslateLanguages->getExtractableAsList($this->Translation->currentProjectId());
-		$domains = $this->TranslateStrings->TranslateDomains->getActive();
+		/** @var \Translate\Model\Entity\TranslateDomain[] $domains */
+		$domains = $this->TranslateStrings->TranslateDomains->getActive()->toArray();
 
 		$map = [];
 		foreach ($translateLanguages as $code => $id) {
@@ -313,6 +314,7 @@ class TranslateStringsController extends TranslateAppController {
 		} elseif (!$this->Common->isPosted()) {
 			$domainArray = [];
 			foreach ($translateLanguages as $code => $id) {
+				/** @var \Translate\Model\Entity\TranslateDomain $domain */
 				foreach ($domains as $domain) {
 					$domainArray[] = $code . '_' . $domain->name;
 				}
@@ -436,7 +438,7 @@ class TranslateStringsController extends TranslateAppController {
 	public function displayReference(int $id, int $reference) {
 		$translateString = $this->TranslateStrings->get($id, ['contain' => ['TranslateDomains']]);
 
-		$sep = explode(PHP_EOL, $translateString['references']);
+		$sep = explode(PHP_EOL, $translateString->references);
 		$occ = [];
 		foreach ($sep as $s) {
 			$s = trim($s);

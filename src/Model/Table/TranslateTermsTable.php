@@ -150,7 +150,8 @@ class TranslateTermsTable extends Table {
             'conditions' => '',
             'fields' => array('id', 'username'),
             'order' => ''
-        )*/ }
+        )*/
+	}
 
 	/**
 	 * @return \Search\Manager
@@ -237,9 +238,10 @@ class TranslateTermsTable extends Table {
 	 * @return array<\Translate\Model\Entity\TranslateTerm>
 	 */
 	public function getTranslatedArray($stringId) {
-		$terms = $this->getTranslated($stringId);
+		$terms = $this->getTranslated($stringId)->toArray();
 
 		$array = [];
+		/** @var \Translate\Model\Entity\TranslateTerm $term */
 		foreach ($terms as $term) {
 			$array[$term->translate_language_id] = $term;
 		}

@@ -16,7 +16,7 @@
 	$currentColor = $this->Translation->getColor($currentCoverage);
 	?>
 <tr>
-	<td><?php echo $this->Translation->flag($language->language ? $language->language->code : $language->iso2); ?> <?php echo h($language->locale); ?></td>
+	<td><?php echo $this->Translation->flag($this->Translation->resolveFlagCode($language)); ?> <?php echo h($language->locale); ?></td>
 	<td><span style="color:#<?php echo $currentColor;?>;font-weight:bold"><?php echo $currentCoverage; ?>%</span></td>
 	<td><?= $this->element('Translate.yes_no', ['value' => $language['active']]) ?></td>
 </tr>

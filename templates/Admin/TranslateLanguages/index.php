@@ -32,11 +32,12 @@ use Cake\Core\Plugin;
 			<?php foreach ($translateLanguages as $translateLanguage) : ?>
 			<tr>
 				<td>
-				<?php if ($translateLanguage->language && $translateLanguage->language->code) {
-					echo $this->Translation->flag($translateLanguage->language->code);
-				} elseif ($translateLanguage->iso2) {
-					echo $this->Translation->flag($translateLanguage->iso2);
-				} ?>
+				<?php
+				$flagCode = $this->Translation->resolveFlagCode($translateLanguage);
+				if ($flagCode) {
+					echo $this->Translation->flag($flagCode);
+				}
+				?>
 
 				<?= h($translateLanguage->language_id) ?></td>
 				<td><?= h($translateLanguage->name) ?></td>

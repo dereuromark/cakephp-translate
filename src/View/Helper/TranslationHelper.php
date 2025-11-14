@@ -6,6 +6,7 @@ use Cake\Core\Configure;
 use Cake\View\Helper;
 use RuntimeException;
 use Translate\Model\Entity\TranslateDomain;
+use Translate\Model\Entity\TranslateLanguage;
 use Translate\Model\Entity\TranslateProject;
 
 /**
@@ -17,6 +18,36 @@ class TranslationHelper extends Helper {
 	 * @var array
 	 */
 	protected array $helpers = ['Html'];
+
+	/**
+	 * Resolves the best flag code for a translate language entity
+	 *
+	 * Priority order:
+	 * 1. Language relationship code (if Data plugin is loaded)
+	 * 2. Country code from locale (e.g., en_US -> us, de_DE -> de)
+	 * 3. ISO2 language code fallback
+	 *
+	 * @param \Translate\Model\Entity\TranslateLanguage $translateLanguage
+	 * @return string|null
+	 */
+	public function resolveFlagCode(TranslateLanguage $translateLanguage): ?string {
+		if ($translateLanguage->language && $translateLanguage->language->code) {
+			return $translateLanguage->language->code;
+		}
+
+		if ($translateLanguage->locale && str_contains($translateLanguage->locale, '_')) {
+			// Extract country code from locale (e.g., en_US -> us, de_DE -> de)
+			[, $flagCode] = explode('_', $translateLanguage->locale, 2);
+
+			return $flagCode;
+		}
+
+		if ($translateLanguage->iso2) {
+			return $translateLanguage->iso2;
+		}
+
+		return null;
+	}
 
 	/**
 	 * Flag icon

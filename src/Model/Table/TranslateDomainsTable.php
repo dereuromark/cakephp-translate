@@ -2,6 +2,8 @@
 
 namespace Translate\Model\Table;
 
+use Cake\ORM\RulesChecker;
+use Cake\Validation\Validator;
 use Tools\Model\Table\Table;
 
 /**
@@ -32,19 +34,33 @@ class TranslateDomainsTable extends Table {
 	public array $order = ['prio' => 'DESC'];
 
 	/**
-	 * @var array<mixed>
+	 * @param \Cake\Validation\Validator $validator Validator instance.
+	 *
+	 * @return \Cake\Validation\Validator
 	 */
-	public $validate = [
-		'name' => [
-			'notEmpty',
-			'isUnique' => [
-				'rule' => ['validateUnique', ['scope' => ['translate_project_id']]],
-				'provider' => 'table',
-				'message' => 'valErrRecordExists',
-			],
-		],
-		'active' => ['boolean'],
-	];
+	public function validationDefault(Validator $validator): Validator {
+		$validator
+			->scalar('name')
+			->requirePresence('name', 'create')
+			->notEmptyString('name');
+
+		$validator
+			->boolean('active')
+			->allowEmptyString('active');
+
+		return $validator;
+	}
+
+	/**
+	 * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
+	 *
+	 * @return \Cake\ORM\RulesChecker
+	 */
+	public function buildRules(RulesChecker $rules): RulesChecker {
+		$rules->add($rules->isUnique(['name', 'translate_project_id'], 'valErrRecordExists'));
+
+		return $rules;
+	}
 
 	/**
 	 * @param array $config

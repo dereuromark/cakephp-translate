@@ -10,6 +10,8 @@ use Cake\Http\Exception\InternalErrorException;
 use Cake\I18n\DateTime;
 use Cake\Log\Log;
 use Cake\ORM\Query\SelectQuery;
+use Cake\ORM\RulesChecker;
+use Cake\Validation\Validator;
 use Tools\Model\Table\Table;
 use Translate\Translator\Translator;
 
@@ -48,35 +50,6 @@ class TranslateStringsTable extends Table {
 	protected $lastImported;
 
 	/**
-	 * @var array<mixed>
-	 */
-	public $validate = [
-		'name' => [
-			'unique' => [
-				'rule' => ['validateUnique', ['scope' => ['translate_domain_id', 'context']]],
-				'provider' => 'table',
-				'message' => 'This name is already in use',
-			],
-			'minLength' => [
-				'rule' => ['minLength', 1],
-				'message' => 'Should have at least 1 characters',
-			],
-		],
-		'user_id' => [
-			'notEmpty' => [
-				'rule' => ['notEmpty'],
-				'message' => 'valErrMandatoryField',
-			],
-		],
-		'translate_domain_id' => [
-			'numeric' => [
-				'rule' => ['numeric'],
-				'message' => 'valErrMandatoryField',
-			],
-		],
-	];
-
-	/**
 	 * @return \Cake\Database\Schema\TableSchemaInterface
 	 */
 	public function getSchema(): TableSchemaInterface {
@@ -84,6 +57,40 @@ class TranslateStringsTable extends Table {
 		$schema->setColumnType('flags', 'json');
 
 		return $schema;
+	}
+
+	/**
+	 * @param \Cake\Validation\Validator $validator Validator instance.
+	 *
+	 * @return \Cake\Validation\Validator
+	 */
+	public function validationDefault(Validator $validator): Validator {
+		$validator
+			->scalar('name')
+			->minLength('name', 1, 'Should have at least 1 characters')
+			->requirePresence('name', 'create')
+			->notEmptyString('name');
+
+		$validator
+			->allowEmptyString('user_id');
+
+		$validator
+			->integer('translate_domain_id')
+			->requirePresence('translate_domain_id', 'create')
+			->notEmptyString('translate_domain_id', 'valErrMandatoryField');
+
+		return $validator;
+	}
+
+	/**
+	 * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
+	 *
+	 * @return \Cake\ORM\RulesChecker
+	 */
+	public function buildRules(RulesChecker $rules): RulesChecker {
+		$rules->add($rules->isUnique(['name', 'translate_domain_id', 'context'], 'This name is already in use'));
+
+		return $rules;
 	}
 
 	/**

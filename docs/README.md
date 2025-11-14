@@ -31,6 +31,14 @@ The live server would then pull those new translations right on deployment.
 
 ## General table overview
 
+```
+translate_projects (top level)
+├── translate_languages (languages per project)
+├── translate_domains (translation groups/domains per project)
+│     └── translate_strings (translatable strings per domain)
+│           └── translate_terms (actual translations per string per language)
+```
+
 The structure of the plugin is as follows:
 
 ![Diagram](diagram.svg)

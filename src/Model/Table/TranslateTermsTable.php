@@ -6,6 +6,8 @@ use ArrayObject;
 use Cake\Datasource\EntityInterface;
 use Cake\Event\EventInterface;
 use Cake\Log\Log;
+use Cake\ORM\RulesChecker;
+use Cake\Validation\Validator;
 use Tools\Model\Table\Table;
 
 /**
@@ -39,49 +41,11 @@ class TranslateTermsTable extends Table {
 	/**
 	 * @var string
 	 */
-	public $displayField = 'content';
+	public string $displayField = 'content';
 
 	/**
-	 * @var array<mixed>
-	 */
-	public $validate = [
-		'translate_string_id' => ['numeric'],
-		'comment' => [],
-		'content' => [
-			'isUnique' => [
-				'rule' => ['validateUnique', ['scope' => ['translate_string_id', 'translate_language_id']]],
-				'message' => 'valErrRecordNameExists',
-				'provider' => 'table',
-				'allowEmpty' => true,
-			],
-			'validPlaceholders' => [
-				'rule' => ['validatePlaceholders'],
-				'message' => 'Please confirm that you have the same amount of placeholders in your translation.',
-				'provider' => 'table',
-				'allowEmpty' => true,
-			],
-		],
-		'plural_2' => [
-			'validPlaceholders' => [
-				'rule' => ['validatePlaceholders'],
-				'message' => 'Please confirm that you have the same amount of placeholders in your translation.',
-				'provider' => 'table',
-				'allowEmpty' => true,
-			],
-		],
-		'translate_language_id' => [
-			'numeric' => [
-				'rule' => ['numeric'],
-				'message' => 'valErrMandatoryField',
-				'last' => true,
-			],
-		],
-		'user_id' => ['notEmpty'],
-		'confirmed' => ['numeric'],
-		'confirmed_by' => ['notEmpty'],
-	];
-
-	/**
+	 * Custom validation rule to check if placeholders match between original and translation
+	 *
 	 * @param string $text
 	 * @param array $context
 	 *
@@ -117,6 +81,64 @@ class TranslateTermsTable extends Table {
 		}
 
 		return true;
+	}
+
+	/**
+	 * @param \Cake\Validation\Validator $validator Validator instance.
+	 *
+	 * @return \Cake\Validation\Validator
+	 */
+	public function validationDefault(Validator $validator): Validator {
+		$validator
+			->integer('translate_string_id')
+			->allowEmptyString('translate_string_id');
+
+		$validator
+			->allowEmptyString('comment');
+
+		$validator
+			->allowEmptyString('content')
+			->add('content', 'validPlaceholders', [
+				'rule' => 'validatePlaceholders',
+				'provider' => 'table',
+				'message' => 'Please confirm that you have the same amount of placeholders in your translation.',
+			]);
+
+		$validator
+			->allowEmptyString('plural_2')
+			->add('plural_2', 'validPlaceholders', [
+				'rule' => 'validatePlaceholders',
+				'provider' => 'table',
+				'message' => 'Please confirm that you have the same amount of placeholders in your translation.',
+			]);
+
+		$validator
+			->integer('translate_language_id')
+			->requirePresence('translate_language_id', 'create')
+			->notEmptyString('translate_language_id', 'valErrMandatoryField');
+
+		$validator
+			->allowEmptyString('user_id');
+
+		$validator
+			->integer('confirmed')
+			->allowEmptyString('confirmed');
+
+		$validator
+			->allowEmptyString('confirmed_by');
+
+		return $validator;
+	}
+
+	/**
+	 * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
+	 *
+	 * @return \Cake\ORM\RulesChecker
+	 */
+	public function buildRules(RulesChecker $rules): RulesChecker {
+		$rules->add($rules->isUnique(['content', 'translate_string_id', 'translate_language_id'], 'valErrRecordNameExists'));
+
+		return $rules;
 	}
 
 	/**

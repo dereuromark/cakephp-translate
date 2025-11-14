@@ -2,6 +2,8 @@
 
 namespace Translate\Model\Table;
 
+use Cake\ORM\RulesChecker;
+use Cake\Validation\Validator;
 use Exception;
 use Tools\Model\Table\Table;
 use Translate\Model\Entity\TranslateProject;
@@ -33,40 +35,41 @@ class TranslateProjectsTable extends Table {
 	public array $order = ['status' => 'DESC', 'default' => 'DESC', 'name' => 'ASC'];
 
 	/**
-	 * @var array<mixed>
+	 * @param \Cake\Validation\Validator $validator Validator instance.
+	 *
+	 * @return \Cake\Validation\Validator
 	 */
-	public $validate = [
-		'name' => [
-			'notEmpty' => [
-				'rule' => ['notEmpty'],
-				'message' => 'valErrMandatoryField',
-				'last' => true,
-			],
-			'isUnique' => [
-				'rule' => ['isUnique'],
-				'message' => 'valErrMandatoryField',
-				'last' => true,
-			],
-		],
-		'type' => [
-			'numeric' => [
-				'rule' => ['numeric'],
-				'message' => 'valErrMandatoryField',
-			],
-		],
-		'status' => [
-			'numeric' => [
-				'rule' => ['numeric'],
-				'message' => 'valErrMandatoryField',
-			],
-		],
-		'default' => [
-			'boolean' => [
-				'rule' => ['boolean'],
-				'message' => 'valErrMandatoryField',
-			],
-		],
-	];
+	public function validationDefault(Validator $validator): Validator {
+		$validator
+			->scalar('name')
+			->requirePresence('name', 'create')
+			->notEmptyString('name', 'valErrMandatoryField');
+
+		$validator
+			->integer('type')
+			->allowEmptyString('type', 'valErrMandatoryField');
+
+		$validator
+			->integer('status')
+			->allowEmptyString('status', 'valErrMandatoryField');
+
+		$validator
+			->boolean('default')
+			->allowEmptyString('default', 'valErrMandatoryField');
+
+		return $validator;
+	}
+
+	/**
+	 * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
+	 *
+	 * @return \Cake\ORM\RulesChecker
+	 */
+	public function buildRules(RulesChecker $rules): RulesChecker {
+		$rules->add($rules->isUnique(['name'], 'valErrMandatoryField'));
+
+		return $rules;
+	}
 
 	/**
 	 * @param array $config

@@ -9,6 +9,8 @@ namespace Translate\Model\Table;
 use ArrayObject;
 use Cake\Core\Plugin;
 use Cake\Event\EventInterface;
+use Cake\ORM\RulesChecker;
+use Cake\Validation\Validator;
 use Tools\Model\Table\Table;
 
 /**
@@ -40,56 +42,53 @@ class TranslateLanguagesTable extends Table {
 	public array $order = ['name' => 'ASC'];
 
 	/**
-	 * @var array<mixed>
+	 * @param \Cake\Validation\Validator $validator Validator instance.
+	 *
+	 * @return \Cake\Validation\Validator
 	 */
-	public $validate = [
-		'name' => [
-			'minLength' => [
-				'rule' => ['notEmpty'],
-				'message' => 'Please insert a language name',
-				'last' => true,
-			],
-			'isUnique' => [
-				'rule' => ['validateUnique', ['scope' => ['translate_project_id']]],
-				'provider' => 'table',
-				'message' => 'valErrRecordExists',
-			],
-		],
-		'iso2' => [ // For translation handling (languages)
-			'notEmpty' => [
-				'rule' => ['notEmpty'],
-				'message' => 'Please insert a 2 letter ISO code',
-				'last' => true,
-			],
-			'validIsoCode' => [
-				'rule' => ['validateIsoCode'],
+	public function validationDefault(Validator $validator): Validator {
+		$validator
+			->scalar('name')
+			->requirePresence('name', 'create')
+			->notEmptyString('name', 'Please insert a language name');
+
+		$validator
+			->scalar('iso2')
+			->requirePresence('iso2', 'create')
+			->notEmptyString('iso2', 'Please insert a 2 letter ISO code')
+			->add('iso2', 'validIsoCode', [
+				'rule' => 'validateIsoCode',
 				'provider' => 'table',
 				'message' => 'Invalid ISO2 code',
-				'last' => true,
-			],
-		],
-		'locale' => [ // For Locale folder import/export
-			'notEmpty' => [
-				'rule' => ['notEmpty'],
-				'message' => 'Format: xx or xx_YY',
-				'last' => true,
-			],
-			'isUnique' => [
-				'rule' => ['isUnique'],
-				'provider' => 'table',
-				'message' => 'valErrRecordExists',
-			],
-		],
-		'language_id' => [
-			'numeric' => [
-				'rule' => ['numeric'],
-				'message' => 'Not a number',
-				'last' => true,
-				'allowEmpty' => true,
-			],
-		],
-		'active' => ['boolean'],
-	];
+			]);
+
+		$validator
+			->scalar('locale')
+			->requirePresence('locale', 'create')
+			->notEmptyString('locale', 'Format: xx or xx_YY');
+
+		$validator
+			->integer('language_id')
+			->allowEmptyString('language_id', null, 'Not a number');
+
+		$validator
+			->boolean('active')
+			->allowEmptyString('active');
+
+		return $validator;
+	}
+
+	/**
+	 * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
+	 *
+	 * @return \Cake\ORM\RulesChecker
+	 */
+	public function buildRules(RulesChecker $rules): RulesChecker {
+		$rules->add($rules->isUnique(['name', 'translate_project_id'], 'valErrRecordExists'));
+		$rules->add($rules->isUnique(['locale', 'translate_project_id'], 'valErrRecordExists'));
+
+		return $rules;
+	}
 
 	/**
 	 * Preparing the data

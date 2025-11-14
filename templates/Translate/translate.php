@@ -96,7 +96,7 @@ foreach ($sep as $s) {
 ?>
 
 <h3>Additional Infos</h3>
-Group: <code><?php echo h($translateString->translate_domain->name); ?></code><br/>
+Domain: <code><?php echo h($translateString->translate_domain->name); ?></code><br/>
 
 References: <?php echo count($references)?>x
 	<?php if ($references) { ?>

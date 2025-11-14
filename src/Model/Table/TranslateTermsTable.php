@@ -238,17 +238,17 @@ class TranslateTermsTable extends Table {
 	/**
 	 * @param int $languageId
 	 *
-	 * @param array|int|null $groupId
+	 * @param array|int|null $domainId
 	 *
 	 * @return \Cake\ORM\Query\SelectQuery
 	 */
-	public function getTranslations($languageId, $groupId = null) {
+	public function getTranslations($languageId, $domainId = null) {
 		$options = [
 			'conditions' => [$this->getAlias() . '.translate_language_id' => $languageId],
 			'contain' => ['TranslateStrings'],
 		];
-		if ($groupId) {
-			$options['conditions']['TranslateStrings.translate_domain_id IN'] = $groupId;
+		if ($domainId) {
+			$options['conditions']['TranslateStrings.translate_domain_id IN'] = $domainId;
 		}
 
 		return $this->find('all', $options);

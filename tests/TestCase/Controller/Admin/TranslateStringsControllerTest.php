@@ -186,8 +186,8 @@ Template/Account/foo.ctp:15', $translateString->references);
 		$TranslateStrings = $this->fetchTable('Translate.TranslateStrings');
 		$record = $TranslateStrings->get($id);
 
-		$groupId = $record->translate_domain_id;
-		$record = $TranslateStrings->TranslateDomains->get($groupId);
+		$domainId = $record->translate_domain_id;
+		$record = $TranslateStrings->TranslateDomains->get($domainId);
 
 		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateStrings', 'action' => 'translate', $id]);
 

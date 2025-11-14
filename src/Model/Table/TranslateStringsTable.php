@@ -277,10 +277,10 @@ class TranslateStringsTable extends Table {
 
 	/**
 	 * @param array $translation
-	 * @param int $groupId
+	 * @param int $domainId
 	 * @return \Translate\Model\Entity\TranslateString|null
 	 */
-	public function import(array $translation, int $groupId) {
+	public function import(array $translation, int $domainId) {
 		if (!isset($this->lastImported)) {
 			$this->lastImported = new DateTime();
 		}
@@ -288,14 +288,14 @@ class TranslateStringsTable extends Table {
 		$translation += [
 			'last_imported' => $this->lastImported,
 			'is_html' => $this->containsHtml($translation),
-			'translate_domain_id' => $groupId,
+			'translate_domain_id' => $domainId,
 		];
 
 		$translateString = $this->find()->where([
 			'name' => $translation['name'],
 			//'plural' => isset($translation['plural']) ? $translation['plural'] : null,
 			'context IS' => $translation['context'] ?? null,
-			'translate_domain_id' => $groupId,
+			'translate_domain_id' => $domainId,
 		])->first();
 		if (!$translateString) {
 			$translation['active'] = true;

@@ -110,9 +110,9 @@ $totalColor = $this->Translation->getColor($totalCoverage);
 							<div class="ms-2 me-auto">
 								<div class="fw-bold">
 									<i class="fas fa-folder-open text-primary"></i>
-									<?= __d('translate', 'Select Group') ?>
+									<?= __d('translate', 'Select Domain') ?>
 								</div>
-								<?= __d('translate', 'Select "group" you want to translate') ?>
+								<?= __d('translate', 'Select "domain" you want to translate') ?>
 							</div>
 						</div>
 						<div class="list-group-item d-flex align-items-start">

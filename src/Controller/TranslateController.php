@@ -79,7 +79,7 @@ class TranslateController extends TranslateAppController {
 					return $this->redirect([$next['id']]);
 				}
 
-				$this->Flash->success('No more open translations for group `' . h($translateString->translate_domain->name) . '`.');
+				$this->Flash->success('No more open translations for domain `' . h($translateString->translate_domain->name) . '`.');
 
 				return $this->redirect(['action' => 'view', $id]);
 			}
@@ -122,7 +122,7 @@ class TranslateController extends TranslateAppController {
 						return $this->redirect([$next['id']]);
 					}
 
-					$this->Flash->success('No more open translations for group `' . h($translateString->translate_domain->name) . '`.');
+					$this->Flash->success('No more open translations for domain `' . h($translateString->translate_domain->name) . '`.');
 				}
 
 				return $this->redirect(['action' => 'view', $id]);

@@ -88,7 +88,7 @@ if (!empty($coverage) && is_array($count)) {
 
 <h3>How to Translate</h3>
 <ol>
-	<li>Select "group" you want to translate</li>
+	<li>Select "domain" you want to translate</li>
 	<li>Select language you want to translate into (or from)</li>
 	<li>Translate and submit the form</li>
 </ol>

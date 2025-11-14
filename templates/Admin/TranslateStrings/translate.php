@@ -100,7 +100,7 @@ foreach ($sep as $s) {
 ?>
 
 <h3>Additional Infos</h3>
-Group: <?php echo $this->Html->link($translateString->translate_domain->name, ['action' => 'index', '?' => ['translate_domain_id' => $translateString->translate_domain_id]]); ?><br/>
+Domain: <?php echo $this->Html->link($translateString->translate_domain->name, ['action' => 'index', '?' => ['translate_domain_id' => $translateString->translate_domain_id]]); ?><br/>
 
 References: <?php echo count($references)?>x
 	<?php if ($references) { ?>

@@ -298,8 +298,8 @@ class TranslateStringsController extends TranslateAppController {
 				[$lang, $domain] = explode('_', $domain, 2);
 
 				$langId = $this->TranslateStrings->TranslateTerms->TranslateLanguages->find()->where(['iso2' => $lang])->firstOrFail()->id;
-				$groupId = $this->TranslateStrings->TranslateDomains->find()->where(['name' => $domain, 'translate_project_id' => $this->Translation->currentProjectId()])->firstOrFail()->id;
-				$translations = $this->TranslateStrings->TranslateTerms->getTranslations($langId, $groupId)->toArray();
+				$domainId = $this->TranslateStrings->TranslateDomains->find()->where(['name' => $domain, 'translate_project_id' => $this->Translation->currentProjectId()])->firstOrFail()->id;
+				$translations = $this->TranslateStrings->TranslateTerms->getTranslations($langId, $domainId)->toArray();
 
 				if (!$translations) {
 					continue;
@@ -380,7 +380,7 @@ class TranslateStringsController extends TranslateAppController {
 					return $this->redirect([$next['id']]);
 				}
 
-				$this->Flash->success('No more open translations for group `' . h($translateString->translate_domain->name) . '`.');
+				$this->Flash->success('No more open translations for domain `' . h($translateString->translate_domain->name) . '`.');
 
 				return $this->redirect(['action' => 'view', $id]);
 			}
@@ -423,7 +423,7 @@ class TranslateStringsController extends TranslateAppController {
 						return $this->redirect([$next['id']]);
 					}
 
-					$this->Flash->success('No more open translations for group `' . h($translateString->translate_domain->name) . '`.');
+					$this->Flash->success('No more open translations for domain `' . h($translateString->translate_domain->name) . '`.');
 				}
 
 				return $this->redirect(['action' => 'view', $id]);

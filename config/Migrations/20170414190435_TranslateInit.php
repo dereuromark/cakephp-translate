@@ -8,7 +8,7 @@ class TranslateInit extends AbstractMigration {
 	 * @inheritDoc
 	 */
 	public function change() {
-		$table = $this->table('translate_projects');
+		$table = $this->table('translate_projects', ['signed' => false]);
 		$table
 			->addColumn('name', 'string', [
 				'default' => null,
@@ -43,7 +43,7 @@ class TranslateInit extends AbstractMigration {
 			->addIndex(['name'], ['unique' => true])
 			->create();
 
-		$table = $this->table('translate_languages');
+		$table = $this->table('translate_languages', ['signed' => false]);
 		$table
 			->addColumn('translate_project_id', 'integer', [
 				'default' => null,
@@ -96,7 +96,7 @@ class TranslateInit extends AbstractMigration {
 			])
 			->create();
 
-		$table = $this->table('translate_domains');
+		$table = $this->table('translate_domains', ['signed' => false]);
 		$table
 			->addColumn('name', 'string', [
 				'default' => null,
@@ -142,7 +142,7 @@ class TranslateInit extends AbstractMigration {
 			])
 			->create();
 
-		$table = $this->table('translate_strings');
+		$table = $this->table('translate_strings', ['signed' => false]);
 		$table
 			->addColumn('context', 'string', [
 				'default' => null,
@@ -222,7 +222,7 @@ class TranslateInit extends AbstractMigration {
 			])
 			->create();
 
-		$table = $this->table('translate_terms');
+		$table = $this->table('translate_terms', ['signed' => false]);
 		$table
 			->addColumn('translate_string_id', 'integer', [
 				'default' => null,

@@ -289,11 +289,21 @@ class TranslateInit extends AbstractMigration {
 			])
 			->create();
 
-		$sql = <<<SQL
-ALTER TABLE `translate_strings` CHANGE `name` `name` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL;
-ALTER TABLE `translate_strings` CHANGE `context` `context` VARCHAR( 250 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL;
-SQL;
-		$this->query($sql);
+		// Apply collation for MySQL (for case-sensitive comparison)
+		// This is a no-op for other databases
+		$table = $this->table('translate_strings');
+		$table
+			->changeColumn('name', 'text', [
+				'null' => false,
+				'collation' => 'utf8mb4_bin',
+			])
+			->changeColumn('context', 'string', [
+				'limit' => 250,
+				'null' => true,
+				'default' => null,
+				'collation' => 'utf8mb4_bin',
+			])
+			->update();
 	}
 
 }

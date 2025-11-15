@@ -1,8 +1,8 @@
 <?php
 
-use Phinx\Migration\AbstractMigration;
+use Migration\BaseMigration;
 
-class TranslateInit extends AbstractMigration {
+class TranslateInit extends BaseMigration {
 
 	/**
 	 * @inheritDoc
@@ -245,7 +245,7 @@ class TranslateInit extends AbstractMigration {
 				'limit' => 255,
 				'null' => true,
 			])
-			->addColumn('translate_language_id', 'integer', [
+			->addColumn('translate_locale_id', 'integer', [
 				'default' => null,
 				'limit' => 10,
 				'null' => false,
@@ -278,12 +278,12 @@ class TranslateInit extends AbstractMigration {
 				'limit' => null,
 				'null' => true,
 			])
-			->addIndex(['translate_string_id', 'translate_language_id'], ['unique' => true])
+			->addIndex(['translate_string_id', 'translate_locale_id'], ['unique' => true])
 			->addForeignKey('translate_string_id', 'translate_strings', 'id', [
 				'delete' => 'CASCADE',
 				'update' => 'NO_ACTION',
 			])
-			->addForeignKey('translate_language_id', 'translate_languages', 'id', [
+			->addForeignKey('translate_locale_id', 'translate_languages', 'id', [
 				'delete' => 'CASCADE',
 				'update' => 'NO_ACTION',
 			])

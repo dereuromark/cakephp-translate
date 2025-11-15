@@ -1,8 +1,8 @@
 <?php
 
-use Phinx\Migration\AbstractMigration;
+use Migration\BaseMigration;
 
-class TranslateUnused extends AbstractMigration {
+class TranslateUnused extends BaseMigration {
 
 	/**
 	 * @inheritDoc

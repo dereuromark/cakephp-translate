@@ -33,7 +33,7 @@ use Cake\Core\Plugin;
 	</ul>
 </nav>
 
-<div class="translateDomains index col-md-9 col-sm-8 col-xs-12">
+<div class="translateDomains index col-md-9 col-sm-8 col-12">
 	<h2><?= __d('translate', 'Groups') ?> aka <?= __d('translate', 'Translate Domains') ?></h2>
 	<table class="table table-striped">
 		<thead>

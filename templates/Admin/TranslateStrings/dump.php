@@ -5,14 +5,14 @@
  */
 ?>
 
-<nav class="col-md-3 col-sm-4 col-xs-12">
-	<ul class="side-nav nav nav-pills nav-stacked">
+<nav class="col-md-3 col-sm-4 col-12">
+	<ul class="nav nav-pills flex-column">
 		<li class="heading"><?= __d('translate', 'Actions') ?></li>
 		<li><?php echo $this->Html->link(__d('translate', 'List Translate Strings'), ['action' => 'index']);?></li>
 	</ul>
 </nav>
 
-<div class="page form col-md-9 col-sm-8 col-xs-12">
+<div class="page form col-md-9 col-sm-8 col-12">
 
 <h3>Dumping</h3>
 

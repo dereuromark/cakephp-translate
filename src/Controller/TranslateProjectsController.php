@@ -24,7 +24,7 @@ class TranslateProjectsController extends TranslateAppController {
 		$this->request->getSession()->write('TranslateProject.id', $translateProject->id);
 		$this->Flash->success(__d('translate', 'Project switched'));
 
-		return $this->Common->autoRedirect(['controller' => 'Translate', 'action' => 'index']);
+		return $this->Translation->autoRedirect(['controller' => 'Translate', 'action' => 'index']);
 	}
 
 }

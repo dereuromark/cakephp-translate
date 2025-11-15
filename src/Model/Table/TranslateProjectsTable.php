@@ -3,9 +3,10 @@
 namespace Translate\Model\Table;
 
 use Cake\ORM\RulesChecker;
+use Cake\ORM\Table;
+use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
 use Exception;
-use Tools\Model\Table\Table;
 use Translate\Model\Entity\TranslateProject;
 
 /**
@@ -25,7 +26,7 @@ use Translate\Model\Entity\TranslateProject;
  * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateProject> saveManyOrFail(iterable $entities, array $options = [])
  * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateProject>|false deleteMany(iterable $entities, array $options = [])
  * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateProject> deleteManyOrFail(iterable $entities, array $options = [])
- * @extends \Tools\Model\Table\Table<array{Nullable: \Shim\Model\Behavior\NullableBehavior}>
+ * @extends \Cake\ORM\Table<array{Nullable: \Shim\Model\Behavior\NullableBehavior}>
  */
 class TranslateProjectsTable extends Table {
 
@@ -114,10 +115,9 @@ class TranslateProjectsTable extends Table {
 	 * @return void
 	 */
 	public function reset($id, $types, $languages = []) {
-		//$this->TranslateTerms = TableRegistry::getTableLocator()->get('Translate.TranslateTerms');
+		$translateTerms = TableRegistry::getTableLocator()->get('Translate.TranslateTerms');
 
 		//$x = $this->TranslateTerms->TranslateStrings->habtmJoin;
-		// recursive = 0;
 		//$this->TranslateTerms->bindModel(['belongsTo' => $x], false);
 
 		foreach ($types as $type) {
@@ -132,7 +132,7 @@ class TranslateProjectsTable extends Table {
 						'contain' => ['TranslateDomains' => ['TranslateStrings']],
 					];
 					# bug in deleteAll (cannot use containable/recursion)
-					$res = $this->TranslateTerms->deleteAll($options['conditions']);
+					$res = $translateTerms->deleteAll($options['conditions']);
 
 					/*
 					die(returns($res));

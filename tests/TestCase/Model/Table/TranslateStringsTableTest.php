@@ -141,4 +141,59 @@ class TranslateStringsTableTest extends TestCase {
 		$this->assertEquals($savedString->id, $result->id);
 	}
 
+	/**
+	 * Test plural validation with matching placeholders
+	 *
+	 * @return void
+	 */
+	public function testPluralValidationWithMatchingPlaceholders() {
+		$data = [
+			'name' => 'You have {0} item',
+			'plural' => 'You have {0} items',
+			'translate_domain_id' => 1,
+		];
+		$entity = $this->TranslateStrings->newEntity($data);
+		$result = $this->TranslateStrings->save($entity);
+
+		$this->assertNotFalse($result, print_r($entity->getErrors(), true));
+	}
+
+	/**
+	 * Test plural validation fails with mismatched placeholders
+	 *
+	 * @return void
+	 */
+	public function testPluralValidationWithMismatchedPlaceholders() {
+		$data = [
+			'name' => 'You have {0} item',
+			'plural' => 'You have items',
+			'translate_domain_id' => 1,
+		];
+		$entity = $this->TranslateStrings->newEntity($data);
+		$result = $this->TranslateStrings->save($entity);
+
+		$this->assertFalse($result);
+		$errors = $entity->getError('plural');
+		$this->assertNotEmpty($errors);
+		$errorMessage = is_array($errors) ? reset($errors) : $errors;
+		$this->assertStringContainsString('placeholder', strtolower($errorMessage));
+	}
+
+	/**
+	 * Test plural validation with multiple placeholders
+	 *
+	 * @return void
+	 */
+	public function testPluralValidationWithMultiplePlaceholders() {
+		$data = [
+			'name' => 'You have {0} items in {1} categories',
+			'plural' => 'You have {0} items in {1} categories',
+			'translate_domain_id' => 1,
+		];
+		$entity = $this->TranslateStrings->newEntity($data);
+		$result = $this->TranslateStrings->save($entity);
+
+		$this->assertNotFalse($result, print_r($entity->getErrors(), true));
+	}
+
 }

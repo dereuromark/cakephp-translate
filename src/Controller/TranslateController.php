@@ -69,7 +69,7 @@ class TranslateController extends TranslateAppController {
 
 		$translateTerms = $translateStringsTable->TranslateTerms->getTranslatedArray($id);
 
-		if ($this->Common->isPosted()) {
+		if ($this->Translation->isPosted()) {
 			if ($this->request->getData('skip')) {
 				$translateString->skipped = true;
 				$translateStringsTable->saveOrFail($translateString);
@@ -146,6 +146,8 @@ class TranslateController extends TranslateAppController {
 	 * @return void
 	 */
 	public function displayReference(int $id, int $reference) {
+		$this->viewBuilder()->setLayout('ajax');
+
 		$translateString = $this->fetchTable('Translate.TranslateStrings')->get($id, ['contain' => ['TranslateDomains']]);
 
 		$sep = explode(PHP_EOL, $translateString->references);
@@ -181,6 +183,45 @@ class TranslateController extends TranslateAppController {
 		$fileArray = file($file);
 
 		$this->set(compact('fileArray', 'lines', 'reference'));
+	}
+
+	/**
+	 * Switch the application language/locale
+	 *
+	 * @return \Cake\Http\Response
+	 */
+	public function switchLanguage() {
+		$locale = $this->request->getQuery('locale');
+		if (!$locale) {
+			$this->Flash->error(__d('translate', 'Invalid locale'));
+
+			return $this->redirect(['action' => 'index']);
+		}
+
+		// Validate locale exists and is active
+		$language = $this->fetchTable('Translate.TranslateLanguages')
+			->find()
+			->where([
+				'locale' => $locale,
+				'active' => true,
+			])
+			->first();
+
+		if (!$language) {
+			$this->Flash->error(__d('translate', 'Language not found or not active'));
+
+			return $this->redirect(['action' => 'index']);
+		}
+
+		// Store locale in session or cookie
+		$this->request->getSession()->write('Config.language', $locale);
+
+		$this->Flash->success(__d('translate', 'Language switched to {0}', $language->name));
+
+		// Redirect back to previous page or index
+		$redirect = $this->request->getQuery('redirect') ?: ['action' => 'index'];
+
+		return $this->redirect($redirect);
 	}
 
 }

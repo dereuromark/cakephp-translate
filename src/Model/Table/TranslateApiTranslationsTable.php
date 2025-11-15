@@ -2,8 +2,8 @@
 
 namespace Translate\Model\Table;
 
+use Cake\ORM\Table;
 use Cake\Validation\Validator;
-use Tools\Model\Table\Table;
 
 /**
  * TranslateApiTranslations Model
@@ -24,7 +24,7 @@ use Tools\Model\Table\Table;
  * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateApiTranslation> saveManyOrFail(iterable $entities, array $options = [])
  * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateApiTranslation>|false deleteMany(iterable $entities, array $options = [])
  * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateApiTranslation> deleteManyOrFail(iterable $entities, array $options = [])
- * @extends \Tools\Model\Table\Table<array{Nullable: \Shim\Model\Behavior\NullableBehavior}>
+ * @extends \Cake\ORM\Table<array{Nullable: \Shim\Model\Behavior\NullableBehavior}>
  */
 class TranslateApiTranslationsTable extends Table {
 

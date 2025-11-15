@@ -3,8 +3,8 @@
  * @var \App\View\AppView $this
  * @var \Translate\Model\Entity\TranslateApiTranslation $translateApiTranslation
  */
-?><nav class="col-md-3 col-sm-4 col-xs-12">
-	<ul class="side-nav nav nav-pills nav-stacked">
+?><nav class="col-md-3 col-sm-4 col-12">
+	<ul class="nav nav-pills flex-column">
 		<li class="heading"><?= __('Actions') ?></li>
 		<li><?= $this->Form->postLink(
 			__('Delete'),
@@ -15,7 +15,7 @@
 		<li><?= $this->Html->link(__('List Translate Api Translations'), ['action' => 'index']) ?></li>
 	</ul>
 </nav>
-<div class="translateApiTranslations form col-md-9 col-sm-8 col-xs-12">
+<div class="translateApiTranslations form col-md-9 col-sm-8 col-12">
 	<?= $this->Form->create($translateApiTranslation) ?>
 	<fieldset>
 		<legend><?= __('Edit Translate Api Translation') ?></legend>

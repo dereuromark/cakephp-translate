@@ -30,7 +30,7 @@ use Cake\Core\Plugin;
 	</ul>
 </nav>
 
-<div class="translateProjects index col-md-9 col-sm-8 col-xs-12">
+<div class="translateProjects index col-md-9 col-sm-8 col-12">
 	<h2><?= __d('translate', 'Translate Projects') ?></h2>
 	<table class="table table-striped">
 		<thead>

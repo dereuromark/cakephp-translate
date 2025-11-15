@@ -7,8 +7,8 @@ use Cake\Datasource\EntityInterface;
 use Cake\Event\EventInterface;
 use Cake\Log\Log;
 use Cake\ORM\RulesChecker;
+use Cake\ORM\Table;
 use Cake\Validation\Validator;
-use Tools\Model\Table\Table;
 
 /**
  * @property \Cake\ORM\Association\BelongsTo<\Translate\Model\Table\TranslateStringsTable> $TranslateStrings
@@ -29,7 +29,7 @@ use Tools\Model\Table\Table;
  * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateTerm> saveManyOrFail(iterable $entities, array $options = [])
  * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateTerm>|false deleteMany(iterable $entities, array $options = [])
  * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateTerm> deleteManyOrFail(iterable $entities, array $options = [])
- * @extends \Tools\Model\Table\Table<array{Nullable: \Shim\Model\Behavior\NullableBehavior, Search: \Search\Model\Behavior\SearchBehavior}>
+ * @extends \Cake\ORM\Table<array{Nullable: \Shim\Model\Behavior\NullableBehavior, Search: \Search\Model\Behavior\SearchBehavior}>
  */
 class TranslateTermsTable extends Table {
 
@@ -56,28 +56,52 @@ class TranslateTermsTable extends Table {
 			return true;
 		}
 
-		preg_match_all('/\{\d\}/', $context['data']['string'], $expectedMatches);
+		$originalString = $context['data']['string'];
 
-		preg_match_all('/\{\d\}/', $text, $matches);
-		if (!$expectedMatches[0] && !$matches[0]) {
+		// Check {0}, {1}, etc. style placeholders
+		preg_match_all('/\{\d+\}/', $originalString, $expectedBraceMatches);
+		preg_match_all('/\{\d+\}/', $text, $braceMatches);
+
+		if (!$this->validatePlaceholderSet($expectedBraceMatches[0], $braceMatches[0])) {
+			return false;
+		}
+
+		// Check %s, %d, %f, etc. style placeholders (sprintf format)
+		// Matches: %s, %d, %f, %1$s, %2$d, etc.
+		preg_match_all('/%(?:\d+\$)?[sdfboxXeEgGcup]/', $originalString, $expectedSprintfMatches);
+		preg_match_all('/%(?:\d+\$)?[sdfboxXeEgGcup]/', $text, $sprintfMatches);
+
+		if (!$this->validatePlaceholderSet($expectedSprintfMatches[0], $sprintfMatches[0])) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Validates that two sets of placeholders match
+	 *
+	 * @param array $expected Expected placeholders from original string
+	 * @param array $actual Actual placeholders from translation
+	 * @return bool
+	 */
+	protected function validatePlaceholderSet(array $expected, array $actual): bool {
+		if (!$expected && !$actual) {
 			return true;
 		}
 
-		$expected = !empty($expectedMatches[0]) ? $expectedMatches[0] : [];
-		$is = !empty($matches[0]) ? $matches[0] : [];
-
-		if (count($expected) !== count($is)) {
+		if (count($expected) !== count($actual)) {
 			return false;
 		}
 
-		foreach ($expected as $key => $placeholder) {
-			if (in_array($placeholder, $is)) {
-				unset($expected[$key]);
+		// Check each expected placeholder exists in actual
+		$actualCopy = $actual;
+		foreach ($expected as $placeholder) {
+			$key = array_search($placeholder, $actualCopy, true);
+			if ($key === false) {
+				return false;
 			}
-		}
-
-		if ($expected) {
-			return false;
+			unset($actualCopy[$key]);
 		}
 
 		return true;
@@ -101,7 +125,7 @@ class TranslateTermsTable extends Table {
 			->add('content', 'validPlaceholders', [
 				'rule' => 'validatePlaceholders',
 				'provider' => 'table',
-				'message' => 'Please confirm that you have the same amount of placeholders in your translation.',
+				'message' => 'Translation must contain the same placeholders as the original string (e.g., {0}, %s, %d).',
 			]);
 
 		$validator
@@ -109,7 +133,7 @@ class TranslateTermsTable extends Table {
 			->add('plural_2', 'validPlaceholders', [
 				'rule' => 'validatePlaceholders',
 				'provider' => 'table',
-				'message' => 'Please confirm that you have the same amount of placeholders in your translation.',
+				'message' => 'Translation must contain the same placeholders as the original string (e.g., {0}, %s, %d).',
 			]);
 
 		$validator
@@ -176,17 +200,18 @@ class TranslateTermsTable extends Table {
 	}
 
 	/**
-	 * @return \Search\Manager
+	 * @param \Search\Model\Filter\FilterCollection $filterCollection
+	 *
+	 * @return \Search\Model\Filter\FilterCollection
 	 */
-	public function searchManager() {
-		$searchManager = $this->behaviors()->Search->searchManager();
-		$searchManager
-			->value('translate_language_id', [])
-			->like('search', [
+	public function filterCollection($filterCollection) {
+		$filterCollection
+			->add('translate_language_id', 'Search.Value')
+			->add('search', 'Search.Like', [
 				'fields' => [$this->aliasField('content'), 'TranslateStrings.name'],
 			]);
 
-		return $searchManager;
+		return $filterCollection;
 	}
 
 	/**

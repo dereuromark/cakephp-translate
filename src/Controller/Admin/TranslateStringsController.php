@@ -2,6 +2,7 @@
 
 namespace Translate\Controller\Admin;
 
+use Cake\Core\Configure;
 use Cake\Http\Exception\NotFoundException;
 use Translate\Controller\TranslateAppController;
 use Translate\Filesystem\Dumper;
@@ -47,8 +48,10 @@ class TranslateStringsController extends TranslateAppController {
 		]);
 		$translateStrings = $this->paginate($query);
 
-		$options = ['conditions' => ['translate_project_id' => $this->Translation->currentProjectId()]];
-		$translateDomains = $this->TranslateStrings->getRelatedInUse('TranslateDomains', 'translate_domain_id', 'list', $options);
+		$translateDomains = $this->TranslateStrings->TranslateDomains
+			->find('list')
+			->where(['translate_project_id' => $this->Translation->currentProjectId()])
+			->toArray();
 		$this->set(compact('translateStrings', 'translateDomains'));
 	}
 
@@ -61,7 +64,7 @@ class TranslateStringsController extends TranslateAppController {
 	 */
 	public function view($id = null) {
 		$translateString = $this->TranslateStrings->get($id, [
-			'contain' => ['TranslateDomains', 'TranslateTerms' => 'TranslateLanguages'],
+			'contain' => ['TranslateDomains' => 'TranslateProjects', 'TranslateTerms' => 'TranslateLanguages'],
 		]);
 
 		$this->set(compact('translateString'));
@@ -106,9 +109,21 @@ class TranslateStringsController extends TranslateAppController {
 		$translateString = $this->TranslateStrings->get($id, [
 			'contain' => ['TranslateDomains'],
 		]);
+		$originalName = $translateString->name;
+
 		if ($this->request->is(['patch', 'post', 'put'])) {
+			$updateReferences = (bool)$this->request->getData('update_references');
 			$translateString = $this->TranslateStrings->patchEntity($translateString, $this->request->getData());
+
 			if ($this->TranslateStrings->save($translateString)) {
+				// Update references in source files if requested and name changed
+				if ($updateReferences && $originalName !== $translateString->name && Configure::read('debug')) {
+					$updatedCount = $this->updateSourceReferences($translateString, $originalName);
+					if ($updatedCount > 0) {
+						$this->Flash->success(__d('translate', 'Updated {0} reference(s) in source files.', $updatedCount));
+					}
+				}
+
 				$this->Flash->success(__d('translate', 'The translate string has been saved.'));
 
 				if ($this->request->getData('translate_afterwards')) {
@@ -154,7 +169,7 @@ class TranslateStringsController extends TranslateAppController {
 	 * @return void
 	 */
 	public function source() {
-		//$sourceContent = $this->Common->showSource(__FILE__, true);
+		//$sourceContent = $this->Translation->showSource(__FILE__, true);
 		//$sourceContent = show_source(__FILE__, true);
 		$sourceFile = __FILE__;
 		$this->set(compact('sourceFile'));
@@ -174,7 +189,7 @@ class TranslateStringsController extends TranslateAppController {
 			$poFiles[$poFileLanguage] = $extractService->getPoFiles($poFileLanguage);
 		}
 
-		if ($this->Common->isPosted()) {
+		if ($this->Translation->isPosted()) {
 			$count = 0;
 			$errors = [];
 
@@ -289,7 +304,7 @@ class TranslateStringsController extends TranslateAppController {
 			}
 		}
 
-		if ($this->Common->isPosted() && $this->request->getData('domains')) {
+		if ($this->Translation->isPosted() && $this->request->getData('domains')) {
 			$count = 0;
 			$errors = [];
 			/** @var array<string> $postedDomains */
@@ -320,11 +335,11 @@ class TranslateStringsController extends TranslateAppController {
 				$this->Flash->error(count($errors) . ' errors: ' . implode(', ', $errors));
 			}
 
-		} elseif ($this->Common->isPosted() && !$map) {
+		} elseif ($this->Translation->isPosted() && !$map) {
 			$this->Flash->warning('Please activate a domain for dumping.');
 
 			return $this->redirect(['controller' => 'TranslateDomains', 'action' => 'index']);
-		} elseif (!$this->Common->isPosted()) {
+		} elseif (!$this->Translation->isPosted()) {
 			$domainArray = [];
 			foreach ($translateLanguages as $code => $id) {
 				/** @var \Translate\Model\Entity\TranslateDomain $domain */
@@ -370,7 +385,7 @@ class TranslateStringsController extends TranslateAppController {
 
 		$translateTerms = $this->TranslateStrings->TranslateTerms->getTranslatedArray($id);
 
-		if ($this->Common->isPosted()) {
+		if ($this->Translation->isPosted()) {
 			if ($this->request->getData('skip')) {
 				$translateString->skipped = true;
 				$this->TranslateStrings->saveOrFail($translateString);
@@ -446,9 +461,13 @@ class TranslateStringsController extends TranslateAppController {
 	 * @param int $id
 	 * @param int $reference 0 based
 	 * @throws \Cake\Http\Exception\NotFoundException
-	 * @return void
+	 * @return \Cake\Http\Response|null|void
 	 */
 	public function displayReference(int $id, int $reference) {
+		if ($this->request->is('ajax')) {
+			$this->viewBuilder()->setLayout('ajax');
+		}
+
 		$translateString = $this->TranslateStrings->get($id, ['contain' => ['TranslateDomains']]);
 
 		$sep = explode(PHP_EOL, $translateString->references);
@@ -463,9 +482,10 @@ class TranslateStringsController extends TranslateAppController {
 			throw new NotFoundException('Could not find reference `' . $reference . '`');
 		}
 
-		$reference = $occ[$reference];
-		[$reference, $lines] = explode(':', $reference);
-		$lines = explode(';', $lines);
+		$referenceString = $occ[$reference];
+		$parts = explode(':', $referenceString, 2);
+		$referencePath = $parts[0];
+		$lines = isset($parts[1]) ? explode(';', $parts[1]) : [];
 
 		$path = $translateString->translate_domain->path;
 		if (!str_starts_with($path, '/')) {
@@ -476,14 +496,33 @@ class TranslateStringsController extends TranslateAppController {
 			throw new NotFoundException('Path not found: ' . $translateString->translate_domain->path);
 		}
 
-		$file = $path . $reference;
+		$file = $path . $referencePath;
 		if (!file_exists($file)) {
 			throw new NotFoundException('File not found: ' . $file);
 		}
 
-		$fileArray = file($file);
+		// Handle POST request to edit source file (debug mode only)
+		if ($this->request->is('post') && Configure::read('debug')) {
+			$newContent = $this->request->getData('file_content');
+			if ($newContent !== null) {
+				if (!is_writable($file)) {
+					$this->Flash->error(__d('translate', 'File is not writable: {0}', $file));
+				} else {
+					$success = file_put_contents($file, $newContent);
+					if ($success !== false) {
+						$this->Flash->success(__d('translate', 'File updated successfully. Please commit your changes!'));
+					} else {
+						$this->Flash->error(__d('translate', 'Failed to write file'));
+					}
+				}
+			}
+		}
 
-		$this->set(compact('fileArray', 'lines', 'reference'));
+		$fileArray = file($file);
+		$fileContent = file_get_contents($file);
+		$canEdit = Configure::read('debug') && is_writable($file);
+
+		$this->set(compact('fileArray', 'fileContent', 'lines', 'referencePath', 'canEdit', 'translateString', 'reference', 'id'));
 	}
 
 	/**
@@ -492,9 +531,93 @@ class TranslateStringsController extends TranslateAppController {
 	 * @return void
 	 */
 	public function import() {
-		if ($this->Common->isPosted()) {
+		if ($this->Translation->isPosted()) {
 
 		}
+	}
+
+	/**
+	 * Update all source code references when a translation string is changed
+	 *
+	 * @param \Translate\Model\Entity\TranslateString $translateString
+	 * @param string $originalName
+	 * @return int Number of updated references
+	 */
+	protected function updateSourceReferences($translateString, string $originalName): int {
+		$updatedCount = 0;
+
+		// Parse references
+		$references = explode(PHP_EOL, $translateString->references);
+		$path = $translateString->translate_domain->path;
+		if (!str_starts_with($path, '/')) {
+			$path = ROOT . DS . $path;
+		}
+		$path = rtrim((string)realpath($path), '/') . '/';
+
+		if (!is_dir($path)) {
+			$this->Flash->warning(__d('translate', 'Domain path not found: {0}', $translateString->translate_domain->path));
+
+			return 0;
+		}
+
+		foreach ($references as $reference) {
+			$reference = trim($reference);
+			if ($reference === '') {
+				continue;
+			}
+
+			[$referencePath] = explode(':', $reference);
+			$file = $path . $referencePath;
+
+			if (!file_exists($file)) {
+				continue;
+			}
+
+			if (!is_writable($file)) {
+				$this->Flash->warning(__d('translate', 'File not writable: {0}', $referencePath));
+
+				continue;
+			}
+
+			// Read file content
+			$content = file_get_contents($file);
+			if ($content === false) {
+				continue;
+			}
+			$originalContent = $content;
+
+			// Build patterns to match different translation function calls
+			// Matches: __('text'), __d('domain', 'text'), __x('context', 'text'), __dx('domain', 'context', 'text')
+			$escapedOriginal = preg_quote($originalName, '/');
+			$escapedNew = addcslashes($translateString->name, '\\$');
+
+			// Pattern for single-quoted strings
+			$pattern1 = "/(__d?x?)\s*\(\s*(?:'[^']*'\s*,\s*)?(?:'[^']*'\s*,\s*)?'{$escapedOriginal}'/";
+			$replacement1 = "$1('{$escapedNew}'";
+
+			// Pattern for double-quoted strings
+			$pattern2 = "/(__d?x?)\s*\(\s*(?:\"[^\"]*\"\s*,\s*)?(?:\"[^\"]*\"\s*,\s*)?\"{$escapedOriginal}\"/";
+			$replacement2 = "$1(\"{$escapedNew}\"";
+
+			// Apply replacements
+			$newContent = preg_replace($pattern1, $replacement1, $content);
+			if ($newContent !== null) {
+				$content = $newContent;
+			}
+			$newContent = preg_replace($pattern2, $replacement2, $content);
+			if ($newContent !== null) {
+				$content = $newContent;
+			}
+
+			// Only write if content changed
+			if ($content !== $originalContent) {
+				if (file_put_contents($file, $content) !== false) {
+					$updatedCount++;
+				}
+			}
+		}
+
+		return $updatedCount;
 	}
 
 }

@@ -37,6 +37,75 @@ class TranslateControllerTest extends IntegrationTestCase {
 
 		$this->assertResponseCode(200);
 		$this->assertNoRedirect();
+
+		// Verify all required view variables are set
+		$this->assertNotNull($this->viewVariable('coverage'));
+		$this->assertNotNull($this->viewVariable('languages'));
+		$this->assertNotNull($this->viewVariable('count'));
+		$this->assertNotNull($this->viewVariable('projectSwitchArray'));
+
+		// Verify statistics structure
+		$count = $this->viewVariable('count');
+		if (is_array($count)) {
+			$this->assertArrayHasKey('groups', $count);
+			$this->assertArrayHasKey('strings', $count);
+			$this->assertArrayHasKey('languages', $count);
+			$this->assertArrayHasKey('translations', $count);
+		}
+	}
+
+	/**
+	 * Test index displays correct statistics
+	 *
+	 * @return void
+	 */
+	public function testIndexWithStatistics() {
+		$this->disableErrorHandlerMiddleware();
+
+		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'Translate', 'action' => 'index']);
+
+		$this->assertResponseCode(200);
+
+		$count = $this->viewVariable('count');
+
+		// Count can be 0 if no project session is set, or an array with statistics
+		if (is_array($count)) {
+			// Verify statistics calculation
+			$this->assertGreaterThanOrEqual(0, $count['groups']);
+			$this->assertGreaterThanOrEqual(0, $count['strings']);
+			$this->assertGreaterThanOrEqual(0, $count['languages']);
+			$this->assertGreaterThanOrEqual(0, $count['translations']);
+
+			// Verify translations = strings * languages
+			$expectedTranslations = $count['strings'] * $count['languages'];
+			$this->assertSame($expectedTranslations, $count['translations']);
+		} else {
+			$this->assertSame(0, $count, 'Count should be 0 when no project session is set');
+		}
+	}
+
+	/**
+	 * Test index displays coverage information
+	 *
+	 * @return void
+	 */
+	public function testIndexWithCoverage() {
+		$this->disableErrorHandlerMiddleware();
+
+		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'Translate', 'action' => 'index']);
+
+		$this->assertResponseCode(200);
+
+		$coverage = $this->viewVariable('coverage');
+		$this->assertIsArray($coverage);
+
+		// Coverage should be keyed by locale
+		foreach ($coverage as $locale => $percentage) {
+			$this->assertIsString($locale);
+			$this->assertIsNumeric($percentage);
+			$this->assertGreaterThanOrEqual(0, $percentage);
+			$this->assertLessThanOrEqual(100, $percentage);
+		}
 	}
 
 	/**
@@ -99,6 +168,47 @@ class TranslateControllerTest extends IntegrationTestCase {
 			'translation' => 'rehtaF',
 		];
 		$this->assertSame($expected, $result);
+	}
+
+	/**
+	 * Test bestPractice method
+	 *
+	 * @return void
+	 */
+	public function testBestPractice() {
+		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'Translate', 'action' => 'bestPractice']);
+
+		$this->assertResponseCode(200);
+		$this->assertNoRedirect();
+	}
+
+	/**
+	 * Test convert method GET
+	 *
+	 * @return void
+	 */
+	public function testConvertGet() {
+		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'Translate', 'action' => 'convert']);
+
+		$this->assertResponseCode(200);
+		$this->assertNoRedirect();
+	}
+
+	/**
+	 * Test convert method POST
+	 *
+	 * @return void
+	 */
+	public function testConvertPost() {
+		$data = [
+			'input' => 'Test text',
+			'escape' => true,
+		];
+		$this->post(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'Translate', 'action' => 'convert'], $data);
+
+		$this->assertResponseCode(200);
+		$this->assertNoRedirect();
+		$this->assertNotNull($this->viewVariable('text'));
 	}
 
 }

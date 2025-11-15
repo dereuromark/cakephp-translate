@@ -9,7 +9,6 @@ use Cake\Event\EventInterface;
 use Templating\TemplatingPlugin;
 
 /**
- * @property \Tools\Controller\Component\CommonComponent $Common
  * @property \Translate\Model\Table\TranslateProjectsTable $TranslateProjects
  * @property \Translate\Controller\Component\TranslationComponent $Translation
  */
@@ -23,7 +22,6 @@ class TranslateAppController extends AppController {
 		parent::initialize();
 
 		$this->loadComponent('Translate.Translation');
-		$this->loadComponent('Tools.Common');
 
 		$this->viewBuilder()->addHelper('Translate.Translation');
 		if (class_exists(TemplatingPlugin::class)) {
@@ -60,8 +58,11 @@ class TranslateAppController extends AppController {
 	 * @return void
 	 */
 	public function beforeRender(EventInterface $event): void {
-		$layout = Configure::read('Translate.layout', 'Translate.simple');
-		$this->viewBuilder()->setLayout($layout);
+		// Only set default layout if one hasn't been explicitly set
+		if ($this->viewBuilder()->getLayout() === null) {
+			$layout = Configure::read('Translate.layout', 'Translate.simple');
+			$this->viewBuilder()->setLayout($layout);
+		}
 
 		$map = Configure::read('Translate.iconMap');
 		if ($map) {

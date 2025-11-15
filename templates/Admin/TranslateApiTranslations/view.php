@@ -4,8 +4,8 @@
  * @var \Translate\Model\Entity\TranslateApiTranslation $translateApiTranslation
  */
 ?>
-<nav class="actions col-md-3 col-sm-4 col-xs-12">
-	<ul class="side-nav nav nav-pills nav-stacked">
+<nav class="actions col-md-3 col-sm-4 col-12">
+	<ul class="nav nav-pills flex-column">
 		<li class="heading"><?= __('Actions') ?></li>
 		<li><?= $this->Html->link(__('Edit Translate Api Translation'), ['action' => 'edit', $translateApiTranslation->id]) ?> </li>
 		<li><?= $this->Form->postLink(__('Delete Translate Api Translation'), ['action' => 'delete', $translateApiTranslation->id], ['confirm' => __('Are you sure you want to delete # {0}?', $translateApiTranslation->id)]) ?> </li>
@@ -13,7 +13,7 @@
 		<li><?= $this->Html->link(__('New Translate Api Translation'), ['action' => 'add']) ?> </li>
 	</ul>
 </nav>
-<div class="translateApiTranslations view col-md-9 col-sm-8 col-xs-12">
+<div class="translateApiTranslations view col-md-9 col-sm-8 col-12">
 	<h2><?= h($translateApiTranslation->id) ?></h2>
 	<table class="table vertical-table">
 		<tr>

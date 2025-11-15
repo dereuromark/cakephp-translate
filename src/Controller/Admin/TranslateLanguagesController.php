@@ -29,7 +29,7 @@ class TranslateLanguagesController extends TranslateAppController {
 		$existingFolders = $creator->findLocaleFolders($path);
 		$languages = $this->TranslateLanguages->find('list', ['keyField' => 'locale'])->toArray();
 
-		if ($this->Common->isPosted()) {
+		if ($this->Translation->isPosted()) {
 			$data = [];
 			$locales = (array)$this->request->getData('locale');
 			foreach ($locales as $lang => $value) {
@@ -66,7 +66,7 @@ class TranslateLanguagesController extends TranslateAppController {
 		$folders = $creator->findLocaleFolders($path);
 		$existingLanguages = $this->TranslateLanguages->find('list', ['keyField' => 'locale'])->toArray();
 
-		if ($this->Common->isPosted()) {
+		if ($this->Translation->isPosted()) {
 			$translateLanguages = [];
 			$languages = (array)$this->request->getData('language');
 			foreach ($languages as $key => $data) {

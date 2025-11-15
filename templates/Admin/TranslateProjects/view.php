@@ -4,8 +4,8 @@
  * @var \Translate\Model\Entity\TranslateProject $translateProject
  */
 ?>
-<nav class="actions col-md-3 col-sm-4 col-xs-12">
-	<ul class="side-nav nav nav-pills nav-stacked">
+<nav class="actions col-md-3 col-sm-4 col-12">
+	<ul class="nav nav-pills flex-column">
 		<li class="heading"><?= __d('translate', 'Actions') ?></li>
 		<li><?= $this->Html->link(__d('translate', 'Edit Translate Project'), ['action' => 'edit', $translateProject->id]) ?> </li>
 		<li><?= $this->Form->postLink(__d('translate', 'Delete Translate Project'), ['action' => 'delete', $translateProject->id], ['confirm' => __d('translate', 'Are you sure you want to delete # {0}?', $translateProject->id)]) ?> </li>
@@ -15,7 +15,7 @@
 		<li><?= $this->Html->link(__d('translate', 'New Translate Domain'), ['controller' => 'TranslateDomains', 'action' => 'add']) ?> </li>
 	</ul>
 </nav>
-<div class="translateProjects view col-md-9 col-sm-8 col-xs-12">
+<div class="translateProjects view col-md-9 col-sm-8 col-12">
 	<h2><?= h($translateProject->name) ?></h2>
 	<table class="table vertical-table">
 		<tr>

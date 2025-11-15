@@ -7,13 +7,13 @@
 use Cake\Core\Plugin;
 
 ?>
-<nav class="actions col-md-3 col-sm-4 col-xs-12">
-	<ul class="side-nav nav nav-pills nav-stacked">
+<nav class="actions col-md-3 col-sm-4 col-12">
+	<ul class="nav nav-pills flex-column">
 		<li class="heading"><?= __('Actions') ?></li>
 		<li><?= $this->Html->link(__('New Translate Api Translation'), ['action' => 'add']) ?></li>
 	</ul>
 </nav>
-<div class="translateApiTranslations index col-md-9 col-sm-8 col-xs-12">
+<div class="translateApiTranslations index col-md-9 col-sm-8 col-12">
 	<h2><?= __('Translate Api Translations') ?></h2>
 	<table class="table table-striped">
 		<thead>

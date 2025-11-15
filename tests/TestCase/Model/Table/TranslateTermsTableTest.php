@@ -133,4 +133,137 @@ class TranslateTermsTableTest extends TestCase {
 		$this->assertEquals('Test Translation', $result->content);
 	}
 
+	/**
+	 * Test saving with plural_2
+	 *
+	 * @return void
+	 */
+	public function testSaveWithPlural() {
+		$data = [
+			'content' => 'One item',
+			'plural_2' => 'Multiple items',
+			'translate_string_id' => 1,
+			'translate_language_id' => 1,
+		];
+		$entity = $this->TranslateTerms->newEntity($data);
+		$result = $this->TranslateTerms->save($entity);
+
+		$this->assertTrue((bool)$result, print_r($entity->getErrors(), true));
+		$this->assertEquals('One item', $result->content);
+		$this->assertEquals('Multiple items', $result->plural_2);
+	}
+
+	/**
+	 * Test placeholder validation for singular
+	 *
+	 * @return void
+	 */
+	public function testValidatePlaceholdersSingular() {
+		$data = [
+			'content' => 'You have {0} items',
+			'string' => 'You have {0} apples',
+			'translate_string_id' => 1,
+			'translate_language_id' => 1,
+		];
+		$entity = $this->TranslateTerms->newEntity($data);
+		$result = $this->TranslateTerms->save($entity);
+
+		$this->assertTrue((bool)$result, print_r($entity->getErrors(), true));
+	}
+
+	/**
+	 * Test placeholder validation fails when placeholders don't match
+	 *
+	 * @return void
+	 */
+	public function testValidatePlaceholdersMismatch() {
+		$data = [
+			'content' => 'You have items',
+			'string' => 'You have {0} apples',
+			'translate_string_id' => 1,
+			'translate_language_id' => 1,
+		];
+		$entity = $this->TranslateTerms->newEntity($data);
+		$result = $this->TranslateTerms->save($entity);
+
+		$this->assertFalse($result);
+		$this->assertNotEmpty($entity->getError('content'));
+	}
+
+	/**
+	 * Test placeholder validation for plural with same placeholders
+	 *
+	 * @return void
+	 */
+	public function testValidatePlaceholdersPluralMatch() {
+		$data = [
+			'content' => 'You have {0} item',
+			'plural_2' => 'You have {0} items',
+			'string' => 'You have {0} apples',
+			'translate_string_id' => 1,
+			'translate_language_id' => 1,
+		];
+		$entity = $this->TranslateTerms->newEntity($data);
+		$result = $this->TranslateTerms->save($entity);
+
+		$this->assertTrue((bool)$result, print_r($entity->getErrors(), true));
+	}
+
+	/**
+	 * Test placeholder validation for plural fails when plural placeholders don't match
+	 *
+	 * @return void
+	 */
+	public function testValidatePlaceholdersPluralMismatch() {
+		$data = [
+			'content' => 'You have {0} item',
+			'plural_2' => 'You have items',
+			'string' => 'You have {0} apples',
+			'translate_string_id' => 1,
+			'translate_language_id' => 1,
+		];
+		$entity = $this->TranslateTerms->newEntity($data);
+		$result = $this->TranslateTerms->save($entity);
+
+		$this->assertFalse($result);
+		$this->assertNotEmpty($entity->getError('plural_2'));
+	}
+
+	/**
+	 * Test multiple placeholders validation
+	 *
+	 * @return void
+	 */
+	public function testValidatePlaceholdersMultiple() {
+		$data = [
+			'content' => 'You have {0} items in {1} categories',
+			'string' => 'You have {0} apples in {1} baskets',
+			'translate_string_id' => 1,
+			'translate_language_id' => 1,
+		];
+		$entity = $this->TranslateTerms->newEntity($data);
+		$result = $this->TranslateTerms->save($entity);
+
+		$this->assertTrue((bool)$result, print_r($entity->getErrors(), true));
+	}
+
+	/**
+	 * Test import with plural
+	 *
+	 * @return void
+	 */
+	public function testImportWithPlural() {
+		$translation = [
+			'name' => 'One apple',
+			'plural' => 'Multiple apples',
+			'content' => 'Ein Apfel',
+			'plural_2' => 'Mehrere Äpfel',
+		];
+		$translateTerm = $this->TranslateTerms->import($translation, 1, 1);
+		$this->assertNotNull($translateTerm);
+
+		$this->assertEquals('Ein Apfel', $translateTerm->content);
+		$this->assertEquals('Mehrere Äpfel', $translateTerm->plural_2);
+	}
+
 }

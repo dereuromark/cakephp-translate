@@ -4,8 +4,8 @@
  * @var \Translate\Model\Entity\TranslateTerm $translateTerm
  */
 ?>
-<nav class="actions col-md-3 col-sm-4 col-xs-12">
-	<ul class="side-nav nav nav-pills nav-stacked">
+<nav class="actions col-md-3 col-sm-4 col-12">
+	<ul class="nav nav-pills flex-column">
 		<li class="heading"><?= __d('translate', 'Actions') ?></li>
 		<li><?= $this->Html->link(__d('translate', 'Edit Translate Term'), ['action' => 'edit', $translateTerm->id]) ?> </li>
 		<li><?= $this->Form->postLink(__d('translate', 'Delete Translate Term'), ['action' => 'delete', $translateTerm->id], ['confirm' => __d('translate', 'Are you sure you want to delete # {0}?', $translateTerm->id)]) ?> </li>
@@ -13,7 +13,7 @@
 		<li><?= $this->Html->link(__d('translate', 'New Translate String'), ['controller' => 'TranslateStrings', 'action' => 'add']) ?> </li>
 	</ul>
 </nav>
-<div class="translateTerms view col-md-9 col-sm-8 col-xs-12">
+<div class="translateTerms view col-md-9 col-sm-8 col-12">
 	<h2><?= h($translateTerm->content) ?></h2>
 	<table class="table vertical-table">
 		<tr>

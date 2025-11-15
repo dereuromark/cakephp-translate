@@ -8,8 +8,8 @@
 use Cake\Core\Plugin;
 
 ?>
-<nav class="actions col-md-3 col-sm-4 col-xs-12">
-	<ul class="side-nav nav nav-pills nav-stacked">
+<nav class="actions col-md-3 col-sm-4 col-12">
+	<ul class="nav nav-pills flex-column">
 		<li class="heading"><?= __d('translate', 'Actions') ?></li>
 		<li><?= $this->Html->link(__d('translate', 'New Translate Term'), ['action' => 'add']) ?></li>
 		<li><?= $this->Html->link(__d('translate', 'List Translate Strings'), ['controller' => 'TranslateStrings', 'action' => 'index']) ?></li>
@@ -18,7 +18,7 @@ use Cake\Core\Plugin;
 		<li><?= $this->Html->link(__d('translate', 'New Translate Language'), ['controller' => 'TranslateLanguages', 'action' => 'add']) ?></li>
 	</ul>
 </nav>
-<div class="translateTerms index col-md-9 col-sm-8 col-xs-12">
+<div class="translateTerms index col-md-9 col-sm-8 col-12">
 	<h2><?= __d('translate', 'Translate Terms') ?></h2>
 
 	<?php
@@ -27,11 +27,11 @@ use Cake\Core\Plugin;
 	echo $this->Form->control('translate_language_id', ['empty' => ' - ' . __d('translate', 'noLimitation') . ' - ', 'label' => __d('translate', 'Language')]);
 	echo $this->Form->control('search', ['placeholder' => '']);
 	?>
-	<div class="text-right" style="margin-bottom: 8px;">
+	<div class="text-end" style="margin-bottom: 8px;">
 		<?php
 		echo $this->Form->button(__d('translate', 'Filter'), ['type' => 'submit']);
 		if (!empty($_isSearch)) {
-			echo ' ' . $this->Html->link(__d('translate', 'Reset'), ['action' => 'index'], ['class' => 'btn btn-default']);
+			echo ' ' . $this->Html->link(__d('translate', 'Reset'), ['action' => 'index'], ['class' => 'btn btn-secondary']);
 		}
 		?>
 	</div>

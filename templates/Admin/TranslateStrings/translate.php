@@ -7,15 +7,15 @@
  */
 
 ?>
-<nav class="actions col-md-3 col-sm-4 col-xs-12">
-	<ul class="side-nav nav nav-pills nav-stacked">
+<nav class="actions col-md-3 col-sm-4 col-12">
+	<ul class="nav nav-pills flex-column">
 		<li class="heading"><?= __d('translate', 'Actions') ?></li>
 		<li><?= $this->Html->link(__d('translate', 'Overview'), ['controller' => 'Translate', 'action' => 'index']) ?></li>
 		<li><?= $this->Html->link(__d('translate', 'List Translate Strings'), ['controller' => 'TranslateStrings', 'action' => 'index', '?' => $this->request->getQuery()]) ?></li>
 		<li><?php echo $this->Html->link(__d('translate', 'Edit Translate String'), ['action' => 'edit', $translateString['id']]);?></li>
 	</ul>
 </nav>
-<div class="translateStrings index col-md-9 col-sm-8 col-xs-12">
+<div class="translateStrings index col-md-9 col-sm-8 col-12">
 
 <h3>String</h3>
 
@@ -34,6 +34,25 @@
 <?php if ($translateString->is_html) { ?>
 	<p>HTML (Manual escaping necessary!)</p>
 <?php } ?>
+
+<?php
+// Extract and display placeholders
+$placeholders = [];
+preg_match_all('/\{\d+\}/', $translateString->name, $braceMatches);
+preg_match_all('/%(?:\d+\$)?[sdfboxXeEgGcup]/', $translateString->name, $sprintfMatches);
+$placeholders = array_merge($braceMatches[0], $sprintfMatches[0]);
+if ($placeholders) {
+	?>
+	<div class="alert alert-info mt-2">
+		<i class="fas fa-info-circle"></i>
+		<strong><?= __d('translate', 'Required placeholders:') ?></strong>
+		<?php foreach (array_unique($placeholders) as $placeholder) { ?>
+			<code><?= h($placeholder) ?></code>
+		<?php } ?>
+	</div>
+	<?php
+}
+?>
 
 <?php echo $this->Form->create($translateString);?>
 	<fieldset>

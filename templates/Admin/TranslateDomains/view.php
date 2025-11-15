@@ -4,8 +4,8 @@
  * @var \Translate\Model\Entity\TranslateDomain $translateDomain
  */
 ?>
-<nav class="actions col-md-3 col-sm-4 col-xs-12">
-	<ul class="side-nav nav nav-pills nav-stacked">
+<nav class="actions col-md-3 col-sm-4 col-12">
+	<ul class="nav nav-pills flex-column">
 		<li class="heading"><?= __d('translate', 'Actions') ?></li>
 		<li><?= $this->Html->link(__d('translate', 'Edit Translate Domain'), ['action' => 'edit', $translateDomain->id]) ?> </li>
 		<li><?= $this->Form->postLink(__d('translate', 'Delete Translate Domain'), ['action' => 'delete', $translateDomain->id], ['confirm' => __d('translate', 'Are you sure you want to delete # {0}?', $translateDomain->id)]) ?> </li>
@@ -13,7 +13,7 @@
 		<li><?= $this->Html->link(__d('translate', 'New Translate Domain'), ['action' => 'add']) ?> </li>
 	</ul>
 </nav>
-<div class="translateDomains view col-md-9 col-sm-8 col-xs-12">
+<div class="translateDomains view col-md-9 col-sm-8 col-12">
 	<h2><?= h($translateDomain->name) ?></h2>
 	<table class="table vertical-table">
 		<tr>

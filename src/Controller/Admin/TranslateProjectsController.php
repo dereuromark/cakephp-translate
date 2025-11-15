@@ -28,7 +28,6 @@ class TranslateProjectsController extends TranslateAppController {
 		}
 
 		$this->set(compact('translateProjects'));
-		//$this->set('_serialize', ['translateProjects']);
 	}
 
 	/**
@@ -44,7 +43,6 @@ class TranslateProjectsController extends TranslateAppController {
 		]);
 
 		$this->set(compact('translateProject'));
-		//$this->set('_serialize', ['translateProject']);
 	}
 
 	/**
@@ -56,7 +54,7 @@ class TranslateProjectsController extends TranslateAppController {
 		if ($this->TranslateProjects->find()->count() > 0) {
 			$this->Flash->warning('Currently only one project is supported yet.');
 
-			return $this->Common->autoRedirect(['action' => 'index']);
+			return $this->Translation->autoRedirect(['action' => 'index']);
 		}
 
 		$translateProject = $this->TranslateProjects->newEmptyEntity();
@@ -134,7 +132,7 @@ class TranslateProjectsController extends TranslateAppController {
 		$this->request->getSession()->write('TranslateProject.id', $translateProject->id);
 		$this->Flash->success(__d('translate', 'Project switched'));
 
-		return $this->Common->autoRedirect(['controller' => 'Translate', 'action' => 'index']);
+		return $this->Translation->autoRedirect(['controller' => 'Translate', 'action' => 'index']);
 	}
 
 	/**
@@ -150,11 +148,11 @@ class TranslateProjectsController extends TranslateAppController {
 		$languages = $translateLanguagesTable->find('list');
 		$id = $this->request->getSession()->read('TranslateProject.id');
 
-		if ($this->Common->isPosted()) {
+		if ($this->Translation->isPosted()) {
 			$this->TranslateProjects->reset($id, $this->request->getData('Form.reset'), $this->request->getData('Form.language'));
 
 			$this->Flash->success(__d('translate', 'Done'));
-			//$this->Common->autoRedirect(array('controller'=>'translate', 'action'=>'index'));
+			//$this->Translation->autoRedirect(array('controller'=>'translate', 'action'=>'index'));
 
 		} else {
 			$formArray = [];

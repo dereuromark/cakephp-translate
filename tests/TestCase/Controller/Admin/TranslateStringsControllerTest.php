@@ -237,4 +237,46 @@ Template/Account/foo.ctp:15', $translateString->references);
 		$this->assertRedirect();
 	}
 
+	/**
+	 * Test source method
+	 *
+	 * @return void
+	 */
+	public function testSource() {
+		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateStrings', 'action' => 'source']);
+
+		$this->assertResponseCode(200);
+		$this->assertNoRedirect();
+		$this->assertNotNull($this->viewVariable('sourceFile'));
+	}
+
+	/**
+	 * Test displayReference method
+	 *
+	 * @return void
+	 */
+	public function testDisplayReference() {
+		$this->disableErrorHandlerMiddleware();
+
+		$id = 1;
+		$reference = 0;
+		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateStrings', 'action' => 'displayReference', $id, $reference]);
+
+		$this->assertResponseCode(200);
+		$this->assertNotNull($this->viewVariable('fileArray'));
+		$this->assertNotNull($this->viewVariable('lines'));
+	}
+
+	/**
+	 * Test import method GET
+	 *
+	 * @return void
+	 */
+	public function testImportGet() {
+		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateStrings', 'action' => 'import']);
+
+		$this->assertResponseCode(200);
+		$this->assertNoRedirect();
+	}
+
 }

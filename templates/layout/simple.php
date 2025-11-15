@@ -263,12 +263,15 @@ $title = $this->fetch('title');
 	<!-- Footer -->
 	<footer class="text-center">
 		<div class="container">
-			<small>
-				<i class="fas fa-globe"></i>
-				Translation Manager &copy; <?= date('Y') ?>
-				|
-				Powered by <a href="https://cakephp.org" target="_blank" rel="noopener">CakePHP</a>
-			</small>
+			<?= $this->element('Translate.language_switcher') ?>
+			<div class="mt-2">
+				<small>
+					<i class="fas fa-code"></i>
+					Translation Manager &copy; <?= date('Y') ?>
+					|
+					Powered by <a href="https://cakephp.org" target="_blank" rel="noopener">CakePHP</a>
+				</small>
+			</div>
 		</div>
 	</footer>
 

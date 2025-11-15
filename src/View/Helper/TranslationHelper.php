@@ -158,7 +158,12 @@ class TranslationHelper extends Helper {
 	 * @return bool
 	 */
 	public function canDisplayReference(TranslateDomain $translateDomain) {
-		return (bool)$translateDomain->path || in_array($translateDomain->translate_project->type, [TranslateProject::TYPE_APP], true);
+		if ($translateDomain->path) {
+			return true;
+		}
+
+		return $translateDomain->translate_project
+			&& in_array($translateDomain->translate_project->type, [TranslateProject::TYPE_APP], true);
 	}
 
 }

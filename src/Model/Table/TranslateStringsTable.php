@@ -11,8 +11,8 @@ use Cake\I18n\DateTime;
 use Cake\Log\Log;
 use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
+use Cake\ORM\Table;
 use Cake\Validation\Validator;
-use Tools\Model\Table\Table;
 use Translate\Translator\Translator;
 
 /**
@@ -35,7 +35,7 @@ use Translate\Translator\Translator;
  * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateString> saveManyOrFail(iterable $entities, array $options = [])
  * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateString>|false deleteMany(iterable $entities, array $options = [])
  * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateString> deleteManyOrFail(iterable $entities, array $options = [])
- * @extends \Tools\Model\Table\Table<array{Nullable: \Shim\Model\Behavior\NullableBehavior, Search: \Search\Model\Behavior\SearchBehavior}>
+ * @extends \Cake\ORM\Table<array{Nullable: \Shim\Model\Behavior\NullableBehavior, Search: \Search\Model\Behavior\SearchBehavior}>
  */
 class TranslateStringsTable extends Table {
 
@@ -70,6 +70,27 @@ class TranslateStringsTable extends Table {
 			->minLength('name', 1, 'Should have at least 1 characters')
 			->requirePresence('name', 'create')
 			->notEmptyString('name');
+
+		$validator
+			->scalar('plural')
+			->allowEmptyString('plural')
+			->add('plural', 'validPlaceholders', [
+				'rule' => function ($value, $context) {
+					if (empty($value) || empty($context['data']['name'])) {
+						return true;
+					}
+					// Ensure plural has same placeholders as name
+					preg_match_all('/\{\d\}/', $context['data']['name'], $nameMatches);
+					preg_match_all('/\{\d\}/', $value, $pluralMatches);
+
+					return count($nameMatches[0]) === count($pluralMatches[0]);
+				},
+				'message' => 'Plural form must have the same number of placeholders as the singular form',
+			]);
+
+		$validator
+			->scalar('context')
+			->allowEmptyString('context');
 
 		$validator
 			->allowEmptyString('user_id');
@@ -133,30 +154,30 @@ class TranslateStringsTable extends Table {
 	}
 
 	/**
-	 * @return \Search\Manager
+	 * @param \Search\Model\Filter\FilterCollection $filterCollection
+	 *
+	 * @return \Search\Model\Filter\FilterCollection
 	 */
-	public function searchManager() {
-		$searchManager = $this->behaviors()->Search->searchManager();
-		$searchManager
-			->value('translate_domain_id', [])
-			->callback('missing_translation', [
+	public function filterCollection($filterCollection) {
+		$filterCollection
+			->add('translate_domain_id', 'Search.Value')
+			->add('missing_translation', 'Search.Callback', [
 				'callback' => function (SelectQuery $query, array $args, $filter) {
 					if (empty($args['missing_translation'])) {
-						return false;
+						return $query;
 					}
 
 					$query->leftJoinWith('TranslateTerms')
 						->where(['TranslateTerms.content IS' => null]);
 
-					return true;
+					return $query;
 				},
-				'filterEmpty' => true,
 			])
-			->like('search', [
+			->add('search', 'Search.Like', [
 				'fields' => [$this->aliasField('name'), $this->aliasField('plural'), $this->aliasField('context')],
 			]);
 
-		return $searchManager;
+		return $filterCollection;
 	}
 
 	/**

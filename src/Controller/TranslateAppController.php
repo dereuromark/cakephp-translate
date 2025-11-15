@@ -6,6 +6,7 @@ use App\Controller\AppController;
 use BootstrapUI\View\Helper\FormHelper;
 use Cake\Core\Configure;
 use Cake\Event\EventInterface;
+use Cake\I18n\I18n;
 use Templating\TemplatingPlugin;
 
 /**
@@ -20,6 +21,12 @@ class TranslateAppController extends AppController {
 	 */
 	public function initialize(): void {
 		parent::initialize();
+
+		// Set translation manager locale after parent initialize
+		$locale = $this->request->getSession()->read('Config.language');
+		if ($locale && $locale !== Configure::read('Config.language')) {
+			I18n::setLocale($locale);
+		}
 
 		$this->loadComponent('Translate.Translation');
 
@@ -41,6 +48,14 @@ class TranslateAppController extends AppController {
 	 */
 	public function beforeFilter(EventInterface $event): void {
 		parent::beforeFilter($event);
+
+		// Apply language from session, or default to English for translation manager
+		$locale = $this->request->getSession()->read('Config.language');
+		if (!$locale) {
+			$locale = 'en_US'; // Default translation manager interface to English
+		}
+		I18n::setLocale($locale);
+		$this->request = $this->request->withAttribute('locale', $locale);
 
 		/*
 		if ($this->request->getSession()->check('TranslateProject.id')) {

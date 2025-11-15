@@ -33,10 +33,10 @@ The live server would then pull those new translations right on deployment.
 
 ```
 translate_projects (top level)
-├── translate_languages (languages per project)
+├── translate_locales (locales per project)
 ├── translate_domains (translation groups/domains per project)
 │     └── translate_strings (translatable strings per domain)
-│           └── translate_terms (actual translations per string per language)
+│           └── translate_terms (actual translations per string per locale)
 ```
 
 The structure of the plugin is as follows:
@@ -44,7 +44,7 @@ The structure of the plugin is as follows:
 ![Diagram](diagram.svg)
 
 - By default, you only need one project.
-- You can import the strings per language and domain.
+- You can import the strings per locale (language) and domain.
 - Those get translated in the terms.
 
 The api_translations table holds any engine related imports.

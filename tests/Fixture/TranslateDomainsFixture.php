@@ -38,7 +38,7 @@ class TranslateDomainsFixture extends TestFixture {
 			'translate_project_id' => 1,
 			'active' => 1,
 			'prio' => 1,
-			'path' => 'Lorem ipsum dolor sit amet',
+			'path' => 'tests',
 			'created' => '2017-04-15 01:23:08',
 			'modified' => '2017-04-15 01:23:08',
 		],

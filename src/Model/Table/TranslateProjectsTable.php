@@ -44,19 +44,19 @@ class TranslateProjectsTable extends Table {
 		$validator
 			->scalar('name')
 			->requirePresence('name', 'create')
-			->notEmptyString('name', 'valErrMandatoryField');
+			->notEmptyString('name', 'This field is required');
 
 		$validator
-			->integer('type')
-			->allowEmptyString('type', 'valErrMandatoryField');
+			->numeric('type')
+			->allowEmptyString('type', 'This field is required');
 
 		$validator
-			->integer('status')
-			->allowEmptyString('status', 'valErrMandatoryField');
+			->numeric('status')
+			->allowEmptyString('status', 'This field is required');
 
 		$validator
 			->boolean('default')
-			->allowEmptyString('default', 'valErrMandatoryField');
+			->allowEmptyString('default', 'This field is required');
 
 		return $validator;
 	}
@@ -67,7 +67,7 @@ class TranslateProjectsTable extends Table {
 	 * @return \Cake\ORM\RulesChecker
 	 */
 	public function buildRules(RulesChecker $rules): RulesChecker {
-		$rules->add($rules->isUnique(['name'], 'valErrMandatoryField'));
+		$rules->add($rules->isUnique(['name'], 'This field is required'));
 
 		return $rules;
 	}
@@ -125,7 +125,7 @@ class TranslateProjectsTable extends Table {
 				case 'terms':
 					$options = [
 						'conditions' => [
-							'TranslateTerm.translate_language_id IN' => $languages,
+							'TranslateTerm.translate_locale_id IN' => $languages,
 							'TranslateDomain.translate_project_id' => $id,
 						],
 						'fields' => ['TranslateTerms.id', 'TranslateTerms.id'],

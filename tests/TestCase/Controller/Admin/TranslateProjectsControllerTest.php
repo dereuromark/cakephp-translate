@@ -19,7 +19,7 @@ class TranslateProjectsControllerTest extends IntegrationTestCase {
 	 */
 	protected array $fixtures = [
 		'plugin.Translate.TranslateProjects',
-		'plugin.Translate.TranslateLanguages',
+		'plugin.Translate.TranslateLocales',
 		'plugin.Translate.TranslateDomains',
 		'plugin.Translate.TranslateStrings',
 		'plugin.Translate.TranslateTerms',
@@ -126,7 +126,10 @@ class TranslateProjectsControllerTest extends IntegrationTestCase {
 	 * @return void
 	 */
 	public function testResetPost() {
+		$this->disableErrorHandlerMiddleware();
 		$this->enableRetainFlashMessages();
+
+		$this->session(['TranslateProject.id' => 1]);
 
 		$data = [
 			'Form' => [

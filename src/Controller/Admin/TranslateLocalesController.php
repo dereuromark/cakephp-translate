@@ -6,18 +6,18 @@ use Translate\Controller\TranslateAppController;
 use Translate\Filesystem\Creator;
 
 /**
- * TranslateLanguages Controller
+ * TranslateLocales Controller
  *
- * @property \Translate\Model\Table\TranslateLanguagesTable $TranslateLanguages
- * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateLanguage> paginate(\Cake\Datasource\RepositoryInterface|\Cake\Datasource\QueryInterface|string|null $object = null, array $settings = [])
+ * @property \Translate\Model\Table\TranslateLocalesTable $TranslateLocales
+ * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateLocale> paginate(\Cake\Datasource\RepositoryInterface|\Cake\Datasource\QueryInterface|string|null $object = null, array $settings = [])
  * @property \Translate\Controller\Component\TranslationComponent $Translation
  */
-class TranslateLanguagesController extends TranslateAppController {
+class TranslateLocalesController extends TranslateAppController {
 
 	/**
 	 * @var array<string, mixed>
 	 */
-	protected array $paginate = ['order' => ['TranslateLanguages.name' => 'ASC']];
+	protected array $paginate = ['order' => ['TranslateLocales.name' => 'ASC']];
 
 	/**
 	 * @return \Cake\Http\Response|null|void
@@ -27,7 +27,7 @@ class TranslateLanguagesController extends TranslateAppController {
 
 		$creator = new Creator();
 		$existingFolders = $creator->findLocaleFolders($path);
-		$languages = $this->TranslateLanguages->find('list', ['keyField' => 'locale'])->toArray();
+		$languages = $this->TranslateLocales->find('list', ['keyField' => 'locale'])->toArray();
 
 		if ($this->Translation->isPosted()) {
 			$data = [];
@@ -64,10 +64,10 @@ class TranslateLanguagesController extends TranslateAppController {
 
 		$creator = new Creator();
 		$folders = $creator->findLocaleFolders($path);
-		$existingLanguages = $this->TranslateLanguages->find('list', ['keyField' => 'locale'])->toArray();
+		$existingLanguages = $this->TranslateLocales->find('list', ['keyField' => 'locale'])->toArray();
 
 		if ($this->Translation->isPosted()) {
-			$translateLanguages = [];
+			$translateLocales = [];
 			$languages = (array)$this->request->getData('language');
 			foreach ($languages as $key => $data) {
 				if (empty($data['confirm'])) {
@@ -86,10 +86,10 @@ class TranslateLanguagesController extends TranslateAppController {
 					$data['iso2'] = substr($data['locale'], 0, 2);
 				}
 
-				$translateLanguages[] = $this->TranslateLanguages->newEntity($data);
+				$translateLocales[] = $this->TranslateLocales->newEntity($data);
 			}
 
-			if (!empty($data) && $this->TranslateLanguages->saveMany($translateLanguages)) {
+			if (!empty($data) && $this->TranslateLocales->saveMany($translateLocales)) {
 				$this->Flash->success('new language(s) added');
 
 				return $this->redirect(['action' => 'index']);
@@ -107,10 +107,10 @@ class TranslateLanguagesController extends TranslateAppController {
 	 * @return \Cake\Http\Response|null|void
 	 */
 	public function index() {
-		$translateLanguages = $this->paginate();
+		$translateLocales = $this->paginate();
 
-		$this->set(compact('translateLanguages'));
-		//$this->set('_serialize', ['translateLanguages']);
+		$this->set(compact('translateLocales'));
+		//$this->set('_serialize', ['translateLocales']);
 	}
 
 	/**
@@ -121,12 +121,12 @@ class TranslateLanguagesController extends TranslateAppController {
 	 * @return \Cake\Http\Response|null|void
 	 */
 	public function view($id = null) {
-		$translateLanguage = $this->TranslateLanguages->get($id, [
+		$translateLocale = $this->TranslateLocales->get($id, [
 			'contain' => ['TranslateTerms'],
 		]);
 
-		$this->set(compact('translateLanguage'));
-		//$this->set('_serialize', ['translateLanguage']);
+		$this->set(compact('translateLocale'));
+		//$this->set('_serialize', ['translateLocale']);
 	}
 
 	/**
@@ -135,13 +135,13 @@ class TranslateLanguagesController extends TranslateAppController {
 	 * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
 	 */
 	public function add() {
-		$translateLanguage = $this->TranslateLanguages->newEmptyEntity();
+		$translateLocale = $this->TranslateLocales->newEmptyEntity();
 		if ($this->request->is('post')) {
 			$data = $this->request->getData();
 			$data['translate_project_id'] = $this->Translation->currentProjectId();
 
-			$translateLanguage = $this->TranslateLanguages->patchEntity($translateLanguage, $data);
-			if ($this->TranslateLanguages->save($translateLanguage)) {
+			$translateLocale = $this->TranslateLocales->patchEntity($translateLocale, $data);
+			if ($this->TranslateLocales->save($translateLocale)) {
 				$this->Flash->success(__d('translate', 'The translate language has been saved.'));
 
 				return $this->redirect(['action' => 'index']);
@@ -150,8 +150,8 @@ class TranslateLanguagesController extends TranslateAppController {
 			$this->Flash->error(__d('translate', 'The translate language could not be saved. Please, try again.'));
 		}
 
-		$this->set(compact('translateLanguage'));
-		//$this->set('_serialize', ['translateLanguage']);
+		$this->set(compact('translateLocale'));
+		//$this->set('_serialize', ['translateLocale']);
 	}
 
 	/**
@@ -162,12 +162,12 @@ class TranslateLanguagesController extends TranslateAppController {
 	 * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
 	 */
 	public function edit($id = null) {
-		$translateLanguage = $this->TranslateLanguages->get($id, [
+		$translateLocale = $this->TranslateLocales->get($id, [
 			'contain' => [],
 		]);
 		if ($this->request->is(['patch', 'post', 'put'])) {
-			$translateLanguage = $this->TranslateLanguages->patchEntity($translateLanguage, $this->request->getData());
-			if ($this->TranslateLanguages->save($translateLanguage)) {
+			$translateLocale = $this->TranslateLocales->patchEntity($translateLocale, $this->request->getData());
+			if ($this->TranslateLocales->save($translateLocale)) {
 				$this->Flash->success(__d('translate', 'The translate language has been saved.'));
 
 				return $this->redirect(['action' => 'index']);
@@ -176,8 +176,8 @@ class TranslateLanguagesController extends TranslateAppController {
 			$this->Flash->error(__d('translate', 'The translate language could not be saved. Please, try again.'));
 		}
 
-		$this->set(compact('translateLanguage'));
-		//$this->set('_serialize', ['translateLanguage']);
+		$this->set(compact('translateLocale'));
+		//$this->set('_serialize', ['translateLocale']);
 	}
 
 	/**
@@ -189,8 +189,8 @@ class TranslateLanguagesController extends TranslateAppController {
 	 */
 	public function delete($id = null) {
 		$this->request->allowMethod(['post', 'delete']);
-		$translateLanguage = $this->TranslateLanguages->get($id);
-		if ($this->TranslateLanguages->delete($translateLanguage)) {
+		$translateLocale = $this->TranslateLocales->get($id);
+		if ($this->TranslateLocales->delete($translateLocale)) {
 			$this->Flash->success(__d('translate', 'The translate language has been deleted.'));
 		} else {
 			$this->Flash->error(__d('translate', 'The translate language could not be deleted. Please, try again.'));

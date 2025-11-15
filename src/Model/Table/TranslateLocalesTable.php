@@ -16,25 +16,25 @@ use Cake\Validation\Validator;
 /**
  * @property \Cake\ORM\Association\HasMany<\Translate\Model\Table\TranslateTermsTable> $TranslateTerms
  *
- * @method \Translate\Model\Entity\TranslateLanguage get(mixed $primaryKey, array|string $finder = 'all', \Psr\SimpleCache\CacheInterface|string|null $cache = null, \Closure|string|null $cacheKey = null, mixed ...$args)
- * @method \Translate\Model\Entity\TranslateLanguage newEntity(array $data, array $options = [])
- * @method array<\Translate\Model\Entity\TranslateLanguage> newEntities(array $data, array $options = [])
- * @method \Translate\Model\Entity\TranslateLanguage|false save(\Cake\Datasource\EntityInterface $entity, array $options = [])
- * @method \Translate\Model\Entity\TranslateLanguage patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method array<\Translate\Model\Entity\TranslateLanguage> patchEntities(iterable $entities, array $data, array $options = [])
- * @method \Translate\Model\Entity\TranslateLanguage findOrCreate(\Cake\ORM\Query\SelectQuery|callable|array $search, ?callable $callback = null, array $options = [])
+ * @method \Translate\Model\Entity\TranslateLocale get(mixed $primaryKey, array|string $finder = 'all', \Psr\SimpleCache\CacheInterface|string|null $cache = null, \Closure|string|null $cacheKey = null, mixed ...$args)
+ * @method \Translate\Model\Entity\TranslateLocale newEntity(array $data, array $options = [])
+ * @method array<\Translate\Model\Entity\TranslateLocale> newEntities(array $data, array $options = [])
+ * @method \Translate\Model\Entity\TranslateLocale|false save(\Cake\Datasource\EntityInterface $entity, array $options = [])
+ * @method \Translate\Model\Entity\TranslateLocale patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method array<\Translate\Model\Entity\TranslateLocale> patchEntities(iterable $entities, array $data, array $options = [])
+ * @method \Translate\Model\Entity\TranslateLocale findOrCreate(\Cake\ORM\Query\SelectQuery|callable|array $search, ?callable $callback = null, array $options = [])
  * @mixin \Shim\Model\Behavior\NullableBehavior
  * @property \Cake\ORM\Association\BelongsTo<\Translate\Model\Table\TranslateProjectsTable> $TranslateProjects
- * @method \Translate\Model\Entity\TranslateLanguage saveOrFail(\Cake\Datasource\EntityInterface $entity, array $options = [])
+ * @method \Translate\Model\Entity\TranslateLocale saveOrFail(\Cake\Datasource\EntityInterface $entity, array $options = [])
  * @property \Data\Model\Table\LanguagesTable&\Cake\ORM\Association\BelongsTo $Languages
- * @method \Translate\Model\Entity\TranslateLanguage newEmptyEntity()
- * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateLanguage>|false saveMany(iterable $entities, array $options = [])
- * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateLanguage> saveManyOrFail(iterable $entities, array $options = [])
- * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateLanguage>|false deleteMany(iterable $entities, array $options = [])
- * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateLanguage> deleteManyOrFail(iterable $entities, array $options = [])
+ * @method \Translate\Model\Entity\TranslateLocale newEmptyEntity()
+ * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateLocale>|false saveMany(iterable $entities, array $options = [])
+ * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateLocale> saveManyOrFail(iterable $entities, array $options = [])
+ * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateLocale>|false deleteMany(iterable $entities, array $options = [])
+ * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateLocale> deleteManyOrFail(iterable $entities, array $options = [])
  * @extends \Cake\ORM\Table<array{Nullable: \Shim\Model\Behavior\NullableBehavior}>
  */
-class TranslateLanguagesTable extends Table {
+class TranslateLocalesTable extends Table {
 
 	/**
 	 * @var array
@@ -68,7 +68,7 @@ class TranslateLanguagesTable extends Table {
 			->notEmptyString('locale', 'Format: xx or xx_YY');
 
 		$validator
-			->integer('language_id')
+			->numeric('language_id')
 			->allowEmptyString('language_id', null, 'Not a number');
 
 		$validator
@@ -84,8 +84,8 @@ class TranslateLanguagesTable extends Table {
 	 * @return \Cake\ORM\RulesChecker
 	 */
 	public function buildRules(RulesChecker $rules): RulesChecker {
-		$rules->add($rules->isUnique(['name', 'translate_project_id'], 'valErrRecordExists'));
-		$rules->add($rules->isUnique(['locale', 'translate_project_id'], 'valErrRecordExists'));
+		$rules->add($rules->isUnique(['name', 'translate_project_id'], 'This record already exists'));
+		$rules->add($rules->isUnique(['locale', 'translate_project_id'], 'This record already exists'));
 
 		return $rules;
 	}
@@ -161,17 +161,17 @@ class TranslateLanguagesTable extends Table {
 	 * @param int $projectId
 	 * @param array $data
 	 *
-	 * @return \Translate\Model\Entity\TranslateLanguage|bool
+	 * @return \Translate\Model\Entity\TranslateLocale|bool
 	 */
 	public function init(string $name, string $locale, string $iso2, int $projectId, array $data = []) {
-		$translateLanguage = $this->newEntity([
+		$translateLocale = $this->newEntity([
 			'name' => $name,
 			'locale' => $locale,
 			'iso2' => $iso2,
 			'translate_project_id' => $projectId,
 		] + $data + ['active' => true]);
 
-		return $this->save($translateLanguage, ['strict' => true]);
+		return $this->save($translateLocale, ['strict' => true]);
 	}
 
 	/**
@@ -226,14 +226,14 @@ class TranslateLanguagesTable extends Table {
 	}
 
 	/**
-	 * @param array<\Translate\Model\Entity\TranslateLanguage> $translateLanguages
+	 * @param array<\Translate\Model\Entity\TranslateLocale> $translateLocales
 	 *
 	 * @return string
 	 */
-	public function getBaseLocale(array $translateLanguages) {
-		foreach ($translateLanguages as $translateLanguage) {
-			if ($translateLanguage->base) {
-				return $translateLanguage->locale;
+	public function getBaseLocale(array $translateLocales) {
+		foreach ($translateLocales as $translateLocale) {
+			if ($translateLocale->base) {
+				return $translateLocale->locale;
 			}
 		}
 

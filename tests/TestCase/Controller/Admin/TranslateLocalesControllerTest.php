@@ -5,11 +5,11 @@ namespace Translate\Test\TestCase\Controller\Admin;
 use Shim\TestSuite\IntegrationTestCase;
 
 /**
- * Translate\Controller\Admin\TranslateLanguagesController Test Case
+ * Translate\Controller\Admin\TranslateLocalesController Test Case
  *
- * @uses \Translate\Controller\Admin\TranslateLanguagesController
+ * @uses \Translate\Controller\Admin\TranslateLocalesController
  */
-class TranslateLanguagesControllerTest extends IntegrationTestCase {
+class TranslateLocalesControllerTest extends IntegrationTestCase {
 
 	/**
 	 * Fixtures
@@ -17,7 +17,7 @@ class TranslateLanguagesControllerTest extends IntegrationTestCase {
 	 * @var array<string>
 	 */
 	protected array $fixtures = [
-		'plugin.Translate.TranslateLanguages',
+		'plugin.Translate.TranslateLocales',
 		'plugin.Translate.TranslateTerms',
 		'plugin.Translate.TranslateProjects',
 	];
@@ -28,7 +28,7 @@ class TranslateLanguagesControllerTest extends IntegrationTestCase {
 	 * @return void
 	 */
 	public function testIndex() {
-		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateLanguages', 'action' => 'index']);
+		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateLocales', 'action' => 'index']);
 
 		$this->assertResponseCode(200);
 		$this->assertNoRedirect();
@@ -41,7 +41,7 @@ class TranslateLanguagesControllerTest extends IntegrationTestCase {
 	 */
 	public function testView() {
 		$id = 1;
-		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateLanguages', 'action' => 'view', $id]);
+		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateLocales', 'action' => 'view', $id]);
 
 		$this->assertResponseCode(200);
 		$this->assertNoRedirect();
@@ -51,7 +51,7 @@ class TranslateLanguagesControllerTest extends IntegrationTestCase {
 	 * @return void
 	 */
 	public function testFromLocale() {
-		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateLanguages', 'action' => 'fromLocale']);
+		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateLocales', 'action' => 'fromLocale']);
 
 		$this->assertResponseCode(200);
 		$this->assertNoRedirect();
@@ -61,7 +61,7 @@ class TranslateLanguagesControllerTest extends IntegrationTestCase {
 	 * @return void
 	 */
 	public function testToLocale() {
-		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateLanguages', 'action' => 'toLocale']);
+		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateLocales', 'action' => 'toLocale']);
 
 		$this->assertResponseCode(200);
 		$this->assertNoRedirect();
@@ -71,7 +71,7 @@ class TranslateLanguagesControllerTest extends IntegrationTestCase {
 	 * @return void
 	 */
 	public function testAdd() {
-		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateLanguages', 'action' => 'add']);
+		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateLocales', 'action' => 'add']);
 
 		$this->assertResponseCode(200);
 		$this->assertNoRedirect();
@@ -84,7 +84,7 @@ class TranslateLanguagesControllerTest extends IntegrationTestCase {
 	 */
 	public function testEdit() {
 		$id = 1;
-		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateLanguages', 'action' => 'edit', $id]);
+		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateLocales', 'action' => 'edit', $id]);
 
 		$this->assertResponseCode(200);
 		$this->assertNoRedirect();
@@ -97,7 +97,7 @@ class TranslateLanguagesControllerTest extends IntegrationTestCase {
 	 */
 	public function testDelete() {
 		$id = 1;
-		$this->post(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateLanguages', 'action' => 'delete', $id]);
+		$this->post(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateLocales', 'action' => 'delete', $id]);
 
 		$this->assertResponseCode(302);
 		$this->assertRedirect();

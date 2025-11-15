@@ -4,7 +4,7 @@ namespace Translate\Controller;
 
 /**
  * @property \Translate\Model\Table\TranslateDomainsTable $TranslateDomains
- * @property \Translate\Model\Table\TranslateLanguagesTable $TranslateLanguages
+ * @property \Translate\Model\Table\TranslateLocalesTable $TranslateLocales
  * @property \Translate\Controller\Component\TranslationComponent $Translation
  */
 class TranslateProjectsController extends TranslateAppController {

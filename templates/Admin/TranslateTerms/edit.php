@@ -2,7 +2,7 @@
 /**
  * @var \App\View\AppView $this
  * @var \Translate\Model\Entity\TranslateTerm $translateTerm
- * @var mixed $translateLanguages
+ * @var mixed $translateLocales
  * @var mixed $translateStrings
  */
 ?><nav class="col-md-3 col-sm-4 col-12">
@@ -26,7 +26,7 @@
 		echo $this->Form->control('translate_string_id', ['options' => $translateStrings]);
 		echo $this->Form->control('content');
 		echo $this->Form->control('comment');
-		echo $this->Form->control('translate_language_id', ['options' => $translateLanguages]);
+		echo $this->Form->control('translate_locale_id', ['options' => $translateLocales]);
 		//echo $this->Form->control('user_id');
 		//echo $this->Form->control('confirmed');
 		//echo $this->Form->control('confirmed_by');

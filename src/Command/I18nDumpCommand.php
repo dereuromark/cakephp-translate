@@ -67,8 +67,8 @@ class I18nDumpCommand extends Command {
 		}
 		$this->_projectId = $this->findProjectId($plugin);
 
-		/** @var \Translate\Model\Entity\TranslateLanguage[] $languages */
-		$languages = $this->fetchTable('Translate.TranslateLanguages')->getExtractable($this->_projectId)->all()->toArray();
+		/** @var \Translate\Model\Entity\TranslateLocale[] $languages */
+		$languages = $this->fetchTable('Translate.TranslateLocales')->getExtractable($this->_projectId)->all()->toArray();
 		/** @var \Translate\Model\Entity\TranslateDomain[] $domains */
 		$domains = $this->fetchTable('Translate.TranslateDomains')->getActive()->all()->toArray();
 		if (!$domains) {

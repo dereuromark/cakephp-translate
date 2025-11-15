@@ -30,19 +30,19 @@ msgstr ""
 msgid "The translate domain could not be deleted. Please, try again."
 msgstr ""
 
-#: Controller/Admin/TranslateLanguagesController.php:138;163
+#: Controller/Admin/TranslateLocalesController.php:138;163
 msgid "The translate language has been saved."
 msgstr ""
 
-#: Controller/Admin/TranslateLanguagesController.php:142;167
+#: Controller/Admin/TranslateLocalesController.php:142;167
 msgid "The translate language could not be saved. Please, try again."
 msgstr ""
 
-#: Controller/Admin/TranslateLanguagesController.php:185
+#: Controller/Admin/TranslateLocalesController.php:185
 msgid "The translate language has been deleted."
 msgstr ""
 
-#: Controller/Admin/TranslateLanguagesController.php:187
+#: Controller/Admin/TranslateLocalesController.php:187
 msgid "The translate language could not be deleted. Please, try again."
 msgstr ""
 
@@ -152,10 +152,10 @@ msgstr ""
 #: Template/Admin/TranslateDomains/edit.ctp:8
 #: Template/Admin/TranslateDomains/index.ctp:9;27
 #: Template/Admin/TranslateDomains/view.ctp:9
-#: Template/Admin/TranslateLanguages/add.ctp:9
-#: Template/Admin/TranslateLanguages/edit.ctp:8
-#: Template/Admin/TranslateLanguages/index.ctp:9;23
-#: Template/Admin/TranslateLanguages/view.ctp:9
+#: Template/Admin/TranslateLocales/add.ctp:9
+#: Template/Admin/TranslateLocales/edit.ctp:8
+#: Template/Admin/TranslateLocales/index.ctp:9;23
+#: Template/Admin/TranslateLocales/view.ctp:9
 #: Template/Admin/TranslateProjects/add.ctp:9
 #: Template/Admin/TranslateProjects/edit.ctp:8
 #: Template/Admin/TranslateProjects/index.ctp:9;28
@@ -176,7 +176,7 @@ msgstr ""
 #: Template/Admin/Translate/best_practice.ctp:10
 #: Template/Admin/Translate/convert.ctp:10
 #: Template/Admin/Translate/reset.ctp:10
-#: Template/Admin/TranslateLanguages/index.ctp:10
+#: Template/Admin/TranslateLocales/index.ctp:10
 #: Template/Admin/TranslateProjects/index.ctp:10
 #: Template/Admin/TranslateStrings/translate.ctp:12
 msgid "Overview"
@@ -195,10 +195,10 @@ msgstr ""
 #: Template/Admin/TranslateDomains/edit.ctp:31
 #: Template/Admin/TranslateDomains/extract.ctp:40
 #: Template/Admin/TranslateDomains/setup.ctp:30
-#: Template/Admin/TranslateLanguages/add.ctp:29
-#: Template/Admin/TranslateLanguages/edit.ctp:34
-#: Template/Admin/TranslateLanguages/from_locale.ctp:27
-#: Template/Admin/TranslateLanguages/to_locale.ctp:33
+#: Template/Admin/TranslateLocales/add.ctp:29
+#: Template/Admin/TranslateLocales/edit.ctp:34
+#: Template/Admin/TranslateLocales/from_locale.ctp:27
+#: Template/Admin/TranslateLocales/to_locale.ctp:33
 #: Template/Admin/TranslateProjects/add.ctp:24
 #: Template/Admin/TranslateProjects/edit.ctp:31
 #: Template/Admin/TranslateProjects/reset.ctp:20
@@ -321,7 +321,7 @@ msgid "Add Translate Domain"
 msgstr ""
 
 #: Template/Admin/TranslateDomains/edit.ctp:10
-#: Template/Admin/TranslateLanguages/edit.ctp:10
+#: Template/Admin/TranslateLocales/edit.ctp:10
 #: Template/Admin/TranslateProjects/edit.ctp:10
 #: Template/Admin/TranslateProjects/view.ctp:79
 #: Template/Admin/TranslateStrings/edit.ctp:10
@@ -333,9 +333,9 @@ msgstr ""
 #: Template/Admin/TranslateDomains/edit.ctp:12
 #: Template/Admin/TranslateDomains/index.ctp:41
 #: Template/Admin/TranslateDomains/view.ctp:11
-#: Template/Admin/TranslateLanguages/edit.ctp:12
-#: Template/Admin/TranslateLanguages/index.ctp:41
-#: Template/Admin/TranslateLanguages/view.ctp:11
+#: Template/Admin/TranslateLocales/edit.ctp:12
+#: Template/Admin/TranslateLocales/index.ctp:41
+#: Template/Admin/TranslateLocales/view.ctp:11
 #: Template/Admin/TranslateProjects/edit.ctp:12
 #: Template/Admin/TranslateProjects/index.ctp:43
 #: Template/Admin/TranslateProjects/view.ctp:11;79
@@ -387,7 +387,7 @@ msgid "Delete Translate Domain"
 msgstr ""
 
 #: Template/Admin/TranslateDomains/view.ctp:24
-#: Template/Admin/TranslateLanguages/view.ctp:24
+#: Template/Admin/TranslateLocales/view.ctp:24
 #: Template/Admin/TranslateProjects/view.ctp:22;52
 #: Template/Admin/TranslateStrings/view.ctp:45;62
 msgid "Name"
@@ -399,7 +399,7 @@ msgid "Translate Project"
 msgstr ""
 
 #: Template/Admin/TranslateDomains/view.ctp:32
-#: Template/Admin/TranslateLanguages/view.ctp:36
+#: Template/Admin/TranslateLocales/view.ctp:36
 #: Template/Admin/TranslateProjects/view.ctp:56
 #: Template/Admin/TranslateStrings/view.ctp:24;66
 #: Template/Element/coverage_table.ctp:7
@@ -426,68 +426,68 @@ msgstr ""
 msgid "Modified"
 msgstr ""
 
-#: Template/Admin/TranslateLanguages/add.ctp:10
-#: Template/Admin/TranslateLanguages/edit.ctp:15
-#: Template/Admin/TranslateLanguages/from_locale.ctp:33
-#: Template/Admin/TranslateLanguages/to_locale.ctp:39
-#: Template/Admin/TranslateLanguages/view.ctp:12
+#: Template/Admin/TranslateLocales/add.ctp:10
+#: Template/Admin/TranslateLocales/edit.ctp:15
+#: Template/Admin/TranslateLocales/from_locale.ctp:33
+#: Template/Admin/TranslateLocales/to_locale.ctp:39
+#: Template/Admin/TranslateLocales/view.ctp:12
 #: Template/Admin/TranslateProjects/index.ctp:12
 #: Template/Admin/TranslateTerms/index.ctp:13
 msgid "List Translate Languages"
 msgstr ""
 
-#: Template/Admin/TranslateLanguages/add.ctp:16
+#: Template/Admin/TranslateLocales/add.ctp:16
 msgid "Add Translate Language"
 msgstr ""
 
-#: Template/Admin/TranslateLanguages/edit.ctp:21
-#: Template/Admin/TranslateLanguages/view.ctp:10
+#: Template/Admin/TranslateLocales/edit.ctp:21
+#: Template/Admin/TranslateLocales/view.ctp:10
 msgid "Edit Translate Language"
 msgstr ""
 
-#: Template/Admin/TranslateLanguages/from_locale.ctp:8
+#: Template/Admin/TranslateLocales/from_locale.ctp:8
 msgid "Import Translate Languages"
 msgstr ""
 
-#: Template/Admin/TranslateLanguages/from_locale.ctp:12
+#: Template/Admin/TranslateLocales/from_locale.ctp:12
 msgid "Find"
 msgstr ""
 
-#: Template/Admin/TranslateLanguages/from_locale.ctp:21
+#: Template/Admin/TranslateLocales/from_locale.ctp:21
 msgid "languageName"
 msgstr ""
 
-#: Template/Admin/TranslateLanguages/index.ctp:11
-#: Template/Admin/TranslateLanguages/view.ctp:13
+#: Template/Admin/TranslateLocales/index.ctp:11
+#: Template/Admin/TranslateLocales/view.ctp:13
 #: Template/Admin/TranslateTerms/index.ctp:14
 msgid "New Translate Language"
 msgstr ""
 
-#: Template/Admin/TranslateLanguages/index.ctp:15
+#: Template/Admin/TranslateLocales/index.ctp:15
 msgid "Translate Languages"
 msgstr ""
 
-#: Template/Admin/TranslateLanguages/to_locale.ctp:8
+#: Template/Admin/TranslateLocales/to_locale.ctp:8
 msgid "Export Translate Languages"
 msgstr ""
 
-#: Template/Admin/TranslateLanguages/to_locale.ctp:13
+#: Template/Admin/TranslateLocales/to_locale.ctp:13
 msgid "Create"
 msgstr ""
 
-#: Template/Admin/TranslateLanguages/view.ctp:11
+#: Template/Admin/TranslateLocales/view.ctp:11
 msgid "Delete Translate Language"
 msgstr ""
 
-#: Template/Admin/TranslateLanguages/view.ctp:20
+#: Template/Admin/TranslateLocales/view.ctp:20
 msgid "Language Id"
 msgstr ""
 
-#: Template/Admin/TranslateLanguages/view.ctp:28
+#: Template/Admin/TranslateLocales/view.ctp:28
 msgid "Iso2"
 msgstr ""
 
-#: Template/Admin/TranslateLanguages/view.ctp:32
+#: Template/Admin/TranslateLocales/view.ctp:32
 msgid "Locale"
 msgstr ""
 

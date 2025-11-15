@@ -2,7 +2,7 @@
 
 /**
  * @var \App\View\AppView $this
- * @var \Translate\Model\Entity\TranslateLanguage[] $translateLanguages
+ * @var \Translate\Model\Entity\TranslateLocale[] $translateLocales
  * @var \Translate\Model\Entity\TranslateString $translateString
  * @var array $fileArray
  * @var array<int> $lines

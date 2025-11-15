@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \Translate\Model\Entity\TranslateLanguage $translateLanguage
+ * @var \Translate\Model\Entity\TranslateLocale $translateLocale
  * @var mixed $Languages
  */
 ?>
@@ -11,8 +11,8 @@
 		<li><?= $this->Html->link(__d('translate', 'List Translate Languages'), ['action' => 'index']) ?></li>
 	</ul>
 </nav>
-<div class="translateLanguages form col-md-9 col-sm-8 col-12">
-	<?= $this->Form->create($translateLanguage) ?>
+<div class="translateLocales form col-md-9 col-sm-8 col-12">
+	<?= $this->Form->create($translateLocale) ?>
 	<fieldset>
 		<legend><?= __d('translate', 'Add Translate Language') ?></legend>
 		<?php

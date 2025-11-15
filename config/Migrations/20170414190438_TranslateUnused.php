@@ -8,11 +8,6 @@ class TranslateUnused extends BaseMigration {
 	 * @inheritDoc
 	 */
 	public function change() {
-		/*
-		$table = $this->table('translate_languages');
-		$table->rename('translate_locales');
-		*/
-
 		$table = $this->table('translate_strings');
 		$table
 			->addColumn('skipped', 'boolean', [

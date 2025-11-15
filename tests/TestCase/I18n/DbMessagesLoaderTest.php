@@ -17,7 +17,7 @@ class DbMessagesLoaderTest extends TestCase {
 		'plugin.Translate.TranslateTerms',
 		'plugin.Translate.TranslateStrings',
 		'plugin.Translate.TranslateDomains',
-		'plugin.Translate.TranslateLanguages',
+		'plugin.Translate.TranslateLocales',
 		'plugin.Translate.TranslateProjects',
 	];
 
@@ -116,7 +116,7 @@ class DbMessagesLoaderTest extends TestCase {
 		/** @var \Translate\Model\Table\TranslateStringsTable $TranslateStrings */
 		$TranslateStrings = $this->fetchTable('Translate.TranslateStrings');
 
-		$de = $TranslateStrings->TranslateTerms->TranslateLanguages->init('DE', 'de', 'de', 1);
+		$de = $TranslateStrings->TranslateTerms->TranslateLocales->init('DE', 'de', 'de', 1);
 		$default = $TranslateStrings->TranslateDomains->getDomain(1);
 
 		$translation = [

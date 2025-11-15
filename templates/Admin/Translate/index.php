@@ -59,9 +59,9 @@ if (!empty($coverage) && is_array($count)) {
 
 	<?php echo $this->element('coverage_table', [])?>
 		<p>
-	<?php echo $count['groups']?> <?php echo $this->Html->link(__d('translate', 'Groups'), ['controller' => 'TranslateDomains']);?>
+	<?php echo $count['domains']?> <?php echo $this->Html->link(__d('translate', 'Domains'), ['controller' => 'TranslateDomains']);?>
 			with <?php echo $count['strings']?> <?php echo $this->Html->link(__d('translate', 'Strings'), ['controller' => 'TranslateStrings']);?>
-			in <?php echo $count['languages']?> different <?php echo $this->Html->link(__d('translate', 'Locales'), ['controller' => 'TranslateLanguages']);?>
+			in <?php echo $count['locales']?> different <?php echo $this->Html->link(__d('translate', 'Locales'), ['controller' => 'TranslateLocales']);?>
 			= <?php echo $count['translations']?> <?php echo $this->Html->link(__d('translate', 'Translations'), ['controller' => 'TranslateTerms']);?>
 		</p>
 
@@ -70,11 +70,11 @@ if (!empty($coverage) && is_array($count)) {
 	<p style="color: red">
 	<?php echo __d('translate', 'Please add locales you want to support'); ?>:
 		<?php if (\Cake\Core\Plugin::isLoaded('Data')) {
-			echo $this->Html->link('Locales', ['controller' => 'TranslateLanguages']);
+			echo $this->Html->link('Locales', ['controller' => 'TranslateLocales']);
 			echo ' | ';
 			echo $this->Html->link('Languages', ['plugin' => 'Data', 'controller' => 'Languages']);
 		} else {
-			echo $this->Html->link('Locales', ['controller' => 'TranslateLanguages']);
+			echo $this->Html->link('Locales', ['controller' => 'TranslateLocales']);
 		} ?>
 	</p>
 

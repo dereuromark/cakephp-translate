@@ -4,19 +4,19 @@ namespace Translate\Test\TestCase\Model\Table;
 
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
-use Translate\Model\Table\TranslateLanguagesTable;
+use Translate\Model\Table\TranslateLocalesTable;
 
 /**
- * Translate\Model\Table\TranslateLanguagesTable Test Case
+ * Translate\Model\Table\TranslateLocalesTable Test Case
  */
-class TranslateLanguagesTableTest extends TestCase {
+class TranslateLocalesTableTest extends TestCase {
 
 	/**
 	 * Test subject
 	 *
-	 * @var \Translate\Model\Table\TranslateLanguagesTable
+	 * @var \Translate\Model\Table\TranslateLocalesTable
 	 */
-	public $TranslateLanguages;
+	public $TranslateLocales;
 
 	/**
 	 * Fixtures
@@ -24,7 +24,7 @@ class TranslateLanguagesTableTest extends TestCase {
 	 * @var array<string>
 	 */
 	protected array $fixtures = [
-		'plugin.Translate.TranslateLanguages',
+		'plugin.Translate.TranslateLocales',
 		'plugin.Translate.TranslateTerms',
 		'plugin.Translate.TranslateStrings',
 		'plugin.Translate.TranslateDomains',
@@ -38,8 +38,8 @@ class TranslateLanguagesTableTest extends TestCase {
 	 */
 	public function setUp(): void {
 		parent::setUp();
-		$config = TableRegistry::getTableLocator()->exists('TranslateLanguages') ? [] : ['className' => 'Translate\Model\Table\TranslateLanguagesTable'];
-		$this->TranslateLanguages = TableRegistry::getTableLocator()->get('TranslateLanguages', $config);
+		$config = TableRegistry::getTableLocator()->exists('TranslateLocales') ? [] : ['className' => 'Translate\Model\Table\TranslateLocalesTable'];
+		$this->TranslateLocales = TableRegistry::getTableLocator()->get('TranslateLocales', $config);
 	}
 
 	/**
@@ -48,7 +48,7 @@ class TranslateLanguagesTableTest extends TestCase {
 	 * @return void
 	 */
 	public function tearDown(): void {
-		unset($this->TranslateLanguages);
+		unset($this->TranslateLocales);
 
 		parent::tearDown();
 	}
@@ -57,7 +57,7 @@ class TranslateLanguagesTableTest extends TestCase {
 	 * @return void
 	 */
 	public function testInstance() {
-		$this->assertInstanceOf(TranslateLanguagesTable::class, $this->TranslateLanguages);
+		$this->assertInstanceOf(TranslateLocalesTable::class, $this->TranslateLocales);
 	}
 
 	/**
@@ -70,12 +70,12 @@ class TranslateLanguagesTableTest extends TestCase {
 			'iso2' => 'DE',
 			'locale' => 'DE_DE',
 		];
-		$entity = $this->TranslateLanguages->newEntity($data);
-		$result = $this->TranslateLanguages->save($entity);
+		$entity = $this->TranslateLocales->newEntity($data);
+		$result = $this->TranslateLocales->save($entity);
 
 		$this->assertTrue((bool)$result);
 
-		$entity = $this->TranslateLanguages->get($result->id);
+		$entity = $this->TranslateLocales->get($result->id);
 		$this->assertSame('de_DE', $entity->locale);
 		$this->assertSame('de', $entity->iso2);
 	}
@@ -84,10 +84,10 @@ class TranslateLanguagesTableTest extends TestCase {
 	 * @return void
 	 */
 	public function testValidateIsoCode() {
-		$result = $this->TranslateLanguages->validateIsoCode('de');
+		$result = $this->TranslateLocales->validateIsoCode('de');
 		$this->assertTrue($result);
 
-		$result = $this->TranslateLanguages->validateIsoCode('deu');
+		$result = $this->TranslateLocales->validateIsoCode('deu');
 		$this->assertFalse($result);
 	}
 
@@ -95,7 +95,7 @@ class TranslateLanguagesTableTest extends TestCase {
 	 * @return void
 	 */
 	public function testGetExtractableAsList() {
-		$result = $this->TranslateLanguages->getExtractableAsList(1);
+		$result = $this->TranslateLocales->getExtractableAsList(1);
 		$this->assertNotEmpty($result);
 	}
 
@@ -103,7 +103,7 @@ class TranslateLanguagesTableTest extends TestCase {
 	 * @return void
 	 */
 	public function testGetAsList() {
-		$result = $this->TranslateLanguages->getAsList();
+		$result = $this->TranslateLocales->getAsList();
 		$this->assertNotEmpty($result);
 	}
 
@@ -111,10 +111,10 @@ class TranslateLanguagesTableTest extends TestCase {
 	 * @return void
 	 */
 	public function testGetBaseLocale() {
-		$result = $this->TranslateLanguages->getBaseLocale([]);
+		$result = $this->TranslateLocales->getBaseLocale([]);
 		$this->assertSame('en', $result);
 
-		$result = $this->TranslateLanguages->getBaseLocale($this->TranslateLanguages->find()->all()->toArray());
+		$result = $this->TranslateLocales->getBaseLocale($this->TranslateLocales->find()->all()->toArray());
 		$this->assertSame('en_US', $result);
 	}
 

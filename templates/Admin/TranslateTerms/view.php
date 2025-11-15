@@ -26,7 +26,7 @@
 		</tr>
 		<tr>
 			<th><?= __d('translate', 'Translate Language') ?></th>
-			<td><?= $translateTerm->has('translate_language') ? $this->Html->link($translateTerm->translate_language->name, ['controller' => 'TranslateLanguages', 'action' => 'view', $translateTerm->translate_language->id]) : '' ?></td>
+			<td><?= $translateTerm->has('translate_locale') ? $this->Html->link($translateTerm->translate_locale->name, ['controller' => 'TranslateLocales', 'action' => 'view', $translateTerm->translate_locale->id]) : '' ?></td>
 		</tr>
 		<tr>
 			<th><?= __d('translate', 'User Id') ?></th>

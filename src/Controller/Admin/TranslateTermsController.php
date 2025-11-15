@@ -36,7 +36,7 @@ class TranslateTermsController extends TranslateAppController {
 	 */
 	public function index() {
 		$query = $this->TranslateTerms->find('search', search: $this->request->getQuery())
-			->contain(['TranslateStrings', 'TranslateLanguages']);
+			->contain(['TranslateStrings', 'TranslateLocales']);
 		$translateTerms = $this->paginate($query);
 
 		$this->set(compact('translateTerms'));
@@ -52,7 +52,7 @@ class TranslateTermsController extends TranslateAppController {
 	 */
 	public function view($id = null) {
 		$translateTerm = $this->TranslateTerms->get($id, [
-			'contain' => ['TranslateStrings', 'TranslateLanguages'],
+			'contain' => ['TranslateStrings', 'TranslateLocales'],
 		]);
 
 		$this->set(compact('translateTerm'));
@@ -68,7 +68,7 @@ class TranslateTermsController extends TranslateAppController {
 	 */
 	public function edit($id = null) {
 		$translateTerm = $this->TranslateTerms->get($id, [
-			'contain' => ['TranslateStrings', 'TranslateLanguages'],
+			'contain' => ['TranslateStrings', 'TranslateLocales'],
 		]);
 		if ($this->request->is(['patch', 'post', 'put'])) {
 			$translateTerm = $this->TranslateTerms->patchEntity($translateTerm, $this->request->getData());
@@ -81,9 +81,9 @@ class TranslateTermsController extends TranslateAppController {
 			$this->Flash->error(__d('translate', 'The translate term could not be saved. Please, try again.'));
 		}
 		$translateStrings = $this->TranslateTerms->TranslateStrings->find('list');
-		$translateLanguages = $this->TranslateTerms->TranslateLanguages->find('list');
+		$translateLocales = $this->TranslateTerms->TranslateLocales->find('list');
 
-		$this->set(compact('translateTerm', 'translateStrings', 'translateLanguages'));
+		$this->set(compact('translateTerm', 'translateStrings', 'translateLocales'));
 		//$this->set('_serialize', ['translateTerm']);
 	}
 

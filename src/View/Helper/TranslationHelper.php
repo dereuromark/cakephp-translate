@@ -6,7 +6,7 @@ use Cake\Core\Configure;
 use Cake\View\Helper;
 use RuntimeException;
 use Translate\Model\Entity\TranslateDomain;
-use Translate\Model\Entity\TranslateLanguage;
+use Translate\Model\Entity\TranslateLocale;
 use Translate\Model\Entity\TranslateProject;
 
 /**
@@ -27,23 +27,23 @@ class TranslationHelper extends Helper {
 	 * 2. Country code from locale (e.g., en_US -> us, de_DE -> de)
 	 * 3. ISO2 language code fallback
 	 *
-	 * @param \Translate\Model\Entity\TranslateLanguage $translateLanguage
+	 * @param \Translate\Model\Entity\TranslateLocale $translateLocale
 	 * @return string|null
 	 */
-	public function resolveFlagCode(TranslateLanguage $translateLanguage): ?string {
-		if ($translateLanguage->language && $translateLanguage->language->code) {
-			return $translateLanguage->language->code;
+	public function resolveFlagCode(TranslateLocale $translateLocale): ?string {
+		if ($translateLocale->language && $translateLocale->language->code) {
+			return $translateLocale->language->code;
 		}
 
-		if ($translateLanguage->locale && str_contains($translateLanguage->locale, '_')) {
+		if ($translateLocale->locale && str_contains($translateLocale->locale, '_')) {
 			// Extract country code from locale (e.g., en_US -> us, de_DE -> de)
-			[, $flagCode] = explode('_', $translateLanguage->locale, 2);
+			[, $flagCode] = explode('_', $translateLocale->locale, 2);
 
 			return $flagCode;
 		}
 
-		if ($translateLanguage->iso2) {
-			return $translateLanguage->iso2;
+		if ($translateLocale->iso2) {
+			return $translateLocale->iso2;
 		}
 
 		return null;
@@ -87,7 +87,7 @@ class TranslationHelper extends Helper {
 	 */
 	public function totalCoverage($coverage) {
 		$res = 0.0;
-		if (empty($coverage)) {
+		if (!$coverage) {
 			return $res;
 		}
 		foreach ($coverage as $c) {

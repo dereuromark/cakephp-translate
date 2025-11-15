@@ -5,7 +5,7 @@ namespace Translate\Model\Entity;
 use Tools\Model\Entity\Entity;
 
 /**
- * TranslateLanguage Entity
+ * TranslateLocale Entity
  *
  * @property int $id
  * @property int|null $language_id
@@ -21,7 +21,7 @@ use Tools\Model\Entity\Entity;
  * @property bool $primary
  * @property \Translate\Model\Entity\TranslateProject $translate_project
  */
-class TranslateLanguage extends Entity {
+class TranslateLocale extends Entity {
 
 	/**
 	 * Fields that can be mass assigned using newEmptyEntity() or patchEntity().

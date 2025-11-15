@@ -64,7 +64,7 @@ class TranslateStringsController extends TranslateAppController {
 	 */
 	public function view($id = null) {
 		$translateString = $this->TranslateStrings->get($id, [
-			'contain' => ['TranslateDomains' => 'TranslateProjects', 'TranslateTerms' => 'TranslateLanguages'],
+			'contain' => ['TranslateDomains' => 'TranslateProjects', 'TranslateTerms' => 'TranslateLocales'],
 		]);
 
 		$this->set(compact('translateString'));
@@ -182,7 +182,7 @@ class TranslateStringsController extends TranslateAppController {
 	 */
 	public function extract(ExtractService $extractService) {
 		$potFiles = $extractService->getPotFiles();
-		$translateLanguages = $this->TranslateStrings->TranslateTerms->TranslateLanguages->getExtractableAsList($this->Translation->currentProjectId());
+		$translateLocales = $this->TranslateStrings->TranslateTerms->TranslateLocales->getExtractableAsList($this->Translation->currentProjectId());
 		$poFileLanguages = $extractService->getPoFileLanguages();
 		$poFiles = [];
 		foreach ($poFileLanguages as $poFileLanguage) {
@@ -225,18 +225,18 @@ class TranslateStringsController extends TranslateAppController {
 				}
 				$separatorPos = strpos($locale, '_');
 				$lang = $separatorPos ? substr($locale, 0, $separatorPos) : $locale;
-				if (!isset($translateLanguages[$lang])) {
+				if (!isset($translateLocales[$lang])) {
 					// Auto-create language if it doesn't exist
 					$languageName = ucfirst($lang);
-					/** @var \Translate\Model\Entity\TranslateLanguage|null $translateLanguage */
-					$translateLanguage = $this->TranslateStrings->TranslateTerms->TranslateLanguages->init(
+					/** @var \Translate\Model\Entity\TranslateLocale|null $translateLocale */
+					$translateLocale = $this->TranslateStrings->TranslateTerms->TranslateLocales->init(
 						$languageName,
 						$locale,
 						$lang,
 						$this->Translation->currentProjectId(),
 					);
-					if ($translateLanguage) {
-						$translateLanguages[$lang] = $translateLanguage->id;
+					if ($translateLocale) {
+						$translateLocales[$lang] = $translateLocale->id;
 					} else {
 						continue;
 					}
@@ -251,7 +251,7 @@ class TranslateStringsController extends TranslateAppController {
 						$errors[] = '`' . h($translation['name']) . '`';
 					}
 
-					$success = (bool)$this->TranslateStrings->TranslateTerms->import($translation, $translationString->id, $translateLanguages[$lang]);
+					$success = (bool)$this->TranslateStrings->TranslateTerms->import($translation, $translationString->id, $translateLocales[$lang]);
 					if (!$success) {
 						$errors[] = '`' . h($translation['name']) . '`';
 
@@ -276,7 +276,7 @@ class TranslateStringsController extends TranslateAppController {
 
 			$selPo = [];
 			foreach ($poFiles as $locale => $val) {
-				if (!isset($translateLanguages[$locale])) {
+				if (!isset($translateLocales[$locale])) {
 					continue;
 				}
 				foreach ($val as $k => $v) {
@@ -293,12 +293,12 @@ class TranslateStringsController extends TranslateAppController {
 	 * @return \Cake\Http\Response|null|void
 	 */
 	public function dump() {
-		$translateLanguages = $this->TranslateStrings->TranslateTerms->TranslateLanguages->getExtractableAsList($this->Translation->currentProjectId());
+		$translateLocales = $this->TranslateStrings->TranslateTerms->TranslateLocales->getExtractableAsList($this->Translation->currentProjectId());
 		/** @var \Translate\Model\Entity\TranslateDomain[] $domains */
 		$domains = $this->TranslateStrings->TranslateDomains->getActive()->toArray();
 
 		$map = [];
-		foreach ($translateLanguages as $code => $id) {
+		foreach ($translateLocales as $code => $id) {
 			foreach ($domains as $domain) {
 				$map[$code][$code . '_' . $domain->name] = $domain->name;
 			}
@@ -312,7 +312,7 @@ class TranslateStringsController extends TranslateAppController {
 			foreach ($postedDomains as $key => $domain) {
 				[$lang, $domain] = explode('_', $domain, 2);
 
-				$langId = $this->TranslateStrings->TranslateTerms->TranslateLanguages->find()->where(['iso2' => $lang])->firstOrFail()->id;
+				$langId = $this->TranslateStrings->TranslateTerms->TranslateLocales->find()->where(['iso2' => $lang])->firstOrFail()->id;
 				$domainId = $this->TranslateStrings->TranslateDomains->find()->where(['name' => $domain, 'translate_project_id' => $this->Translation->currentProjectId()])->firstOrFail()->id;
 				$translations = $this->TranslateStrings->TranslateTerms->getTranslations($langId, $domainId)->toArray();
 
@@ -341,7 +341,7 @@ class TranslateStringsController extends TranslateAppController {
 			return $this->redirect(['controller' => 'TranslateDomains', 'action' => 'index']);
 		} elseif (!$this->Translation->isPosted()) {
 			$domainArray = [];
-			foreach ($translateLanguages as $code => $id) {
+			foreach ($translateLocales as $code => $id) {
 				/** @var \Translate\Model\Entity\TranslateDomain $domain */
 				foreach ($domains as $domain) {
 					$domainArray[] = $code . '_' . $domain->name;
@@ -375,12 +375,12 @@ class TranslateStringsController extends TranslateAppController {
 
 		$translateString = $this->TranslateStrings->get($id, ['contain' => ['TranslateDomains' => 'TranslateProjects']]);
 
-		/** @var \Translate\Model\Entity\TranslateLanguage[] $translateLanguages */
-		$translateLanguages = $this->TranslateStrings->TranslateTerms->TranslateLanguages->find()->all()->toArray();
-		if (!$translateLanguages) {
+		/** @var \Translate\Model\Entity\TranslateLocale[] $translateLocales */
+		$translateLocales = $this->TranslateStrings->TranslateTerms->TranslateLocales->find()->all()->toArray();
+		if (!$translateLocales) {
 			$this->Flash->error(__d('translate', 'You need at least one language to translate'));
 
-			return $this->redirect(['controller' => 'TranslateLanguages', 'action' => 'add']);
+			return $this->redirect(['controller' => 'TranslateLocales', 'action' => 'add']);
 		}
 
 		$translateTerms = $this->TranslateStrings->TranslateTerms->getTranslatedArray($id);
@@ -401,19 +401,19 @@ class TranslateStringsController extends TranslateAppController {
 			}
 
 			$success = true;
-			foreach ($translateLanguages as $translateLanguage) {
-				$key = strtolower($translateLanguage->locale);
+			foreach ($translateLocales as $translateLocale) {
+				$key = strtolower($translateLocale->locale);
 				$term = $this->request->getData('content_' . $key);
 				if ($term !== null) {
-					if (!isset($translateTerms[$translateLanguage->id])) {
+					if (!isset($translateTerms[$translateLocale->id])) {
 						$translateTerm = $this->TranslateStrings->TranslateTerms->newEmptyEntity();
 					} else {
-						$translateTerm = $translateTerms[$translateLanguage->id];
+						$translateTerm = $translateTerms[$translateLocale->id];
 					}
 
 					$data = [
 						'translate_string_id' => $id,
-						'translate_language_id' => $translateLanguage->id,
+						'translate_locale_id' => $translateLocale->id,
 						'content' => $term,
 						//'user_id' => $this->AuthUser->id()
 						'string' => $translateString->name,
@@ -445,16 +445,16 @@ class TranslateStringsController extends TranslateAppController {
 			}
 		} else {
 			foreach ($translateTerms as $translateTerm) {
-				$key = $this->TranslateStrings->resolveLanguageKey($translateTerm->translate_language_id, $translateLanguages);
+				$key = $this->TranslateStrings->resolveLanguageKey($translateTerm->translate_locale_id, $translateLocales);
 				$this->request = $this->request->withData('content_' . $key, $translateTerm->content);
 				$this->request = $this->request->withData('plural_2_' . $key, $translateTerm->plural_2);
 			}
 		}
 
-		$suggestions = $this->TranslateStrings->getSuggestions($translateString, $translateLanguages, $translateTerms);
+		$suggestions = $this->TranslateStrings->getSuggestions($translateString, $translateLocales, $translateTerms);
 		//$pluralSuggestions =
 
-		$this->set(compact('translateString', 'translateLanguages', 'suggestions'));
+		$this->set(compact('translateString', 'translateLocales', 'suggestions'));
 	}
 
 	/**
@@ -528,12 +528,10 @@ class TranslateStringsController extends TranslateAppController {
 	/**
 	 * Import from blob or other source/file
 	 *
-	 * @return void
+	 * @return \Cake\Http\Response|null
 	 */
 	public function import() {
-		if ($this->Translation->isPosted()) {
-
-		}
+		return $this->redirect(['action' => 'extract']);
 	}
 
 	/**

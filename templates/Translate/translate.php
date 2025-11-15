@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var iterable<\Translate\Model\Entity\TranslateLanguage> $translateLanguages
+ * @var iterable<\Translate\Model\Entity\TranslateLocale> $translateLocales
  * @var \Translate\Model\Entity\TranslateString $translateString
  * @var array $suggestions
  */
@@ -39,29 +39,29 @@
 		//echo $this->Form->control('id');
 
 	if ($translateString->plural) {
-		foreach ($translateLanguages as $translateLanguage) {
-			$key = $translateLanguage->locale;
-			$formKey = str_replace('_', '-', strtolower($translateLanguage->locale));
-			echo $this->Form->control('content_' . strtolower($translateLanguage->locale), ['type' => 'text', 'label' => __d('translate', 'Singular') . ' ' . $translateLanguage->locale, 'rel' => $formKey]);
+		foreach ($translateLocales as $translateLocale) {
+			$key = $translateLocale->locale;
+			$formKey = str_replace('_', '-', strtolower($translateLocale->locale));
+			echo $this->Form->control('content_' . strtolower($translateLocale->locale), ['type' => 'text', 'label' => __d('translate', 'Singular') . ' ' . $translateLocale->locale, 'rel' => $formKey]);
 			if (!empty($suggestions[$key])) {
 				echo $this->element('suggestions', ['suggestions' => $suggestions[$key], 'key' => $formKey]);
 			}
 		}
 
-		foreach ($translateLanguages as $translateLanguage) {
-			$key = $translateLanguage->locale;
-			$formKey = str_replace('_', '-', strtolower($translateLanguage->locale));
+		foreach ($translateLocales as $translateLocale) {
+			$key = $translateLocale->locale;
+			$formKey = str_replace('_', '-', strtolower($translateLocale->locale));
 			//TODO add plural 3 to 6 if necessary
-			echo $this->Form->control('plural_2_' . strtolower($translateLanguage->locale), ['type' => 'text', 'label' => __d('translate', 'Plural') . ' ' . $translateLanguage->locale, 'rel' => 'p' . $formKey]);
+			echo $this->Form->control('plural_2_' . strtolower($translateLocale->locale), ['type' => 'text', 'label' => __d('translate', 'Plural') . ' ' . $translateLocale->locale, 'rel' => 'p' . $formKey]);
 
 		}
 
 	} else {
 
-		foreach ($translateLanguages as $translateLanguage) {
-			$key = $translateLanguage->locale;
-			$formKey = str_replace('_', '-', strtolower($translateLanguage->locale));
-			echo $this->Form->control('content_' . strtolower($translateLanguage->locale), ['type' => 'textarea', 'label' => h($translateLanguage->locale), 'rel' => $formKey]);
+		foreach ($translateLocales as $translateLocale) {
+			$key = $translateLocale->locale;
+			$formKey = str_replace('_', '-', strtolower($translateLocale->locale));
+			echo $this->Form->control('content_' . strtolower($translateLocale->locale), ['type' => 'textarea', 'label' => h($translateLocale->locale), 'rel' => $formKey]);
 			if (!empty($suggestions[$key])) {
 				echo $this->element('suggestions', ['suggestions' => $suggestions[$key], 'key' => $formKey]);
 			}

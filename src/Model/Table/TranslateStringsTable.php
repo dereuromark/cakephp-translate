@@ -76,7 +76,7 @@ class TranslateStringsTable extends Table {
 			->allowEmptyString('plural')
 			->add('plural', 'validPlaceholders', [
 				'rule' => function ($value, $context) {
-					if (empty($value) || empty($context['data']['name'])) {
+					if (!$value || empty($context['data']['name'])) {
 						return true;
 					}
 					// Ensure plural has same placeholders as name
@@ -96,9 +96,9 @@ class TranslateStringsTable extends Table {
 			->allowEmptyString('user_id');
 
 		$validator
-			->integer('translate_domain_id')
+			->numeric('translate_domain_id')
 			->requirePresence('translate_domain_id', 'create')
-			->notEmptyString('translate_domain_id', 'valErrMandatoryField');
+			->notEmptyString('translate_domain_id', 'This field is required');
 
 		return $validator;
 	}
@@ -193,7 +193,7 @@ class TranslateStringsTable extends Table {
 
 		$res = [];
 		if ($languages === null) {
-			$languages = $this->TranslateTerms->TranslateLanguages->find()
+			$languages = $this->TranslateTerms->TranslateLocales->find()
 				->where(['translate_project_id' => $id])
 				->find('list', ['keyField' => 'id', 'valueField' => 'locale'])->toArray();
 		}
@@ -206,7 +206,7 @@ class TranslateStringsTable extends Table {
 
 		foreach ($languages as $key => $lang) {
 			$options = [
-				'TranslateTerms.translate_language_id' => $key,
+				'TranslateTerms.translate_locale_id' => $key,
 				'TranslateTerms.content IS NOT' => null,
 				//'TranslateTerms.flags' => en-not-needed
 			];
@@ -281,15 +281,15 @@ class TranslateStringsTable extends Table {
 	}
 
 	/**
-	 * @param int $translateLanguageId
-	 * @param array<\Translate\Model\Entity\TranslateLanguage> $translateLanguages
+	 * @param int $translateLocaleId
+	 * @param array<\Translate\Model\Entity\TranslateLocale> $translateLocales
 	 *@throws \Cake\Http\Exception\InternalErrorException
 	 * @return string
 	 */
-	public function resolveLanguageKey(int $translateLanguageId, array $translateLanguages) {
-		foreach ($translateLanguages as $translateLanguage) {
-			if ($translateLanguage->id === $translateLanguageId) {
-				return strtolower($translateLanguage->locale);
+	public function resolveLanguageKey(int $translateLocaleId, array $translateLocales) {
+		foreach ($translateLocales as $translateLocale) {
+			if ($translateLocale->id === $translateLocaleId) {
+				return strtolower($translateLocale->locale);
 			}
 		}
 
@@ -355,24 +355,24 @@ class TranslateStringsTable extends Table {
 
 	/**
 	 * @param \Translate\Model\Entity\TranslateString $translateString
-	 * @param array<\Translate\Model\Entity\TranslateLanguage> $translateLanguages
+	 * @param array<\Translate\Model\Entity\TranslateLocale> $translateLocales
 	 * @param array<\Translate\Model\Entity\TranslateTerm> $translateTerms
 	 *
 	 * @return array
 	 */
-	public function getSuggestions($translateString, array $translateLanguages, array $translateTerms) {
+	public function getSuggestions($translateString, array $translateLocales, array $translateTerms) {
 		$translator = new Translator();
 
-		$baseLocale = $this->TranslateTerms->TranslateLanguages->getBaseLocale($translateLanguages);
+		$baseLocale = $this->TranslateTerms->TranslateLocales->getBaseLocale($translateLocales);
 
 		$result = [];
-		foreach ($translateLanguages as $translateLanguage) {
-			if ($translateLanguage->locale === $baseLocale) {
+		foreach ($translateLocales as $translateLocale) {
+			if ($translateLocale->locale === $baseLocale) {
 				continue;
 			}
 
-			$translations = $translator->suggest($translateString->name, $translateLanguage->locale, $baseLocale);
-			$result[$translateLanguage->locale] = $translations;
+			$translations = $translator->suggest($translateString->name, $translateLocale->locale, $baseLocale);
+			$result[$translateLocale->locale] = $translations;
 		}
 
 		return $result;

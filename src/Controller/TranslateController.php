@@ -22,8 +22,8 @@ class TranslateController extends TranslateAppController {
 	 * @return void
 	 */
 	public function index() {
-		$translateLanguagesTable = $this->fetchTable('Translate.TranslateLanguages');
-		$languages = $translateLanguagesTable->find('all')->toArray();
+		$translateLocalesTable = $this->fetchTable('Translate.TranslateLocales');
+		$languages = $translateLocalesTable->find('all')->toArray();
 
 		$id = $this->Translation->currentProjectId();
 		$count = $id ? $this->TranslateDomains->statistics($id, $languages) : 0;
@@ -59,12 +59,12 @@ class TranslateController extends TranslateAppController {
 
 		$translateString = $translateStringsTable->get($id, ['contain' => ['TranslateDomains' => 'TranslateProjects']]);
 
-		/** @var \Translate\Model\Entity\TranslateLanguage[] $translateLanguages */
-		$translateLanguages = $translateStringsTable->TranslateTerms->TranslateLanguages->find()->all()->toArray();
-		if (!$translateLanguages) {
+		/** @var \Translate\Model\Entity\TranslateLocale[] $translateLocales */
+		$translateLocales = $translateStringsTable->TranslateTerms->TranslateLocales->find()->all()->toArray();
+		if (!$translateLocales) {
 			$this->Flash->error(__d('translate', 'You need at least one language to translate'));
 
-			return $this->redirect(['controller' => 'TranslateLanguages', 'action' => 'add']);
+			return $this->redirect(['controller' => 'TranslateLocales', 'action' => 'add']);
 		}
 
 		$translateTerms = $translateStringsTable->TranslateTerms->getTranslatedArray($id);
@@ -85,19 +85,19 @@ class TranslateController extends TranslateAppController {
 			}
 
 			$success = true;
-			foreach ($translateLanguages as $translateLanguage) {
-				$key = strtolower($translateLanguage->locale);
+			foreach ($translateLocales as $translateLocale) {
+				$key = strtolower($translateLocale->locale);
 				$term = $this->request->getData('content_' . $key);
 				if ($term !== null) {
-					if (!isset($translateTerms[$translateLanguage->id])) {
+					if (!isset($translateTerms[$translateLocale->id])) {
 						$translateTerm = $translateStringsTable->TranslateTerms->newEmptyEntity();
 					} else {
-						$translateTerm = $translateTerms[$translateLanguage->id];
+						$translateTerm = $translateTerms[$translateLocale->id];
 					}
 
 					$data = [
 						'translate_string_id' => $id,
-						'translate_language_id' => $translateLanguage->id,
+						'translate_locale_id' => $translateLocale->id,
 						'content' => $term,
 						//'user_id' => $this->AuthUser->id()
 						'string' => $translateString->name,
@@ -129,15 +129,15 @@ class TranslateController extends TranslateAppController {
 			}
 		} else {
 			foreach ($translateTerms as $translateTerm) {
-				$key = $translateStringsTable->resolveLanguageKey($translateTerm->translate_language_id, $translateLanguages);
+				$key = $translateStringsTable->resolveLanguageKey($translateTerm->translate_locale_id, $translateLocales);
 				$this->request = $this->request->withData('content_' . $key, $translateTerm->content);
 				$this->request = $this->request->withData('plural_2_' . $key, $translateTerm->plural_2);
 			}
 		}
 
-		$suggestions = $translateStringsTable->getSuggestions($translateString, $translateLanguages, $translateTerms);
+		$suggestions = $translateStringsTable->getSuggestions($translateString, $translateLocales, $translateTerms);
 
-		$this->set(compact('translateString', 'suggestions', 'translateLanguages'));
+		$this->set(compact('translateString', 'suggestions', 'translateLocales'));
 	}
 
 	/**
@@ -199,7 +199,7 @@ class TranslateController extends TranslateAppController {
 		}
 
 		// Validate locale exists and is active
-		$language = $this->fetchTable('Translate.TranslateLanguages')
+		$language = $this->fetchTable('Translate.TranslateLocales')
 			->find()
 			->where([
 				'locale' => $locale,

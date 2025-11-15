@@ -72,7 +72,7 @@
 								'escape' => false,
 							]) ?>
 							<small class="form-text text-muted">
-								<?= __d('translate', 'The translation domain/group this string belongs to (e.g., "default", "validation")') ?>
+								<?= __d('translate', 'The translation domain this string belongs to (e.g., "default", "validation")') ?>
 							</small>
 						</div>
 

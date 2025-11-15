@@ -44,7 +44,7 @@ class Writer {
 	 * @return resource
 	 */
 	protected function openFile($filePath) {
-		if (empty($filePath)) {
+		if (!$filePath) {
 			throw new Exception('Output file not defined.');
 		}
 

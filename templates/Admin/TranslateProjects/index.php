@@ -19,7 +19,7 @@ use Cake\Core\Plugin;
 			<?= $this->Html->link(__d('translate', 'New Translate Project'), ['action' => 'add'], ['class' => 'nav-link']) ?>
 		</li>
 		<li class="nav-item">
-			<?= $this->Html->link(__d('translate', 'List Translate Languages'), ['controller' => 'TranslateLanguages', 'action' => 'index'], ['class' => 'nav-link']) ?>
+			<?= $this->Html->link(__d('translate', 'List Translate Languages'), ['controller' => 'TranslateLocales', 'action' => 'index'], ['class' => 'nav-link']) ?>
 		</li>
 		<li class="nav-item">
 			<?= $this->Html->link(__d('translate', 'List Translate Domains'), ['controller' => 'TranslateDomains', 'action' => 'index'], ['class' => 'nav-link']) ?>

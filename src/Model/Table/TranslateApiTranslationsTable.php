@@ -52,7 +52,7 @@ class TranslateApiTranslationsTable extends Table {
 	 */
 	public function validationDefault(Validator $validator): Validator {
 		$validator
-			->add('id', 'valid', ['rule' => 'integer'])
+			->numeric('id')
 			->allowEmptyString('id', 'create');
 
 		$validator

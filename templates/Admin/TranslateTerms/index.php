@@ -14,8 +14,8 @@ use Cake\Core\Plugin;
 		<li><?= $this->Html->link(__d('translate', 'New Translate Term'), ['action' => 'add']) ?></li>
 		<li><?= $this->Html->link(__d('translate', 'List Translate Strings'), ['controller' => 'TranslateStrings', 'action' => 'index']) ?></li>
 		<li><?= $this->Html->link(__d('translate', 'New Translate String'), ['controller' => 'TranslateStrings', 'action' => 'add']) ?></li>
-		<li><?= $this->Html->link(__d('translate', 'List Translate Languages'), ['controller' => 'TranslateLanguages', 'action' => 'index']) ?></li>
-		<li><?= $this->Html->link(__d('translate', 'New Translate Language'), ['controller' => 'TranslateLanguages', 'action' => 'add']) ?></li>
+		<li><?= $this->Html->link(__d('translate', 'List Translate Languages'), ['controller' => 'TranslateLocales', 'action' => 'index']) ?></li>
+		<li><?= $this->Html->link(__d('translate', 'New Translate Language'), ['controller' => 'TranslateLocales', 'action' => 'add']) ?></li>
 	</ul>
 </nav>
 <div class="translateTerms index col-md-9 col-sm-8 col-12">
@@ -24,7 +24,7 @@ use Cake\Core\Plugin;
 	<?php
 	echo $this->Form->create(null, ['valueSources' => 'query']);
 	// You'll need to populate $authors in the template from your controller
-	echo $this->Form->control('translate_language_id', ['empty' => ' - ' . __d('translate', 'noLimitation') . ' - ', 'label' => __d('translate', 'Language')]);
+	echo $this->Form->control('translate_locale_id', ['empty' => ' - ' . __d('translate', 'noLimitation') . ' - ', 'label' => __d('translate', 'Language')]);
 	echo $this->Form->control('search', ['placeholder' => '']);
 	?>
 	<div class="text-end" style="margin-bottom: 8px;">
@@ -44,7 +44,7 @@ use Cake\Core\Plugin;
 			<tr>
 				<th><?= $this->Paginator->sort('translate_string_id', __('Text')) ?></th>
 				<th><?= $this->Paginator->sort('content', __('Translation')) ?></th>
-				<th><?= $this->Paginator->sort('translate_language_id', __('Language')) ?></th>
+				<th><?= $this->Paginator->sort('translate_locale_id', __('Language')) ?></th>
 				<th><?= $this->Paginator->sort('confirmed') ?></th>
 				<th><?= $this->Paginator->sort('created', null, ['direction' => 'desc']) ?></th>
 				<th><?= $this->Paginator->sort('modified', null, ['direction' => 'desc']) ?></th>
@@ -64,7 +64,7 @@ use Cake\Core\Plugin;
 				<td>
 					<?php echo $this->Text->truncate($translateTerm->content); ?>
 				</td>
-				<td><?= $translateTerm->has('translate_language') ? $this->Html->link($translateTerm->translate_language->name, ['controller' => 'TranslateLanguages', 'action' => 'view', $translateTerm->translate_language->id]) : '' ?></td>
+				<td><?= $translateTerm->has('translate_locale') ? $this->Html->link($translateTerm->translate_locale->name, ['controller' => 'TranslateLocales', 'action' => 'view', $translateTerm->translate_locale->id]) : '' ?></td>
 				<td><?= $this->element('Translate.yes_no', ['value' => $translateTerm->confirmed]) ?>
 					<div>
 						<small><?= h($translateTerm->confirmed_by) ?></small>

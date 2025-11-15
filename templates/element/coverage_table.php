@@ -2,7 +2,7 @@
 /**
  * @var \App\View\AppView $this
  * @var array $coverage
- * @var array<\Translate\Model\Entity\TranslateLanguage> $languages
+ * @var array<\Translate\Model\Entity\TranslateLocale> $languages
  */
 ?>
 <table class="table table-striped">

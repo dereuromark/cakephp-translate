@@ -2,8 +2,8 @@
 /**
  * @var \App\View\AppView $this
  * @var \Translate\Model\Entity\TranslateDomain $translateDomain
- * @var mixed $existingGroups
- * @var mixed $groups
+ * @var mixed $existingDomains
+ * @var mixed $domains
  */
 ?>
 <div class="page form">
@@ -13,15 +13,15 @@
 
 	<?php
 	$count = 0;
-	foreach ($groups as $key => $group) {
+	foreach ($domains as $key => $domainGroup) {
 		echo '<h3>' . $key . '</h3>';
 		echo '<ul>';
-		foreach ($group as $subgroup) {
+		foreach ($domainGroup as $domainName) {
 
-			if (in_array($subgroup, $existingGroups, true)) {
-				echo '<li>' . $subgroup . '</li> (already exists)';
+			if (in_array($domainName, $existingDomains, true)) {
+				echo '<li>' . $domainName . '</li> (already exists)';
 			} else {
-				echo '<li>' . $this->Form->control('TranslateDomain.' . $count . '.confirm', ['type' => 'checkbox', 'label' => $subgroup]) . '' . $this->Form->control('TranslateDomain.' . $count . '.name', ['type' => 'hidden', 'value' => $subgroup]) . '</li>';
+				echo '<li>' . $this->Form->control('TranslateDomain.' . $count . '.confirm', ['type' => 'checkbox', 'label' => $domainName]) . '' . $this->Form->control('TranslateDomain.' . $count . '.name', ['type' => 'hidden', 'value' => $domainName]) . '</li>';
 			}
 			$count++;
 		}

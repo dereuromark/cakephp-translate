@@ -94,7 +94,7 @@ class DbMessagesLoader {
 		unset($fields['domain'], $fields['locale']);
 		$query->select(array_flip($fields));
 
-		$query->contain(['TranslateStrings' => 'TranslateDomains', 'TranslateLanguages']);
+		$query->contain(['TranslateStrings' => 'TranslateDomains', 'TranslateLocales']);
 		$query->select(['TranslateStrings.name', 'TranslateStrings.plural', 'TranslateStrings.context']);
 
 		// Get list of fields without primaryKey, domain, locale.
@@ -108,8 +108,8 @@ class DbMessagesLoader {
 
 		$results = $query
 			->where(['TranslateDomains.translate_project_id' => $translateProjectId])
-			->where(['TranslateLanguages.translate_project_id' => $translateProjectId])
-			->where(['TranslateDomains.name' => $this->domain, 'TranslateLanguages.locale' => $this->locale])
+			->where(['TranslateLocales.translate_project_id' => $translateProjectId])
+			->where(['TranslateDomains.name' => $this->domain, 'TranslateLocales.locale' => $this->locale])
 			->where(['TranslateStrings.active' => true])
 			->enableHydration(false)
 			->all();

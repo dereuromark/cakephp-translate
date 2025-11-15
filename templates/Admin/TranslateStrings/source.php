@@ -5,8 +5,8 @@
  */
 ?>
 
-<code style="width:600px;max-height:500px;overflow:auto">
+<div style="width:600px;max-height:500px;overflow:auto">
 <?php
-$this->Common->showSource($sourceFile);
+highlight_file($sourceFile);
 ?>
-</code>
+</div>

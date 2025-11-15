@@ -5,9 +5,9 @@ namespace Translate\Test\Fixture;
 use Cake\TestSuite\Fixture\TestFixture;
 
 /**
- * TranslateLanguagesFixture
+ * TranslateLocalesFixture
  */
-class TranslateLanguagesFixture extends TestFixture {
+class TranslateLocalesFixture extends TestFixture {
 
 	/**
 	 * Fields

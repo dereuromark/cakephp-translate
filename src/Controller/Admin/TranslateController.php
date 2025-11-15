@@ -9,7 +9,7 @@ use Translate\Translator\Translator;
 
 /**
  * @property \Translate\Model\Table\TranslateDomainsTable $TranslateDomains
- * @property \Translate\Model\Table\TranslateLanguagesTable $TranslateLanguages
+ * @property \Translate\Model\Table\TranslateLocalesTable $TranslateLocales
  * @property \Translate\Controller\Component\TranslationComponent $Translation
  */
 class TranslateController extends TranslateAppController {
@@ -35,8 +35,8 @@ class TranslateController extends TranslateAppController {
 	 * @return void
 	 */
 	public function index() {
-		$translateLanguagesTable = $this->fetchTable('Translate.TranslateLanguages');
-		$languages = $translateLanguagesTable->find('all')->toArray();
+		$translateLocalesTable = $this->fetchTable('Translate.TranslateLocales');
+		$languages = $translateLocalesTable->find('all')->toArray();
 
 		$id = $this->request->getSession()->read('TranslateProject.id');
 		$count = $id ? $this->TranslateDomains->statistics($id, $languages) : 0;
@@ -83,7 +83,7 @@ class TranslateController extends TranslateAppController {
 
 							break;
 						case 'languages':
-							$this->TranslateDomains->TranslateStrings->TranslateTerms->TranslateLanguages->deleteAll('1=1');
+							$this->TranslateDomains->TranslateStrings->TranslateTerms->TranslateLocales->deleteAll('1=1');
 
 							break;
 					}
@@ -151,7 +151,7 @@ class TranslateController extends TranslateAppController {
 		}
 
 		// Validate locale exists and is active
-		$language = $this->fetchTable('Translate.TranslateLanguages')
+		$language = $this->fetchTable('Translate.TranslateLocales')
 			->find()
 			->where([
 				'locale' => $locale,

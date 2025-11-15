@@ -10,8 +10,8 @@ if (!$projectId) {
 	return;
 }
 
-$TranslateLanguages = \Cake\ORM\TableRegistry::getTableLocator()->get('Translate.TranslateLanguages');
-$activeLanguages = $TranslateLanguages->find()
+$TranslateLocales = \Cake\ORM\TableRegistry::getTableLocator()->get('Translate.TranslateLocales');
+$activeLanguages = $TranslateLocales->find()
 	->where([
 		'active' => true,
 		'translate_project_id' => $projectId,
@@ -20,7 +20,7 @@ $activeLanguages = $TranslateLanguages->find()
 	->all()
 	->toArray();
 
-if (empty($activeLanguages)) {
+if (!$activeLanguages) {
 	return;
 }
 

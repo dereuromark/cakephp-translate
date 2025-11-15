@@ -96,6 +96,7 @@ class TranslateApiTranslationsControllerTest extends IntegrationTestCase {
 	 */
 	public function testEditPost() {
 		$this->disableErrorHandlerMiddleware();
+		$this->enableRetainFlashMessages();
 
 		$id = 1;
 		$data = [
@@ -103,7 +104,8 @@ class TranslateApiTranslationsControllerTest extends IntegrationTestCase {
 		];
 		$this->post(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateApiTranslations', 'action' => 'edit', $id], $data);
 
-		$this->assertResponseOk();
+		$this->assertResponseCode(302);
+		$this->assertRedirect(['action' => 'index']);
 	}
 
 	/**

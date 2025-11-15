@@ -28,7 +28,7 @@ class TranslateTermsTableTest extends TestCase {
 		'plugin.Translate.TranslateStrings',
 		'plugin.Translate.TranslateDomains',
 		'plugin.Translate.TranslateProjects',
-		'plugin.Translate.TranslateLanguages',
+		'plugin.Translate.TranslateLocales',
 	];
 
 	/**
@@ -67,7 +67,7 @@ class TranslateTermsTableTest extends TestCase {
 		$data = [
 			'content' => 'Foo Bar',
 			'translate_string_id' => 1,
-			'translate_language_id' => 1,
+			'translate_locale_id' => 1,
 		];
 		$entity = $this->TranslateTerms->newEntity($data);
 		$result = $this->TranslateTerms->save($entity);
@@ -125,7 +125,7 @@ class TranslateTermsTableTest extends TestCase {
 		$data = [
 			'content' => 'Test Translation',
 			'translate_string_id' => 1,
-			'translate_language_id' => 1,
+			'translate_locale_id' => 1,
 		];
 		$result = $this->TranslateTerms->process($data);
 
@@ -143,7 +143,7 @@ class TranslateTermsTableTest extends TestCase {
 			'content' => 'One item',
 			'plural_2' => 'Multiple items',
 			'translate_string_id' => 1,
-			'translate_language_id' => 1,
+			'translate_locale_id' => 1,
 		];
 		$entity = $this->TranslateTerms->newEntity($data);
 		$result = $this->TranslateTerms->save($entity);
@@ -163,7 +163,7 @@ class TranslateTermsTableTest extends TestCase {
 			'content' => 'You have {0} items',
 			'string' => 'You have {0} apples',
 			'translate_string_id' => 1,
-			'translate_language_id' => 1,
+			'translate_locale_id' => 1,
 		];
 		$entity = $this->TranslateTerms->newEntity($data);
 		$result = $this->TranslateTerms->save($entity);
@@ -181,7 +181,7 @@ class TranslateTermsTableTest extends TestCase {
 			'content' => 'You have items',
 			'string' => 'You have {0} apples',
 			'translate_string_id' => 1,
-			'translate_language_id' => 1,
+			'translate_locale_id' => 1,
 		];
 		$entity = $this->TranslateTerms->newEntity($data);
 		$result = $this->TranslateTerms->save($entity);
@@ -201,7 +201,7 @@ class TranslateTermsTableTest extends TestCase {
 			'plural_2' => 'You have {0} items',
 			'string' => 'You have {0} apples',
 			'translate_string_id' => 1,
-			'translate_language_id' => 1,
+			'translate_locale_id' => 1,
 		];
 		$entity = $this->TranslateTerms->newEntity($data);
 		$result = $this->TranslateTerms->save($entity);
@@ -220,7 +220,7 @@ class TranslateTermsTableTest extends TestCase {
 			'plural_2' => 'You have items',
 			'string' => 'You have {0} apples',
 			'translate_string_id' => 1,
-			'translate_language_id' => 1,
+			'translate_locale_id' => 1,
 		];
 		$entity = $this->TranslateTerms->newEntity($data);
 		$result = $this->TranslateTerms->save($entity);
@@ -239,7 +239,7 @@ class TranslateTermsTableTest extends TestCase {
 			'content' => 'You have {0} items in {1} categories',
 			'string' => 'You have {0} apples in {1} baskets',
 			'translate_string_id' => 1,
-			'translate_language_id' => 1,
+			'translate_locale_id' => 1,
 		];
 		$entity = $this->TranslateTerms->newEntity($data);
 		$result = $this->TranslateTerms->save($entity);

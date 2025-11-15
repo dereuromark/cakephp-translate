@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var iterable<\Translate\Model\Entity\TranslateLanguage> $translateLanguages
+ * @var iterable<\Translate\Model\Entity\TranslateLocale> $translateLocales
  */
 
 use Cake\Core\Plugin;
@@ -16,7 +16,7 @@ use Cake\Core\Plugin;
 		<li><?= $this->Html->link(__d('translate', 'New Translate Language'), ['action' => 'add']) ?></li>
 	</ul>
 </nav>
-<div class="translateLanguages index col-md-9 col-sm-8 col-12">
+<div class="translateLocales index col-md-9 col-sm-8 col-12">
 	<h2><?= __d('translate', 'Translate Languages') ?></h2>
 	<table class="table table-striped">
 		<thead>
@@ -29,24 +29,24 @@ use Cake\Core\Plugin;
 			</tr>
 		</thead>
 		<tbody>
-			<?php foreach ($translateLanguages as $translateLanguage) : ?>
+			<?php foreach ($translateLocales as $translateLocale) : ?>
 			<tr>
 				<td>
 				<?php
-				$flagCode = $this->Translation->resolveFlagCode($translateLanguage);
+				$flagCode = $this->Translation->resolveFlagCode($translateLocale);
 				if ($flagCode) {
 					echo $this->Translation->flag($flagCode);
 				}
 				?>
 
-				<?= h($translateLanguage->language_id) ?></td>
-				<td><?= h($translateLanguage->name) ?></td>
-				<td><?= h($translateLanguage->locale) ?></td>
-				<td><?= $this->element('Translate.yes_no', ['value' => $translateLanguage->active]) ?></td>
+				<?= h($translateLocale->language_id) ?></td>
+				<td><?= h($translateLocale->name) ?></td>
+				<td><?= h($translateLocale->locale) ?></td>
+				<td><?= $this->element('Translate.yes_no', ['value' => $translateLocale->active]) ?></td>
 				<td class="actions">
-				<?= $this->Html->link($this->Icon->render('view'), ['action' => 'view', $translateLanguage->id], ['escape' => false]); ?>
-				<?= $this->Html->link($this->Icon->render('edit'), ['action' => 'edit', $translateLanguage->id], ['escape' => false]); ?>
-				<?= $this->Form->postLink($this->Icon->render('delete'), ['action' => 'delete', $translateLanguage->id], ['escape' => false, 'confirm' => __d('translate', 'Are you sure you want to delete # {0}?', $translateLanguage->id)]); ?>
+				<?= $this->Html->link($this->Icon->render('view'), ['action' => 'view', $translateLocale->id], ['escape' => false]); ?>
+				<?= $this->Html->link($this->Icon->render('edit'), ['action' => 'edit', $translateLocale->id], ['escape' => false]); ?>
+				<?= $this->Form->postLink($this->Icon->render('delete'), ['action' => 'delete', $translateLocale->id], ['escape' => false, 'confirm' => __d('translate', 'Are you sure you want to delete # {0}?', $translateLocale->id)]); ?>
 				</td>
 			</tr>
 			<?php endforeach; ?>

@@ -15,9 +15,9 @@ use Tools\Model\Entity\Entity;
  * @property \Cake\I18n\DateTime|null $modified
  *
  * @property \Translate\Model\Entity\TranslateString $translate_string
- * @property \Translate\Model\Entity\TranslateLanguage $translate_language
+ * @property \Translate\Model\Entity\TranslateLocale $translate_locale
  * @property int $translate_string_id
- * @property int $translate_language_id
+ * @property int $translate_locale_id
  * @property string|null $plural_2
  * @property int|null $user_id
  * @property int|null $confirmed_by

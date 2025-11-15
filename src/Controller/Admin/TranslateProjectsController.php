@@ -9,7 +9,7 @@ use Translate\Model\Entity\TranslateProject;
  * TranslateProjects Controller
  *
  * @property \Translate\Model\Table\TranslateProjectsTable $TranslateProjects
- * @property \Translate\Model\Table\TranslateLanguagesTable $TranslateLanguages
+ * @property \Translate\Model\Table\TranslateLocalesTable $TranslateLocales
  * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateProject> paginate(\Cake\Datasource\RepositoryInterface|\Cake\Datasource\QueryInterface|string|null $object = null, array $settings = [])
  * @property \Translate\Controller\Component\TranslationComponent $Translation
  */
@@ -144,8 +144,8 @@ class TranslateProjectsController extends TranslateAppController {
 			'strings' => __d('translate', 'Translate Strings'),
 			'groups' => __d('translate', 'Translate Domains'),
 		];
-		$translateLanguagesTable = $this->fetchTable('Translate.TranslateLanguages');
-		$languages = $translateLanguagesTable->find('list');
+		$translateLocalesTable = $this->fetchTable('Translate.TranslateLocales');
+		$languages = $translateLocalesTable->find('list');
 		$id = $this->request->getSession()->read('TranslateProject.id');
 
 		if ($this->Translation->isPosted()) {

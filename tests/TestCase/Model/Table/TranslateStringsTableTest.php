@@ -26,7 +26,7 @@ class TranslateStringsTableTest extends TestCase {
 	protected array $fixtures = [
 		'plugin.Translate.TranslateStrings',
 		'plugin.Translate.TranslateTerms',
-		'plugin.Translate.TranslateLanguages',
+		'plugin.Translate.TranslateLocales',
 		'plugin.Translate.TranslateDomains',
 		'plugin.Translate.TranslateProjects',
 	];

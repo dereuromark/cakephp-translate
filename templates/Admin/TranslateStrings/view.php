@@ -129,14 +129,14 @@ use Cake\Core\Configure;
 									<tr>
 										<td>
 											<span class="badge bg-secondary">
-												<?= h($translateTerm->translate_language->iso2) ?>
+												<?= h($translateTerm->translate_locale->iso2) ?>
 											</span>
-											<?= h($translateTerm->translate_language->name) ?>
+											<?= h($translateTerm->translate_locale->name) ?>
 										</td>
 										<td>
 											<?php if ($translateTerm->content !== '') { ?>
 												<span><?= h($translateTerm->content) ?></span>
-											<?php } elseif ($translateTerm->translate_language->locale === Configure::read('Translate.defaultLocale')) { ?>
+											<?php } elseif ($translateTerm->translate_locale->locale === Configure::read('Translate.defaultLocale')) { ?>
 												<span class="text-muted fst-italic" title="<?= __d('translate', 'Using default value') ?>">
 													<i class="fas fa-info-circle"></i> <?= h($translateString->name) ?>
 												</span>

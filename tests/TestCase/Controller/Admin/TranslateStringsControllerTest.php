@@ -23,7 +23,7 @@ class TranslateStringsControllerTest extends IntegrationTestCase {
 	protected array $fixtures = [
 		'plugin.Translate.TranslateStrings',
 		'plugin.Translate.TranslateDomains',
-		'plugin.Translate.TranslateLanguages',
+		'plugin.Translate.TranslateLocales',
 		'plugin.Translate.TranslateProjects',
 		'plugin.Translate.TranslateTerms',
 		'plugin.Translate.Users',
@@ -124,11 +124,11 @@ Template/Account/foo.ctp:15', $translateString->references);
 		$this->disableErrorHandlerMiddleware();
 
 		$TranslateStrings = $this->fetchTable('Translate.TranslateStrings');
-		$TranslateLanguages = $this->fetchTable('Translate.TranslateLanguages');
+		$TranslateLocales = $this->fetchTable('Translate.TranslateLocales');
 		$TranslateTerms = $this->fetchTable('Translate.TranslateTerms');
 
 		// Verify "de" language doesn't exist
-		$deLanguage = $TranslateLanguages->find()->where(['iso2' => 'de'])->first();
+		$deLanguage = $TranslateLocales->find()->where(['iso2' => 'de'])->first();
 		$this->assertNull($deLanguage, 'German language should not exist yet');
 
 		$folder = new Folder();
@@ -148,7 +148,7 @@ Template/Account/foo.ctp:15', $translateString->references);
 		$this->assertNoRedirect();
 
 		// Verify "de" language was auto-created
-		$deLanguage = $TranslateLanguages->find()->where(['iso2' => 'de'])->first();
+		$deLanguage = $TranslateLocales->find()->where(['iso2' => 'de'])->first();
 		$this->assertNotNull($deLanguage, 'German language should be auto-created');
 		$this->assertSame('De', $deLanguage->name);
 		$this->assertSame('de', $deLanguage->iso2);
@@ -156,7 +156,7 @@ Template/Account/foo.ctp:15', $translateString->references);
 		$this->assertTrue($deLanguage->active);
 
 		// Verify translations were imported
-		$termCount = $TranslateTerms->find()->where(['translate_language_id' => $deLanguage->id])->count();
+		$termCount = $TranslateTerms->find()->where(['translate_locale_id' => $deLanguage->id])->count();
 		$this->assertGreaterThan(0, $termCount, 'Should have imported some German translations');
 	}
 
@@ -243,6 +243,8 @@ Template/Account/foo.ctp:15', $translateString->references);
 	 * @return void
 	 */
 	public function testSource() {
+		$this->disableErrorHandlerMiddleware();
+
 		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateStrings', 'action' => 'source']);
 
 		$this->assertResponseCode(200);
@@ -275,8 +277,8 @@ Template/Account/foo.ctp:15', $translateString->references);
 	public function testImportGet() {
 		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateStrings', 'action' => 'import']);
 
-		$this->assertResponseCode(200);
-		$this->assertNoRedirect();
+		$this->assertResponseCode(302);
+		$this->assertRedirect(['action' => 'extract']);
 	}
 
 }

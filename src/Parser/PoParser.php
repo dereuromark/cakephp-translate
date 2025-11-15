@@ -414,7 +414,7 @@ class PoParser {
 	 * @return resource
 	 */
 	protected function openFile($filePath) {
-		if (empty($filePath)) {
+		if (!$filePath) {
 			throw new Exception('Input file not defined.');
 		}
 		if (!file_exists($filePath)) {

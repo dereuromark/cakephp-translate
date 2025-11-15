@@ -57,7 +57,7 @@ class TranslateDomainsTable extends Table {
 	 * @return \Cake\ORM\RulesChecker
 	 */
 	public function buildRules(RulesChecker $rules): RulesChecker {
-		$rules->add($rules->isUnique(['name', 'translate_project_id'], 'valErrRecordExists'));
+		$rules->add($rules->isUnique(['name', 'translate_project_id'], 'This record already exists'));
 
 		return $rules;
 	}
@@ -118,17 +118,17 @@ class TranslateDomainsTable extends Table {
 	 */
 	public function statistics($id, ?array $languages = null) {
 		if ($languages === null) {
-			$languages = $this->TranslateStrings->TranslateTerms->TranslateLanguages->find('list', ['contain' => []])->toArray();
+			$languages = $this->TranslateStrings->TranslateTerms->TranslateLocales->find('list', ['contain' => []])->toArray();
 		}
 
 		$count = [];
-		$count['groups'] = $this->find('list', ['fields' => [$this->getAlias() . '.id'], 'conditions' => [$this->getAlias() . '.translate_project_id' => $id]])->toArray();
+		$count['domains'] = $this->find('list', ['fields' => [$this->getAlias() . '.id'], 'conditions' => [$this->getAlias() . '.translate_project_id' => $id]])->toArray();
 		// recursive = 0;
 		//$this->TranslateStrings->bindModel(['belongsTo' => $this->TranslateStrings->habtmJoin], false);
 		$count['strings'] = $this->TranslateStrings->find()->where(['TranslateDomains.translate_project_id' => $id])->contain(['TranslateDomains'])->count();
-		$count['languages'] = count($languages);
-		$count['translations'] = $count['strings'] * $count['languages'];
-		$count['groups'] = count($count['groups']);
+		$count['locales'] = count($languages);
+		$count['translations'] = $count['strings'] * $count['locales'];
+		$count['domains'] = count($count['domains']);
 
 		return $count;
 	}

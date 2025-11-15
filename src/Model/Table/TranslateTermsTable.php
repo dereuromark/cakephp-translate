@@ -12,7 +12,7 @@ use Cake\Validation\Validator;
 
 /**
  * @property \Cake\ORM\Association\BelongsTo<\Translate\Model\Table\TranslateStringsTable> $TranslateStrings
- * @property \Cake\ORM\Association\BelongsTo<\Translate\Model\Table\TranslateLanguagesTable> $TranslateLanguages
+ * @property \Cake\ORM\Association\BelongsTo<\Translate\Model\Table\TranslateLocalesTable> $TranslateLocales
  *
  * @method \Translate\Model\Entity\TranslateTerm get(mixed $primaryKey, array|string $finder = 'all', \Psr\SimpleCache\CacheInterface|string|null $cache = null, \Closure|string|null $cacheKey = null, mixed ...$args)
  * @method \Translate\Model\Entity\TranslateTerm newEntity(array $data, array $options = [])
@@ -114,7 +114,7 @@ class TranslateTermsTable extends Table {
 	 */
 	public function validationDefault(Validator $validator): Validator {
 		$validator
-			->integer('translate_string_id')
+			->numeric('translate_string_id')
 			->allowEmptyString('translate_string_id');
 
 		$validator
@@ -137,15 +137,15 @@ class TranslateTermsTable extends Table {
 			]);
 
 		$validator
-			->integer('translate_language_id')
-			->requirePresence('translate_language_id', 'create')
-			->notEmptyString('translate_language_id', 'valErrMandatoryField');
+			->numeric('translate_locale_id')
+			->requirePresence('translate_locale_id', 'create')
+			->notEmptyString('translate_locale_id', 'This field is required');
 
 		$validator
 			->allowEmptyString('user_id');
 
 		$validator
-			->integer('confirmed')
+			->numeric('confirmed')
 			->allowEmptyString('confirmed');
 
 		$validator
@@ -160,7 +160,7 @@ class TranslateTermsTable extends Table {
 	 * @return \Cake\ORM\RulesChecker
 	 */
 	public function buildRules(RulesChecker $rules): RulesChecker {
-		$rules->add($rules->isUnique(['content', 'translate_string_id', 'translate_language_id'], 'valErrRecordNameExists'));
+		$rules->add($rules->isUnique(['content', 'translate_string_id', 'translate_locale_id'], 'valErrRecordNameExists'));
 
 		return $rules;
 	}
@@ -179,8 +179,8 @@ class TranslateTermsTable extends Table {
 		$this->belongsTo('TranslateStrings', [
 			'className' => 'Translate.TranslateStrings',
 		]);
-		$this->belongsTo('TranslateLanguages', [
-			'className' => 'Translate.TranslateLanguages',
+		$this->belongsTo('TranslateLocales', [
+			'className' => 'Translate.TranslateLocales',
 		]);
 		/*
         'User' => array(
@@ -206,7 +206,7 @@ class TranslateTermsTable extends Table {
 	 */
 	public function filterCollection($filterCollection) {
 		$filterCollection
-			->add('translate_language_id', 'Search.Value')
+			->add('translate_locale_id', 'Search.Value')
 			->add('search', 'Search.Like', [
 				'fields' => [$this->aliasField('content'), 'TranslateStrings.name'],
 			]);
@@ -230,20 +230,20 @@ class TranslateTermsTable extends Table {
 	/**
 	 * @param array $translation
 	 * @param int $translateStringId
-	 * @param int $translateLanguageId
+	 * @param int $translateLocaleId
 	 * @return \Translate\Model\Entity\TranslateTerm|null
 	 */
-	public function import(array $translation, $translateStringId, $translateLanguageId) {
+	public function import(array $translation, $translateStringId, $translateLocaleId) {
 		$translation += [
 			//'user_id' => null,
 			'translate_string_id' => $translateStringId,
-			'translate_language_id' => $translateLanguageId,
+			'translate_locale_id' => $translateLocaleId,
 		];
 
 		$translateTerm = $this->find()->where([
 			'content IS' => $translation['content'],
 			'translate_string_id' => $translateStringId,
-			'translate_language_id' => $translateLanguageId,
+			'translate_locale_id' => $translateLocaleId,
 		])->first();
 		if (!$translateTerm) {
 			$translateTerm = $this->newEntity($translation);
@@ -269,7 +269,7 @@ class TranslateTermsTable extends Table {
 	 */
 	public function getTranslations($languageId, $domainId = null) {
 		$options = [
-			'conditions' => [$this->getAlias() . '.translate_language_id' => $languageId],
+			'conditions' => [$this->getAlias() . '.translate_locale_id' => $languageId],
 			'contain' => ['TranslateStrings'],
 		];
 		if ($domainId) {
@@ -290,7 +290,7 @@ class TranslateTermsTable extends Table {
 		$array = [];
 		/** @var \Translate\Model\Entity\TranslateTerm $term */
 		foreach ($terms as $term) {
-			$array[$term->translate_language_id] = $term;
+			$array[$term->translate_locale_id] = $term;
 		}
 
 		return $array;

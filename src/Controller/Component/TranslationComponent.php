@@ -87,7 +87,7 @@ class TranslationComponent extends Component {
 		$tables = [
 			'translate_domains',
 			'translate_strings',
-			'translate_languages',
+			'translate_locales',
 			'translate_terms',
 			'translate_api_translations',
 		];

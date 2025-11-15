@@ -1,6 +1,6 @@
 <?php
 
-use Migration\BaseMigration;
+use Migrations\BaseMigration;
 
 class TranslateCache extends BaseMigration {
 

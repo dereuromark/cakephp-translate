@@ -9,6 +9,7 @@ use Cake\Log\Log;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Translate\Model\Filter\TranslateTermsCollection;
 
 /**
  * @property \Cake\ORM\Association\BelongsTo<\Translate\Model\Table\TranslateStringsTable> $TranslateStrings
@@ -174,7 +175,9 @@ class TranslateTermsTable extends Table {
 		parent::initialize($config);
 
 		$this->addBehavior('Shim.Nullable');
-		$this->addBehavior('Search.Search');
+		$this->addBehavior('Search.Search', [
+			'collectionClass' => TranslateTermsCollection::class,
+		]);
 
 		$this->belongsTo('TranslateStrings', [
 			'className' => 'Translate.TranslateStrings',
@@ -197,21 +200,6 @@ class TranslateTermsTable extends Table {
             'fields' => array('id', 'username'),
             'order' => ''
         )*/
-	}
-
-	/**
-	 * @param \Search\Model\Filter\FilterCollection $filterCollection
-	 *
-	 * @return \Search\Model\Filter\FilterCollection
-	 */
-	public function filterCollection($filterCollection) {
-		$filterCollection
-			->add('translate_locale_id', 'Search.Value')
-			->add('search', 'Search.Like', [
-				'fields' => [$this->aliasField('content'), 'TranslateStrings.name'],
-			]);
-
-		return $filterCollection;
 	}
 
 	/**

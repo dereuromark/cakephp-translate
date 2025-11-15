@@ -39,7 +39,9 @@ class TranslateTermsController extends TranslateAppController {
 			->contain(['TranslateStrings', 'TranslateLocales']);
 		$translateTerms = $this->paginate($query);
 
-		$this->set(compact('translateTerms'));
+		$translateLocales = $this->TranslateTerms->TranslateLocales->find('list')->orderBy(['TranslateLocales.name' => 'ASC']);
+
+		$this->set(compact('translateTerms', 'translateLocales'));
 		//$this->set('_serialize', ['translateTerms']);
 	}
 

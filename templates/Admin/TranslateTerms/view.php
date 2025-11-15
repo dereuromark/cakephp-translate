@@ -25,7 +25,7 @@
 			<td><?= h($translateTerm->comment) ?></td>
 		</tr>
 		<tr>
-			<th><?= __d('translate', 'Translate Language') ?></th>
+			<th><?= __d('translate', 'Locale') ?></th>
 			<td><?= $translateTerm->has('translate_locale') ? $this->Html->link($translateTerm->translate_locale->name, ['controller' => 'TranslateLocales', 'action' => 'view', $translateTerm->translate_locale->id]) : '' ?></td>
 		</tr>
 		<tr>

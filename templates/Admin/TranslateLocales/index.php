@@ -13,11 +13,11 @@ use Cake\Core\Plugin;
 		<li><?= $this->Html->link(__d('translate', 'Overview'), ['controller' => 'Translate', 'action' => 'index']) ?></li>
 		<li><?= $this->Html->link(__d('translate', 'From Locale'), ['action' => 'fromLocale']) ?></li>
 		<li><?= $this->Html->link(__d('translate', 'To Locale'), ['action' => 'toLocale']) ?></li>
-		<li><?= $this->Html->link(__d('translate', 'New Translate Language'), ['action' => 'add']) ?></li>
+		<li><?= $this->Html->link(__d('translate', 'New Locale'), ['action' => 'add']) ?></li>
 	</ul>
 </nav>
 <div class="translateLocales index col-md-9 col-sm-8 col-12">
-	<h2><?= __d('translate', 'Translate Languages') ?></h2>
+	<h2><?= __d('translate', 'Locales') ?></h2>
 	<table class="table table-striped">
 		<thead>
 			<tr>

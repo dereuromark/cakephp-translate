@@ -11,11 +11,11 @@
 	<ul class="nav nav-pills flex-column">
 		<li class="heading"><?= __d('translate', 'Actions') ?></li>
 		<li><?= $this->Html->link(__d('translate', 'Overview'), ['controller' => 'Translate', 'action' => 'index']) ?></li>
-		<li><?php echo $this->Html->link(__d('translate', 'List Translate Languages'), ['action' => 'index']);?></li>
+		<li><?php echo $this->Html->link(__d('translate', 'List Locales'), ['action' => 'index']);?></li>
 	</ul>
 </nav>
 <div class="translateLocales index col-md-9 col-sm-8 col-12">
-<h2><?php echo __d('translate', 'Import Translate Languages');?></h2>
+<h2><?php echo __d('translate', 'Import Locales');?></h2>
 
 <p>
 	Looking into <code><?php echo h($path); ?></code>

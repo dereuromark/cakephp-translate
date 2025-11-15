@@ -13,6 +13,7 @@ use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Translate\Model\Filter\TranslateStringsCollection;
 use Translate\Translator\Translator;
 
 /**
@@ -123,7 +124,9 @@ class TranslateStringsTable extends Table {
 		parent::initialize($config);
 
 		$this->addBehavior('Shim.Nullable');
-		$this->addBehavior('Search.Search');
+		$this->addBehavior('Search.Search', [
+			'collectionClass' => TranslateStringsCollection::class,
+		]);
 
 		$this->belongsTo('Users', [
 			'className' => 'Users',
@@ -151,33 +154,6 @@ class TranslateStringsTable extends Table {
 		if ($user) {
 			$entity->user_id = $user['id'];
 		}
-	}
-
-	/**
-	 * @param \Search\Model\Filter\FilterCollection $filterCollection
-	 *
-	 * @return \Search\Model\Filter\FilterCollection
-	 */
-	public function filterCollection($filterCollection) {
-		$filterCollection
-			->add('translate_domain_id', 'Search.Value')
-			->add('missing_translation', 'Search.Callback', [
-				'callback' => function (SelectQuery $query, array $args, $filter) {
-					if (empty($args['missing_translation'])) {
-						return $query;
-					}
-
-					$query->leftJoinWith('TranslateTerms')
-						->where(['TranslateTerms.content IS' => null]);
-
-					return $query;
-				},
-			])
-			->add('search', 'Search.Like', [
-				'fields' => [$this->aliasField('name'), $this->aliasField('plural'), $this->aliasField('context')],
-			]);
-
-		return $filterCollection;
 	}
 
 	/**

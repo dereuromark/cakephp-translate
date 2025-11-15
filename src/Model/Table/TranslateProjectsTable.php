@@ -123,40 +123,46 @@ class TranslateProjectsTable extends Table {
 		foreach ($types as $type) {
 			switch ($type) {
 				case 'terms':
-					$options = [
-						'conditions' => [
-							'TranslateTerm.translate_locale_id IN' => $languages,
-							'TranslateDomain.translate_project_id' => $id,
-						],
-						'fields' => ['TranslateTerms.id', 'TranslateTerms.id'],
-						'contain' => ['TranslateDomains' => ['TranslateStrings']],
-					];
-					# bug in deleteAll (cannot use containable/recursion)
-					$res = $translateTerms->deleteAll($options['conditions']);
+					// Find term IDs that match the criteria (need to join through TranslateStrings -> TranslateDomains)
+					$termIds = $translateTerms->find()
+						->select(['TranslateTerms.id'])
+						->innerJoinWith('TranslateStrings.TranslateDomains')
+						->where([
+							'TranslateTerms.translate_locale_id IN' => $languages,
+							'TranslateDomains.translate_project_id' => $id,
+						])
+						->all()
+						->extract('id')
+						->toArray();
 
-					/*
-					die(returns($res));
-					$res = $this->TranslateTerms->find('list', $options);
-					foreach ($res as $r) {
-						$this->TranslateTerms->delete($r);
+					if ($termIds) {
+						$translateTerms->deleteAll(['id IN' => $termIds]);
 					}
-					*/
+
 					break;
 				case 'strings':
-					$conditions = [
-						'TranslateDomains.translate_project_id' => $id,
-					];
-					//$this->TranslateTerms->TranslateStrings->recursive = 0;
-					//$this->TranslateTerms->TranslateStrings->bindModel(['belongsTo' => $x], false);
-					//$res = $this->TranslateTerms->TranslateStrings->deleteAll($conditions);
+					// Find string IDs that match the criteria (need to join through TranslateDomains)
+					$translateStrings = TableRegistry::getTableLocator()->get('Translate.TranslateStrings');
+					$stringIds = $translateStrings->find()
+						->select(['TranslateStrings.id'])
+						->innerJoinWith('TranslateDomains')
+						->where([
+							'TranslateDomains.translate_project_id' => $id,
+						])
+						->all()
+						->extract('id')
+						->toArray();
 
-					//die(returns($res));
+					if ($stringIds) {
+						$translateStrings->deleteAll(['id IN' => $stringIds]);
+					}
+
 					break;
 				case 'groups':
-					$conditions = [
-						'TranslateDomain.translate_project_id' => $id,
-					];
-					$this->TranslateDomains->deleteAll($conditions);
+				case 'domains':
+					$this->TranslateDomains->deleteAll([
+						'translate_project_id' => $id,
+					]);
 
 					break;
 				default:

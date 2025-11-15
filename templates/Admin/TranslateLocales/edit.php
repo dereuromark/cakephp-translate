@@ -13,13 +13,13 @@
 			['confirm' => __d('translate', 'Are you sure you want to delete # {0}?', $translateLocale->id)],
 		)
 							?></li>
-		<li><?= $this->Html->link(__d('translate', 'List Translate Languages'), ['action' => 'index']) ?></li>
+		<li><?= $this->Html->link(__d('translate', 'List Locales'), ['action' => 'index']) ?></li>
 	</ul>
 </nav>
 <div class="translateLocales form col-md-9 col-sm-8 col-12">
 	<?= $this->Form->create($translateLocale) ?>
 	<fieldset>
-		<legend><?= __d('translate', 'Edit Translate Language') ?></legend>
+		<legend><?= __d('translate', 'Edit Locale') ?></legend>
 		<?php
 		echo $this->Form->control('name');
 		echo $this->Form->control('locale');

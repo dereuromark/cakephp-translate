@@ -28,7 +28,6 @@
 		"ext-json": "*",
 		"cakephp/migrations": "^4.6.3",
 		"friendsofcake/bootstrap-ui": "^5.1.1",
-		"dereuromark/cakephp-templating": "^0.2.7",
 		"dereuromark/cakephp-queue": "^8.0",
 		"dereuromark/cakephp-data": "@stable",
 		"dereuromark/cakephp-shim": "^3.8.2",

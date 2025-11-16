@@ -7,7 +7,6 @@ use BootstrapUI\View\Helper\FormHelper;
 use Cake\Core\Configure;
 use Cake\Event\EventInterface;
 use Cake\I18n\I18n;
-use Templating\TemplatingPlugin;
 
 /**
  * @property \Translate\Model\Table\TranslateProjectsTable $TranslateProjects
@@ -31,10 +30,7 @@ class TranslateAppController extends AppController {
 		$this->loadComponent('Translate.Translation');
 
 		$this->viewBuilder()->addHelper('Translate.Translation');
-		if (class_exists(TemplatingPlugin::class)) {
-			$this->viewBuilder()->addHelper('Templating.Icon');
-			$this->viewBuilder()->addHelper('Templating.IconSnippet');
-		}
+		$this->viewBuilder()->addHelper('Translate.Icon');
 
 		if (!$this->components()->has('Flash')) {
 			$this->loadComponent('Flash');

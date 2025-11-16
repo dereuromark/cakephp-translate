@@ -47,9 +47,9 @@ class TranslateControllerTest extends IntegrationTestCase {
 		// Verify statistics structure
 		$count = $this->viewVariable('count');
 		if (is_array($count)) {
-			$this->assertArrayHasKey('groups', $count);
+			$this->assertArrayHasKey('domains', $count);
 			$this->assertArrayHasKey('strings', $count);
-			$this->assertArrayHasKey('languages', $count);
+			$this->assertArrayHasKey('locales', $count);
 			$this->assertArrayHasKey('translations', $count);
 		}
 	}
@@ -71,13 +71,13 @@ class TranslateControllerTest extends IntegrationTestCase {
 		// Count can be 0 if no project session is set, or an array with statistics
 		if (is_array($count)) {
 			// Verify statistics calculation
-			$this->assertGreaterThanOrEqual(0, $count['groups']);
+			$this->assertGreaterThanOrEqual(0, $count['domains']);
 			$this->assertGreaterThanOrEqual(0, $count['strings']);
-			$this->assertGreaterThanOrEqual(0, $count['languages']);
+			$this->assertGreaterThanOrEqual(0, $count['locales']);
 			$this->assertGreaterThanOrEqual(0, $count['translations']);
 
-			// Verify translations = strings * languages
-			$expectedTranslations = $count['strings'] * $count['languages'];
+			// Verify translations = strings * locales
+			$expectedTranslations = $count['strings'] * $count['locales'];
 			$this->assertSame($expectedTranslations, $count['translations']);
 		} else {
 			$this->assertSame(0, $count, 'Count should be 0 when no project session is set');

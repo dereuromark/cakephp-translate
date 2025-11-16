@@ -58,6 +58,11 @@ class TranslateProjectsTable extends Table {
 			->boolean('default')
 			->allowEmptyString('default', 'This field is required');
 
+		$validator
+			->scalar('path')
+			->maxLength('path', 255)
+			->allowEmptyString('path');
+
 		return $validator;
 	}
 
@@ -68,6 +73,58 @@ class TranslateProjectsTable extends Table {
 	 */
 	public function buildRules(RulesChecker $rules): RulesChecker {
 		$rules->add($rules->isUnique(['name'], 'This field is required'));
+
+		// Ensure only one project can be default
+		$rules->add(
+			function ($entity, $options) {
+				if (!$entity->default) {
+					return true;
+				}
+
+				// Check if another project is already set as default
+				$query = $this->find()
+					->where(['default' => true]);
+
+				// Exclude current entity if updating
+				if (!$entity->isNew()) {
+					$query->where(['id !=' => $entity->id]);
+				}
+
+				return $query->count() === 0;
+			},
+			'onlyOneDefault',
+			[
+				'errorField' => 'default',
+				'message' => 'Only one project can be set as default. Please unset the current default project first.',
+			],
+		);
+
+		// Validate path exists if provided
+		$rules->add(
+			function ($entity, $options) {
+				if (!$entity->path) {
+					return true;
+				}
+
+				// Resolve path - support both absolute and relative paths
+				$path = $entity->path;
+				if (!str_starts_with($path, '/')) {
+					$path = ROOT . DS . $path;
+				}
+
+				// Check if path exists and is a directory
+				if (!is_dir($path)) {
+					return false;
+				}
+
+				return true;
+			},
+			'pathExists',
+			[
+				'errorField' => 'path',
+				'message' => 'The specified path does not exist or is not a directory.',
+			],
+		);
 
 		return $rules;
 	}
@@ -124,13 +181,15 @@ class TranslateProjectsTable extends Table {
 			switch ($type) {
 				case 'terms':
 					// Find term IDs that match the criteria (need to join through TranslateStrings -> TranslateDomains)
+					$conditions = ['TranslateDomains.translate_project_id' => $id];
+					if ($languages) {
+						$conditions['TranslateTerms.translate_locale_id IN'] = $languages;
+					}
+
 					$termIds = $translateTerms->find()
 						->select(['TranslateTerms.id'])
 						->innerJoinWith('TranslateStrings.TranslateDomains')
-						->where([
-							'TranslateTerms.translate_locale_id IN' => $languages,
-							'TranslateDomains.translate_project_id' => $id,
-						])
+						->where($conditions)
 						->all()
 						->extract('id')
 						->toArray();
@@ -161,6 +220,13 @@ class TranslateProjectsTable extends Table {
 				case 'groups':
 				case 'domains':
 					$this->TranslateDomains->deleteAll([
+						'translate_project_id' => $id,
+					]);
+
+					break;
+				case 'languages':
+					$translateLocales = TableRegistry::getTableLocator()->get('Translate.TranslateLocales');
+					$translateLocales->deleteAll([
 						'translate_project_id' => $id,
 					]);
 

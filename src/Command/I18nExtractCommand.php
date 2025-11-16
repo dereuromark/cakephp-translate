@@ -211,7 +211,7 @@ class I18nExtractCommand extends CoreI18nExtractCommand {
 		if (!$this->_projectId) {
 			throw new RuntimeException('Project ID needed. Make sure to create a project first.');
 		}
-		$translationGroup = $model->TranslateDomains->getDomain($this->_projectId, $domain);
+		$translationDomain = $model->TranslateDomains->getDomain($this->_projectId, $domain);
 
 		$translation = [
 			'name' => $singular,
@@ -219,7 +219,7 @@ class I18nExtractCommand extends CoreI18nExtractCommand {
 			'context' => $context,
 			'references' => $refs,
 		];
-		$model->import($translation, $translationGroup->id);
+		$model->import($translation, $translationDomain->id);
 	}
 
 	/**

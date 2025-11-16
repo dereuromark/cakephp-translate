@@ -158,7 +158,7 @@ class TranslationHelper extends Helper {
 	 * @return bool
 	 */
 	public function canDisplayReference(TranslateDomain $translateDomain) {
-		if ($translateDomain->path) {
+		if ($translateDomain->translate_project && $translateDomain->translate_project->path) {
 			return true;
 		}
 

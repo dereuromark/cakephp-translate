@@ -57,15 +57,19 @@ class TranslateAppController extends AppController {
 		I18n::setLocale($locale);
 		$this->request = $this->request->withAttribute('locale', $locale);
 
-		/*
-		if ($this->request->getSession()->check('TranslateProject.id')) {
-			return;
-		}
+		// Auto-select default project if none selected (except for homepage and projects controller)
+		$controller = $this->request->getParam('controller');
+		$action = $this->request->getParam('action');
+		$isHomepage = ($controller === 'Translate' && $action === 'index');
+		$isProjectsController = ($controller === 'TranslateProjects');
 
-		$this->loadModel('Translate.TranslateProjects');
-		$id = $this->TranslateProjects->getDefaultProjectId();
-		$this->request->getSession()->write('TranslateProject.id', $id);
-		*/
+		if (!$isHomepage && !$isProjectsController && !$this->request->getSession()->check('TranslateProject.id')) {
+			$translateProjects = $this->fetchTable('Translate.TranslateProjects');
+			$id = $translateProjects->getDefaultProjectId();
+			if ($id) {
+				$this->request->getSession()->write('TranslateProject.id', $id);
+			}
+		}
 	}
 
 	/**
@@ -87,6 +91,18 @@ class TranslateAppController extends AppController {
 
 		if (class_exists(FormHelper::class)) {
 			$this->viewBuilder()->addHelper('BootstrapUi.Form');
+		}
+
+		// Make current project available to all views
+		$projectId = $this->request->getSession()->read('TranslateProject.id');
+		if ($projectId) {
+			$translateProjects = $this->fetchTable('Translate.TranslateProjects');
+			$currentProject = $translateProjects->find()
+				->where(['id' => $projectId])
+				->first();
+			$this->set('currentProject', $currentProject);
+		} else {
+			$this->set('currentProject', null);
 		}
 	}
 

@@ -4,6 +4,7 @@
  * @var array $count
  * @var mixed $coverage
  * @var array $projectSwitchArray
+ * @var \Translate\Model\Entity\TranslateProject|null $currentProject
  */
 
 use Cake\Core\Configure;
@@ -49,6 +50,34 @@ Easily manage i18n/translations from your backend.
 <td>
 
 <h3>Status</h3>
+
+<?php if (!empty($currentProject)) { ?>
+	<div class="mb-3">
+		<strong><?php echo __d('translate', 'Current Project'); ?>:</strong>
+		<?php echo h($currentProject->name); ?>
+		<span class="ms-2">
+			<?php echo $this->Html->link(
+				'<i class="fas fa-edit"></i> ' . __d('translate', 'Edit'),
+				['controller' => 'TranslateProjects', 'action' => 'edit', $currentProject->id],
+				['escape' => false, 'class' => 'btn btn-sm btn-outline-primary']
+			); ?>
+			<?php echo $this->Html->link(
+				'<i class="fas fa-list"></i> ' . __d('translate', 'All Projects'),
+				['controller' => 'TranslateProjects', 'action' => 'index'],
+				['escape' => false, 'class' => 'btn btn-sm btn-outline-secondary']
+			); ?>
+		</span>
+	</div>
+<?php } else { ?>
+	<div class="mb-3">
+		<?php echo $this->Html->link(
+			'<i class="fas fa-plus-circle"></i> ' . __d('translate', 'Create Project'),
+			['controller' => 'TranslateProjects', 'action' => 'add'],
+			['escape' => false, 'class' => 'btn btn-sm btn-success']
+		); ?>
+	</div>
+<?php } ?>
+
 	<p>
 Current Translation-Coverage: <span style="color:#<?php echo $totalColor;?>;font-weight:bold"><?php echo $totalCoverage?>%</span> translated
 	</p>
@@ -69,7 +98,7 @@ if (!empty($coverage) && is_array($count)) {
 
 	<p style="color: red">
 	<?php echo __d('translate', 'Please add locales you want to support'); ?>:
-		<?php if (\Cake\Core\Plugin::isLoaded('Data')) {
+		<?php if (\Cake\Core\Plugin::isLoaded('Data') && Configure::read('Translate.languagesTable') !== false) {
 			echo $this->Html->link('Locales', ['controller' => 'TranslateLocales']);
 			echo ' | ';
 			echo $this->Html->link('Languages', ['plugin' => 'Data', 'controller' => 'Languages']);
@@ -93,7 +122,11 @@ if (!empty($coverage) && is_array($count)) {
 	<li>Translate and submit the form</li>
 </ol>
 
-	<p><?php echo $this->Html->link('Continue translating', ['controller' => 'TranslateStrings', 'action' => 'translate']); ?></p>
+	<p><?php
+		if (!empty($count['strings'])) {
+			echo $this->Html->link('Continue translating', ['controller' => 'TranslateStrings', 'action' => 'translate']);
+		}
+	?></p>
 
 
 <h3>How to Administer</h3>

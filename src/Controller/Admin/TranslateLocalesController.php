@@ -2,6 +2,7 @@
 
 namespace Translate\Controller\Admin;
 
+use Cake\Http\Exception\NotFoundException;
 use Translate\Controller\TranslateAppController;
 use Translate\Filesystem\Creator;
 
@@ -23,11 +24,23 @@ class TranslateLocalesController extends TranslateAppController {
 	 * @return \Cake\Http\Response|null|void
 	 */
 	public function toLocale() {
-		$path = LOCALE;
+		// Get path from current project
+		$TranslateProjects = $this->fetchTable('Translate.TranslateProjects');
+		$project = $TranslateProjects->get($this->Translation->currentProjectId());
+
+		$path = $project->path ?? null;
+		if (!$path) {
+			$path = ROOT;
+		} elseif (!str_starts_with($path, '/')) {
+			$path = ROOT . DS . $path;
+		}
+		$path = rtrim($path, DS) . DS . 'resources' . DS . 'locales';
 
 		$creator = new Creator();
 		$existingFolders = $creator->findLocaleFolders($path);
-		$languages = $this->TranslateLocales->find('list', ['keyField' => 'locale'])->toArray();
+		$languages = $this->TranslateLocales->find('list', ['keyField' => 'locale'])
+			->where(['translate_project_id' => $this->Translation->currentProjectId()])
+			->toArray();
 
 		if ($this->Translation->isPosted()) {
 			$data = [];
@@ -60,11 +73,23 @@ class TranslateLocalesController extends TranslateAppController {
 	 * @return \Cake\Http\Response|null|void
 	 */
 	public function fromLocale() {
-		$path = LOCALE;
+		// Get path from current project
+		$TranslateProjects = $this->fetchTable('Translate.TranslateProjects');
+		$project = $TranslateProjects->get($this->Translation->currentProjectId());
+
+		$path = $project->path ?? null;
+		if (!$path) {
+			$path = ROOT;
+		} elseif (!str_starts_with($path, '/')) {
+			$path = ROOT . DS . $path;
+		}
+		$path = rtrim($path, DS) . DS . 'resources' . DS . 'locales';
 
 		$creator = new Creator();
 		$folders = $creator->findLocaleFolders($path);
-		$existingLanguages = $this->TranslateLocales->find('list', ['keyField' => 'locale'])->toArray();
+		$existingLanguages = $this->TranslateLocales->find('list', ['keyField' => 'locale'])
+			->where(['translate_project_id' => $this->Translation->currentProjectId()])
+			->toArray();
 
 		if ($this->Translation->isPosted()) {
 			$translateLocales = [];
@@ -74,28 +99,46 @@ class TranslateLocalesController extends TranslateAppController {
 					continue;
 				}
 
-				$data = [
+				$localeData = [
 					'locale' => $key,
-					'name' => $data['name'],
+					'name' => !empty($data['name']) ? $data['name'] : $key,
 					//'active' => true,
 					'translate_project_id' => $this->Translation->currentProjectId(),
 				];
-				if (strlen($data['locale']) === 2) {
-					$data['iso2'] = $data['locale'];
-				} elseif (preg_match('/[a-z]{2}_[a-z]{2}/i', $data['locale'])) {
-					$data['iso2'] = substr($data['locale'], 0, 2);
+				if (strlen($localeData['locale']) === 2) {
+					$localeData['iso2'] = $localeData['locale'];
+				} elseif (preg_match('/[a-z]{2}_[a-z]{2}/i', $localeData['locale'])) {
+					$localeData['iso2'] = substr($localeData['locale'], 0, 2);
 				}
 
-				$translateLocales[] = $this->TranslateLocales->newEntity($data);
+				$translateLocales[] = $this->TranslateLocales->newEntity($localeData);
 			}
 
-			if (!empty($data) && $this->TranslateLocales->saveMany($translateLocales)) {
-				$this->Flash->success('new language(s) added');
+			if (!empty($translateLocales)) {
+				$result = $this->TranslateLocales->saveMany($translateLocales);
+				if ($result) {
+					$this->Flash->success(__d('translate', '{0} new language(s) added', count($result)));
 
-				return $this->redirect(['action' => 'index']);
+					return $this->redirect(['action' => 'index']);
+				}
+
+				// Show validation errors
+				$errors = [];
+				foreach ($translateLocales as $locale) {
+					if ($locale->hasErrors()) {
+						$errors[] = $locale->locale . ': ' . implode(', ', array_map(function ($fieldErrors) {
+							return implode(', ', $fieldErrors);
+						}, $locale->getErrors()));
+					}
+				}
+				if ($errors) {
+					$this->Flash->error(__d('translate', 'Validation errors: {0}', implode('; ', $errors)));
+				} else {
+					$this->Flash->error(__d('translate', 'Could not save languages. Please try again.'));
+				}
+			} else {
+				$this->Flash->warning(__d('translate', 'No languages selected.'));
 			}
-
-			$this->Flash->error('Sth went wrong.');
 
 		}
 		$this->set(compact('path', 'existingLanguages', 'folders'));
@@ -107,7 +150,9 @@ class TranslateLocalesController extends TranslateAppController {
 	 * @return \Cake\Http\Response|null|void
 	 */
 	public function index() {
-		$translateLocales = $this->paginate();
+		$query = $this->TranslateLocales->find()
+			->where(['TranslateLocales.translate_project_id' => $this->Translation->currentProjectId()]);
+		$translateLocales = $this->paginate($query);
 
 		$this->set(compact('translateLocales'));
 		//$this->set('_serialize', ['translateLocales']);
@@ -124,6 +169,10 @@ class TranslateLocalesController extends TranslateAppController {
 		$translateLocale = $this->TranslateLocales->get($id, [
 			'contain' => ['TranslateTerms'],
 		]);
+
+		if ($translateLocale->translate_project_id !== $this->Translation->currentProjectId()) {
+			throw new NotFoundException(__d('translate', 'Locale not found.'));
+		}
 
 		$this->set(compact('translateLocale'));
 		//$this->set('_serialize', ['translateLocale']);
@@ -165,6 +214,11 @@ class TranslateLocalesController extends TranslateAppController {
 		$translateLocale = $this->TranslateLocales->get($id, [
 			'contain' => [],
 		]);
+
+		if ($translateLocale->translate_project_id !== $this->Translation->currentProjectId()) {
+			throw new NotFoundException(__d('translate', 'Locale not found.'));
+		}
+
 		if ($this->request->is(['patch', 'post', 'put'])) {
 			$translateLocale = $this->TranslateLocales->patchEntity($translateLocale, $this->request->getData());
 			if ($this->TranslateLocales->save($translateLocale)) {
@@ -190,6 +244,11 @@ class TranslateLocalesController extends TranslateAppController {
 	public function delete($id = null) {
 		$this->request->allowMethod(['post', 'delete']);
 		$translateLocale = $this->TranslateLocales->get($id);
+
+		if ($translateLocale->translate_project_id !== $this->Translation->currentProjectId()) {
+			throw new NotFoundException(__d('translate', 'Locale not found.'));
+		}
+
 		if ($this->TranslateLocales->delete($translateLocale)) {
 			$this->Flash->success(__d('translate', 'The translate language has been deleted.'));
 		} else {

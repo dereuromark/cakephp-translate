@@ -5,7 +5,7 @@
 * Create project (for your main app).
 * Create languages you want to support.
 * Import POT files etc.
-* Disable strings or groups you do not want to be translated.
+* Disable strings or locales you do not want to be translated.
 
 You can start translating.
 

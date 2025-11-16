@@ -166,13 +166,15 @@ class TranslateController extends TranslateAppController {
 		[$reference, $lines] = explode(':', $reference);
 		$lines = explode(';', $lines);
 
-		$path = $translateString->translate_domain->path;
-		if (!str_starts_with($path, '/')) {
+		$path = $translateString->translate_domain->translate_project->path ?? null;
+		if (!$path) {
+			$path = ROOT;
+		} elseif (!str_starts_with($path, '/')) {
 			$path = ROOT . DS . $path;
 		}
 		$path = rtrim((string)realpath($path), '/') . '/';
 		if (!is_dir($path)) {
-			throw new NotFoundException('Path not found: ' . $translateString->translate_domain->path);
+			throw new NotFoundException('Path not found: ' . ($translateString->translate_domain->translate_project->path ?? 'ROOT'));
 		}
 
 		$file = $path . $reference;

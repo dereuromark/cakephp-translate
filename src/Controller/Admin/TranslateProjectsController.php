@@ -51,12 +51,6 @@ class TranslateProjectsController extends TranslateAppController {
 	 * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
 	 */
 	public function add() {
-		if ($this->TranslateProjects->find()->count() > 0) {
-			$this->Flash->warning('Currently only one project is supported yet.');
-
-			return $this->Translation->autoRedirect(['action' => 'index']);
-		}
-
 		$translateProject = $this->TranslateProjects->newEmptyEntity();
 		if ($this->request->is('post')) {
 			$translateProject = $this->TranslateProjects->patchEntity($translateProject, $this->request->getData());
@@ -85,9 +79,7 @@ class TranslateProjectsController extends TranslateAppController {
 	 * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
 	 */
 	public function edit($id = null) {
-		$translateProject = $this->TranslateProjects->get($id, [
-			'contain' => [],
-		]);
+		$translateProject = $this->TranslateProjects->get($id);
 		if ($this->request->is(['patch', 'post', 'put'])) {
 			$translateProject = $this->TranslateProjects->patchEntity($translateProject, $this->request->getData());
 			if ($this->TranslateProjects->save($translateProject)) {

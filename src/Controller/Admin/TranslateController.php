@@ -36,11 +36,13 @@ class TranslateController extends TranslateAppController {
 	 */
 	public function index() {
 		$translateLocalesTable = $this->fetchTable('Translate.TranslateLocales');
-		$languages = $translateLocalesTable->find('all')->toArray();
+		$languages = $translateLocalesTable->find('all')
+			->where(['translate_project_id' => $this->Translation->currentProjectId()])
+			->toArray();
 
-		$id = $this->request->getSession()->read('TranslateProject.id');
+		$id = $this->Translation->currentProjectId();
 		$count = $id ? $this->TranslateDomains->statistics($id, $languages) : 0;
-		$coverage = $this->TranslateDomains->TranslateStrings->coverage($this->Translation->currentProjectId());
+		$coverage = $this->TranslateDomains->TranslateStrings->coverage($id);
 		$projectSwitchArray = $this->TranslateDomains->TranslateProjects->find('list')->toArray();
 		$this->set(compact('coverage', 'languages', 'count', 'projectSwitchArray'));
 	}
@@ -67,30 +69,40 @@ class TranslateController extends TranslateAppController {
 				return $this->redirect(['action' => 'index']);
 			}
 
+			$projectId = $this->Translation->currentProjectId();
+			$types = [];
+			$languages = [];
+
 			foreach ($selection as $sel) {
 				if (!empty($sel)) {
 					switch ($sel) {
 						case 'terms':
-							$this->TranslateDomains->TranslateStrings->TranslateTerms->deleteAll('1=1');
+							$types[] = 'terms';
 
 							break;
 						case 'strings':
-							$this->TranslateDomains->TranslateStrings->deleteAll('1=1');
+							$types[] = 'strings';
 
 							break;
 						case 'groups':
-							$this->TranslateDomains->deleteAll('1=1');
+						case 'domains':
+							$types[] = 'domains';
 
 							break;
 						case 'languages':
-							$this->TranslateDomains->TranslateStrings->TranslateTerms->TranslateLocales->deleteAll('1=1');
+							$types[] = 'languages';
 
 							break;
 					}
 				}
-
 			}
-			$this->Flash->success('Done');
+
+			if ($types) {
+				$this->TranslateDomains->TranslateProjects->reset($projectId, $types, $languages);
+				$this->Flash->success(__d('translate', 'Reset complete for current project.'));
+			} else {
+				$this->Flash->warning(__d('translate', 'No options selected.'));
+			}
 
 			return $this->redirect(['action' => 'index']);
 		}
@@ -117,8 +129,7 @@ class TranslateController extends TranslateAppController {
 		$translation = $translator->translate($text, $to, $from);
 
 		$this->set(compact('translation'));
-		$serialize = true;
-		$this->viewBuilder()->setOptions(compact('serialize'));
+		$this->viewBuilder()->setOption('serialize', ['translation']);
 	}
 
 	/**
@@ -150,12 +161,13 @@ class TranslateController extends TranslateAppController {
 			return $this->redirect(['action' => 'index']);
 		}
 
-		// Validate locale exists and is active
+		// Validate locale exists, is active, and belongs to current project
 		$language = $this->fetchTable('Translate.TranslateLocales')
 			->find()
 			->where([
 				'locale' => $locale,
 				'active' => true,
+				'translate_project_id' => $this->Translation->currentProjectId(),
 			])
 			->first();
 

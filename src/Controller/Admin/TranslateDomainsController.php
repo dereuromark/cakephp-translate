@@ -2,6 +2,7 @@
 
 namespace Translate\Controller\Admin;
 
+use Cake\Http\Exception\NotFoundException;
 use Translate\Controller\TranslateAppController;
 
 /**
@@ -25,6 +26,7 @@ class TranslateDomainsController extends TranslateAppController {
 	 */
 	public function index() {
 		$query = $this->TranslateDomains->find()
+			->where(['TranslateDomains.translate_project_id' => $this->Translation->currentProjectId()])
 			->contain(['TranslateProjects']);
 		$translateDomains = $this->paginate($query);
 
@@ -43,6 +45,10 @@ class TranslateDomainsController extends TranslateAppController {
 		$translateDomain = $this->TranslateDomains->get($id, [
 			'contain' => ['TranslateProjects', 'TranslateStrings'],
 		]);
+
+		if ($translateDomain->translate_project_id !== $this->Translation->currentProjectId()) {
+			throw new NotFoundException(__d('translate', 'Domain not found.'));
+		}
 
 		$this->set(compact('translateDomain'));
 		//$this->set('_serialize', ['translateDomain']);
@@ -85,6 +91,11 @@ class TranslateDomainsController extends TranslateAppController {
 		$translateDomain = $this->TranslateDomains->get($id, [
 			'contain' => ['TranslateStrings'],
 		]);
+
+		if ($translateDomain->translate_project_id !== $this->Translation->currentProjectId()) {
+			throw new NotFoundException(__d('translate', 'Domain not found.'));
+		}
+
 		if ($this->request->is(['patch', 'post', 'put'])) {
 			$translateDomain = $this->TranslateDomains->patchEntity($translateDomain, $this->request->getData());
 			if ($this->TranslateDomains->save($translateDomain)) {
@@ -112,6 +123,11 @@ class TranslateDomainsController extends TranslateAppController {
 	public function delete($id = null) {
 		$this->request->allowMethod(['post', 'delete']);
 		$translateDomain = $this->TranslateDomains->get($id);
+
+		if ($translateDomain->translate_project_id !== $this->Translation->currentProjectId()) {
+			throw new NotFoundException(__d('translate', 'Domain not found.'));
+		}
+
 		if ($this->TranslateDomains->delete($translateDomain)) {
 			$this->Flash->success(__d('translate', 'The translate domain has been deleted.'));
 		} else {

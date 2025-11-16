@@ -5,29 +5,43 @@
  * @var mixed $Languages
  */
 ?>
-<nav class="col-md-3 col-sm-4 col-12">
-	<ul class="nav nav-pills flex-column">
-		<li class="heading"><?= __d('translate', 'Actions') ?></li>
-		<li><?= $this->Html->link(__d('translate', 'List Locales'), ['action' => 'index']) ?></li>
-	</ul>
-</nav>
-<div class="translateLocales form col-md-9 col-sm-8 col-12">
-	<?= $this->Form->create($translateLocale) ?>
-	<fieldset>
-		<legend><?= __d('translate', 'Add Locale') ?></legend>
-		<?php
-			echo $this->Form->control('name');
-			echo $this->Form->control('locale');
+<div class="row">
+	<aside class="col-md-3">
+		<div class="card">
+			<div class="card-header">
+				<h3 class="card-title"><i class="fa fa-bars"></i> <?= __d('translate', 'Actions') ?></h3>
+			</div>
+			<div class="list-group list-group-flush">
+				<?= $this->Html->link(__d('translate', 'List Locales'), ['action' => 'index'], ['class' => 'list-group-item list-group-item-action']) ?>
+			</div>
+		</div>
+	</aside>
+	<div class="col-md-9">
+		<div class="card">
+			<div class="card-header">
+				<h3 class="card-title"><i class="fa fa-plus"></i> <?= __d('translate', 'Add Locale') ?></h3>
+			</div>
+			<?= $this->Form->create($translateLocale) ?>
+			<div class="card-body">
+				<fieldset>
+					<?php
+						echo $this->Form->control('name');
+						echo $this->Form->control('locale');
 
-		if (!empty($Languages)) {
-			echo $this->Form->control('language_id', ['empty' => true]);
-		} else {
-			echo $this->Form->control('iso2');
-		}
+					if (!empty($Languages)) {
+						echo $this->Form->control('language_id', ['empty' => true]);
+					} else {
+						echo $this->Form->control('iso2');
+					}
 
-			echo $this->Form->control('active');
-		?>
-	</fieldset>
-	<?= $this->Form->button(__d('translate', 'Submit')) ?>
-	<?= $this->Form->end() ?>
+						echo $this->Form->control('active');
+					?>
+				</fieldset>
+			</div>
+			<div class="card-footer">
+				<?= $this->Form->button(__d('translate', 'Submit'), ['class' => 'btn btn-primary']) ?>
+			</div>
+			<?= $this->Form->end() ?>
+		</div>
+	</div>
 </div>

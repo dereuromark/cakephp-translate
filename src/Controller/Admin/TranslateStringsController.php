@@ -45,7 +45,9 @@ class TranslateStringsController extends TranslateAppController {
 		$query = $this->TranslateStrings->find('search', search: $this->request->getQuery());
 		$query->contain([
 			'TranslateDomains',
-		]);
+		])->innerJoinWith('TranslateDomains', function ($q) {
+			return $q->where(['TranslateDomains.translate_project_id' => $this->Translation->currentProjectId()]);
+		});
 		$translateStrings = $this->paginate($query);
 
 		$translateDomains = $this->TranslateStrings->TranslateDomains
@@ -66,6 +68,10 @@ class TranslateStringsController extends TranslateAppController {
 		$translateString = $this->TranslateStrings->get($id, [
 			'contain' => ['TranslateDomains' => 'TranslateProjects', 'TranslateTerms' => 'TranslateLocales'],
 		]);
+
+		if ($translateString->translate_domain->translate_project_id !== $this->Translation->currentProjectId()) {
+			throw new NotFoundException(__d('translate', 'String not found.'));
+		}
 
 		$this->set(compact('translateString'));
 		//$this->set('_serialize', ['translateString']);
@@ -92,7 +98,9 @@ class TranslateStringsController extends TranslateAppController {
 
 			$this->Flash->error(__d('translate', 'The translate string could not be saved. Please, try again.'));
 		}
-		$translateDomains = $this->TranslateStrings->TranslateDomains->find('list');
+		$translateDomains = $this->TranslateStrings->TranslateDomains
+			->find('list')
+			->where(['translate_project_id' => $this->Translation->currentProjectId()]);
 
 		$this->set(compact('translateString', 'translateDomains'));
 		//$this->set('_serialize', ['translateString']);
@@ -109,6 +117,11 @@ class TranslateStringsController extends TranslateAppController {
 		$translateString = $this->TranslateStrings->get($id, [
 			'contain' => ['TranslateDomains'],
 		]);
+
+		if ($translateString->translate_domain->translate_project_id !== $this->Translation->currentProjectId()) {
+			throw new NotFoundException(__d('translate', 'String not found.'));
+		}
+
 		$originalName = $translateString->name;
 
 		if ($this->request->is(['patch', 'post', 'put'])) {
@@ -140,7 +153,9 @@ class TranslateStringsController extends TranslateAppController {
 			}
 		}
 
-		$translateDomains = $this->TranslateStrings->TranslateDomains->find('list');
+		$translateDomains = $this->TranslateStrings->TranslateDomains
+			->find('list')
+			->where(['translate_project_id' => $this->Translation->currentProjectId()]);
 
 		$this->set(compact('translateString', 'translateDomains'));
 		//$this->set('_serialize', ['translateString']);
@@ -155,7 +170,14 @@ class TranslateStringsController extends TranslateAppController {
 	 */
 	public function delete($id = null) {
 		$this->request->allowMethod(['post', 'delete']);
-		$translateString = $this->TranslateStrings->get($id);
+		$translateString = $this->TranslateStrings->get($id, [
+			'contain' => ['TranslateDomains'],
+		]);
+
+		if ($translateString->translate_domain->translate_project_id !== $this->Translation->currentProjectId()) {
+			throw new NotFoundException(__d('translate', 'String not found.'));
+		}
+
 		if ($this->TranslateStrings->delete($translateString)) {
 			$this->Flash->success(__d('translate', 'The translate string has been deleted.'));
 		} else {
@@ -293,6 +315,18 @@ class TranslateStringsController extends TranslateAppController {
 	 * @return \Cake\Http\Response|null|void
 	 */
 	public function dump() {
+		// Get path from current project
+		$TranslateProjects = $this->fetchTable('Translate.TranslateProjects');
+		$project = $TranslateProjects->get($this->Translation->currentProjectId());
+
+		$path = $project->path ?? null;
+		if (!$path) {
+			$path = ROOT;
+		} elseif (!str_starts_with($path, '/')) {
+			$path = ROOT . DS . $path;
+		}
+		$path = rtrim($path, DS) . DS . 'resources' . DS . 'locales' . DS;
+
 		$translateLocales = $this->TranslateStrings->TranslateTerms->TranslateLocales->getExtractableAsList($this->Translation->currentProjectId());
 		/** @var \Translate\Model\Entity\TranslateDomain[] $domains */
 		$domains = $this->TranslateStrings->TranslateDomains->getActive()->toArray();
@@ -321,7 +355,7 @@ class TranslateStringsController extends TranslateAppController {
 				}
 
 				$dumper = new Dumper();
-				if (!$dumper->dump($translations, $domain, $lang)) {
+				if (!$dumper->dump($translations, $domain, $lang, $path)) {
 					$errors[] = $lang . '/' . $domain;
 
 					continue;
@@ -350,7 +384,7 @@ class TranslateStringsController extends TranslateAppController {
 			$this->request = $this->request->withData('domains', $domainArray);
 		}
 
-		$this->set(compact('map'));
+		$this->set(compact('map', 'path'));
 	}
 
 	/**
@@ -374,6 +408,10 @@ class TranslateStringsController extends TranslateAppController {
 		}
 
 		$translateString = $this->TranslateStrings->get($id, ['contain' => ['TranslateDomains' => 'TranslateProjects']]);
+
+		if ($translateString->translate_domain->translate_project_id !== $this->Translation->currentProjectId()) {
+			throw new NotFoundException(__d('translate', 'String not found.'));
+		}
 
 		/** @var \Translate\Model\Entity\TranslateLocale[] $translateLocales */
 		$translateLocales = $this->TranslateStrings->TranslateTerms->TranslateLocales->find()->all()->toArray();
@@ -468,7 +506,11 @@ class TranslateStringsController extends TranslateAppController {
 			$this->viewBuilder()->setLayout('ajax');
 		}
 
-		$translateString = $this->TranslateStrings->get($id, ['contain' => ['TranslateDomains']]);
+		$translateString = $this->TranslateStrings->get($id, ['contain' => ['TranslateDomains' => 'TranslateProjects']]);
+
+		if ($translateString->translate_domain->translate_project_id !== $this->Translation->currentProjectId()) {
+			throw new NotFoundException(__d('translate', 'String not found.'));
+		}
 
 		$sep = explode(PHP_EOL, $translateString->references);
 		$occ = [];
@@ -487,13 +529,16 @@ class TranslateStringsController extends TranslateAppController {
 		$referencePath = $parts[0];
 		$lines = isset($parts[1]) ? explode(';', $parts[1]) : [];
 
-		$path = $translateString->translate_domain->path;
-		if (!str_starts_with($path, '/')) {
+		// Get path from project instead of domain
+		$path = $translateString->translate_domain->translate_project->path ?? null;
+		if (!$path) {
+			$path = ROOT;
+		} elseif (!str_starts_with($path, '/')) {
 			$path = ROOT . DS . $path;
 		}
 		$path = rtrim((string)realpath($path), '/') . '/';
 		if (!is_dir($path)) {
-			throw new NotFoundException('Path not found: ' . $translateString->translate_domain->path);
+			throw new NotFoundException('Path not found: ' . ($translateString->translate_domain->translate_project->path ?? 'ROOT'));
 		}
 
 		$file = $path . $referencePath;
@@ -520,7 +565,7 @@ class TranslateStringsController extends TranslateAppController {
 
 		$fileArray = file($file);
 		$fileContent = file_get_contents($file);
-		$canEdit = Configure::read('debug') && is_writable($file);
+		$canEdit = Configure::read('debug') && Configure::read('Translate.editor') && is_writable($file);
 
 		$this->set(compact('fileArray', 'fileContent', 'lines', 'referencePath', 'canEdit', 'translateString', 'reference', 'id'));
 	}
@@ -546,14 +591,16 @@ class TranslateStringsController extends TranslateAppController {
 
 		// Parse references
 		$references = explode(PHP_EOL, $translateString->references);
-		$path = $translateString->translate_domain->path;
-		if (!str_starts_with($path, '/')) {
+		$path = $translateString->translate_domain->translate_project->path ?? null;
+		if (!$path) {
+			$path = ROOT;
+		} elseif (!str_starts_with($path, '/')) {
 			$path = ROOT . DS . $path;
 		}
 		$path = rtrim((string)realpath($path), '/') . '/';
 
 		if (!is_dir($path)) {
-			$this->Flash->warning(__d('translate', 'Domain path not found: {0}', $translateString->translate_domain->path));
+			$this->Flash->warning(__d('translate', 'Project path not found: {0}', $translateString->translate_domain->translate_project->path ?? 'ROOT'));
 
 			return 0;
 		}

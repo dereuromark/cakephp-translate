@@ -12,6 +12,7 @@ use Tools\Model\Entity\Entity;
  * @property int $type
  * @property bool $default
  * @property int $status
+ * @property string|null $path
  * @property \Cake\I18n\DateTime|null $created
  * @property \Cake\I18n\DateTime|null $modified
  *

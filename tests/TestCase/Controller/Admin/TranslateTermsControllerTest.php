@@ -17,6 +17,8 @@ class TranslateTermsControllerTest extends IntegrationTestCase {
 	 * @var array<string>
 	 */
 	protected array $fixtures = [
+		'plugin.Translate.TranslateProjects',
+		'plugin.Translate.TranslateDomains',
 		'plugin.Translate.TranslateTerms',
 		'plugin.Translate.TranslateStrings',
 		'plugin.Translate.TranslateLocales',
@@ -29,6 +31,7 @@ class TranslateTermsControllerTest extends IntegrationTestCase {
 	 */
 	public function testIndex() {
 		$this->disableErrorHandlerMiddleware();
+		$this->session(['TranslateProject.id' => 1]);
 
 		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateTerms', 'action' => 'index']);
 
@@ -43,6 +46,7 @@ class TranslateTermsControllerTest extends IntegrationTestCase {
 	 */
 	public function testView() {
 		$this->disableErrorHandlerMiddleware();
+		$this->session(['TranslateProject.id' => 1]);
 
 		$id = 1;
 		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateTerms', 'action' => 'view', $id]);
@@ -58,6 +62,7 @@ class TranslateTermsControllerTest extends IntegrationTestCase {
 	 */
 	public function testEdit() {
 		$this->disableErrorHandlerMiddleware();
+		$this->session(['TranslateProject.id' => 1]);
 
 		$id = 1;
 		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateTerms', 'action' => 'edit', $id]);

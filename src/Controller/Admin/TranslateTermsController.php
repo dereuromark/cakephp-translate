@@ -2,6 +2,7 @@
 
 namespace Translate\Controller\Admin;
 
+use Cake\Http\Exception\NotFoundException;
 use Translate\Controller\TranslateAppController;
 
 /**
@@ -36,10 +37,16 @@ class TranslateTermsController extends TranslateAppController {
 	 */
 	public function index() {
 		$query = $this->TranslateTerms->find('search', search: $this->request->getQuery())
-			->contain(['TranslateStrings', 'TranslateLocales']);
+			->contain(['TranslateStrings' => 'TranslateDomains', 'TranslateLocales'])
+			->innerJoinWith('TranslateStrings.TranslateDomains', function ($q) {
+				return $q->where(['TranslateDomains.translate_project_id' => $this->Translation->currentProjectId()]);
+			});
 		$translateTerms = $this->paginate($query);
 
-		$translateLocales = $this->TranslateTerms->TranslateLocales->find('list')->orderBy(['TranslateLocales.name' => 'ASC']);
+		$translateLocales = $this->TranslateTerms->TranslateLocales
+			->find('list')
+			->where(['translate_project_id' => $this->Translation->currentProjectId()])
+			->orderBy(['TranslateLocales.name' => 'ASC']);
 
 		$this->set(compact('translateTerms', 'translateLocales'));
 		//$this->set('_serialize', ['translateTerms']);
@@ -54,8 +61,12 @@ class TranslateTermsController extends TranslateAppController {
 	 */
 	public function view($id = null) {
 		$translateTerm = $this->TranslateTerms->get($id, [
-			'contain' => ['TranslateStrings', 'TranslateLocales'],
+			'contain' => ['TranslateStrings' => 'TranslateDomains', 'TranslateLocales'],
 		]);
+
+		if ($translateTerm->translate_string->translate_domain->translate_project_id !== $this->Translation->currentProjectId()) {
+			throw new NotFoundException(__d('translate', 'Term not found.'));
+		}
 
 		$this->set(compact('translateTerm'));
 		//$this->set('_serialize', ['translateTerm']);
@@ -70,8 +81,13 @@ class TranslateTermsController extends TranslateAppController {
 	 */
 	public function edit($id = null) {
 		$translateTerm = $this->TranslateTerms->get($id, [
-			'contain' => ['TranslateStrings', 'TranslateLocales'],
+			'contain' => ['TranslateStrings' => 'TranslateDomains', 'TranslateLocales'],
 		]);
+
+		if ($translateTerm->translate_string->translate_domain->translate_project_id !== $this->Translation->currentProjectId()) {
+			throw new NotFoundException(__d('translate', 'Term not found.'));
+		}
+
 		if ($this->request->is(['patch', 'post', 'put'])) {
 			$translateTerm = $this->TranslateTerms->patchEntity($translateTerm, $this->request->getData());
 			if ($this->TranslateTerms->save($translateTerm)) {
@@ -82,8 +98,14 @@ class TranslateTermsController extends TranslateAppController {
 
 			$this->Flash->error(__d('translate', 'The translate term could not be saved. Please, try again.'));
 		}
-		$translateStrings = $this->TranslateTerms->TranslateStrings->find('list');
-		$translateLocales = $this->TranslateTerms->TranslateLocales->find('list');
+		$translateStrings = $this->TranslateTerms->TranslateStrings
+			->find('list')
+			->innerJoinWith('TranslateDomains', function ($q) {
+				return $q->where(['TranslateDomains.translate_project_id' => $this->Translation->currentProjectId()]);
+			});
+		$translateLocales = $this->TranslateTerms->TranslateLocales
+			->find('list')
+			->where(['translate_project_id' => $this->Translation->currentProjectId()]);
 
 		$this->set(compact('translateTerm', 'translateStrings', 'translateLocales'));
 		//$this->set('_serialize', ['translateTerm']);
@@ -98,7 +120,14 @@ class TranslateTermsController extends TranslateAppController {
 	 */
 	public function delete($id = null) {
 		$this->request->allowMethod(['post', 'delete']);
-		$translateTerm = $this->TranslateTerms->get($id);
+		$translateTerm = $this->TranslateTerms->get($id, [
+			'contain' => ['TranslateStrings' => 'TranslateDomains'],
+		]);
+
+		if ($translateTerm->translate_string->translate_domain->translate_project_id !== $this->Translation->currentProjectId()) {
+			throw new NotFoundException(__d('translate', 'Term not found.'));
+		}
+
 		if ($this->TranslateTerms->delete($translateTerm)) {
 			$this->Flash->success(__d('translate', 'The translate term has been deleted.'));
 		} else {

@@ -5,34 +5,48 @@
  * @var mixed $potFiles
  */
 ?>
+<div class="row">
+	<aside class="col-md-3 col-sm-4 col-12">
+		<div class="card">
+			<div class="card-header">
+				<h3 class="card-title"><i class="fa-solid fa-bars"></i> <?= __d('translate', 'Actions') ?></h3>
+			</div>
+			<div class="list-group list-group-flush">
+				<?= $this->Html->link(__d('translate', 'List Translate Strings'), ['action' => 'index'], ['class' => 'list-group-item list-group-item-action']) ?>
+			</div>
+		</div>
+	</aside>
 
-<nav class="col-md-3 col-sm-4 col-12">
-	<ul class="nav nav-pills flex-column">
-		<li class="heading"><?= __d('translate', 'Actions') ?></li>
-		<li><?php echo $this->Html->link(__d('translate', 'List Translate Strings'), ['action' => 'index']);?></li>
-	</ul>
-</nav>
+	<div class="col-md-9 col-sm-8 col-12">
+		<div class="card">
+			<div class="card-header">
+				<h3 class="card-title"><i class="fa-solid fa-file-import"></i> <?= __d('translate', 'Extract Translations') ?></h3>
+			</div>
+			<div class="card-body">
+				<?= $this->Form->create(null) ?>
+					<fieldset>
+						<legend><?= __d('translate', 'From POT File') ?></legend>
+						<?= $this->Form->control('sel_pot', [
+							'multiple' => 'checkbox',
+							'label' => __d('translate', 'Selection'),
+							'options' => $potFiles,
+						]) ?>
+					</fieldset>
 
-<div class="page form col-md-9 col-sm-8 col-12">
-<?php echo $this->Form->create(null);?>
-	<fieldset>
-		<legend><?php echo __d('translate', 'From POT File');?></legend>
-	<?php
+					<fieldset class="mt-4">
+						<legend><?= __d('translate', 'From PO File') ?></legend>
+						<?= $this->Form->control('sel_po', [
+							'multiple' => 'checkbox',
+							'label' => __d('translate', 'Selection'),
+							'options' => $poFiles,
+						]) ?>
+					</fieldset>
 
-		echo $this->Form->control('sel_pot', ['multiple' => 'checkbox', 'label' => __d('translate', 'Selection'), 'options' => $potFiles]);
-
-		//echo $this->Form->control('active');
-	?>
-	</fieldset>
-
-	<fieldset>
-		<legend><?php echo __d('translate', 'From PO File');?></legend>
-
-	<?php
-		echo $this->Form->control('sel_po', ['multiple' => 'checkbox', 'label' => __d('translate', 'Selection'), 'options' => $poFiles]);
-	?>
-	</fieldset>
-
-<?php echo $this->Form->submit(__d('translate', 'Submit'));
-echo $this->Form->end();?>
+					<div class="mt-3">
+						<?= $this->Form->submit(__d('translate', 'Submit'), ['class' => 'btn btn-primary']) ?>
+					</div>
+				<?= $this->Form->end() ?>
+			</div>
+		</div>
+	</div>
 </div>

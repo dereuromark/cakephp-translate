@@ -11,7 +11,6 @@ use Tools\Model\Entity\Entity;
  * @property string $name
  * @property bool $active
  * @property int $prio
- * @property string|null $path
  * @property \Cake\I18n\DateTime|null $created
  * @property \Cake\I18n\DateTime|null $modified
  *

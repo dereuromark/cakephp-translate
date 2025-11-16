@@ -6,36 +6,49 @@
  */
 ?>
 
-<nav class="col-md-3 col-sm-4 col-12">
-	<ul class="nav nav-pills flex-column">
-		<li class="heading"><?= __d('translate', 'Actions') ?></li>
-		<li><?= $this->Html->link(__d('translate', 'Overview'), ['action' => 'index']) ?></li>
-	</ul>
-</nav>
-<div class="translateStrings form col-md-9 col-sm-8 col-12">
-<h2>Convert text</h2>
+<div class="row">
+	<aside class="col-md-3">
+		<div class="card">
+			<div class="card-header">
+				<h3 class="card-title"><i class="fas fa-bars"></i> <?= __d('translate', 'Actions') ?></h3>
+			</div>
+			<div class="list-group list-group-flush">
+				<?= $this->Html->link('<i class="fas fa-tachometer-alt"></i> ' . __d('translate', 'Overview'), ['action' => 'index'], ['escape' => false, 'class' => 'list-group-item list-group-item-action']) ?>
+			</div>
+		</div>
+	</aside>
 
-<?php if (!empty($text)) { ?>
-<h3>Result</h3>
-	<?php
-		echo $this->Form->control('text', ['value' => $text, 'class' => 'form-control', 'type' => 'textarea', 'rows' => 5]);
-	?>
+	<div class="col-md-9">
+		<?php if (!empty($text)) { ?>
+		<div class="card mb-3">
+			<div class="card-header">
+				<h3 class="card-title"><i class="fas fa-check-circle"></i> <?= __d('translate', 'Result') ?></h3>
+			</div>
+			<div class="card-body">
+				<?= $this->Form->control('text', ['value' => $text, 'class' => 'form-control', 'type' => 'textarea', 'rows' => 5, 'label' => false]) ?>
+			</div>
+		</div>
+		<?php } ?>
 
-<?php } ?>
-
-<h3>Input</h3>
-
-<?php echo $this->Form->create();?>
-	<fieldset>
-		<legend><?php echo __d('translate', 'Convert text');?></legend>
-	<?php
-		echo $this->Form->control('direction', ['type' => 'select', 'options' => ['From Text to PO content', 'From PO content to text']]);
-		echo $this->Form->control('quotes', ['type' => 'select', 'options' => ['Do nothing', 'Remove smart quotes', 'Add smart quotes']]);
-		echo $this->Form->control('newline', ['type' => 'select', 'options' => ['\n', '<br/>']]);
-		echo $this->Form->control('input', ['type' => 'textarea', 'rows' => 20]);
-	?>
-	</fieldset>
-
-<?php echo $this->Form->submit(__d('translate', 'Submit'));
-echo $this->Form->end();?>
+		<div class="card">
+			<div class="card-header">
+				<h3 class="card-title"><i class="fas fa-exchange-alt"></i> <?= __d('translate', 'Convert text') ?></h3>
+			</div>
+			<div class="card-body">
+				<?= $this->Form->create() ?>
+				<fieldset>
+					<?php
+						echo $this->Form->control('direction', ['type' => 'select', 'options' => ['From Text to PO content', 'From PO content to text']]);
+						echo $this->Form->control('quotes', ['type' => 'select', 'options' => ['Do nothing', 'Remove smart quotes', 'Add smart quotes']]);
+						echo $this->Form->control('newline', ['type' => 'select', 'options' => ['\n', '<br/>']]);
+						echo $this->Form->control('input', ['type' => 'textarea', 'rows' => 20]);
+					?>
+				</fieldset>
+				<div class="form-group">
+					<?= $this->Form->button('<i class="fas fa-save"></i> ' . __d('translate', 'Submit'), ['class' => 'btn btn-primary', 'escape' => false]) ?>
+				</div>
+				<?= $this->Form->end() ?>
+			</div>
+		</div>
+	</div>
 </div>

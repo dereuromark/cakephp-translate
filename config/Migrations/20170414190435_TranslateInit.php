@@ -43,7 +43,7 @@ class TranslateInit extends BaseMigration {
 			->addIndex(['name'], ['unique' => true])
 			->create();
 
-		$table = $this->table('translate_locales', ['signed' => false]);
+		$table = $this->table('translate_languages', ['signed' => false]);
 		$table
 			->addColumn('translate_project_id', 'integer', [
 				'default' => null,
@@ -245,7 +245,7 @@ class TranslateInit extends BaseMigration {
 				'limit' => 255,
 				'null' => true,
 			])
-			->addColumn('translate_locale_id', 'integer', [
+			->addColumn('translate_language_id', 'integer', [
 				'default' => null,
 				'limit' => 10,
 				'null' => false,
@@ -278,12 +278,12 @@ class TranslateInit extends BaseMigration {
 				'limit' => null,
 				'null' => true,
 			])
-			->addIndex(['translate_string_id', 'translate_locale_id'], ['unique' => true])
+			->addIndex(['translate_string_id', 'translate_language_id'], ['unique' => true])
 			->addForeignKey('translate_string_id', 'translate_strings', 'id', [
 				'delete' => 'CASCADE',
 				'update' => 'NO_ACTION',
 			])
-			->addForeignKey('translate_locale_id', 'translate_locales', 'id', [
+			->addForeignKey('translate_language_id', 'translate_languages', 'id', [
 				'delete' => 'CASCADE',
 				'update' => 'NO_ACTION',
 			])

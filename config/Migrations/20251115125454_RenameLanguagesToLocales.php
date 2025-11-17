@@ -22,7 +22,7 @@ class RenameLanguagesToLocales extends BaseMigration {
 
 		// Rename foreign key column in translate_terms
 		$this->table('translate_terms')
-			->renameColumn('translate_locale_id', 'translate_locale_id')
+			->renameColumn('translate_language_id', 'translate_locale_id')
 			->update();
 	}
 

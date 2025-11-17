@@ -16,7 +16,7 @@ class RenameLanguagesToLocales extends BaseMigration {
 	 */
 	public function change(): void {
 		// Rename the main table
-		$this->table('translate_locales')
+		$this->table('translate_languages')
 			->rename('translate_locales')
 			->update();
 

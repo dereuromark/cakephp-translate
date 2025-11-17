@@ -2,13 +2,13 @@
 
 namespace Translate\Command;
 
+use Cake\Command\Command;
 use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
 use Cake\Core\App;
 use Cake\I18n\Parser\PoFileParser;
-use Shim\Command\Command;
-use Shim\Filesystem\Folder;
+use Translate\Filesystem\Folder;
 
 class I18nValidateCommand extends Command {
 

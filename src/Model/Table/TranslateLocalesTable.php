@@ -23,7 +23,7 @@ use Cake\Validation\Validator;
  * @method \Translate\Model\Entity\TranslateLocale patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method array<\Translate\Model\Entity\TranslateLocale> patchEntities(iterable $entities, array $data, array $options = [])
  * @method \Translate\Model\Entity\TranslateLocale findOrCreate(\Cake\ORM\Query\SelectQuery|callable|array $search, ?callable $callback = null, array $options = [])
- * @mixin \Shim\Model\Behavior\NullableBehavior
+ * @mixin \Translate\Model\Behavior\NullableBehavior
  * @property \Cake\ORM\Association\BelongsTo<\Translate\Model\Table\TranslateProjectsTable> $TranslateProjects
  * @method \Translate\Model\Entity\TranslateLocale saveOrFail(\Cake\Datasource\EntityInterface $entity, array $options = [])
  * @property \Data\Model\Table\LanguagesTable&\Cake\ORM\Association\BelongsTo $Languages
@@ -32,7 +32,7 @@ use Cake\Validation\Validator;
  * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateLocale> saveManyOrFail(iterable $entities, array $options = [])
  * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateLocale>|false deleteMany(iterable $entities, array $options = [])
  * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateLocale> deleteManyOrFail(iterable $entities, array $options = [])
- * @extends \Cake\ORM\Table<array{Nullable: \Shim\Model\Behavior\NullableBehavior}>
+ * @extends \Cake\ORM\Table<array{Nullable: \Translate\Model\Behavior\NullableBehavior}>
  */
 class TranslateLocalesTable extends Table {
 
@@ -135,7 +135,7 @@ class TranslateLocalesTable extends Table {
 	public function initialize(array $config): void {
 		parent::initialize($config);
 
-		$this->addBehavior('Shim.Nullable');
+		$this->addBehavior('Translate.Nullable');
 
 		$this->hasMany('TranslateTerms', [
 			'className' => 'Translate.TranslateTerms',

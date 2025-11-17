@@ -5,8 +5,8 @@ namespace Translate\Test\TestCase\Controller\Admin;
 use Cake\Core\Configure;
 use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
-use Shim\TestSuite\IntegrationTestCase;
 use TestApp\Translator\Engine\Test;
+use Translate\Test\TestCase\IntegrationTestCase;
 
 /**
  * @uses \Translate\Controller\Admin\TranslateController

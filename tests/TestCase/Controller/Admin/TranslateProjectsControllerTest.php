@@ -3,7 +3,7 @@
 namespace Translate\Test\TestCase\Controller\Admin;
 
 use Cake\ORM\TableRegistry;
-use Shim\TestSuite\IntegrationTestCase;
+use Translate\Test\TestCase\IntegrationTestCase;
 
 /**
  * Translate\Controller\Admin\TranslateProjectsController Test Case

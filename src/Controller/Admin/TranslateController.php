@@ -44,7 +44,110 @@ class TranslateController extends TranslateAppController {
 		$count = $id ? $this->TranslateDomains->statistics($id, $languages) : 0;
 		$coverage = $this->TranslateDomains->TranslateStrings->coverage($id);
 		$projectSwitchArray = $this->TranslateDomains->TranslateProjects->find('list')->toArray();
-		$this->set(compact('coverage', 'languages', 'count', 'projectSwitchArray'));
+
+		// Get recent activity
+		$recentStrings = [];
+		$recentTerms = [];
+		$auditLogs = [];
+		$confirmationStats = [];
+		$recentImports = [];
+		$auditData = [];
+
+		if ($id) {
+			// Recent strings (last 10 added/modified)
+			$recentStrings = $this->TranslateDomains->TranslateStrings
+				->find()
+				->contain(['TranslateDomains'])
+				->where(['TranslateDomains.translate_project_id' => $id])
+				->orderBy(['TranslateStrings.modified' => 'DESC'])
+				->limit(10)
+				->toArray();
+
+			// Recent terms (last 10 translations)
+			$recentTerms = $this->TranslateDomains->TranslateStrings->TranslateTerms
+				->find()
+				->contain([
+					'TranslateStrings' => ['TranslateDomains'],
+					'TranslateLocales',
+				])
+				->where(['TranslateDomains.translate_project_id' => $id])
+				->orderBy(['TranslateTerms.modified' => 'DESC'])
+				->limit(10)
+				->toArray();
+
+			// Get audit logs if AuditStash is available
+			$auditData = [];
+			if (class_exists('\AuditStash\Model\Table\AuditLogsTable')) {
+				try {
+					$auditLogsTable = $this->fetchTable('AuditStash.AuditLogs');
+					$auditLogs = $auditLogsTable
+						->find()
+						->where([
+							'source IN' => ['TranslateStrings', 'TranslateTerms'],
+						])
+						->orderBy(['created' => 'DESC'])
+						->limit(15)
+						->toArray();
+
+					// Build audit data map for quick lookup (source => primary_key => logs)
+					foreach ($auditLogs as $log) {
+						$key = $log->source . '_' . $log->primary_key;
+						if (!isset($auditData[$key])) {
+							$auditData[$key] = [];
+						}
+						$auditData[$key][] = $log;
+					}
+				} catch (\Exception $e) {
+					// Table doesn't exist or error loading, skip audit logs
+					$auditLogs = [];
+				}
+			}
+
+			// Get confirmation statistics per locale
+			foreach ($languages as $language) {
+				$total = $this->TranslateDomains->TranslateStrings->TranslateTerms
+					->find()
+					->where([
+						'TranslateTerms.translate_locale_id' => $language->id,
+						'TranslateTerms.content IS NOT' => null,
+					])
+					->count();
+
+				$confirmed = $this->TranslateDomains->TranslateStrings->TranslateTerms
+					->find()
+					->where([
+						'TranslateTerms.translate_locale_id' => $language->id,
+						'TranslateTerms.content IS NOT' => null,
+						'TranslateTerms.confirmed' => 1,
+					])
+					->count();
+
+				if ($total > 0) {
+					$confirmationStats[$language->locale] = [
+						'total' => $total,
+						'confirmed' => $confirmed,
+						'unconfirmed' => $total - $confirmed,
+						'percentage' => (int)(($confirmed / $total) * 100),
+						'locale' => $language,
+					];
+				}
+			}
+
+			// Get recently imported strings (last 30 days)
+			$recentImports = $this->TranslateDomains->TranslateStrings
+				->find()
+				->contain(['TranslateDomains'])
+				->where([
+					'TranslateDomains.translate_project_id' => $id,
+					'TranslateStrings.last_import IS NOT' => null,
+					'TranslateStrings.last_import >=' => new \DateTime('-30 days'),
+				])
+				->orderBy(['TranslateStrings.last_import' => 'DESC'])
+				->limit(10)
+				->toArray();
+		}
+
+		$this->set(compact('coverage', 'languages', 'count', 'projectSwitchArray', 'recentStrings', 'recentTerms', 'auditLogs', 'confirmationStats', 'recentImports', 'auditData'));
 	}
 
 	/**

@@ -34,9 +34,11 @@
 		"fig-r/psr2r-sniffer": "dev-master",
 		"phpunit/phpunit": "^12.1",
 		"sepia/po-parser": "^6.0.1",
-		"yandex/translate-api": "dev-master"
+		"yandex/translate-api": "dev-master",
+		"dereuromark/cakephp-audit-stash": "^0.3.0"
 	},
 	"suggest": {
+		"dereuromark/cakephp-audit-stash": "For comprehensive audit logging of translation changes (strings and terms)",
 		"dereuromark/cakephp-queue": "To use background processing for e.g. PO file import",
 		"yandex/translate-api": "Free Translation API Alternative"
 	},

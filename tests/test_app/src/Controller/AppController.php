@@ -2,7 +2,7 @@
 
 namespace TestApp\Controller;
 
-use Shim\Controller\Controller;
+use Cake\Controller\Controller;
 use Templating\TemplatingPlugin;
 
 class AppController extends Controller {

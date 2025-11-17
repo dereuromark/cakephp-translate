@@ -2,8 +2,6 @@
 
 namespace Translate\Filesystem;
 
-use Shim\Filesystem\Folder;
-
 class Creator {
 
 	/**

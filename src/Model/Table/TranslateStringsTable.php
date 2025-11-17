@@ -3,6 +3,7 @@
 namespace Translate\Model\Table;
 
 use ArrayObject;
+use Cake\Core\Configure;
 use Cake\Database\Schema\TableSchemaInterface;
 use Cake\Datasource\EntityInterface;
 use Cake\Event\EventInterface;
@@ -28,7 +29,7 @@ use Translate\Translator\Translator;
  * @method \Translate\Model\Entity\TranslateString patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method array<\Translate\Model\Entity\TranslateString> patchEntities(iterable $entities, array $data, array $options = [])
  * @method \Translate\Model\Entity\TranslateString findOrCreate(\Cake\ORM\Query\SelectQuery|callable|array $search, ?callable $callback = null, array $options = [])
- * @mixin \Shim\Model\Behavior\NullableBehavior
+ * @mixin \Translate\Model\Behavior\NullableBehavior
  * @mixin \Search\Model\Behavior\SearchBehavior
  * @method \Translate\Model\Entity\TranslateString saveOrFail(\Cake\Datasource\EntityInterface $entity, array $options = [])
  * @method \Translate\Model\Entity\TranslateString newEmptyEntity()
@@ -36,7 +37,7 @@ use Translate\Translator\Translator;
  * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateString> saveManyOrFail(iterable $entities, array $options = [])
  * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateString>|false deleteMany(iterable $entities, array $options = [])
  * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateString> deleteManyOrFail(iterable $entities, array $options = [])
- * @extends \Cake\ORM\Table<array{Nullable: \Shim\Model\Behavior\NullableBehavior, Search: \Search\Model\Behavior\SearchBehavior}>
+ * @extends \Cake\ORM\Table<array{Nullable: \Translate\Model\Behavior\NullableBehavior, Search: \Search\Model\Behavior\SearchBehavior}>
  */
 class TranslateStringsTable extends Table {
 
@@ -123,10 +124,17 @@ class TranslateStringsTable extends Table {
 	public function initialize(array $config): void {
 		parent::initialize($config);
 
-		$this->addBehavior('Shim.Nullable');
+		$this->addBehavior('Translate.Nullable');
 		$this->addBehavior('Search.Search', [
 			'collectionClass' => TranslateStringsCollection::class,
 		]);
+
+		// Add audit logging if AuditStash plugin is available and not disabled by config
+		if (class_exists('\AuditStash\AuditStashPlugin') && !Configure::read('Translate.disableAuditLog')) {
+			$this->addBehavior('AuditStash.AuditLog', [
+				'blacklist' => ['modified', 'created'],
+			]);
+		}
 
 		$this->belongsTo('Users', [
 			'className' => 'Users',

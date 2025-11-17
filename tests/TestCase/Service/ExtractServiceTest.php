@@ -3,7 +3,7 @@
 namespace Translate\Test\TestCase\Service;
 
 use Cake\TestSuite\TestCase;
-use Shim\Filesystem\Folder;
+use Translate\Filesystem\Folder;
 use Translate\Service\ExtractService;
 
 class ExtractServiceTest extends TestCase {

@@ -17,7 +17,7 @@ use Translate\Model\Entity\TranslateProject;
  * @method \Translate\Model\Entity\TranslateProject patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method array<\Translate\Model\Entity\TranslateProject> patchEntities(iterable $entities, array $data, array $options = [])
  * @method \Translate\Model\Entity\TranslateProject findOrCreate(\Cake\ORM\Query\SelectQuery|callable|array $search, ?callable $callback = null, array $options = [])
- * @mixin \Shim\Model\Behavior\NullableBehavior
+ * @mixin \Translate\Model\Behavior\NullableBehavior
  * @property \Cake\ORM\Association\HasMany<\Translate\Model\Table\TranslateDomainsTable> $TranslateDomains
  * @property \Translate\Model\Table\TranslateTermsTable|\Cake\ORM\Association\HasMany $TranslateTerms
  * @method \Translate\Model\Entity\TranslateProject saveOrFail(\Cake\Datasource\EntityInterface $entity, array $options = [])
@@ -26,7 +26,7 @@ use Translate\Model\Entity\TranslateProject;
  * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateProject> saveManyOrFail(iterable $entities, array $options = [])
  * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateProject>|false deleteMany(iterable $entities, array $options = [])
  * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateProject> deleteManyOrFail(iterable $entities, array $options = [])
- * @extends \Cake\ORM\Table<array{Nullable: \Shim\Model\Behavior\NullableBehavior}>
+ * @extends \Cake\ORM\Table<array{Nullable: \Translate\Model\Behavior\NullableBehavior}>
  */
 class TranslateProjectsTable extends Table {
 
@@ -137,7 +137,7 @@ class TranslateProjectsTable extends Table {
 	public function initialize(array $config): void {
 		parent::initialize($config);
 
-		$this->addBehavior('Shim.Nullable');
+		$this->addBehavior('Translate.Nullable');
 
 		$this->hasMany('TranslateDomains', [
 			'className' => 'Translate.TranslateDomains',

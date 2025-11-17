@@ -2,7 +2,7 @@
 
 namespace Translate\Test\TestCase\Controller\Admin;
 
-use Shim\TestSuite\IntegrationTestCase;
+use Translate\Test\TestCase\IntegrationTestCase;
 
 /**
  * Translate\Controller\Admin\TranslateApiTranslationsController Test Case

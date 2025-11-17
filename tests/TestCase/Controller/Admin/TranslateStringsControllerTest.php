@@ -5,8 +5,8 @@ namespace Translate\Test\TestCase\Controller\Admin;
 use App\Translator\Engine\Test;
 use App\Translator\Engine\TestMore;
 use Cake\Core\Configure;
-use Shim\Filesystem\Folder;
-use Shim\TestSuite\IntegrationTestCase;
+use Translate\Filesystem\Folder;
+use Translate\Test\TestCase\IntegrationTestCase;
 
 /**
  * Translate\Controller\Admin\TranslateStringsController Test Case

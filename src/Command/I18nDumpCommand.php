@@ -2,11 +2,11 @@
 
 namespace Translate\Command;
 
+use Cake\Command\Command;
 use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
 use Cake\Core\Plugin;
 use Cake\Utility\Inflector;
-use Shim\Command\Command;
 use Translate\Filesystem\Dumper;
 use Translate\Model\Entity\TranslateProject;
 

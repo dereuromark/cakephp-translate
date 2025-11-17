@@ -17,14 +17,14 @@ use Cake\Validation\Validator;
  * @method \Translate\Model\Entity\TranslateDomain patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method array<\Translate\Model\Entity\TranslateDomain> patchEntities(iterable $entities, array $data, array $options = [])
  * @method \Translate\Model\Entity\TranslateDomain findOrCreate(\Cake\ORM\Query\SelectQuery|callable|array $search, ?callable $callback = null, array $options = [])
- * @mixin \Shim\Model\Behavior\NullableBehavior
+ * @mixin \Translate\Model\Behavior\NullableBehavior
  * @method \Translate\Model\Entity\TranslateDomain saveOrFail(\Cake\Datasource\EntityInterface $entity, array $options = [])
  * @method \Translate\Model\Entity\TranslateDomain newEmptyEntity()
  * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateDomain>|false saveMany(iterable $entities, array $options = [])
  * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateDomain> saveManyOrFail(iterable $entities, array $options = [])
  * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateDomain>|false deleteMany(iterable $entities, array $options = [])
  * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateDomain> deleteManyOrFail(iterable $entities, array $options = [])
- * @extends \Cake\ORM\Table<array{Nullable: \Shim\Model\Behavior\NullableBehavior}>
+ * @extends \Cake\ORM\Table<array{Nullable: \Translate\Model\Behavior\NullableBehavior}>
  */
 class TranslateDomainsTable extends Table {
 
@@ -70,7 +70,7 @@ class TranslateDomainsTable extends Table {
 	public function initialize(array $config): void {
 		parent::initialize($config);
 
-		$this->addBehavior('Shim.Nullable');
+		$this->addBehavior('Translate.Nullable');
 
 		$this->belongsTo('TranslateProjects', [
 			'className' => 'Translate.TranslateProjects',

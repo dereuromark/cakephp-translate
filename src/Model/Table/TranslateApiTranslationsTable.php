@@ -17,14 +17,14 @@ use Cake\Validation\Validator;
  * @method \Translate\Model\Entity\TranslateApiTranslation findOrCreate(\Cake\ORM\Query\SelectQuery|callable|array $search, ?callable $callback = null, array $options = [])
  *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
- * @mixin \Shim\Model\Behavior\NullableBehavior
+ * @mixin \Translate\Model\Behavior\NullableBehavior
  * @method \Translate\Model\Entity\TranslateApiTranslation saveOrFail(\Cake\Datasource\EntityInterface $entity, array $options = [])
  * @method \Translate\Model\Entity\TranslateApiTranslation newEmptyEntity()
  * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateApiTranslation>|false saveMany(iterable $entities, array $options = [])
  * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateApiTranslation> saveManyOrFail(iterable $entities, array $options = [])
  * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateApiTranslation>|false deleteMany(iterable $entities, array $options = [])
  * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateApiTranslation> deleteManyOrFail(iterable $entities, array $options = [])
- * @extends \Cake\ORM\Table<array{Nullable: \Shim\Model\Behavior\NullableBehavior}>
+ * @extends \Cake\ORM\Table<array{Nullable: \Translate\Model\Behavior\NullableBehavior}>
  */
 class TranslateApiTranslationsTable extends Table {
 
@@ -41,7 +41,7 @@ class TranslateApiTranslationsTable extends Table {
 		$this->setDisplayField('id');
 		$this->setPrimaryKey('id');
 
-		$this->addBehavior('Shim.Nullable');
+		$this->addBehavior('Translate.Nullable');
 	}
 
 	/**

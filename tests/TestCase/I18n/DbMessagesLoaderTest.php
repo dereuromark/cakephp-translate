@@ -5,7 +5,7 @@ namespace Translate\Test\TestCase\I18n;
 use Cake\Core\Configure;
 use Cake\I18n\I18n;
 use Cake\TestSuite\TestCase;
-use Shim\Filesystem\Folder;
+use Translate\Filesystem\Folder;
 use Translate\I18n\DbMessagesLoader;
 
 class DbMessagesLoaderTest extends TestCase {

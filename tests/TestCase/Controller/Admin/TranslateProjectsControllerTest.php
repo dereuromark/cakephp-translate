@@ -2,6 +2,7 @@
 
 namespace Translate\Test\TestCase\Controller\Admin;
 
+use Cake\Core\Configure;
 use Cake\ORM\TableRegistry;
 use Translate\Test\TestCase\IntegrationTestCase;
 
@@ -97,6 +98,8 @@ class TranslateProjectsControllerTest extends IntegrationTestCase {
 	 * @return void
 	 */
 	public function testSwitchProject() {
+		$this->skipIf(version_compare(Configure::version(), '5.2.0', '<'), 'Session handling in integration tests requires CakePHP 5.2+');
+
 		$this->enableRetainFlashMessages();
 
 		$data = ['project_switch' => 1];

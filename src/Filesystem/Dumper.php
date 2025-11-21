@@ -40,6 +40,7 @@ class Dumper {
 	protected function _dump(array $translations, string $file) {
 		$max = Configure::read('Translate.plurals') ?: 2;
 		$pluralExpression = Configure::read('Translate.pluralExpression') ?: 'n != 1';
+		$noComments = Configure::read('Translate.noComments') ?: false;
 
 		$po = new PoParser();
 		$newHeaders = [
@@ -65,24 +66,40 @@ class Dumper {
 				'msgid' => $translation->translate_string->name,
 				'msgstr' => (string)$translation->content,
 			];
+
+			// Handle plurals
 			if ($translation->translate_string->plural !== null) {
 				$entry['msgid_plural'] = $translation->translate_string->plural;
-				$entry['msgstr[0]'] = (array)$entry['msgstr'];
+				// Writer expects msgstr as an array for plurals: [0 => singular, 1 => plural, ...]
+				$pluralMsgstr = [(string)$translation->content];
 				for ($i = 2; $i <= $max; $i++) {
 					$pluralVersion = 'plural_' . $i;
-					$entry['msgstr[' . ($i - 1) . ']'] = (array)(string)$translation->get($pluralVersion);
+					$pluralMsgstr[] = (string)$translation->get($pluralVersion);
 				}
-			}
-			if (!Configure::read('noComments')) {
-				//$entry['comment'] =
+				$entry['msgstr'] = $pluralMsgstr;
 			}
 
-			if ($translation->translate_string->flags) {
-				//$entry['flags'] = explode(',', $translation->translate_string->flags);
+			// Handle context
+			if ($translation->translate_string->context) {
+				$entry['msgctxt'] = $translation->translate_string->context;
 			}
 
-			if ($translation->translate_string->plural !== null) {
-				//$po->setEntryPlural($translation->translate_string->name, $entry['msgstr']);
+			// Handle references, flags, and comments (unless noComments is set)
+			if (!$noComments) {
+				// References are stored as newline-separated strings
+				if ($translation->translate_string->references) {
+					$entry['references'] = array_filter(explode("\n", $translation->translate_string->references));
+				}
+
+				// Flags are stored as array
+				if ($translation->translate_string->flags) {
+					$entry['flags'] = $translation->translate_string->flags;
+				}
+
+				// Comments (translator comments)
+				if ($translation->translate_string->comments) {
+					$entry['tcomment'] = $translation->translate_string->comments;
+				}
 			}
 
 			$entries[$translation->translate_string->name] = $entry;

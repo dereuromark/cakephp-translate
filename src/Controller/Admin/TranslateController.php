@@ -45,6 +45,32 @@ class TranslateController extends TranslateAppController {
 		$coverage = $this->TranslateDomains->TranslateStrings->coverage($id);
 		$projectSwitchArray = $this->TranslateDomains->TranslateProjects->find('list')->toArray();
 
+		// Calculate translated counts per locale for coverage table
+		$translateStringsTable = $this->fetchTable('Translate.TranslateStrings');
+		$totalStrings = is_array($count) ? $count['strings'] : 0;
+		$localeStats = [];
+		foreach ($languages as $language) {
+			// Count strings that have a translation for this locale
+			$translatedCount = $translateStringsTable->TranslateTerms->find()
+				->where([
+					'TranslateTerms.translate_locale_id' => $language->id,
+					'TranslateTerms.content IS NOT' => null,
+					'TranslateTerms.content !=' => '',
+				])
+				->innerJoinWith('TranslateStrings.TranslateDomains', function ($q) use ($id) {
+					return $q->where([
+						'TranslateDomains.translate_project_id' => $id,
+						'TranslateDomains.active' => true,
+					]);
+				})
+				->count();
+
+			$localeStats[$language->locale] = [
+				'translated' => $translatedCount,
+				'total' => $totalStrings,
+			];
+		}
+
 		// Get recent activity
 		$recentStrings = [];
 		$recentTerms = [];
@@ -110,6 +136,7 @@ class TranslateController extends TranslateAppController {
 					->where([
 						'TranslateTerms.translate_locale_id' => $language->id,
 						'TranslateTerms.content IS NOT' => null,
+						'TranslateTerms.content !=' => '',
 					])
 					->count();
 
@@ -118,7 +145,8 @@ class TranslateController extends TranslateAppController {
 					->where([
 						'TranslateTerms.translate_locale_id' => $language->id,
 						'TranslateTerms.content IS NOT' => null,
-						'TranslateTerms.confirmed' => 1,
+						'TranslateTerms.content !=' => '',
+						'TranslateTerms.confirmed' => true,
 					])
 					->count();
 
@@ -147,7 +175,7 @@ class TranslateController extends TranslateAppController {
 				->toArray();
 		}
 
-		$this->set(compact('coverage', 'languages', 'count', 'projectSwitchArray', 'recentStrings', 'recentTerms', 'auditLogs', 'confirmationStats', 'recentImports', 'auditData'));
+		$this->set(compact('coverage', 'languages', 'count', 'projectSwitchArray', 'localeStats', 'recentStrings', 'recentTerms', 'auditLogs', 'confirmationStats', 'recentImports', 'auditData'));
 	}
 
 	/**

@@ -28,12 +28,24 @@ class TranslateStringsCollection extends FilterCollection {
 			->add('is_html', 'Search.Boolean')
 			->add('missing_translation', 'Search.Callback', [
 				'callback' => function (SelectQuery $query, array $args, $filter) {
-					if (empty($args['missing_translation'])) {
+					if (!isset($args['missing_translation']) || $args['missing_translation'] === '') {
 						return false;
 					}
 
-					$query->leftJoinWith('TranslateTerms')
-						->where(['TranslateTerms.content IS' => null]);
+					if ($args['missing_translation']) {
+						// Show only strings WITH missing translations
+						$query->leftJoinWith('TranslateTerms')
+							->where(['TranslateTerms.content IS' => null]);
+					} else {
+						// Show only strings that HAVE translations
+						$query->innerJoinWith('TranslateTerms', function ($q) {
+							return $q->where([
+								'TranslateTerms.content IS NOT' => null,
+								'TranslateTerms.content !=' => '',
+							]);
+						})
+						->group(['TranslateStrings.id']);
+					}
 
 					return true;
 				},

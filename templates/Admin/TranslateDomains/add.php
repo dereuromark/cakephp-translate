@@ -36,7 +36,6 @@
 					<?php
 						echo $this->Form->control('name');
 						echo $this->Form->control('active');
-						echo $this->Form->control('path');
 					?>
 				</fieldset>
 

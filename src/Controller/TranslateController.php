@@ -38,11 +38,37 @@ class TranslateController extends TranslateAppController {
 
 		$translateLocalesTable = $this->fetchTable('Translate.TranslateLocales');
 		$languages = $translateLocalesTable->find('all')
-			->where(['translate_project_id' => $id])
+			->where(['translate_project_id' => $id, 'active' => true])
 			->toArray();
 
 		$count = $id ? $this->TranslateDomains->statistics($id, $languages) : 0;
 		$coverage = $this->TranslateDomains->TranslateStrings->coverage($id);
+
+		// Calculate translated counts per locale
+		$translateStringsTable = $this->fetchTable('Translate.TranslateStrings');
+		$totalStrings = is_array($count) ? $count['strings'] : 0;
+		$localeStats = [];
+		foreach ($languages as $language) {
+			// Count strings that have a translation for this locale
+			$translatedCount = $translateStringsTable->TranslateTerms->find()
+				->where([
+					'TranslateTerms.translate_locale_id' => $language->id,
+					'TranslateTerms.content IS NOT' => null,
+					'TranslateTerms.content !=' => '',
+				])
+				->innerJoinWith('TranslateStrings.TranslateDomains', function ($q) use ($id) {
+					return $q->where([
+						'TranslateDomains.translate_project_id' => $id,
+						'TranslateDomains.active' => true,
+					]);
+				})
+				->count();
+
+			$localeStats[$language->locale] = [
+				'translated' => $translatedCount,
+				'total' => $totalStrings,
+			];
+		}
 		$projectSwitchArray = $this->TranslateDomains->TranslateProjects->find('list')
 			->where(['TranslateProjects.status' => TranslateProject::STATUS_PUBLIC])
 			->toArray();
@@ -81,7 +107,7 @@ class TranslateController extends TranslateAppController {
 			];
 		}
 
-		$this->set(compact('coverage', 'languages', 'count', 'projectSwitchArray', 'domainStats'));
+		$this->set(compact('coverage', 'languages', 'count', 'projectSwitchArray', 'domainStats', 'localeStats'));
 	}
 
 	/**
@@ -115,7 +141,7 @@ class TranslateController extends TranslateAppController {
 
 		$translateLocales = $translateStringsTable->TranslateTerms->TranslateLocales
 			->find('list', ['keyField' => 'id', 'valueField' => 'name'])
-			->where(['translate_project_id' => $projectId])
+			->where(['translate_project_id' => $projectId, 'active' => true])
 			->orderBy(['name' => 'ASC'])
 			->toArray();
 
@@ -147,7 +173,7 @@ class TranslateController extends TranslateAppController {
 
 		/** @var \Translate\Model\Entity\TranslateLocale[] $translateLocales */
 		$translateLocales = $translateStringsTable->TranslateTerms->TranslateLocales->find()
-			->where(['translate_project_id' => $projectId])
+			->where(['translate_project_id' => $projectId, 'active' => true])
 			->all()
 			->toArray();
 

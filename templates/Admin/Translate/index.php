@@ -9,6 +9,7 @@
  * @var array<\Translate\Model\Entity\TranslateTerm> $recentTerms
  * @var array $auditLogs
  * @var array<\Translate\Model\Entity\TranslateLocale> $languages
+ * @var array $localeStats
  * @var array $confirmationStats
  * @var array<\Translate\Model\Entity\TranslateString> $recentImports
  * @var array $auditData
@@ -120,8 +121,13 @@ $totalColor = $this->Translation->getColor($totalCoverage);
 	<?php if (!empty($confirmationStats)) { ?>
 	<div class="col-md-6">
 		<div class="card">
-			<div class="card-header bg-warning text-dark py-2">
+			<div class="card-header bg-warning text-dark py-2 d-flex justify-content-between align-items-center">
 				<h6 class="mb-0"><i class="fas fa-check-circle"></i> <?= __d('translate', 'Translation Quality') ?></h6>
+				<?= $this->Html->link(
+					'<i class="fas fa-tasks"></i> ' . __d('translate', 'Batch Confirm'),
+					['controller' => 'TranslateTerms', 'action' => 'pending'],
+					['escape' => false, 'class' => 'btn btn-sm btn-dark'],
+				) ?>
 			</div>
 			<div class="card-body p-2">
 				<table class="table table-sm table-hover mb-0">

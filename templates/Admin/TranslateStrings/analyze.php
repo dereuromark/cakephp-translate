@@ -95,6 +95,27 @@ msgstr[0] "{0} Element"
 msgstr[1] "{0} Elemente"',
 			]);
 			?>
+
+			<?php
+			echo $this->Form->control('key_based', [
+				'type' => 'select',
+				'label' => __d('translate', 'Translation Style'),
+				'options' => [
+					'' => __d('translate', 'Auto-detect'),
+					'0' => __d('translate', 'Text-based (msgid is readable text)'),
+					'1' => __d('translate', 'Key-based (msgid is a key like "user.profile.title")'),
+				],
+				'default' => '',
+			]);
+			?>
+			<div class="alert alert-secondary small mt-2">
+				<i class="fas fa-info-circle"></i>
+				<strong><?= __d('translate', 'Auto-detect:') ?></strong>
+				<?= __d('translate', 'If msgid has no spaces and matches key patterns (foo.bar.baz, foo_bar_baz, fooBarBaz), HTML/whitespace checks are skipped.') ?>
+				<br>
+				<strong><?= __d('translate', 'Key-based:') ?></strong>
+				<?= __d('translate', 'Use this when msgid is a translation key, not actual text. Skips HTML/whitespace mismatch checks.') ?>
+			</div>
 		</fieldset>
 
 		<?php echo $this->Form->button(__d('translate', 'Analyze'), ['class' => 'btn btn-primary']); ?>
@@ -179,7 +200,7 @@ msgstr[1] "{0} Elemente"',
 			<div class="card mb-3 border-danger">
 				<div class="card-header bg-danger text-white">
 					<strong><?= __d('translate', 'Issues Found') ?></strong>
-					<span class="badge badge-light float-right"><?= count($result['issues']) ?></span>
+					<span class="badge bg-light text-dark float-end"><?= count($result['issues']) ?></span>
 				</div>
 				<div class="card-body p-0">
 					<table class="table table-striped table-sm mb-0">
@@ -194,19 +215,53 @@ msgstr[1] "{0} Elemente"',
 							<?php foreach ($result['issues'] as $msgid => $issues) { ?>
 								<?php foreach ($issues as $type => $details) { ?>
 									<tr>
-										<td><code><?= h($this->Text->truncate($msgid, 50)) ?></code></td>
+										<td>
+											<code><?= h($msgid) ?></code>
+											<?php if (!empty($details['msgid_plural'])) { ?>
+												<br><small class="text-muted"><?= __d('translate', 'Plural:') ?> <code><?= h($details['msgid_plural']) ?></code></small>
+											<?php } ?>
+											<?php if (!empty($details['msgstr'])) { ?>
+												<br><small class="text-muted"><?= __d('translate', 'Translation:') ?> <code><?= h($details['msgstr']) ?></code></small>
+											<?php } ?>
+										</td>
 										<td>
 											<?php
 											$badgeClass = match ($type) {
 												'placeholder_mismatch', 'plural_placeholder_mismatch', 'mixed_placeholder_styles' => 'danger',
-												'untranslated' => 'warning',
 												'whitespace_mismatch', 'html_mismatch' => 'secondary',
+												'whitespace_warning' => 'warning',
 												default => 'info',
 											};
 											?>
-											<span class="badge badge-<?= $badgeClass ?>"><?= h(str_replace('_', ' ', $type)) ?></span>
+											<span class="badge bg-<?= $badgeClass ?>"><?= h(str_replace('_', ' ', $type)) ?></span>
 										</td>
-										<td class="small"><?= h($details['message'] ?? '') ?></td>
+										<td class="small">
+											<?= h($details['message'] ?? '') ?>
+											<?php if (!empty($details['expected']) && !empty($details['actual'])) { ?>
+												<br>
+												<span class="text-success"><?= __d('translate', 'Expected:') ?> <?= h(json_encode($details['expected'])) ?></span>
+												<br>
+												<span class="text-danger"><?= __d('translate', 'Actual:') ?> <?= h(json_encode($details['actual'])) ?></span>
+											<?php } ?>
+											<?php if (!empty($details['fixed_msgid'])) { ?>
+												<hr class="my-2">
+												<strong><?= __d('translate', 'Suggested fix for msgid:') ?></strong>
+												<br>
+												<code class="text-success" id="fix-msgid-<?= md5($msgid . $type) ?>"><?= h($details['fixed_msgid']) ?></code>
+												<button type="button" class="btn btn-sm btn-outline-success ms-2" onclick="copyFix(this, 'fix-msgid-<?= md5($msgid . $type) ?>')" title="<?= __d('translate', 'Copy to clipboard') ?>">
+													<i class="fas fa-copy"></i> <?= __d('translate', 'Copy') ?>
+												</button>
+											<?php } ?>
+											<?php if (!empty($details['fixed_msgstr'])) { ?>
+												<hr class="my-2">
+												<strong><?= __d('translate', 'Suggested fix for msgstr:') ?></strong>
+												<br>
+												<code class="text-success" id="fix-<?= md5($msgid . $type) ?>"><?= h($details['fixed_msgstr']) ?></code>
+												<button type="button" class="btn btn-sm btn-outline-success ms-2" onclick="copyFix(this, 'fix-<?= md5($msgid . $type) ?>')" title="<?= __d('translate', 'Copy to clipboard') ?>">
+													<i class="fas fa-copy"></i> <?= __d('translate', 'Copy') ?>
+												</button>
+											<?php } ?>
+										</td>
 									</tr>
 								<?php } ?>
 							<?php } ?>
@@ -222,3 +277,33 @@ msgstr[1] "{0} Elemente"',
 		<?php } ?>
 	<?php } ?>
 </div>
+
+<script>
+function copyFix(btn, elementId) {
+	var text = document.getElementById(elementId).textContent;
+	if (navigator.clipboard) {
+		navigator.clipboard.writeText(text).then(function() {
+			btn.classList.remove('btn-outline-success');
+			btn.classList.add('btn-success');
+			btn.innerHTML = '<i class="fas fa-check"></i> <?= __d('translate', 'Copied!') ?>';
+			setTimeout(function() {
+				btn.classList.remove('btn-success');
+				btn.classList.add('btn-outline-success');
+				btn.innerHTML = '<i class="fas fa-copy"></i> <?= __d('translate', 'Copy') ?>';
+			}, 2000);
+		});
+	} else {
+		// Fallback for older browsers
+		var textarea = document.createElement('textarea');
+		textarea.value = text;
+		document.body.appendChild(textarea);
+		textarea.select();
+		document.execCommand('copy');
+		document.body.removeChild(textarea);
+		btn.innerHTML = '<i class="fas fa-check"></i> <?= __d('translate', 'Copied!') ?>';
+		setTimeout(function() {
+			btn.innerHTML = '<i class="fas fa-copy"></i> <?= __d('translate', 'Copy') ?>';
+		}, 2000);
+	}
+}
+</script>

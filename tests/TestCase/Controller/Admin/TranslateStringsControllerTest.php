@@ -310,4 +310,94 @@ msgstr "Hallo"',
 		$this->assertNotNull($this->viewVariable('result'));
 	}
 
+	/**
+	 * Test runExtract method GET
+	 *
+	 * @return void
+	 */
+	public function testRunExtractGet() {
+		$this->disableErrorHandlerMiddleware();
+
+		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateStrings', 'action' => 'runExtract']);
+
+		$this->assertResponseCode(200);
+		$this->assertNoRedirect();
+		$this->assertNotNull($this->viewVariable('appPath'));
+		$this->assertNotNull($this->viewVariable('localePath'));
+	}
+
+	/**
+	 * Test runExtract method POST with dry run
+	 *
+	 * @return void
+	 */
+	public function testRunExtractPostDryRun() {
+		$this->disableErrorHandlerMiddleware();
+
+		$data = [
+			'paths' => "src\ntemplates",
+			'output_path' => LOCALE,
+			'dry_run' => '1',
+			'merge' => '1',
+			'overwrite' => '1',
+		];
+		$this->post(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateStrings', 'action' => 'runExtract'], $data);
+
+		$this->assertResponseCode(200);
+		$this->assertNoRedirect();
+		$this->assertNotNull($this->viewVariable('output'));
+		$this->assertNotNull($this->viewVariable('dryRunResults'));
+
+		// Dry run should show preview but not write files
+		$dryRunResults = $this->viewVariable('dryRunResults');
+		$this->assertIsArray($dryRunResults);
+	}
+
+	/**
+	 * Test runExtract method POST actual extraction
+	 *
+	 * @return void
+	 */
+	public function testRunExtractPostActual() {
+		$this->disableErrorHandlerMiddleware();
+
+		// Create a temp output directory for testing
+		$tempOutputDir = TMP . 'test_locales_' . uniqid() . DS;
+		mkdir($tempOutputDir, 0755, true);
+
+		try {
+			$data = [
+				'paths' => "src\ntemplates",
+				'output_path' => $tempOutputDir,
+				'dry_run' => '0',
+				'merge' => '0',
+				'overwrite' => '1',
+			];
+			$this->post(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateStrings', 'action' => 'runExtract'], $data);
+
+			$this->assertResponseCode(200);
+			$this->assertNoRedirect();
+			$this->assertNotNull($this->viewVariable('output'));
+
+			// Check that POT files were created
+			$potFiles = glob($tempOutputDir . '*.pot');
+			$this->assertNotEmpty($potFiles, 'POT files should be created');
+
+			// For plugin type project, only translate.pot should exist
+			$translatePot = $tempOutputDir . 'translate.pot';
+			$this->assertFileExists($translatePot, 'translate.pot should be created for plugin');
+
+			// Verify the content has translation strings
+			$content = file_get_contents($translatePot);
+			$this->assertStringContainsString('msgid', $content);
+		} finally {
+			// Cleanup
+			$files = glob($tempOutputDir . '*');
+			foreach ($files as $file) {
+				unlink($file);
+			}
+			rmdir($tempOutputDir);
+		}
+	}
+
 }

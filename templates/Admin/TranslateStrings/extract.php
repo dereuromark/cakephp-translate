@@ -15,6 +15,7 @@
 			<div class="list-group list-group-flush">
 				<?= $this->Html->link(__d('translate', 'List Translate Strings'), ['action' => 'index'], ['class' => 'list-group-item list-group-item-action']) ?>
 				<?= $this->Html->link('<i class="fas fa-search-plus"></i> ' . __d('translate', 'Analyze PO File'), ['action' => 'analyze'], ['class' => 'list-group-item list-group-item-action', 'escape' => false]) ?>
+				<?= $this->Html->link('<i class="fas fa-flask"></i> ' . __d('translate', 'Run i18n Extract'), ['action' => 'runExtract'], ['class' => 'list-group-item list-group-item-action', 'escape' => false]) ?>
 			</div>
 		</div>
 	</aside>

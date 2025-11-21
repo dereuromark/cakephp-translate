@@ -116,12 +116,12 @@ class ExtractService {
 
 	/**
 	 * @param string $domain
-	 * @param string $dir
+	 * @param string|null $dir
 	 *
 	 * @return array
 	 */
-	public function extractPotFile(string $domain, string $dir = LOCALE): array {
-		$names = [];
+	public function extractPotFile(string $domain, ?string $dir = null): array {
+		$dir = $dir ?? $this->localePath;
 
 		$file = $dir . $domain . '.pot';
 		$content = [];
@@ -140,12 +140,12 @@ class ExtractService {
 	/**
 	 * @param string $domain
 	 * @param string $lang
-	 * @param string $dir
+	 * @param string|null $dir
 	 *
 	 * @return array
 	 */
-	public function extractPoFile(string $domain, string $lang, string $dir = LOCALE): array {
-		$names = [];
+	public function extractPoFile(string $domain, string $lang, ?string $dir = null): array {
+		$dir = $dir ?? $this->localePath;
 
 		$file = $dir . $lang . DS . $domain . '.po';
 		$content = [];

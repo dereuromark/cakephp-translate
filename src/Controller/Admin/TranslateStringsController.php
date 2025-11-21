@@ -2,8 +2,13 @@
 
 namespace Translate\Controller\Admin;
 
+use Cake\Command\Command;
+use Cake\Command\I18nExtractCommand;
+use Cake\Console\ConsoleIo;
+use Cake\Console\ConsoleOutput;
 use Cake\Core\Configure;
 use Cake\Http\Exception\NotFoundException;
+use Cake\Utility\Inflector;
 use Translate\Controller\TranslateAppController;
 use Translate\Filesystem\Dumper;
 use Translate\Model\Entity\TranslateProject;
@@ -829,8 +834,11 @@ class TranslateStringsController extends TranslateAppController {
 			}
 
 			if ($content) {
+				$keyBasedMode = $this->request->getData('key_based');
+				$keyBasedMode = $keyBasedMode === '' ? null : (bool)$keyBasedMode;
+
 				$analyzer = new PoAnalyzerService();
-				$result = $analyzer->analyze($content);
+				$result = $analyzer->analyze($content, $keyBasedMode);
 			} else {
 				$this->Flash->error(__d('translate', 'Please provide PO file content or upload a file.'));
 			}
@@ -876,6 +884,280 @@ class TranslateStringsController extends TranslateAppController {
 		}
 
 		return file_get_contents($filePath) ?: null;
+	}
+
+	/**
+	 * Run CakePHP i18n extract command (experimental).
+	 *
+	 * This allows running the extraction from the web interface.
+	 *
+	 * @return \Cake\Http\Response|null|void
+	 */
+	public function runExtract() {
+		$TranslateProjects = $this->fetchTable('Translate.TranslateProjects');
+		/** @var \Translate\Model\Entity\TranslateProject $project */
+		$project = $TranslateProjects->get($this->Translation->currentProjectId());
+
+		$appPath = $project->path ?: null;
+		if (!$appPath) {
+			$appPath = ROOT;
+		} elseif (!str_starts_with($appPath, '/')) {
+			$appPath = ROOT . DS . $appPath;
+		}
+		$appPath = rtrim($appPath, DS);
+
+		// CakePHP 5+ uses resources/locales, legacy uses Locale/
+		$legacyPath = $appPath . DS . 'Locale' . DS;
+		$modernPath = $appPath . DS . 'resources' . DS . 'locales' . DS;
+		// Prefer modern path, only use legacy if it exists and modern doesn't
+		if (is_dir($legacyPath) && !is_dir($modernPath)) {
+			$localePath = $legacyPath;
+		} else {
+			$localePath = $modernPath;
+		}
+
+		$output = null;
+		$command = null;
+		$returnCode = null;
+		$dryRunResults = null;
+
+		if ($this->request->is('post')) {
+			$paths = $this->request->getData('paths');
+			// Textarea sends a single string with newlines, split it into array
+			if (is_string($paths)) {
+				$paths = explode("\n", $paths);
+			}
+			$paths = array_filter(array_map('trim', (array)$paths));
+			if (!$paths) {
+				$paths = [$appPath . DS . 'src', $appPath . DS . 'templates'];
+			}
+			// Convert relative paths to absolute and validate they exist
+			$validPaths = [];
+			foreach ($paths as $path) {
+				if (!str_starts_with($path, '/')) {
+					$path = $appPath . DS . $path;
+				}
+				if (is_dir($path)) {
+					$validPaths[] = $path;
+				}
+			}
+			$paths = $validPaths;
+
+			if (!$paths) {
+				$this->Flash->error(__d('translate', 'No valid paths found to scan.'));
+
+				$defaultPaths = ['src', 'templates'];
+				$isPlugin = $project->type === TranslateProject::TYPE_PLUGIN;
+				$this->set(compact('appPath', 'localePath', 'defaultPaths', 'output', 'command', 'returnCode', 'isPlugin', 'dryRunResults'));
+
+				return;
+			}
+
+			$outputPath = $this->request->getData('output_path') ?: $localePath;
+			// Convert relative output path to absolute
+			if (!str_starts_with($outputPath, '/')) {
+				$outputPath = $appPath . DS . $outputPath;
+			}
+			$merge = $this->request->getData('merge') ? 'yes' : 'no';
+			$overwrite = $this->request->getData('overwrite') ? 'yes' : 'no';
+			$extractCore = $this->request->getData('extract_core') ? 'yes' : 'no';
+			$dryRun = (bool)$this->request->getData('dry_run');
+
+			// For plugins, determine the expected domain from project name
+			$isPlugin = $project->type === TranslateProject::TYPE_PLUGIN;
+			$pluginDomain = $isPlugin ? Inflector::underscore($project->name) : null;
+
+			// Always extract to temp directory first (avoids weird behavior differences)
+			$tempDir = sys_get_temp_dir() . DS . 'translate_extract_' . uniqid();
+			mkdir($tempDir, 0755, true);
+			$actualOutputPath = $tempDir;
+			$merge = 'no'; // Always fresh extraction to temp
+
+			// Ensure final output directory exists for non-dry run
+			if (!$dryRun) {
+				if (!is_dir($outputPath)) {
+					if (!mkdir($outputPath, 0755, true)) {
+						$this->Flash->error(__d('translate', 'Failed to create output directory: {0}', $outputPath));
+
+						$defaultPaths = ['src', 'templates'];
+						$isPlugin = $project->type === TranslateProject::TYPE_PLUGIN;
+						$pluginDomain = $isPlugin ? Inflector::underscore($project->name) : null;
+						$this->set(compact('appPath', 'localePath', 'defaultPaths', 'output', 'command', 'returnCode', 'isPlugin', 'dryRunResults', 'pluginDomain'));
+
+						return;
+					}
+				}
+				if (!is_writable($outputPath)) {
+					$this->Flash->error(__d('translate', 'Output directory is not writable: {0}', $outputPath));
+
+					$defaultPaths = ['src', 'templates'];
+					$isPlugin = $project->type === TranslateProject::TYPE_PLUGIN;
+					$pluginDomain = $isPlugin ? Inflector::underscore($project->name) : null;
+					$this->set(compact('appPath', 'localePath', 'defaultPaths', 'output', 'command', 'returnCode', 'isPlugin', 'dryRunResults', 'pluginDomain'));
+
+					return;
+				}
+			}
+
+			// Build command arguments for display
+			$pathsArg = implode(',', $paths);
+			$command = sprintf(
+				'bin/cake i18n extract --paths %s --output %s --merge %s --overwrite %s --extract-core %s',
+				escapeshellarg($pathsArg),
+				escapeshellarg(rtrim($outputPath, DS)),
+				escapeshellarg($merge),
+				escapeshellarg($overwrite),
+				escapeshellarg($extractCore),
+			);
+
+			// Run command directly via PHP instead of shell
+			$args = [
+				'--paths',
+				$pathsArg,
+				'--output',
+				rtrim($actualOutputPath, DS),
+				'--merge',
+				$merge,
+				'--overwrite',
+				$overwrite,
+				'--extract-core',
+				$extractCore,
+			];
+
+			// Debug: list files before extraction in final output dir
+			$filesBefore = glob($outputPath . DS . '*.pot') ?: [];
+
+			// Debug: show exact args
+			$debugArgs = $args;
+
+			// Capture output using temp files (ConsoleOutput doesn't work with php://temp streams)
+			$outputFile = sys_get_temp_dir() . DS . 'translate_out_' . uniqid() . '.txt';
+			$errorFile = sys_get_temp_dir() . DS . 'translate_err_' . uniqid() . '.txt';
+			touch($outputFile);
+			touch($errorFile);
+
+			$io = new ConsoleIo(
+				new ConsoleOutput($outputFile),
+				new ConsoleOutput($errorFile),
+			);
+
+			try {
+				$extractCommand = new I18nExtractCommand();
+				$returnCode = $extractCommand->run($args, $io);
+
+				// Read captured output
+				$output = file_get_contents($outputFile) ?: '';
+				$errors = file_get_contents($errorFile) ?: '';
+
+				// Prepend debug args
+				$output = 'Args: ' . implode(' ', $debugArgs) . "\n\n" . $output;
+
+				if ($errors) {
+					$output .= "\n\nSTDERR:\n" . $errors;
+				}
+
+				// Debug: list files after extraction in temp directory
+				$filesAfterTemp = glob($tempDir . DS . '*.pot') ?: [];
+				$output .= "\n\n--- DEBUG INFO ---\n";
+				$output .= 'Paths scanned: ' . $pathsArg . "\n";
+				$output .= 'Temp output path: ' . $tempDir . "\n";
+				$output .= 'Final output path: ' . $outputPath . "\n";
+				$output .= 'Merge: ' . $merge . ', Overwrite: ' . $overwrite . "\n";
+				$output .= 'Return code: ' . var_export($returnCode, true) . ' (CODE_SUCCESS = ' . Command::CODE_SUCCESS . ")\n";
+				$output .= 'Is dry run: ' . ($dryRun ? 'yes' : 'no') . "\n";
+				$output .= 'Files in final dir before: ' . (empty($filesBefore) ? '(none)' : implode(', ', array_map('basename', $filesBefore))) . "\n";
+				$output .= 'Files in temp after extraction: ' . (empty($filesAfterTemp) ? '(none)' : implode(', ', array_map('basename', $filesAfterTemp))) . "\n";
+				if ($pluginDomain) {
+					$output .= 'Expected plugin domain: ' . $pluginDomain . ".pot\n";
+				}
+
+				// Collect generated POT files from temp directory
+				$potFiles = glob($tempDir . DS . '*.pot') ?: [];
+
+				// For dry run, show preview
+				if ($dryRun) {
+					$dryRunResults = [];
+					foreach ($potFiles as $potFile) {
+						$filename = basename($potFile);
+						// For plugins, only show the plugin's domain POT file
+						if ($pluginDomain !== null && $filename !== $pluginDomain . '.pot') {
+							continue;
+						}
+						$content = (string)file_get_contents($potFile);
+						// Count msgid entries
+						preg_match_all('/^msgid\s+"/m', $content, $matches);
+						$count = count($matches[0]) - 1; // Subtract 1 for the header
+						$dryRunResults[$filename] = [
+							'count' => max(0, $count),
+							'content' => $content,
+						];
+					}
+
+					$this->Flash->info(__d('translate', 'Dry run completed. Preview of extracted strings shown below.'));
+				} elseif ($returnCode === Command::CODE_SUCCESS) {
+					// Copy files from temp to final output directory
+					$copiedFiles = [];
+					foreach ($potFiles as $potFile) {
+						$filename = basename($potFile);
+						// For plugins, only copy the plugin's domain POT file
+						if ($pluginDomain !== null && $filename !== $pluginDomain . '.pot') {
+							continue;
+						}
+						$destFile = $outputPath . DS . $filename;
+						if (copy($potFile, $destFile)) {
+							$copiedFiles[] = $destFile;
+						}
+					}
+
+					// Show info about copied files
+					if ($copiedFiles) {
+						$fileInfo = [];
+						foreach ($copiedFiles as $file) {
+							$content = (string)file_get_contents($file);
+							preg_match_all('/^msgid\s+"/m', $content, $matches);
+							$count = max(0, count($matches[0]) - 1);
+							$fileInfo[] = basename($file) . ' (' . $count . ' strings)';
+						}
+						$this->Flash->success(__d('translate', 'Extraction completed. Generated: {0}', implode(', ', $fileInfo)));
+					} else {
+						$this->Flash->warning(__d('translate', 'Extraction completed but no POT files were generated. Check if your code uses __d(\'{0}\', ...) calls.', $pluginDomain ?? 'default'));
+					}
+				} else {
+					$this->Flash->warning(__d('translate', 'Extraction completed with return code: {0}', $returnCode));
+				}
+			} catch (\Throwable $e) {
+				$this->Flash->error(__d('translate', 'Extraction failed: {0}', $e->getMessage()));
+				$output = $e->getMessage() . "\n" . $e->getTraceAsString();
+				$returnCode = 1;
+			} finally {
+				// Clean up temp files
+				if (file_exists($outputFile)) {
+					unlink($outputFile);
+				}
+				if (file_exists($errorFile)) {
+					unlink($errorFile);
+				}
+
+				// Clean up temp directory for dry run
+				if (is_dir($tempDir)) {
+					$files = glob($tempDir . DS . '*') ?: [];
+					foreach ($files as $file) {
+						unlink($file);
+					}
+					rmdir($tempDir);
+				}
+			}
+		}
+
+		$defaultPaths = [
+			'src',
+			'templates',
+		];
+
+		$isPlugin = $project->type === TranslateProject::TYPE_PLUGIN;
+		$pluginDomain = $isPlugin ? Inflector::underscore($project->name) : null;
+
+		$this->set(compact('appPath', 'localePath', 'defaultPaths', 'output', 'command', 'returnCode', 'isPlugin', 'dryRunResults', 'pluginDomain'));
 	}
 
 }

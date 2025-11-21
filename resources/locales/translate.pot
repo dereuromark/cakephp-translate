@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2017-04-22 19:40+0000\n"
+"POT-Creation-Date: 2025-11-21 14:39+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -14,665 +14,2573 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: Controller/Admin/TranslateDomainsController.php:149;175
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateApiTranslationsController.php:53
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateApiTranslationsController.php:79
+msgid "The translate api translation has been saved."
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateApiTranslationsController.php:58
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateApiTranslationsController.php:84
+msgid "The translate api translation could not be saved. Please, try again."
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateApiTranslationsController.php:102
+msgid "The translate api translation has been deleted."
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateApiTranslationsController.php:104
+msgid "The translate api translation could not be deleted. Please, try again."
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateBehaviorController.php:443
+msgid "Table {0} not found"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateBehaviorController.php:481
+msgid "Please select at least one field to translate"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateBehaviorController.php:696
+msgid "Missing required data"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateBehaviorController.php:714
+msgid "Migration file already exists: {0}"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateBehaviorController.php:721
+msgid "Failed to write migration file"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateBehaviorController.php:726
+msgid "Migration file created successfully: {0}"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateController.php:248
+msgid "Reset complete for current project."
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateController.php:250
+msgid "No options selected."
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateController.php:305
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/TranslateController.php:379
+msgid "Invalid locale"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateController.php:321
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/TranslateController.php:394
+msgid "Language not found or not active"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateController.php:329
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/TranslateController.php:402
+msgid "Language switched to {0}"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateController.php:347
+msgid "Invalid project"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateController.php:355
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/TranslateController.php:421
+msgid "Project switched to {0}"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateDomainsController.php:50
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateDomainsController.php:96
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateDomainsController.php:128
+msgid "Domain not found."
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateDomainsController.php:70
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateDomainsController.php:102
 msgid "The translate domain has been saved."
 msgstr ""
 
-#: Controller/Admin/TranslateDomainsController.php:153;179
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateDomainsController.php:75
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateDomainsController.php:107
 msgid "The translate domain could not be saved. Please, try again."
 msgstr ""
 
-#: Controller/Admin/TranslateDomainsController.php:199
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateDomainsController.php:132
 msgid "The translate domain has been deleted."
 msgstr ""
 
-#: Controller/Admin/TranslateDomainsController.php:201
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateDomainsController.php:134
 msgid "The translate domain could not be deleted. Please, try again."
 msgstr ""
 
-#: Controller/Admin/TranslateLocalesController.php:138;163
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateLocalesController.php:120
+msgid "{0} new language(s) added"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateLocalesController.php:135
+msgid "Validation errors: {0}"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateLocalesController.php:137
+msgid "Could not save languages. Please try again."
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateLocalesController.php:140
+msgid "No languages selected."
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateLocalesController.php:174
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateLocalesController.php:219
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateLocalesController.php:249
+msgid "Locale not found."
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateLocalesController.php:194
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateLocalesController.php:225
 msgid "The translate language has been saved."
 msgstr ""
 
-#: Controller/Admin/TranslateLocalesController.php:142;167
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateLocalesController.php:199
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateLocalesController.php:230
 msgid "The translate language could not be saved. Please, try again."
 msgstr ""
 
-#: Controller/Admin/TranslateLocalesController.php:185
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateLocalesController.php:253
 msgid "The translate language has been deleted."
 msgstr ""
 
-#: Controller/Admin/TranslateLocalesController.php:187
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateLocalesController.php:255
 msgid "The translate language could not be deleted. Please, try again."
 msgstr ""
 
-#: Controller/Admin/TranslateProjectsController.php:56;81
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateProjectsController.php:58
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateProjectsController.php:86
 msgid "The translate project has been saved."
 msgstr ""
 
-#: Controller/Admin/TranslateProjectsController.php:60;85
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateProjectsController.php:63
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateProjectsController.php:91
 msgid "The translate project could not be saved. Please, try again."
 msgstr ""
 
-#: Controller/Admin/TranslateProjectsController.php:103
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateProjectsController.php:109
 msgid "The translate project has been deleted."
 msgstr ""
 
-#: Controller/Admin/TranslateProjectsController.php:105
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateProjectsController.php:111
 msgid "The translate project could not be deleted. Please, try again."
 msgstr ""
 
-#: Controller/Admin/TranslateProjectsController.php:117
-msgid "Project switched"
-msgstr ""
-
-#: Controller/Admin/TranslateProjectsController.php:128
-#: Template/Admin/TranslateTerms/index.ctp:18
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateProjectsController.php:122
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/index.php:46
 msgid "Translate Terms"
 msgstr ""
 
-#: Controller/Admin/TranslateProjectsController.php:129
-#: Template/Admin/TranslateStrings/index.ctp:14
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateProjectsController.php:123
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/index.php:41
 msgid "Translate Strings"
 msgstr ""
 
-#: Controller/Admin/TranslateProjectsController.php:130
-#: Template/Admin/TranslateDomains/index.ctp:18
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateProjectsController.php:124
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateDomains/index.php:35
 msgid "Translate Domains"
 msgstr ""
 
-#: Controller/Admin/TranslateProjectsController.php:139
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateProjectsController.php:133
 msgid "Done"
 msgstr ""
 
-#: Controller/Admin/TranslateStringsController.php:80;110
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:86
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:135
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:191
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:473
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:609
+msgid "String not found."
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:103
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:153
 msgid "The translate string has been saved."
 msgstr ""
 
-#: Controller/Admin/TranslateStringsController.php:88;119
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:112
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:162
 msgid "The translate string could not be saved. Please, try again."
 msgstr ""
 
-#: Controller/Admin/TranslateStringsController.php:141
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:149
+msgid "Updated {0} reference(s) in source files."
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:195
 msgid "The translate string has been deleted."
 msgstr ""
 
-#: Controller/Admin/TranslateStringsController.php:143
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:197
 msgid "The translate string could not be deleted. Please, try again."
 msgstr ""
 
-#: Controller/Admin/TranslateStringsController.php:316
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:338
+msgid "Done: {0}/{1}"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:482
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/TranslateController.php:213
 msgid "You need at least one language to translate"
 msgstr ""
 
-#: Controller/Admin/TranslateTermsController.php:63
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:514
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:572
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/TranslateController.php:244
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/TranslateController.php:302
+msgid "No more open translations."
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:577
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/TranslateController.php:307
+msgid "Translation saved successfully."
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:651
+msgid "File is not writable: {0}"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:655
+msgid "File updated successfully. Please commit your changes!"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:657
+msgid "Failed to write file"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:700
+msgid "Project path not found: {0}"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:719
+msgid "File not writable: {0}"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:843
+msgid "Please provide PO file content or upload a file."
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:881
+msgid "File not found: {0}"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:947
+msgid "No valid paths found to scan."
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:980
+msgid "Failed to create output directory: {0}"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:991
+msgid "Output directory is not writable: {0}"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:1096
+msgid "Dry run completed. Preview of extracted strings shown below."
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:1121
+msgid "Extraction completed. Generated: {0}"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:1123
+msgid "Extraction completed but no POT files were generated. Check if your code uses __d('{0}', ...) calls."
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:1126
+msgid "Extraction completed with return code: {0}"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:1129
+msgid "Extraction failed: {0}"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateTermsController.php:68
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateTermsController.php:88
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateTermsController.php:128
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateTermsController.php:261
+msgid "Term not found."
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateTermsController.php:94
 msgid "The translate term has been saved."
 msgstr ""
 
-#: Controller/Admin/TranslateTermsController.php:67
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateTermsController.php:99
 msgid "The translate term could not be saved. Please, try again."
 msgstr ""
 
-#: Controller/Admin/TranslateTermsController.php:87
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateTermsController.php:132
 msgid "The translate term has been deleted."
 msgstr ""
 
-#: Controller/Admin/TranslateTermsController.php:89
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateTermsController.php:134
 msgid "The translate term could not be deleted. Please, try again."
 msgstr ""
 
-#: Model/Entity/TranslateProject.php:42
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateTermsController.php:239
+msgid "{0} translation(s) have been confirmed."
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateTermsController.php:241
+msgid "No translations were confirmed."
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateTermsController.php:268
+msgid "Translation has been confirmed."
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateTermsController.php:270
+msgid "Could not confirm translation."
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/src/Model/Entity/TranslateProject.php:44
 msgid "Inactive Project"
 msgstr ""
 
-#: Model/Entity/TranslateProject.php:43
+#: ./vendor/dereuromark/cakephp-translate/src/Model/Entity/TranslateProject.php:45
 msgid "Hidden Project"
 msgstr ""
 
-#: Model/Entity/TranslateProject.php:44
+#: ./vendor/dereuromark/cakephp-translate/src/Model/Entity/TranslateProject.php:46
 msgid "Public Project"
 msgstr ""
 
-#: Model/Entity/TranslateProject.php:60
+#: ./vendor/dereuromark/cakephp-translate/src/Model/Entity/TranslateProject.php:74
 msgid "CakePHP App"
 msgstr ""
 
-#: Model/Entity/TranslateProject.php:61
+#: ./vendor/dereuromark/cakephp-translate/src/Model/Entity/TranslateProject.php:75
 msgid "CakePHP Plugin"
 msgstr ""
 
-#: Model/Entity/TranslateProject.php:62
+#: ./vendor/dereuromark/cakephp-translate/src/Model/Entity/TranslateProject.php:76
 msgid "Other Project"
 msgstr ""
 
-#: Template/Admin/Translate/best_practice.ctp:9
-#: Template/Admin/Translate/convert.ctp:9
-#: Template/Admin/Translate/reset.ctp:9
-#: Template/Admin/TranslateDomains/add.ctp:9
-#: Template/Admin/TranslateDomains/edit.ctp:8
-#: Template/Admin/TranslateDomains/index.ctp:9;27
-#: Template/Admin/TranslateDomains/view.ctp:9
-#: Template/Admin/TranslateLocales/add.ctp:9
-#: Template/Admin/TranslateLocales/edit.ctp:8
-#: Template/Admin/TranslateLocales/index.ctp:9;23
-#: Template/Admin/TranslateLocales/view.ctp:9
-#: Template/Admin/TranslateProjects/add.ctp:9
-#: Template/Admin/TranslateProjects/edit.ctp:8
-#: Template/Admin/TranslateProjects/index.ctp:9;28
-#: Template/Admin/TranslateProjects/view.ctp:9;63
-#: Template/Admin/TranslateStrings/add.ctp:9
-#: Template/Admin/TranslateStrings/dump.ctp:9
-#: Template/Admin/TranslateStrings/edit.ctp:8
-#: Template/Admin/TranslateStrings/extract.ctp:9
-#: Template/Admin/TranslateStrings/index.ctp:9;47
-#: Template/Admin/TranslateStrings/translate.ctp:11
-#: Template/Admin/TranslateStrings/view.ctp:9;73
-#: Template/Admin/TranslateTerms/edit.ctp:8
-#: Template/Admin/TranslateTerms/index.ctp:9;30
-#: Template/Admin/TranslateTerms/view.ctp:9
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/best_practice.php:11
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/convert.php:13
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:546
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/reset.php:12
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateApiTranslations/add.php:11
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateApiTranslations/edit.php:11
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateApiTranslations/index.php:14
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateApiTranslations/index.php:41
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateApiTranslations/view.php:11
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/index.php:87
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/index.php:164
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/index.php:232
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateDomains/add.php:12
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateDomains/edit.php:12
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateDomains/extract.php:13
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateDomains/index.php:15
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateDomains/index.php:49
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateDomains/setup.php:14
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateDomains/view.php:12
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateLocales/add.php:12
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateLocales/edit.php:12
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateLocales/from_locale.php:14
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateLocales/index.php:14
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateLocales/index.php:38
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateLocales/to_locale.php:14
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateLocales/view.php:11
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/add.php:12
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/edit.php:12
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/index.php:15
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/index.php:51
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/reset.php:13
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/view.php:12
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/view.php:113
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/add.php:12
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/dump.php:12
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/edit.php:12
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/extract.php:13
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/index.php:16
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/index.php:107
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/translate.php:16
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/view.php:15
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/edit.php:17
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/index.php:16
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/index.php:98
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/pending.php:90
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/view.php:15
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/terms.php:121
 msgid "Actions"
 msgstr ""
 
-#: Template/Admin/Translate/best_practice.ctp:10
-#: Template/Admin/Translate/convert.ctp:10
-#: Template/Admin/Translate/reset.ctp:10
-#: Template/Admin/TranslateLocales/index.ctp:10
-#: Template/Admin/TranslateProjects/index.ctp:10
-#: Template/Admin/TranslateStrings/translate.ctp:12
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/best_practice.php:14
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/convert.php:16
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/reset.php:15
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateDomains/index.php:19
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateLocales/from_locale.php:17
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateLocales/index.php:17
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateLocales/to_locale.php:17
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/index.php:19
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/index.php:20
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/translate.php:19
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/index.php:20
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/translate.php:20
 msgid "Overview"
 msgstr ""
 
-#: Template/Admin/Translate/best_practice.ctp:14
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/best_practice.php:22
 msgid "bestPractice"
 msgstr ""
 
-#: Template/Admin/Translate/convert.ctp:28
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/best_practice.php:25
+msgid "Common things"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/best_practice.php:27
+msgid "Always code in English (not only the code - all translation strings should be that way as well)"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/best_practice.php:28
+msgid "Use short terminology for sentences and longer translations - camelCased ideally: \"breadcrumpTrail\""
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/best_practice.php:29
+msgid "Group them together by their meaning, like \"valErr...\" for Validation Errors, or \"textWhy..\" for some long text/explanation on the website"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/best_practice.php:31
+msgid "With these tips you can easily use the translate plugin to generate your translation base - and let translaters do their job."
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/convert.php:25
+msgid "Result"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/convert.php:35
 msgid "Convert text"
 msgstr ""
 
-#: Template/Admin/Translate/convert.ctp:37
-#: Template/Admin/TranslateDomains/add.ctp:26
-#: Template/Admin/TranslateDomains/edit.ctp:31
-#: Template/Admin/TranslateDomains/extract.ctp:40
-#: Template/Admin/TranslateDomains/setup.ctp:30
-#: Template/Admin/TranslateLocales/add.ctp:29
-#: Template/Admin/TranslateLocales/edit.ctp:34
-#: Template/Admin/TranslateLocales/from_locale.ctp:27
-#: Template/Admin/TranslateLocales/to_locale.ctp:33
-#: Template/Admin/TranslateProjects/add.ctp:24
-#: Template/Admin/TranslateProjects/edit.ctp:31
-#: Template/Admin/TranslateProjects/reset.ctp:20
-#: Template/Admin/TranslateStrings/add.ctp:32
-#: Template/Admin/TranslateStrings/dump.ctp:32
-#: Template/Admin/TranslateStrings/edit.ctp:41
-#: Template/Admin/TranslateStrings/extract.ctp:34
-#: Template/Admin/TranslateTerms/edit.ctp:33
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/convert.php:48
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateApiTranslations/add.php:39
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateApiTranslations/edit.php:42
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateDomains/add.php:44
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateDomains/edit.php:49
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateDomains/extract.php:109
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateDomains/setup.php:85
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateLocales/add.php:42
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateLocales/edit.php:48
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateLocales/from_locale.php:53
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateLocales/to_locale.php:49
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/add.php:89
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/edit.php:104
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/reset.php:84
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/add.php:123
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/dump.php:52
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/edit.php:137
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/extract.php:66
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/edit.php:68
 msgid "Submit"
 msgstr ""
 
-#: Template/Admin/Translate/index.ctp:15
-msgid "Translate Plugin"
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:36
+msgid "Edit Project"
 msgstr ""
 
-#: Template/Admin/Translate/index.ctp:59
-msgid "Groups"
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:41
+msgid "All Projects"
 msgstr ""
 
-#: Template/Admin/Translate/index.ctp:59
-msgid "Strings"
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:46
+msgid "Start Translating"
 msgstr ""
 
-#: Template/Admin/Translate/index.ctp:59
-msgid "Languages"
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:50
+msgid "No project selected"
 msgstr ""
 
-#: Template/Admin/Translate/index.ctp:59
-msgid "Translations"
-msgstr ""
-
-#: Template/Admin/Translate/index.ctp:65
-msgid "Please create a project first"
-msgstr ""
-
-#: Template/Admin/Translate/index.ctp:89
-msgid "Best Practice"
-msgstr ""
-
-#: Template/Admin/Translate/index.ctp:90
-msgid "Extract"
-msgstr ""
-
-#: Template/Admin/Translate/index.ctp:91
-msgid "Dump"
-msgstr ""
-
-#: Template/Admin/Translate/reset.ctp:16;29
-#: Template/Admin/TranslateStrings/index.ctp:28
-msgid "Reset"
-msgstr ""
-
-#: Template/Admin/Translate/reset.ctp:24
-#: Template/Admin/TranslateStrings/dump.ctp:28
-#: Template/Admin/TranslateStrings/extract.ctp:20;30
-msgid "Selection"
-msgstr ""
-
-#: Template/Admin/TranslateDomains/add.ctp:10
-#: Template/Admin/TranslateDomains/edit.ctp:15
-#: Template/Admin/TranslateDomains/extract.ctp:44
-#: Template/Admin/TranslateDomains/setup.ctp:34
-#: Template/Admin/TranslateDomains/view.ctp:12
-#: Template/Admin/TranslateProjects/edit.ctp:16
-#: Template/Admin/TranslateProjects/index.ctp:13
-#: Template/Admin/TranslateProjects/view.ctp:14
-msgid "List Translate Domains"
-msgstr ""
-
-#: Template/Admin/TranslateDomains/add.ctp:11
-#: Template/Admin/TranslateDomains/edit.ctp:16
-#: Template/Admin/TranslateDomains/index.ctp:11
-#: Template/Admin/TranslateDomains/view.ctp:14
-#: Template/Admin/TranslateProjects/add.ctp:10
-#: Template/Admin/TranslateProjects/edit.ctp:15
-#: Template/Admin/TranslateProjects/view.ctp:12
-msgid "List Translate Projects"
-msgstr ""
-
-#: Template/Admin/TranslateDomains/add.ctp:12
-#: Template/Admin/TranslateDomains/edit.ctp:17
-#: Template/Admin/TranslateDomains/index.ctp:12
-#: Template/Admin/TranslateDomains/view.ctp:15
-#: Template/Admin/TranslateProjects/index.ctp:11
-#: Template/Admin/TranslateProjects/view.ctp:13
-msgid "New Translate Project"
-msgstr ""
-
-#: Template/Admin/TranslateDomains/add.ctp:13
-#: Template/Admin/TranslateDomains/edit.ctp:18
-#: Template/Admin/TranslateDomains/index.ctp:13
-#: Template/Admin/TranslateDomains/view.ctp:16
-#: Template/Admin/TranslateProjects/index.ctp:14
-#: Template/Admin/TranslateStrings/add.ctp:10
-#: Template/Admin/TranslateStrings/dump.ctp:10
-#: Template/Admin/TranslateStrings/edit.ctp:15
-#: Template/Admin/TranslateStrings/extract.ctp:10
-#: Template/Admin/TranslateStrings/translate.ctp:13
-#: Template/Admin/TranslateStrings/view.ctp:12
-#: Template/Admin/TranslateTerms/edit.ctp:15
-#: Template/Admin/TranslateTerms/index.ctp:11
-#: Template/Admin/TranslateTerms/view.ctp:12
-msgid "List Translate Strings"
-msgstr ""
-
-#: Template/Admin/TranslateDomains/add.ctp:14
-#: Template/Admin/TranslateDomains/edit.ctp:19
-#: Template/Admin/TranslateDomains/index.ctp:14
-#: Template/Admin/TranslateDomains/view.ctp:17
-#: Template/Admin/TranslateStrings/index.ctp:10
-#: Template/Admin/TranslateStrings/view.ctp:13
-#: Template/Admin/TranslateTerms/edit.ctp:16
-#: Template/Admin/TranslateTerms/index.ctp:12
-#: Template/Admin/TranslateTerms/view.ctp:13
-msgid "New Translate String"
-msgstr ""
-
-#: Template/Admin/TranslateDomains/add.ctp:20
-msgid "Add Translate Domain"
-msgstr ""
-
-#: Template/Admin/TranslateDomains/edit.ctp:10
-#: Template/Admin/TranslateLocales/edit.ctp:10
-#: Template/Admin/TranslateProjects/edit.ctp:10
-#: Template/Admin/TranslateProjects/view.ctp:79
-#: Template/Admin/TranslateStrings/edit.ctp:10
-#: Template/Admin/TranslateStrings/view.ctp:89
-#: Template/Admin/TranslateTerms/edit.ctp:10
-msgid "Delete"
-msgstr ""
-
-#: Template/Admin/TranslateDomains/edit.ctp:12
-#: Template/Admin/TranslateDomains/index.ctp:41
-#: Template/Admin/TranslateDomains/view.ctp:11
-#: Template/Admin/TranslateLocales/edit.ctp:12
-#: Template/Admin/TranslateLocales/index.ctp:41
-#: Template/Admin/TranslateLocales/view.ctp:11
-#: Template/Admin/TranslateProjects/edit.ctp:12
-#: Template/Admin/TranslateProjects/index.ctp:43
-#: Template/Admin/TranslateProjects/view.ctp:11;79
-#: Template/Admin/TranslateStrings/edit.ctp:12
-#: Template/Admin/TranslateStrings/index.ctp:67
-#: Template/Admin/TranslateStrings/view.ctp:11;89
-#: Template/Admin/TranslateTerms/edit.ctp:12
-#: Template/Admin/TranslateTerms/index.ctp:47
-#: Template/Admin/TranslateTerms/view.ctp:11
-msgid "Are you sure you want to delete # {0}?"
-msgstr ""
-
-#: Template/Admin/TranslateDomains/edit.ctp:25
-#: Template/Admin/TranslateDomains/view.ctp:10
-msgid "Edit Translate Domain"
-msgstr ""
-
-#: Template/Admin/TranslateDomains/extract.ctp:9
-#: Template/Admin/TranslateStrings/extract.ctp:17
-msgid "From POT File"
-msgstr ""
-
-#: Template/Admin/TranslateDomains/extract.ctp:19
-#: Template/Admin/TranslateStrings/extract.ctp:27
-msgid "From PO File"
-msgstr ""
-
-#: Template/Admin/TranslateDomains/extract.ctp:27
-msgid "From Source Code"
-msgstr ""
-
-#: Template/Admin/TranslateDomains/extract.ctp:34
-msgid "Controller Names"
-msgstr ""
-
-#: Template/Admin/TranslateDomains/index.ctp:10
-#: Template/Admin/TranslateDomains/view.ctp:13
-#: Template/Admin/TranslateProjects/edit.ctp:17
-#: Template/Admin/TranslateProjects/view.ctp:15
-msgid "New Translate Domain"
-msgstr ""
-
-#: Template/Admin/TranslateDomains/setup.ctp:10
-msgid "Setup Default Translate Domains"
-msgstr ""
-
-#: Template/Admin/TranslateDomains/view.ctp:11
-msgid "Delete Translate Domain"
-msgstr ""
-
-#: Template/Admin/TranslateDomains/view.ctp:24
-#: Template/Admin/TranslateLocales/view.ctp:24
-#: Template/Admin/TranslateProjects/view.ctp:22;52
-#: Template/Admin/TranslateStrings/view.ctp:45;62
-msgid "Name"
-msgstr ""
-
-#: Template/Admin/TranslateDomains/view.ctp:28
-#: Template/Admin/TranslateProjects/reset.ctp:7;11
-msgid "Translate Project"
-msgstr ""
-
-#: Template/Admin/TranslateDomains/view.ctp:32
-#: Template/Admin/TranslateLocales/view.ctp:36
-#: Template/Admin/TranslateProjects/view.ctp:56
-#: Template/Admin/TranslateStrings/view.ctp:24;66
-#: Template/Element/coverage_table.ctp:7
-msgid "Active"
-msgstr ""
-
-#: Template/Admin/TranslateDomains/view.ctp:36
-#: Template/Admin/TranslateProjects/view.ctp:58
-#: Template/Admin/TranslateStrings/view.ctp:68
-msgid "Prio"
-msgstr ""
-
-#: Template/Admin/TranslateDomains/view.ctp:40
-#: Template/Admin/TranslateProjects/view.ctp:38;60
-#: Template/Admin/TranslateStrings/view.ctp:36;70
-#: Template/Admin/TranslateTerms/view.ctp:44
-msgid "Created"
-msgstr ""
-
-#: Template/Admin/TranslateDomains/view.ctp:44
-#: Template/Admin/TranslateProjects/view.ctp:42;62
-#: Template/Admin/TranslateStrings/view.ctp:40;72
-#: Template/Admin/TranslateTerms/view.ctp:48
-msgid "Modified"
-msgstr ""
-
-#: Template/Admin/TranslateLocales/add.ctp:10
-#: Template/Admin/TranslateLocales/edit.ctp:15
-#: Template/Admin/TranslateLocales/from_locale.ctp:33
-#: Template/Admin/TranslateLocales/to_locale.ctp:39
-#: Template/Admin/TranslateLocales/view.ctp:12
-#: Template/Admin/TranslateProjects/index.ctp:12
-#: Template/Admin/TranslateTerms/index.ctp:13
-msgid "List Translate Languages"
-msgstr ""
-
-#: Template/Admin/TranslateLocales/add.ctp:16
-msgid "Add Translate Language"
-msgstr ""
-
-#: Template/Admin/TranslateLocales/edit.ctp:21
-#: Template/Admin/TranslateLocales/view.ctp:10
-msgid "Edit Translate Language"
-msgstr ""
-
-#: Template/Admin/TranslateLocales/from_locale.ctp:8
-msgid "Import Translate Languages"
-msgstr ""
-
-#: Template/Admin/TranslateLocales/from_locale.ctp:12
-msgid "Find"
-msgstr ""
-
-#: Template/Admin/TranslateLocales/from_locale.ctp:21
-msgid "languageName"
-msgstr ""
-
-#: Template/Admin/TranslateLocales/index.ctp:11
-#: Template/Admin/TranslateLocales/view.ctp:13
-#: Template/Admin/TranslateTerms/index.ctp:14
-msgid "New Translate Language"
-msgstr ""
-
-#: Template/Admin/TranslateLocales/index.ctp:15
-msgid "Translate Languages"
-msgstr ""
-
-#: Template/Admin/TranslateLocales/to_locale.ctp:8
-msgid "Export Translate Languages"
-msgstr ""
-
-#: Template/Admin/TranslateLocales/to_locale.ctp:13
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:52
 msgid "Create"
 msgstr ""
 
-#: Template/Admin/TranslateLocales/view.ctp:11
-msgid "Delete Translate Language"
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:65
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/view.php:87
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateLocales/index.php:27
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/index.php:62
+msgid "Locales"
 msgstr ""
 
-#: Template/Admin/TranslateLocales/view.ctp:20
-msgid "Language Id"
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:72
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/index.php:75
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/translate.php:17
+msgid "Domains"
 msgstr ""
 
-#: Template/Admin/TranslateLocales/view.ctp:28
-msgid "Iso2"
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:79
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/index.php:88
+msgid "Strings"
 msgstr ""
 
-#: Template/Admin/TranslateLocales/view.ctp:32
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:86
+msgid "Terms"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:96
+msgid "Overall Coverage"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:111
+msgid "Coverage by Language"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:125
+msgid "Translation Quality"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:127
+msgid "Batch Confirm"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:136
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:429
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateLocales/view.php:37
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/index.php:59
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/index.php:94
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/pending.php:85
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/view.php:77
+#: ./vendor/dereuromark/cakephp-translate/templates/element/coverage_table.php:10
 msgid "Locale"
 msgstr ""
 
-#: Template/Admin/TranslateProjects/add.ctp:16
-msgid "Add Translate Project"
-msgstr ""
-
-#: Template/Admin/TranslateProjects/edit.ctp:23
-#: Template/Admin/TranslateProjects/view.ctp:10
-msgid "Edit Translate Project"
-msgstr ""
-
-#: Template/Admin/TranslateProjects/index.ctp:18
-#: Template/Admin/TranslateProjects/reset.ctp:26
-msgid "Translate Projects"
-msgstr ""
-
-#: Template/Admin/TranslateProjects/reset.ctp:7;11
-msgid "Reset {0}"
-msgstr ""
-
-#: Template/Admin/TranslateProjects/reset.ctp:17
-msgid "only relevant for resetting terms"
-msgstr ""
-
-#: Template/Admin/TranslateProjects/reset.ctp:26
-msgid "List {0}"
-msgstr ""
-
-#: Template/Admin/TranslateProjects/view.ctp:11
-msgid "Delete Translate Project"
-msgstr ""
-
-#: Template/Admin/TranslateProjects/view.ctp:26
-msgid "Type"
-msgstr ""
-
-#: Template/Admin/TranslateProjects/view.ctp:30
-msgid "Default"
-msgstr ""
-
-#: Template/Admin/TranslateProjects/view.ctp:34
-msgid "Status"
-msgstr ""
-
-#: Template/Admin/TranslateProjects/view.ctp:48
-#: Template/Admin/TranslateStrings/view.ctp:58
-msgid "Related Translate Domains"
-msgstr ""
-
-#: Template/Admin/TranslateProjects/view.ctp:54
-#: Template/Admin/TranslateStrings/view.ctp:64
-msgid "Project Id"
-msgstr ""
-
-#: Template/Admin/TranslateProjects/view.ctp:75
-#: Template/Admin/TranslateStrings/view.ctp:85
-msgid "View"
-msgstr ""
-
-#: Template/Admin/TranslateProjects/view.ctp:77
-#: Template/Admin/TranslateStrings/view.ctp:87
-msgid "Edit"
-msgstr ""
-
-#: Template/Admin/TranslateStrings/add.ctp:16
-msgid "Add Translate String"
-msgstr ""
-
-#: Template/Admin/TranslateStrings/dump.ctp:25
-msgid "Languages and domains"
-msgstr ""
-
-#: Template/Admin/TranslateStrings/edit.ctp:21
-#: Template/Admin/TranslateStrings/translate.ctp:14
-#: Template/Admin/TranslateStrings/view.ctp:10
-msgid "Edit Translate String"
-msgstr ""
-
-#: Template/Admin/TranslateStrings/index.ctp:19
-msgid "noLimitation"
-msgstr ""
-
-#: Template/Admin/TranslateStrings/index.ctp:26
-msgid "Filter"
-msgstr ""
-
-#: Template/Admin/TranslateStrings/translate.ctp:39
-msgid "Translate This String"
-msgstr ""
-
-#: Template/Admin/TranslateStrings/translate.ctp:47
-msgid "Singular"
-msgstr ""
-
-#: Template/Admin/TranslateStrings/translate.ctp:53
-msgid "Plural"
-msgstr ""
-
-#: Template/Admin/TranslateStrings/translate.ctp:70;72
-msgid "Save"
-msgstr ""
-
-#: Template/Admin/TranslateStrings/translate.ctp:72
-msgid "Next"
-msgstr ""
-
-#: Template/Admin/TranslateStrings/translate.ctp:88
-msgid "textExcerpt"
-msgstr ""
-
-#: Template/Admin/TranslateStrings/view.ctp:11
-msgid "Delete Translate String"
-msgstr ""
-
-#: Template/Admin/TranslateStrings/view.ctp:20
-msgid "User"
-msgstr ""
-
-#: Template/Admin/TranslateStrings/view.ctp:28
-msgid "Is Html"
-msgstr ""
-
-#: Template/Admin/TranslateStrings/view.ctp:32
-msgid "Last Import"
-msgstr ""
-
-#: Template/Admin/TranslateStrings/view.ctp:49
-msgid "Description"
-msgstr ""
-
-#: Template/Admin/TranslateStrings/view.ctp:53
-msgid "References"
-msgstr ""
-
-#: Template/Admin/TranslateTerms/edit.ctp:22
-#: Template/Admin/TranslateTerms/view.ctp:10
-msgid "Edit Translate Term"
-msgstr ""
-
-#: Template/Admin/TranslateTerms/index.ctp:10
-msgid "New Translate Term"
-msgstr ""
-
-#: Template/Admin/TranslateTerms/view.ctp:11
-msgid "Delete Translate Term"
-msgstr ""
-
-#: Template/Admin/TranslateTerms/view.ctp:20
-msgid "Translate String"
-msgstr ""
-
-#: Template/Admin/TranslateTerms/view.ctp:24
-msgid "Comment"
-msgstr ""
-
-#: Template/Admin/TranslateTerms/view.ctp:28
-msgid "Translate Language"
-msgstr ""
-
-#: Template/Admin/TranslateTerms/view.ctp:32
-msgid "User Id"
-msgstr ""
-
-#: Template/Admin/TranslateTerms/view.ctp:36
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:137
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:445
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/view.php:152
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/index.php:95
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/view.php:92
 msgid "Confirmed"
 msgstr ""
 
-#: Template/Admin/TranslateTerms/view.ctp:40
-msgid "Confirmed By"
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:138
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:449
+msgid "Unconfirmed"
 msgstr ""
 
-#: Template/Admin/TranslateTerms/view.ctp:53
-msgid "Content"
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:139
+msgid "Progress"
 msgstr ""
 
-#: Template/Element/coverage_table.ctp:7
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:173
+msgid "Confirmed translations have been reviewed and approved for production use."
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:188
+msgid "Recent Strings"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:209
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/index.php:199
+msgid "View Details"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:215
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:282
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:516
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/index.php:140
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/view.php:24
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/terms.php:185
+msgid "Translate"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:225
+msgid "String Details"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:231
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/pending.php:87
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/terms.php:118
+msgid "String"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:236
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/add.php:87
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/edit.php:92
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/translate.php:87
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/translate.php:108
+msgid "Plural"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:242
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/add.php:98
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/edit.php:103
+msgid "Context"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:247
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:433
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/add.php:66
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/edit.php:71
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/index.php:54
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/view.php:74
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/pending.php:86
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/terms.php:35
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/terms.php:117
+msgid "Domain"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:251
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:437
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateDomains/view.php:80
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/view.php:89
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/view.php:112
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/view.php:101
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/view.php:256
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/pending.php:89
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/view.php:104
+msgid "Modified"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:255
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:555
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:594
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateApiTranslations/index.php:40
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateApiTranslations/view.php:52
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateDomains/view.php:76
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/view.php:85
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/view.php:111
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/view.php:96
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/view.php:252
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/view.php:100
+msgid "Created"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:260
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/view.php:91
+msgid "Last Import"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:265
+msgid "Flags"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:287
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateApiTranslations/index.php:54
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateDomains/index.php:72
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateLocales/index.php:58
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/index.php:101
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/view.php:133
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/index.php:145
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/index.php:148
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/pending.php:144
+msgid "View"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:307
+msgid "Recent Translations"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:326
+msgid "View Translation"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:332
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:458
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateApiTranslations/index.php:55
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateDomains/index.php:77
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateLocales/index.php:59
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/index.php:106
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/view.php:138
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/index.php:150
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/index.php:153
+msgid "Edit"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:344
+msgid "Translation Change"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:367
+msgid "Changes from last edit"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:373
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:639
+msgid "Unified Diff"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:406
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/analyze.php:211
+msgid "Details"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:409
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/view.php:58
+msgid "Original String"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:413
+msgid "Current Translation"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:418
+msgid "Plural Translation"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:424
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/view.php:73
+msgid "Comment"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:441
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/index.php:163
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/add.php:55
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/edit.php:70
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/view.php:65
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/view.php:124
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/index.php:31
+msgid "Status"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:463
+msgid "View String"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:485
+msgid "Recently Imported Strings"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:496
+msgid "Has plural form"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:499
+msgid "Contains HTML"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:535
+msgid "Audit Trail"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:542
+msgid "Time"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:543
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/view.php:113
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/add.php:47
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/edit.php:62
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/view.php:52
+msgid "Type"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:544
+msgid "Source"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:545
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/pending.php:84
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/terms.php:116
+msgid "ID"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:557
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:596
+msgid "Updated"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:559
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:598
+msgid "Deleted"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:607
+msgid "Audit Information"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:612
+msgid "Timestamp"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:616
+msgid "Transaction"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:621
+msgid "Full Details"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:624
+msgid "View in AuditStash"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:690
+msgid "Changed Fields"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:696
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:745
+msgid "Field"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:697
+msgid "Before"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:698
+msgid "After"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:739
+msgid "Created Data"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:746
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateApiTranslations/add.php:32
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateApiTranslations/edit.php:35
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateApiTranslations/view.php:65
+msgid "Value"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:782
+msgid "Available Features"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:790
+msgid "Audit Logging"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:794
+msgid "AuditStash Plugin"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:800
+msgid "Plugin installed but disabled in config"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:801
+msgid "Disabled"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:805
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:829
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/index.php:190
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateDomains/view.php:68
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateLocales/view.php:45
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/view.php:109
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/view.php:81
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/view.php:240
+msgid "Active"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:810
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:833
+msgid "Not Installed"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:819
+msgid "Advanced Search"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:823
+msgid "FriendsOfCake/Search Plugin"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:842
+msgid "Auto-Translation API"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:843
+msgid "Google Translate, DeepL, etc."
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:852
+msgid "Available"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:856
+msgid "Not Available"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:874
+msgid "Quick Actions"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:883
+msgid "Import from PO/POT files"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:888
+msgid "Export to PO files"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:893
+msgid "Import locales from filesystem"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:898
+msgid "TranslateBehavior & Shadow Tables"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:903
+msgid "Best Practices"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:909
+msgid "Reset Project Data"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/reset.php:23
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/reset.php:28
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/reset.php:41
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/index.php:78
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/index.php:73
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/terms.php:93
+msgid "Reset"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/reset.php:36
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateDomains/extract.php:64
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateDomains/extract.php:75
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/dump.php:44
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/extract.php:44
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/extract.php:59
+msgid "Selection"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/reset.php:48
+msgid "or"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/reset.php:53
+msgid "Hard reset Translate (fully truncate all tables)"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/reset.php:55
+msgid "Sure?"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateApiTranslations/add.php:16
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateApiTranslations/edit.php:19
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateApiTranslations/view.php:22
+msgid "List API Translations"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateApiTranslations/add.php:26
+msgid "Add API Translation"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateApiTranslations/add.php:31
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateApiTranslations/edit.php:34
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateApiTranslations/index.php:36
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateApiTranslations/view.php:58
+msgid "Key"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateApiTranslations/add.php:33
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateApiTranslations/edit.php:36
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateApiTranslations/index.php:37
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateApiTranslations/view.php:40
+msgid "From"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateApiTranslations/add.php:34
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateApiTranslations/edit.php:37
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateApiTranslations/index.php:38
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateApiTranslations/view.php:44
+msgid "To"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateApiTranslations/add.php:35
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateApiTranslations/edit.php:38
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateApiTranslations/index.php:39
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateApiTranslations/view.php:48
+msgid "Engine"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateApiTranslations/edit.php:16
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateApiTranslations/index.php:56
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateDomains/edit.php:16
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateDomains/index.php:82
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateLocales/edit.php:16
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateLocales/index.php:60
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/edit.php:16
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/index.php:111
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/view.php:143
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/edit.php:16
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/index.php:155
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/view.php:29
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/edit.php:21
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/index.php:158
+msgid "Delete"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateApiTranslations/edit.php:16
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateApiTranslations/index.php:56
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateApiTranslations/view.php:19
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateDomains/edit.php:18
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateDomains/index.php:82
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateDomains/view.php:23
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateLocales/edit.php:18
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateLocales/index.php:60
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateLocales/view.php:15
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/edit.php:18
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/index.php:111
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/view.php:23
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/view.php:143
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/edit.php:18
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/index.php:155
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/view.php:31
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/edit.php:23
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/index.php:158
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/view.php:26
+msgid "Are you sure you want to delete # {0}?"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateApiTranslations/edit.php:29
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateApiTranslations/view.php:16
+msgid "Edit API Translation"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateApiTranslations/index.php:19
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateApiTranslations/view.php:25
+msgid "New API Translation"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateApiTranslations/index.php:29
+msgid "API Translations"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateApiTranslations/view.php:19
+msgid "Delete API Translation"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/generate.php:21
+msgid "Generate TranslateBehavior Migration"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/generate.php:25
+msgid "Select a table to generate a shadow table migration for CakePHP TranslateBehavior."
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/generate.php:45
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/view.php:19
+msgid "TranslateBehavior"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/generate.php:48
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/generate.php:150
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/index.php:131
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/index.php:250
+msgid "Generate Migration"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/generate.php:59
+msgid "Generate Migration for Table: {0}"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/generate.php:64
+msgid "This will create a shadow table named"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/generate.php:66
+msgid "to store translations for the selected fields."
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/generate.php:77
+msgid "Configuration"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/generate.php:84
+msgid "Translation Strategy"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/generate.php:88
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/index.php:86
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/index.php:159
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/view.php:40
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/view.php:75
+msgid "Shadow Table"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/generate.php:89
+msgid "EAV (Entity-Attribute-Value)"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/generate.php:102
+msgid "Creates columns for each field. Better performance, recommended."
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/generate.php:103
+msgid "Flexible, stores each field translation as a row. More flexible but slower."
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/generate.php:111
+msgid "Select Fields to Translate"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/generate.php:116
+msgid "No translatable fields found in this table."
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/generate.php:138
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/extract.php:38
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/extract.php:53
+msgid "Select All"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/generate.php:141
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/extract.php:39
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/extract.php:54
+msgid "Deselect All"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/generate.php:163
+msgid "Next Steps"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/generate.php:167
+msgid "Copy the migration code"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/generate.php:169
+msgid "Save to"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/generate.php:173
+msgid "Run:"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/generate.php:177
+msgid "Add to your Table class:"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/generate.php:207
+msgid "Generated Migration Code"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/generate.php:216
+msgid "Copy to Clipboard"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/generate.php:226
+msgid "Save Migration File"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/generate.php:231
+msgid "Back to Overview"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/generate.php:242
+msgid "Configure and Generate"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/generate.php:243
+msgid "Select the fields you want to translate and click \"Generate Migration\"."
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/generate.php:263
+msgid "Migration code copied to clipboard!"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/index.php:17
+msgid "CakePHP TranslateBehavior Overview"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/index.php:22
+msgid "This page shows where CakePHP's built-in TranslateBehavior is used in your application and helps you add translation support to more tables."
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/index.php:36
+msgid "Shadow Tables (_i18n)"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/index.php:45
+msgid "Models Using Behavior"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/index.php:54
+msgid "Candidate Tables"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/index.php:63
+msgid "Orphaned Shadow Tables"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/index.php:75
+msgid "Models Using TranslateBehavior"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/index.php:82
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/index.php:229
+msgid "Table"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/index.php:83
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/view.php:54
+msgid "Model Class"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/index.php:84
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/index.php:161
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/view.php:69
+msgid "Strategy"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/index.php:85
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/view.php:79
+msgid "Translated Fields"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/index.php:106
+msgid "All fields"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/index.php:116
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/view.php:49
+msgid "Missing"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/index.php:125
+msgid "View Shadow Table"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/index.php:152
+msgid "Existing Shadow Tables (_i18n)"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/index.php:160
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/view.php:43
+msgid "Base Table"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/index.php:162
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/view.php:113
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/index.php:101
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/terms.php:119
+msgid "Translations"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/index.php:192
+msgid "Orphaned"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/index.php:220
+msgid "Tables That Could Use Translation"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/index.php:221
+msgid "No shadow table yet"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/index.php:230
+msgid "Translatable Fields"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/index.php:231
+msgid "Field Count"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/index.php:271
+msgid "About CakePHP TranslateBehavior"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/index.php:275
+msgid "CakePHP's TranslateBehavior allows you to translate database fields by storing translations in shadow tables with the \"_i18n\" suffix."
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/index.php:278
+msgid "Translation Strategies"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/index.php:282
+msgid "Default strategy. Stores each translated field as a separate row with columns: locale, field, content."
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/index.php:286
+msgid "Creates separate columns for each translated field. Better performance but less flexible."
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/index.php:292
+msgid "Learn more:"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/index.php:294
+msgid "CakePHP TranslateBehavior Documentation"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/view.php:47
+msgid "Exists"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/view.php:59
+msgid "Has TranslateBehavior"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/view.php:63
+msgid "No TranslateBehavior"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/view.php:73
+msgid "Entity-Attribute-Value"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/view.php:105
+msgid "Table Schema"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/view.php:112
+msgid "Column"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/view.php:114
+msgid "Length"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/view.php:115
+msgid "Null"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/view.php:116
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/index.php:60
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/view.php:56
+msgid "Default"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/view.php:165
+msgid "Translation Data"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/view.php:166
+msgid "first 20 rows"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/view.php:217
+msgid "How to Use"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/view.php:221
+msgid "This table uses the EAV (Entity-Attribute-Value) strategy where:"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/view.php:223
+msgid "The language/locale code (e.g., en_US, de_DE)"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/view.php:224
+msgid "The model name"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/view.php:225
+msgid "ID of the record in the base table"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/view.php:226
+msgid "Name of the translated field"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/view.php:227
+msgid "The translated value"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/view.php:230
+msgid "This table uses the Shadow Table strategy where each translated field has its own column."
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/view.php:236
+msgid "Note"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/view.php:237
+msgid "The model class exists but doesn't have the TranslateBehavior attached. Add it to your Table class:"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateDomains/add.php:16
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateDomains/edit.php:21
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateDomains/extract.php:17
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateDomains/setup.php:18
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateDomains/view.php:26
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/edit.php:26
+msgid "List Translate Domains"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateDomains/add.php:30
+msgid "Add Translate Domain"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateDomains/add.php:48
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateDomains/edit.php:53
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateDomains/extract.php:113
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateDomains/setup.php:89
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/add.php:93
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/edit.php:108
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/reset.php:88
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/add.php:127
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/edit.php:141
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/edit.php:72
+msgid "Cancel"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateDomains/edit.php:35
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateDomains/view.php:16
+msgid "Edit Translate Domain"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateDomains/extract.php:26
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateDomains/setup.php:27
+msgid "Information"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateDomains/extract.php:29
+msgid "POT Files"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateDomains/extract.php:31
+msgid "POT (Portable Object Template) files contain the source strings to be translated."
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateDomains/extract.php:34
+msgid "PO Files"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateDomains/extract.php:36
+msgid "PO (Portable Object) files contain translations for a specific language."
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateDomains/extract.php:39
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/source.php:9
+msgid "Source Code"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateDomains/extract.php:41
+msgid "Extract translation strings directly from your application source code."
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateDomains/extract.php:53
+msgid "Extract Translation Strings"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateDomains/extract.php:60
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/extract.php:36
+msgid "From POT File"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateDomains/extract.php:71
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/extract.php:51
+msgid "From PO File"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateDomains/extract.php:82
+msgid "From Source Code"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateDomains/extract.php:87
+msgid "Extract from source code"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateDomains/extract.php:95
+msgid "Controller Names"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateDomains/extract.php:100
+msgid "Extract controller names"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateDomains/index.php:24
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateDomains/view.php:31
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/edit.php:31
+msgid "New Translate Domain"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateDomains/setup.php:31
+msgid "This wizard helps you set up default translation domains for your application."
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateDomains/setup.php:34
+msgid "Select the domains you want to create and submit the form."
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateDomains/setup.php:46
+msgid "Setup Default Translate Domains"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateDomains/setup.php:61
+msgid "already exists"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateDomains/view.php:21
+msgid "Delete Translate Domain"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateDomains/view.php:48
+msgid "Domain Details"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateDomains/view.php:53
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateLocales/view.php:33
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/add.php:39
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/edit.php:54
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/view.php:48
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/view.php:108
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/view.php:236
+msgid "Name"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateDomains/view.php:57
+msgid "Translate Project"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateDomains/view.php:72
+msgid "Prio"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateLocales/add.php:15
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateLocales/edit.php:21
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateLocales/from_locale.php:18
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateLocales/to_locale.php:18
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateLocales/view.php:16
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/index.php:35
+msgid "List Locales"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateLocales/add.php:22
+msgid "Add Locale"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateLocales/edit.php:28
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateLocales/view.php:14
+msgid "Edit Locale"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateLocales/from_locale.php:25
+msgid "Import Locales"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateLocales/from_locale.php:44
+msgid "Language name"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateLocales/from_locale.php:34
+msgid "{0} locale found"
+msgid_plural "{0} locales found"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateLocales/index.php:18
+msgid "From Locale"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateLocales/index.php:19
+msgid "To Locale"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateLocales/index.php:20
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateLocales/view.php:17
+msgid "New Locale"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateLocales/to_locale.php:25
+msgid "Export Locales"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateLocales/to_locale.php:34
+msgid "{0} locale"
+msgid_plural "{0} locales"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateLocales/view.php:15
+msgid "Delete Locale"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateLocales/view.php:29
+msgid "Language Relation"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateLocales/view.php:41
+msgid "Iso2"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/add.php:16
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/edit.php:21
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/reset.php:17
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/view.php:26
+msgid "List Translate Projects"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/add.php:30
+msgid "Add Translate Project"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/add.php:62
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/edit.php:77
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/view.php:75
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/view.php:248
+msgid "Path"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/add.php:64
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/edit.php:79
+msgid "e.g., plugins/MyPlugin or leave empty for default app path"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/add.php:67
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/edit.php:82
+msgid "Optional: Relative or absolute path for this project (e.g., plugins/MyPlugin). Leave empty to use default app path."
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/add.php:75
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/edit.php:90
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/view.php:60
+msgid "Default Project"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/add.php:81
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/edit.php:96
+msgid "Set this as the default translation project"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/edit.php:45
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/view.php:16
+msgid "Edit Translate Project"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/index.php:24
+msgid "New Translate Project"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/index.php:35
+msgid "Translate Projects"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/reset.php:26
+msgid "Warning"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/reset.php:30
+msgid "This action cannot be undone!"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/reset.php:33
+msgid "Resetting will permanently remove selected data from the translation project. Make sure you have backups before proceeding."
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/reset.php:45
+msgid "Reset Translate Project"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/reset.php:54
+msgid "Reset Options"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/reset.php:62
+msgid "Select which data to remove from this project"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/reset.php:68
+msgid "Languages"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/reset.php:76
+msgid "Select languages (only relevant for resetting terms)"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/view.php:21
+msgid "Delete Translate Project"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/view.php:43
+msgid "Project Details"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/view.php:80
+msgid "Default app path"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/view.php:100
+msgid "Related Translate Domains"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/view.php:110
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/view.php:244
+msgid "Priority"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/add.php:16
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/dump.php:15
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/edit.php:21
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/extract.php:16
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/translate.php:20
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/view.php:34
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/edit.php:31
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/index.php:25
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/view.php:34
+msgid "List Translate Strings"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/add.php:25
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/edit.php:30
+msgid "Field Information"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/add.php:28
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/add.php:109
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/edit.php:33
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/edit.php:114
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/view.php:86
+msgid "Is HTML"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/add.php:30
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/edit.php:35
+msgid "Check this if the string contains HTML tags. When enabled, translations will not be automatically escaped, allowing HTML markup."
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/add.php:31
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/edit.php:36
+msgid "Use with caution!"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/add.php:34
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/edit.php:39
+msgid "Placeholders"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/add.php:36
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/edit.php:41
+msgid "Use {0}, {1}, {2} etc. for dynamic values. Example: \"You have {0} items\" becomes \"You have 5 items\""
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/add.php:39
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/edit.php:44
+msgid "Context Usage"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/add.php:41
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/edit.php:46
+msgid "Context helps differentiate identical strings with different meanings:"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/add.php:44
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/edit.php:49
+msgid "verb"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/add.php:44
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/edit.php:49
+msgid "noun"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/add.php:45
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/edit.php:50
+msgid "button"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/add.php:45
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/edit.php:50
+msgid "menu item"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/add.php:57
+msgid "Add Translate String"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/add.php:70
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/edit.php:75
+msgid "The translation domain this string belongs to (e.g., \"default\", \"validation\")"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/add.php:76
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/edit.php:81
+msgid "Name (Singular)"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/add.php:81
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/edit.php:86
+msgid "The source string to be translated. Use {0}, {1} for placeholders."
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/add.php:92
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/edit.php:97
+msgid "Optional plural form (e.g., \"One item\" → \"Multiple items\"). Must use same placeholders as singular."
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/add.php:100
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/edit.php:105
+msgid "e.g., \"navigation\", \"button\", \"error message\""
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/add.php:103
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/edit.php:108
+msgid "Optional context to differentiate identical strings with different meanings (e.g., \"Post\" as noun vs verb)."
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/add.php:115
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/edit.php:129
+msgid "Translate Afterwards"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/analyze.php:12
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/extract.php:17
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/index.php:30
+msgid "Analyze PO File"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/analyze.php:19
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/run_extract.php:21
+msgid "Back"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/analyze.php:22
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/run_extract.php:24
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/run_extract.php:184
+msgid "Extract/Import"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/analyze.php:27
+msgid "Quick Analyze"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/analyze.php:41
+msgid "PO File Analyzer"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/analyze.php:46
+msgid "Analyzing: {0}"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/analyze.php:49
+msgid "Select a file from the sidebar, or paste/upload content below."
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/analyze.php:53
+msgid "Input"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/analyze.php:59
+msgid "Select from Project"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/analyze.php:61
+msgid "Select a file"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/analyze.php:67
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/analyze.php:80
+msgid "- OR -"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/analyze.php:74
+msgid "Upload PO/POT File"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/analyze.php:86
+msgid "Paste PO Content"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/analyze.php:102
+msgid "Translation Style"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/analyze.php:104
+msgid "Auto-detect"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/analyze.php:105
+msgid "Text-based (msgid is readable text)"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/analyze.php:106
+msgid "Key-based (msgid is a key like \"user.profile.title\")"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/analyze.php:113
+msgid "Auto-detect:"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/analyze.php:114
+msgid "If msgid has no spaces and matches key patterns (foo.bar.baz, foo_bar_baz, fooBarBaz), HTML/whitespace checks are skipped."
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/analyze.php:116
+msgid "Key-based:"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/analyze.php:117
+msgid "Use this when msgid is a translation key, not actual text. Skips HTML/whitespace mismatch checks."
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/analyze.php:121
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/run_extract.php:27
+msgid "Analyze"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/analyze.php:128
+msgid "Analysis Results"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/analyze.php:133
+msgid "Statistics"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/analyze.php:138
+msgid "Total Strings"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/analyze.php:142
+#: ./vendor/dereuromark/cakephp-translate/templates/element/coverage_table.php:10
+msgid "Translated"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/analyze.php:146
+msgid "Untranslated"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/analyze.php:152
+msgid "Fuzzy"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/analyze.php:156
+msgid "Plurals"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/analyze.php:160
+msgid "With Context"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/analyze.php:172
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/index.php:46
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/index.php:140
+msgid "translated"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/analyze.php:186
+#: ./vendor/dereuromark/cakephp-translate/templates/element/suggestions.php:22
+msgid "Suggestions"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/analyze.php:202
+msgid "Issues Found"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/analyze.php:209
+msgid "String (msgid)"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/analyze.php:210
+msgid "Issue"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/analyze.php:221
+msgid "Plural:"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/analyze.php:224
+msgid "Translation:"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/analyze.php:242
+msgid "Expected:"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/analyze.php:244
+msgid "Actual:"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/analyze.php:248
+msgid "Suggested fix for msgid:"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/analyze.php:251
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/analyze.php:260
+msgid "Copy to clipboard"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/analyze.php:252
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/analyze.php:261
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/analyze.php:292
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/analyze.php:305
+msgid "Copy"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/analyze.php:257
+msgid "Suggested fix for msgstr:"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/analyze.php:274
+msgid "No issues found!"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/analyze.php:275
+msgid "Your PO file looks good."
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/analyze.php:288
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/analyze.php:303
+msgid "Copied!"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/display_reference.php:21
+msgid "Debug Mode - Source Code Editing Enabled"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/display_reference.php:24
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/run_extract.php:41
+msgid "Warning:"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/display_reference.php:25
+msgid "You are about to edit the source code file directly. Make sure you have a clean working directory!"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/display_reference.php:28
+msgid "Show Source Code Editor"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/display_reference.php:47
+msgid "Save Changes"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/display_reference.php:51
+msgid "Remember to commit your changes!"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/display_reference.php:61
+msgid "Code Excerpt"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/dump.php:23
+msgid "Dump Translations"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/dump.php:28
+msgid "Files are stored in:"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/dump.php:34
+msgid "Languages and Domains"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/dump.php:39
+msgid "No active domains found. Please activate them if they already exist."
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/edit.php:62
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/translate.php:21
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/view.php:19
+msgid "Edit Translate String"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/edit.php:120
+msgid "Update Code References"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/edit.php:123
+msgid "Update all occurrences in source files to match the new string"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/extract.php:18
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/run_extract.php:35
+msgid "Run i18n Extract"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/extract.php:26
+msgid "Extract Translations"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/extract.php:31
+msgid "Locale Path:"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/index.php:25
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/view.php:39
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/edit.php:36
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/index.php:30
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/view.php:39
+msgid "New Translate String"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/index.php:47
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/index.php:73
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/index.php:52
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/index.php:68
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/terms.php:88
+msgid "Filter"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/index.php:54
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/index.php:59
+msgid "noLimitation"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/index.php:57
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/index.php:62
+msgid "Search..."
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/index.php:57
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/index.php:62
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/terms.php:28
+msgid "Search"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/index.php:62
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/terms.php:78
+msgid "Missing Translation"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/index.php:69
+msgid "Please note that name/context are case sensitive by default!"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/run_extract.php:15
+msgid "Run i18n Extract (Experimental)"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/run_extract.php:36
+msgid "Experimental"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/run_extract.php:42
+msgid "This runs the CakePHP i18n extract command. It will scan your source files and generate/update POT files. Make sure you have a backup of your locale files."
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/run_extract.php:48
+msgid "Plugin domain: <strong>{0}.pot</strong> (only this file will be kept, others like default.pot will be removed)"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/run_extract.php:54
+msgid "Project Paths"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/run_extract.php:58
+msgid "App Path"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/run_extract.php:61
+msgid "Locale Path"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/run_extract.php:69
+msgid "Extraction Options"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/run_extract.php:73
+msgid "Paths to scan (one per line)"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/run_extract.php:76
+msgid "Leave empty to use defaults: src/ and templates/"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/run_extract.php:81
+msgid "Output Path"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/run_extract.php:83
+msgid "Where to write the POT files"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/run_extract.php:90
+msgid "Dry run (preview only)"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/run_extract.php:97
+msgid "Merge with existing"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/run_extract.php:104
+msgid "Overwrite existing"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/run_extract.php:114
+msgid "Extract core strings"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/run_extract.php:122
+msgid "Run Extract"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/run_extract.php:130
+msgid "Results"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/run_extract.php:134
+msgid "Command Executed"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/run_extract.php:144
+msgid "Output"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/run_extract.php:146
+msgid "Exit code: {0}"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/run_extract.php:158
+msgid "Dry Run Preview"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/run_extract.php:161
+msgid "The following POT files would be generated:"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/run_extract.php:167
+msgid "{0} strings"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/run_extract.php:177
+msgid "This was a dry run. Uncheck \"Dry run\" and submit again to actually write the files."
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/run_extract.php:184
+msgid "POT files have been generated. You can now import them via the {0} page."
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/translate.php:29
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/view.php:62
+msgid "Translate String"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/translate.php:36
+msgid "String:"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/translate.php:46
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/terms.php:54
+msgid "HTML"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/translate.php:46
+msgid "Manual escaping necessary!"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/translate.php:60
+msgid "Required placeholders:"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/translate.php:71
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/translate.php:89
+msgid "Translate This String"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/translate.php:78
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/translate.php:98
+msgid "Singular"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/translate.php:104
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/translate.php:105
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/translate.php:129
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/translate.php:130
+msgid "Save"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/translate.php:105
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/translate.php:130
+#: ./vendor/dereuromark/cakephp-translate/templates/element/pagination.php:26
+msgid "Next"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/translate.php:106
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/translate.php:131
+msgid "Skip"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/translate.php:116
+msgid "Additional Information"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/translate.php:131
+msgid "Domain:"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/translate.php:136
+msgid "References:"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/translate.php:162
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/view.php:286
+msgid "Code Reference"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/translate.php:168
+msgid "Close"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/view.php:54
+msgid "Translate String Details"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/view.php:66
+msgid "User"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/view.php:122
 msgid "Language"
 msgstr ""
 
-#: Template/Element/coverage_table.ctp:7
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/view.php:123
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/index.php:93
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/pending.php:88
+msgid "Translation"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/view.php:140
+msgid "Using default value"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/view.php:145
+msgid "Not translated"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/view.php:156
+msgid "Pending"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/view.php:168
+msgid "No translations available yet."
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/view.php:169
+msgid "Translate now"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/view.php:193
+msgid "Code References"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/view.php:228
+msgid "Domain Information"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/view.php:264
+msgid "View Domain"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/view.php:269
+msgid "Edit Domain"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/view.php:293
+msgid "Loading..."
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/edit.php:26
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/view.php:29
+msgid "List Translate Terms"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/edit.php:47
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/view.php:19
+msgid "Edit Translate Term"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/index.php:92
+msgid "Text"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/pending.php:12
+msgid "Pending Translations"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/pending.php:29
+msgid "pending translations"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/pending.php:33
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/pending.php:56
+msgid "Confirm All"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/pending.php:49
+msgid "All Locales"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/pending.php:52
+msgid "total pending"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/pending.php:61
+msgid "Are you sure you want to confirm all pending translations?"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/pending.php:76
+msgid "Pending Translations List"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/pending.php:78
+msgid "{{count}} pending"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/pending.php:98
+msgid "No pending translations!"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/pending.php:152
+msgid "Confirm"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/pending.php:164
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/terms.php:196
+msgid "first"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/pending.php:165
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/terms.php:197
+msgid "previous"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/pending.php:167
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/terms.php:199
+msgid "next"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/pending.php:168
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/terms.php:200
+msgid "last"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/pending.php:171
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/terms.php:203
+#: ./vendor/dereuromark/cakephp-translate/templates/element/pagination.php:29
+msgid "Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/view.php:24
+msgid "Delete Translate Term"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/view.php:56
+msgid "Translate Term Details"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/view.php:88
+msgid "User Id"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/view.php:96
+msgid "Confirmed By"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateTerms/view.php:115
+msgid "Content"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/index.php:17
+msgid "Translate Plugin"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/index.php:20
+msgid "Easily manage i18n/translations from your backend."
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/index.php:41
+msgid "Current Translation Coverage"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/index.php:120
+msgid "Quick Start"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/index.php:127
+msgid "Select Domain"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/index.php:159
+msgid "Start Translating Next"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/index.php:164
+msgid "Browse All Terms"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/terms.php:13
+msgid "Translation Terms"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/terms.php:21
+msgid "Filters"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/terms.php:29
+msgid "Search in strings..."
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/terms.php:37
+msgid "All domains"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/terms.php:43
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/terms.php:120
+msgid "Skipped"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/terms.php:45
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/terms.php:56
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/terms.php:67
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/terms.php:80
+#: ./vendor/dereuromark/cakephp-translate/templates/element/yes_no.php:23
+msgid "Yes"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/terms.php:46
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/terms.php:57
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/terms.php:68
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/terms.php:81
+#: ./vendor/dereuromark/cakephp-translate/templates/element/yes_no.php:27
+msgid "No"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/terms.php:48
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/terms.php:59
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/terms.php:70
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/terms.php:83
+msgid "All"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/terms.php:65
+msgid "Has Plural"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/terms.php:108
+msgid "Translation Strings"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/terms.php:110
+msgid "{{count}} strings"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/terms.php:171
+msgid "None"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/translate.php:45
+msgid "strings"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/translate.php:58
+msgid "complete"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/element/coverage_table.php:10
 msgid "Coverage"
 msgstr ""
 
-#: Template/Element/project_switch.ctp:16
+#: ./vendor/dereuromark/cakephp-translate/templates/element/pagination.php:17
+msgid "First"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/element/pagination.php:20
+msgid "Last"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/element/pagination.php:23
+msgid "Previous"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/element/project_switch.php:25
+msgid "Project"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/element/project_switch.php:35
 msgid "pleaseSelect"
 msgstr ""
 

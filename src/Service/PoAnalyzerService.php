@@ -27,13 +27,22 @@ class PoAnalyzerService {
 	];
 
 	/**
+	 * Whether to treat msgids as keys (skip HTML/whitespace checks).
+	 *
+	 * @var bool|null null = auto-detect, true = key-based, false = text-based
+	 */
+	protected ?bool $keyBasedMode = null;
+
+	/**
 	 * Analyze PO file content and return issues.
 	 *
 	 * @param string $content PO file content
+	 * @param bool|null $keyBasedMode null = auto-detect, true = key-based (skip HTML/whitespace), false = text-based
 	 * @return array{issues: array<string, array<string, mixed>>, stats: array<string, int>, suggestions: array<string>}
 	 */
-	public function analyze(string $content): array {
+	public function analyze(string $content, ?bool $keyBasedMode = null): array {
 		$this->issues = [];
+		$this->keyBasedMode = $keyBasedMode;
 		$this->stats = [
 			'total' => 0,
 			'translated' => 0,
@@ -93,8 +102,8 @@ class PoAnalyzerService {
 			$this->stats['with_context']++;
 		}
 
-		// Check if translated
-		if (empty($msgstr)) {
+		// Check if translated (use trimmed for empty check)
+		if (trim($msgstr) === '') {
 			$this->stats['untranslated']++;
 		} else {
 			$this->stats['translated']++;
@@ -105,16 +114,15 @@ class PoAnalyzerService {
 			$this->stats['fuzzy']++;
 		}
 
-		// Run issue checks
+		// Run issue checks (untranslated is tracked in stats/suggestions, not as issue)
 		$this->checkPlaceholderMismatch($msgid, $entry);
 		$this->checkPluralPlaceholderMismatch($entry);
-		$this->checkEmptyTranslation($msgid, $entry);
 		$this->checkWhitespaceMismatch($msgid, $msgstr, $entry);
 		$this->checkHtmlMismatch($msgid, $msgstr);
 	}
 
 	/**
-	 * Get msgstr value handling plurals.
+	 * Get msgstr value handling plurals (raw, without trimming).
 	 *
 	 * @param array<string, mixed> $entry
 	 * @return string
@@ -122,10 +130,10 @@ class PoAnalyzerService {
 	protected function getMsgstr(array $entry): string {
 		if (is_array($entry['msgstr'])) {
 			// For plurals, check first form
-			return trim($entry['msgstr'][0] ?? '');
+			return $entry['msgstr'][0] ?? '';
 		}
 
-		return trim($entry['msgstr'] ?? '');
+		return $entry['msgstr'] ?? '';
 	}
 
 	/**
@@ -150,6 +158,7 @@ class PoAnalyzerService {
 				'type' => 'brace',
 				'expected' => $expectedBrace[0],
 				'actual' => $actualBrace[0],
+				'msgstr' => $msgstr,
 				'message' => sprintf(
 					'Brace placeholder mismatch: expected %s, got %s',
 					json_encode($expectedBrace[0]),
@@ -167,6 +176,7 @@ class PoAnalyzerService {
 				'type' => 'sprintf',
 				'expected' => $expectedSprintf[0],
 				'actual' => $actualSprintf[0],
+				'msgstr' => $msgstr,
 				'message' => sprintf(
 					'Sprintf placeholder mismatch: expected %s, got %s',
 					json_encode($expectedSprintf[0]),
@@ -223,29 +233,35 @@ class PoAnalyzerService {
 	}
 
 	/**
-	 * Check for empty translations that might need attention.
+	 * Check if msgid looks like a translation key rather than actual text.
+	 *
+	 * Keys are typically: camelCase, snake_case, dot.notation, UPPER_CASE
+	 * without spaces and often without special characters.
 	 *
 	 * @param string $msgid
-	 * @param array<string, mixed> $entry
-	 * @return void
+	 * @return bool
 	 */
-	protected function checkEmptyTranslation(string $msgid, array $entry): void {
-		$msgstr = $this->getMsgstr($entry);
-		if (!empty($msgstr)) {
-			return;
+	protected function isKeyBased(string $msgid): bool {
+		// Explicit mode set
+		if ($this->keyBasedMode !== null) {
+			return $this->keyBasedMode;
 		}
 
-		// Only flag as issue if it's not fuzzy (fuzzy entries are work-in-progress)
-		$isFuzzy = !empty($entry['flags']) && in_array('fuzzy', $entry['flags'], true);
-		if (!$isFuzzy) {
-			$this->addIssue($msgid, 'untranslated', [
-				'message' => 'String is not translated',
-			]);
+		// Auto-detect: if no spaces and matches key patterns, it's likely a key
+		if (str_contains($msgid, ' ')) {
+			return false;
 		}
+
+		// Common key patterns: foo.bar.baz, foo_bar_baz, fooBarBaz, FOO_BAR
+		if (preg_match('/^[a-zA-Z][a-zA-Z0-9._-]*$/', $msgid)) {
+			return true;
+		}
+
+		return false;
 	}
 
 	/**
-	 * Check for whitespace mismatches.
+	 * Check for whitespace issues.
 	 *
 	 * @param string $msgid
 	 * @param string $msgstr
@@ -253,7 +269,12 @@ class PoAnalyzerService {
 	 * @return void
 	 */
 	protected function checkWhitespaceMismatch(string $msgid, string $msgstr, array $entry): void {
-		if (empty($msgstr)) {
+		if (trim($msgstr) === '') {
+			return;
+		}
+
+		// Skip for key-based translations
+		if ($this->isKeyBased($msgid)) {
 			return;
 		}
 
@@ -263,16 +284,40 @@ class PoAnalyzerService {
 		$msgidTrailing = strlen($msgid) - strlen(rtrim($msgid));
 		$msgstrTrailing = strlen($msgstr) - strlen(rtrim($msgstr));
 
-		if ($msgidLeading !== $msgstrLeading || $msgidTrailing !== $msgstrTrailing) {
-			$this->addIssue($msgid, 'whitespace_mismatch', [
-				'message' => sprintf(
-					'Whitespace differs: original has %d leading/%d trailing, translation has %d leading/%d trailing',
-					$msgidLeading,
-					$msgidTrailing,
-					$msgstrLeading,
-					$msgstrTrailing,
-				),
-			]);
+		$hasWhitespace = $msgidLeading > 0 || $msgidTrailing > 0 || $msgstrLeading > 0 || $msgstrTrailing > 0;
+		$isMismatch = $msgidLeading !== $msgstrLeading || $msgidTrailing !== $msgstrTrailing;
+
+		if ($hasWhitespace) {
+			if ($isMismatch) {
+				// Mismatch: suggest fixing msgstr to match msgid
+				$leadingWhitespace = substr($msgid, 0, $msgidLeading);
+				$trailingWhitespace = $msgidTrailing > 0 ? substr($msgid, -$msgidTrailing) : '';
+				$fixedMsgstr = $leadingWhitespace . trim($msgstr) . $trailingWhitespace;
+
+				$this->addIssue($msgid, 'whitespace_mismatch', [
+					'msgstr' => $msgstr,
+					'fixed_msgstr' => $fixedMsgstr,
+					'message' => sprintf(
+						'Whitespace mismatch: original has %d leading/%d trailing, translation has %d leading/%d trailing',
+						$msgidLeading,
+						$msgidTrailing,
+						$msgstrLeading,
+						$msgstrTrailing,
+					),
+				]);
+			} else {
+				// Both have whitespace (matching) - warn that this is usually unintentional
+				$this->addIssue($msgid, 'whitespace_warning', [
+					'msgstr' => $msgstr,
+					'fixed_msgid' => trim($msgid),
+					'fixed_msgstr' => trim($msgstr),
+					'message' => sprintf(
+						'Both have whitespace (%d leading/%d trailing) - this is usually unintentional',
+						$msgidLeading,
+						$msgidTrailing,
+					),
+				]);
+			}
 		}
 	}
 
@@ -288,6 +333,11 @@ class PoAnalyzerService {
 			return;
 		}
 
+		// Skip for key-based translations
+		if ($this->isKeyBased($msgid)) {
+			return;
+		}
+
 		preg_match_all('/<[^>]+>/', $msgid, $expectedTags);
 		preg_match_all('/<[^>]+>/', $msgstr, $actualTags);
 
@@ -295,6 +345,7 @@ class PoAnalyzerService {
 			$this->addIssue($msgid, 'html_mismatch', [
 				'expected' => $expectedTags[0],
 				'actual' => $actualTags[0],
+				'msgstr' => $msgstr,
 				'message' => 'HTML tags differ between original and translation',
 			]);
 		}

@@ -7,9 +7,19 @@ use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
 use Cake\Core\App;
-use Cake\I18n\Parser\PoFileParser;
+use Cake\Core\Plugin;
 use Translate\Filesystem\Folder;
+use Translate\Service\PoAnalyzerService;
 
+/**
+ * Validate PO/POT files for common issues.
+ *
+ * Checks for:
+ * - Placeholder mismatches ({0}, %s, %d)
+ * - Whitespace differences
+ * - HTML tag mismatches
+ * - Mixed placeholder styles
+ */
 class I18nValidateCommand extends Command {
 
 	/**
@@ -20,6 +30,13 @@ class I18nValidateCommand extends Command {
 	protected array $_paths = [];
 
 	/**
+	 * @inheritDoc
+	 */
+	public static function defaultName(): string {
+		return 'i18n validate';
+	}
+
+	/**
 	 * Execute the command
 	 *
 	 * @param \Cake\Console\Arguments $args The command arguments.
@@ -27,47 +44,118 @@ class I18nValidateCommand extends Command {
 	 * @return int|null The exit code or null for success
 	 */
 	public function execute(Arguments $args, ConsoleIo $io): ?int {
+		$keyBased = (bool)$args->getOption('key-based');
+		$jsonOutput = (bool)$args->getOption('json');
+		$summaryOnly = (bool)$args->getOption('summary');
+
 		if ($args->getOption('paths')) {
 			$this->_paths = explode(',', (string)$args->getOption('paths'));
 		} else {
-			$this->_getPaths($io, (string)$args->getOption('plugin') ?: null);
+			$plugin = $args->getOption('plugin');
+			if ($plugin) {
+				if (!Plugin::isLoaded((string)$plugin)) {
+					$io->error("Plugin '{$plugin}' is not loaded.");
+
+					return static::CODE_ERROR;
+				}
+				$this->_paths = [Plugin::path((string)$plugin) . 'resources' . DS . 'locales' . DS];
+			} else {
+				$this->_paths = array_values(App::path('locales'));
+			}
 		}
 
-		$exitCode = static::CODE_SUCCESS;
-		foreach ($this->_paths as $path) {
-			$folderContent = (new Folder($path))->read();
-			$locales = $folderContent[0] ?? [];
-			foreach ($locales as $locale) {
-				$folderContent = (new Folder($path . DS . $locale . DS))->read();
-				if (empty($folderContent[1])) {
+		$totalIssues = 0;
+		$totalFiles = 0;
+		$filesWithIssues = 0;
+		$allResults = [];
+
+		$analyzer = new PoAnalyzerService();
+
+		foreach ($this->_paths as $basePath) {
+			if (!is_dir($basePath)) {
+				if (!$jsonOutput) {
+					$io->warning("Path not found: {$basePath}");
+				}
+
+				continue;
+			}
+
+			$files = $this->findTranslationFiles($basePath);
+
+			foreach ($files as $file) {
+				$content = file_get_contents($file);
+				if ($content === false) {
+					if (!$jsonOutput) {
+						$io->warning("Could not read file: {$file}");
+					}
+
 					continue;
 				}
 
-				foreach ($folderContent[1] as $file) {
-					$subPath = $locale . DS . $file;
-					$io->out($subPath);
+				$result = $analyzer->analyze($content, $keyBased ? true : null);
+				$issueCount = count($result['issues']);
+				$totalFiles++;
 
-					$result = $this->validate($path . $subPath);
-					if (!$result) {
-						$io->success('=> OK');
+				$relativePath = str_replace($basePath, '', $file);
+				$allResults[$relativePath] = $result;
 
-						continue;
-					}
+				if ($issueCount > 0) {
+					$filesWithIssues++;
+					$totalIssues += $issueCount;
 
-					$io->warning('=> ' . count($result) . ' issue(s):');
-					foreach ($result as $string => $issues) {
-						$io->warning(' - `' . $string . '`:');
-						foreach ($issues as $issue) {
-							$io->warning('   * ' . $issue);
+					if (!$jsonOutput && !$summaryOnly) {
+						$io->out('');
+						$io->out("<warning>{$relativePath}</warning> - {$issueCount} issue(s)");
+
+						foreach ($result['issues'] as $msgid => $issues) {
+							foreach ($issues as $type => $details) {
+								$io->out("  <error>[{$type}]</error> " . $this->truncate((string)$msgid, 60));
+								if (!empty($details['message'])) {
+									$io->out("    {$details['message']}");
+								}
+							}
 						}
 					}
-
-					$exitCode = static::CODE_ERROR;
+				} elseif (!$jsonOutput && !$summaryOnly) {
+					$io->out("<success>{$relativePath}</success> - OK");
 				}
 			}
 		}
 
-		return $exitCode;
+		// Output results
+		if ($jsonOutput) {
+			$output = [
+				'paths' => $this->_paths,
+				'summary' => [
+					'total_files' => $totalFiles,
+					'files_with_issues' => $filesWithIssues,
+					'total_issues' => $totalIssues,
+				],
+				'files' => $allResults,
+			];
+			$io->out((string)json_encode($output, JSON_PRETTY_PRINT));
+		} else {
+			$io->hr();
+			$io->out('');
+			$io->out('<info>Summary:</info>');
+			$io->out("  Files scanned: {$totalFiles}");
+			$io->out("  Files with issues: {$filesWithIssues}");
+			$io->out("  Total issues: {$totalIssues}");
+
+			if ($totalIssues === 0) {
+				$io->out('');
+				$io->success('All translation files are valid!');
+			} else {
+				$io->out('');
+				$io->warning("Found {$totalIssues} issue(s) in {$filesWithIssues} file(s).");
+			}
+		}
+
+		if ($totalIssues > 0) {
+			return static::CODE_ERROR;
+		}
+
+		return static::CODE_SUCCESS;
 	}
 
 	/**
@@ -78,103 +166,83 @@ class I18nValidateCommand extends Command {
 	 */
 	public function buildOptionParser(ConsoleOptionParser $parser): ConsoleOptionParser {
 		$parser->setDescription([
-			static::getDescription(),
-			'Validates PO files.',
+			'Validate PO/POT translation files for common issues.',
+			'',
+			'Checks for:',
+			'- Placeholder mismatches ({0}, %s, %d)',
+			'- Whitespace differences',
+			'- HTML tag mismatches',
+			'- Mixed placeholder styles',
 		])->addOption('paths', [
-			'help' => 'Comma separated list of paths that are searched for source files.',
+			'help' => 'Comma separated list of paths to scan for PO/POT files.',
 		])->addOption('plugin', [
-			'help' => 'Extracts tokens only from the plugin specified and '
-				. "puts the result in the plugin's `locales` directory.",
+			'help' => 'Validate translations for a specific plugin.',
 			'short' => 'p',
+		])->addOption('key-based', [
+			'short' => 'k',
+			'help' => 'Treat msgid as translation keys (skip HTML/whitespace checks).',
+			'boolean' => true,
+			'default' => false,
+		])->addOption('json', [
+			'help' => 'Output results as JSON.',
+			'boolean' => true,
+			'default' => false,
+		])->addOption('summary', [
+			'short' => 's',
+			'help' => 'Only show summary, not individual issues.',
+			'boolean' => true,
+			'default' => false,
 		]);
 
 		return $parser;
 	}
 
 	/**
-	 * Method to interact with the user and get path selections.
+	 * Find all PO/POT files in a directory recursively.
 	 *
-	 * @param \Cake\Console\ConsoleIo $io The io instance.
-	 * @param string|null $plugin
-	 * @return void
+	 * @param string $basePath Base path to search
+	 * @return array<string> List of file paths
 	 */
-	protected function _getPaths(ConsoleIo $io, ?string $plugin): void {
-		$defaultPaths = array_merge(
-			array_values(App::path('locales', $plugin)),
-			['D'], // This is required to break the loop below
-		);
-		$defaultPathIndex = 0;
-		while (true) {
-			$currentPaths = $this->_paths !== [] ? $this->_paths : ['None'];
-			$message = sprintf(
-				"Current paths: %s\nWhat is the path you would like to validate?\n[Q]uit [D]one",
-				implode(', ', $currentPaths),
-			);
-			$response = $io->ask($message, $defaultPaths[$defaultPathIndex] ?? 'D');
-			if (strtoupper($response) === 'Q') {
-				$io->err('Extract Aborted');
-				$this->abort();
-			}
-			if (strtoupper($response) === 'D' && count($this->_paths)) {
-				$io->out();
+	protected function findTranslationFiles(string $basePath): array {
+		$files = [];
 
-				return;
+		// First check for POT files in root
+		$potFiles = glob($basePath . '*.pot') ?: [];
+		$files = array_merge($files, $potFiles);
+
+		// Then check locale subdirectories for PO files
+		$folderContent = (new Folder($basePath))->read();
+		$locales = $folderContent[0] ?? [];
+
+		foreach ($locales as $locale) {
+			$localePath = $basePath . $locale . DS;
+			if (!is_dir($localePath)) {
+				continue;
 			}
-			if (strtoupper($response) === 'D') {
-				$io->warning('No directories selected. Please choose a directory.');
-			} elseif (is_dir($response)) {
-				$this->_paths[] = $response;
-				$defaultPathIndex++;
-			} else {
-				$io->err('The directory path you supplied was not found. Please try again.');
-			}
-			$io->out();
+
+			$poFiles = glob($localePath . '*.po') ?: [];
+			$files = array_merge($files, $poFiles);
 		}
+
+		sort($files);
+
+		return $files;
 	}
 
 	/**
-	 * @param string $path
-	 * @return array
+	 * Truncate a string for display.
+	 *
+	 * @param string $text Text to truncate
+	 * @param int $length Maximum length
+	 * @return string
 	 */
-	protected function validate(string $path): array {
-		$content = file_get_contents($path);
-
-		$issues = [];
-
-		$catalog = (new PoFileParser())->parse($path);
-		foreach ($catalog as $string => $details) {
-			$translations = $details['_context'] ?? [];
-			foreach ($translations as $context => $translation) {
-				if (!is_string($translation)) {
-					// Plural, skip for now
-					continue;
-				}
-				if ($this->hasUnescapedQuote($translation)) {
-					$issues[$string][] = 'Unescaped quote in translation `' . $translation . '`';
-				}
-			}
+	protected function truncate(string $text, int $length): string {
+		$text = str_replace(["\n", "\r"], ' ', $text);
+		if (mb_strlen($text) <= $length) {
+			return $text;
 		}
 
-		return $issues;
-	}
-
-	/**
-	 * @param string $str
-	 * @return bool
-	 */
-	protected function hasUnescapedQuote(string $str): bool {
-		$escaped = false;
-		for ($i = 0; $i < strlen($str); $i++) {
-			if ($str[$i] === '\\') {
-				$escaped = !$escaped;
-			} elseif ($str[$i] === '"' && !$escaped) {
-				return true;
-			} else {
-				$escaped = false;
-			}
-		}
-
-		return false;
+		return mb_substr($text, 0, $length - 3) . '...';
 	}
 
 }

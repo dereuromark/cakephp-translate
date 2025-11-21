@@ -12,7 +12,9 @@ use Cake\Routing\Middleware\RoutingMiddleware;
 use Cake\Routing\Route\DashedRoute;
 use Cake\Routing\RouteBuilder;
 use League\Container\ReflectionContainer;
+use Translate\Command\I18nDumpCommand;
 use Translate\Command\I18nExtractCommand;
+use Translate\Command\I18nValidateCommand;
 
 class Application extends BaseApplication {
 
@@ -27,10 +29,10 @@ class Application extends BaseApplication {
 	 * @return \Cake\Console\CommandCollection
 	 */
 	public function console(CommandCollection $commands): CommandCollection {
-		$commands = parent::console($commands);
-
 		return $commands
-			->add('i18n extract', new I18nExtractCommand());
+			->add('i18n extract_to_db', new I18nExtractCommand())
+			->add('i18n dump_from_db', new I18nDumpCommand())
+			->add('i18n validate', new I18nValidateCommand());
 	}
 
 	/**

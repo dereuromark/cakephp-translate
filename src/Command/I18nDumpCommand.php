@@ -5,6 +5,7 @@ namespace Translate\Command;
 use Cake\Command\Command;
 use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
+use Cake\Console\ConsoleOptionParser;
 use Cake\Core\Plugin;
 use Cake\Utility\Inflector;
 use Translate\Filesystem\Dumper;
@@ -100,6 +101,25 @@ class I18nDumpCommand extends Command {
 		$io->success('Done: ' . $count . ' files');
 
 		return static::CODE_SUCCESS;
+	}
+
+	/**
+	 * Gets the option parser instance and configures it.
+	 *
+	 * @param \Cake\Console\ConsoleOptionParser $parser The parser to configure
+	 * @return \Cake\Console\ConsoleOptionParser
+	 */
+	public function buildOptionParser(ConsoleOptionParser $parser): ConsoleOptionParser {
+		$parser->setDescription([
+			'Dump translations from database to PO files.',
+		])->addOption('paths', [
+			'help' => 'Comma separated list of paths to write PO files to.',
+		])->addOption('plugin', [
+			'help' => 'Dump translations for a specific plugin.',
+			'short' => 'p',
+		]);
+
+		return $parser;
 	}
 
 	/**

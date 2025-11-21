@@ -7,7 +7,6 @@ use Cake\Core\Plugin;
 use Cake\TestSuite\TestCase;
 
 /**
- * @uses \Translate\Command\TranslationsCommand
  * @uses \Translate\Command\I18nExtractCommand
  */
 class I18nExtractCommandTest extends TestCase {
@@ -44,7 +43,7 @@ class I18nExtractCommandTest extends TestCase {
 	 */
 	public function testExecute() {
 		$this->exec(
-			'i18n extract '
+			'i18n extract_to_db '
 			. '--extract-core=no '
 			. '--merge=no '
 			. '--paths=' . Plugin::path('Translate') . 'tests' . DS . 'test_files' . DS . 'src' . DS,

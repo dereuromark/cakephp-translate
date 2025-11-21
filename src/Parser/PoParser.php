@@ -568,7 +568,7 @@ class PoParser {
 				$value[$k] = $this->clean($v);
 			}
 		} else {
-			$value = preg_replace('/^\"|\"$/', '', (string)$value);
+			$value = preg_replace('/^\"|\"$/', '', (string)$value) ?? '';
 			$value = stripcslashes($value);
 		}
 

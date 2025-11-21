@@ -178,6 +178,7 @@ class TranslateBehaviorController extends TranslateAppController {
 
 			return $this->redirect(['action' => 'index']);
 		}
+		/** @var string $tableName */
 
 		/** @var \Cake\Database\Connection $connection */
 		$connection = ConnectionManager::get('default');
@@ -683,7 +684,7 @@ PHP;
 	/**
 	 * Save migration file directly
 	 *
-	 * @return \Cake\Http\Response
+	 * @return \Cake\Http\Response|null
 	 */
 	public function saveMigration() {
 		$this->request->allowMethod(['post']);

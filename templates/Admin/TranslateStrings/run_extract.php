@@ -122,7 +122,7 @@ $this->assign('title', __d('translate', 'Run i18n Extract (Experimental)'));
 			<div class="col-md-6">
 				<?= $this->Form->control('direct_import', [
 					'type' => 'checkbox',
-					'label' => __d('translate', 'Import directly to database (skip POT file step)'),
+					'label' => __d('translate', 'Import directly to database'),
 					'default' => false,
 				]) ?>
 				<small class="text-muted"><?= __d('translate', 'When checked, the extracted strings will be imported directly into the database after extraction.') ?></small>

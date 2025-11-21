@@ -217,9 +217,14 @@ class TranslateStringsController extends TranslateAppController {
 	 * @return void
 	 */
 	public function extract(ExtractService $extractService) {
+		$projectId = $this->Translation->currentProjectId();
+		if (!$projectId) {
+			throw new NotFoundException(__d('translate', 'No project selected.'));
+		}
+
 		// Get locale path for display
 		$TranslateProjects = $this->fetchTable('Translate.TranslateProjects');
-		$project = $TranslateProjects->get($this->Translation->currentProjectId());
+		$project = $TranslateProjects->get($projectId);
 		$projectPath = $project->path ?? null;
 		if (!$projectPath) {
 			$projectPath = ROOT;
@@ -231,7 +236,7 @@ class TranslateStringsController extends TranslateAppController {
 		// Set the locale path on the service
 		$extractService->setLocalePath($localePath);
 
-		$translateLocales = $this->TranslateStrings->TranslateTerms->TranslateLocales->getExtractableAsList($this->Translation->currentProjectId());
+		$translateLocales = $this->TranslateStrings->TranslateTerms->TranslateLocales->getExtractableAsList($projectId);
 		$poFileLanguages = $extractService->getPoFileLanguages();
 
 		// Filter to only include files that actually exist
@@ -269,7 +274,7 @@ class TranslateStringsController extends TranslateAppController {
 				}
 				$translations = $extractService->extractPotFile($domain);
 
-				$translationDomain = $this->TranslateStrings->TranslateDomains->getDomain($this->Translation->currentProjectId(), $domain);
+				$translationDomain = $this->TranslateStrings->TranslateDomains->getDomain($projectId, $domain);
 
 				foreach ($translations as $translation) {
 					$total++;
@@ -305,7 +310,7 @@ class TranslateStringsController extends TranslateAppController {
 						$languageName,
 						$locale,
 						$lang,
-						$this->Translation->currentProjectId(),
+						$projectId,
 					);
 					if ($translateLocale) {
 						$translateLocales[$lang] = $translateLocale->id;
@@ -315,7 +320,7 @@ class TranslateStringsController extends TranslateAppController {
 				}
 				$translations = $extractService->extractPoFile($domain, $locale);
 
-				$translationDomain = $this->TranslateStrings->TranslateDomains->getDomain($this->Translation->currentProjectId(), $domain);
+				$translationDomain = $this->TranslateStrings->TranslateDomains->getDomain($projectId, $domain);
 
 				foreach ($translations as $translation) {
 					$total++;
@@ -376,9 +381,14 @@ class TranslateStringsController extends TranslateAppController {
 	 * @return \Cake\Http\Response|null|void
 	 */
 	public function dump() {
+		$projectId = $this->Translation->currentProjectId();
+		if (!$projectId) {
+			throw new NotFoundException(__d('translate', 'No project selected.'));
+		}
+
 		// Get path from current project
 		$TranslateProjects = $this->fetchTable('Translate.TranslateProjects');
-		$project = $TranslateProjects->get($this->Translation->currentProjectId());
+		$project = $TranslateProjects->get($projectId);
 
 		$path = $project->path ?? null;
 		if (!$path) {
@@ -388,7 +398,7 @@ class TranslateStringsController extends TranslateAppController {
 		}
 		$path = rtrim($path, DS) . DS . 'resources' . DS . 'locales' . DS;
 
-		$translateLocales = $this->TranslateStrings->TranslateTerms->TranslateLocales->getExtractableAsList($this->Translation->currentProjectId());
+		$translateLocales = $this->TranslateStrings->TranslateTerms->TranslateLocales->getExtractableAsList($projectId);
 		/** @var \Translate\Model\Entity\TranslateDomain[] $domains */
 		$domains = $this->TranslateStrings->TranslateDomains->getActive()->toArray();
 
@@ -408,7 +418,7 @@ class TranslateStringsController extends TranslateAppController {
 				[$lang, $domain] = explode('_', $domain, 2);
 
 				$langId = $this->TranslateStrings->TranslateTerms->TranslateLocales->find()->where(['iso2' => $lang])->firstOrFail()->id;
-				$domainId = $this->TranslateStrings->TranslateDomains->find()->where(['name' => $domain, 'translate_project_id' => $this->Translation->currentProjectId()])->firstOrFail()->id;
+				$domainId = $this->TranslateStrings->TranslateDomains->find()->where(['name' => $domain, 'translate_project_id' => $projectId])->firstOrFail()->id;
 				$translations = $this->TranslateStrings->TranslateTerms->getTranslations($langId, $domainId)->toArray();
 
 				if (!$translations) {
@@ -661,6 +671,10 @@ class TranslateStringsController extends TranslateAppController {
 	protected function updateSourceReferences($translateString, string $originalName): int {
 		$updatedCount = 0;
 
+		if (!$translateString->references) {
+			return 0;
+		}
+
 		// Parse references
 		$references = explode(PHP_EOL, $translateString->references);
 		$path = $translateString->translate_domain->translate_project->path ?? null;
@@ -870,9 +884,14 @@ class TranslateStringsController extends TranslateAppController {
 	 * @return \Cake\Http\Response|null|void
 	 */
 	public function runExtract() {
+		$projectId = $this->Translation->currentProjectId();
+		if (!$projectId) {
+			throw new NotFoundException(__d('translate', 'No project selected.'));
+		}
+
 		$TranslateProjects = $this->fetchTable('Translate.TranslateProjects');
 		/** @var \Translate\Model\Entity\TranslateProject $project */
-		$project = $TranslateProjects->get($this->Translation->currentProjectId());
+		$project = $TranslateProjects->get($projectId);
 
 		$appPath = $project->path ?: null;
 		if (!$appPath) {
@@ -1108,7 +1127,7 @@ class TranslateStringsController extends TranslateAppController {
 								$domain = pathinfo($file, PATHINFO_FILENAME);
 								$translations = $extractService->extractPotFile($domain);
 								$translationDomain = $this->TranslateStrings->TranslateDomains->getDomain(
-									$this->Translation->currentProjectId(),
+									$projectId,
 									$domain,
 								);
 

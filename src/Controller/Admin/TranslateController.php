@@ -35,17 +35,18 @@ class TranslateController extends TranslateAppController {
 	 * @return void
 	 */
 	public function index() {
+		$id = $this->Translation->currentProjectId();
+
 		$translateLocalesTable = $this->fetchTable('Translate.TranslateLocales');
 		$languages = $translateLocalesTable->find('all')
 			->where([
-				'translate_project_id' => $this->Translation->currentProjectId(),
+				'translate_project_id' => $id,
 				'active' => true,
 			])
 			->toArray();
 
-		$id = $this->Translation->currentProjectId();
 		$count = $id ? $this->TranslateDomains->statistics($id, $languages) : 0;
-		$coverage = $this->TranslateDomains->TranslateStrings->coverage($id);
+		$coverage = $id ? $this->TranslateDomains->TranslateStrings->coverage($id) : 0;
 		$projectSwitchArray = $this->TranslateDomains->TranslateProjects->find('list')->toArray();
 
 		// Calculate translated counts per locale for coverage table
@@ -216,6 +217,12 @@ class TranslateController extends TranslateAppController {
 			}
 
 			$projectId = $this->Translation->currentProjectId();
+			if (!$projectId) {
+				$this->Flash->error(__d('translate', 'No project selected.'));
+
+				return $this->redirect(['action' => 'index']);
+			}
+
 			$types = [];
 			$languages = [];
 
@@ -297,7 +304,7 @@ class TranslateController extends TranslateAppController {
 	/**
 	 * Switch the application language/locale
 	 *
-	 * @return \Cake\Http\Response
+	 * @return \Cake\Http\Response|null
 	 */
 	public function switchLanguage() {
 		$locale = $this->request->getQuery('locale');
@@ -337,7 +344,7 @@ class TranslateController extends TranslateAppController {
 	/**
 	 * Switch the current project.
 	 *
-	 * @return \Cake\Http\Response
+	 * @return \Cake\Http\Response|null
 	 */
 	public function switchProject() {
 		$this->request->allowMethod(['post']);

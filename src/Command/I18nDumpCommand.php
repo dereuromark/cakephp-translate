@@ -66,6 +66,9 @@ class I18nDumpCommand extends Command {
 			}
 		}
 		$this->_projectId = $this->findProjectId($plugin);
+		if ($this->_projectId === null) {
+			$io->abort('No project found.');
+		}
 
 		/** @var \Translate\Model\Entity\TranslateLocale[] $languages */
 		$languages = $this->fetchTable('Translate.TranslateLocales')->getExtractable($this->_projectId)->all()->toArray();

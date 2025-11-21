@@ -37,7 +37,7 @@ class TranslateProject extends Entity {
 	/**
 	 * @param int|null $value
 	 *
-	 * @return array|string
+	 * @return array<int|string, mixed>|string|null
 	 */
 	public static function statuses($value = null) {
 		$options = [
@@ -67,7 +67,7 @@ class TranslateProject extends Entity {
 	/**
 	 * @param int|null $value
 	 *
-	 * @return array|string
+	 * @return array<int|string, mixed>|string|null
 	 */
 	public static function types($value = null) {
 		$options = [

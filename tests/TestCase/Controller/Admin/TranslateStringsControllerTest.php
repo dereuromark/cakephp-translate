@@ -400,4 +400,46 @@ msgstr "Hallo"',
 		}
 	}
 
+	/**
+	 * Test runExtract method POST with direct import to database
+	 *
+	 * @return void
+	 */
+	public function testRunExtractPostWithDirectImport() {
+		$this->disableErrorHandlerMiddleware();
+
+		$TranslateStrings = $this->fetchTable('Translate.TranslateStrings');
+		$countBefore = $TranslateStrings->find()->count();
+
+		// Create a temp output directory for testing
+		$tempOutputDir = TMP . 'test_locales_import_' . uniqid() . DS;
+		mkdir($tempOutputDir, 0755, true);
+
+		try {
+			$data = [
+				'paths' => "src\ntemplates",
+				'output_path' => $tempOutputDir,
+				'dry_run' => '0',
+				'merge' => '0',
+				'overwrite' => '1',
+				'direct_import' => '1',
+			];
+			$this->post(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateStrings', 'action' => 'runExtract'], $data);
+
+			$this->assertResponseCode(200);
+			$this->assertNoRedirect();
+
+			// Verify strings were imported to database
+			$countAfter = $TranslateStrings->find()->count();
+			$this->assertGreaterThan($countBefore, $countAfter, 'Strings should be imported to database');
+		} finally {
+			// Cleanup
+			$files = glob($tempOutputDir . '*');
+			foreach ($files as $file) {
+				unlink($file);
+			}
+			rmdir($tempOutputDir);
+		}
+	}
+
 }

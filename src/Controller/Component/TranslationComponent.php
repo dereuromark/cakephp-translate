@@ -117,9 +117,9 @@ SQL;
 	 * Auto-redirect helper that redirects to a URL or referrer
 	 *
 	 * @param array|string|null $url URL to redirect to, or null to use referer
-	 * @return \Cake\Http\Response
+	 * @return \Cake\Http\Response|null
 	 */
-	public function autoRedirect(array|string|null $url = null): Response {
+	public function autoRedirect(array|string|null $url = null): ?Response {
 		if ($url === null) {
 			$url = (string)$this->getController()->getRequest()->referer(true);
 			if ($url === '') {

@@ -72,7 +72,7 @@ class TranslateApiTranslationsTable extends Table {
 
 	/**
 	 * @param string $key
-	 * @param string $value
+	 * @param string|null $value
 	 * @param string $to
 	 * @param string $from
 	 * @param string $engine

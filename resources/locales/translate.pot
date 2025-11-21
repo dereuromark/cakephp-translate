@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2025-11-21 14:39+0100\n"
+"POT-Creation-Date: 2025-11-21 15:13+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -32,59 +32,66 @@ msgstr ""
 msgid "The translate api translation could not be deleted. Please, try again."
 msgstr ""
 
-#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateBehaviorController.php:443
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateBehaviorController.php:444
 msgid "Table {0} not found"
 msgstr ""
 
-#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateBehaviorController.php:481
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateBehaviorController.php:482
 msgid "Please select at least one field to translate"
 msgstr ""
 
-#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateBehaviorController.php:696
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateBehaviorController.php:697
 msgid "Missing required data"
 msgstr ""
 
-#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateBehaviorController.php:714
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateBehaviorController.php:715
 msgid "Migration file already exists: {0}"
 msgstr ""
 
-#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateBehaviorController.php:721
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateBehaviorController.php:722
 msgid "Failed to write migration file"
 msgstr ""
 
-#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateBehaviorController.php:726
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateBehaviorController.php:727
 msgid "Migration file created successfully: {0}"
 msgstr ""
 
-#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateController.php:248
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateController.php:221
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:222
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:386
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:889
+msgid "No project selected."
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateController.php:255
 msgid "Reset complete for current project."
 msgstr ""
 
-#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateController.php:250
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateController.php:257
 msgid "No options selected."
 msgstr ""
 
-#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateController.php:305
-#: ./vendor/dereuromark/cakephp-translate/src/Controller/TranslateController.php:379
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateController.php:312
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/TranslateController.php:356
 msgid "Invalid locale"
 msgstr ""
 
-#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateController.php:321
-#: ./vendor/dereuromark/cakephp-translate/src/Controller/TranslateController.php:394
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateController.php:328
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/TranslateController.php:371
 msgid "Language not found or not active"
 msgstr ""
 
-#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateController.php:329
-#: ./vendor/dereuromark/cakephp-translate/src/Controller/TranslateController.php:402
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateController.php:336
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/TranslateController.php:379
 msgid "Language switched to {0}"
 msgstr ""
 
-#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateController.php:347
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateController.php:354
 msgid "Invalid project"
 msgstr ""
 
-#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateController.php:355
-#: ./vendor/dereuromark/cakephp-translate/src/Controller/TranslateController.php:421
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateController.php:362
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/TranslateController.php:398
 msgid "Project switched to {0}"
 msgstr ""
 
@@ -189,114 +196,122 @@ msgstr ""
 msgid "Done"
 msgstr ""
 
-#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:86
-#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:135
-#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:191
-#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:473
-#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:609
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:87
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:136
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:192
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:484
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:620
 msgid "String not found."
 msgstr ""
 
-#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:103
-#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:153
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:104
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:154
 msgid "The translate string has been saved."
 msgstr ""
 
-#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:112
-#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:162
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:113
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:163
 msgid "The translate string could not be saved. Please, try again."
 msgstr ""
 
-#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:149
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:150
 msgid "Updated {0} reference(s) in source files."
 msgstr ""
 
-#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:195
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:196
 msgid "The translate string has been deleted."
 msgstr ""
 
-#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:197
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:198
 msgid "The translate string could not be deleted. Please, try again."
 msgstr ""
 
-#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:338
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:344
 msgid "Done: {0}/{1}"
 msgstr ""
 
-#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:482
-#: ./vendor/dereuromark/cakephp-translate/src/Controller/TranslateController.php:213
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:493
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/TranslateController.php:214
 msgid "You need at least one language to translate"
 msgstr ""
 
-#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:514
-#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:572
-#: ./vendor/dereuromark/cakephp-translate/src/Controller/TranslateController.php:244
-#: ./vendor/dereuromark/cakephp-translate/src/Controller/TranslateController.php:302
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:525
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:583
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/TranslateController.php:245
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/TranslateController.php:303
 msgid "No more open translations."
 msgstr ""
 
-#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:577
-#: ./vendor/dereuromark/cakephp-translate/src/Controller/TranslateController.php:307
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:588
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/TranslateController.php:308
 msgid "Translation saved successfully."
 msgstr ""
 
-#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:651
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:636
 msgid "File is not writable: {0}"
 msgstr ""
 
-#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:655
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:640
 msgid "File updated successfully. Please commit your changes!"
 msgstr ""
 
-#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:657
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:642
 msgid "Failed to write file"
 msgstr ""
 
-#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:700
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:689
 msgid "Project path not found: {0}"
 msgstr ""
 
-#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:719
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:708
 msgid "File not writable: {0}"
 msgstr ""
 
-#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:843
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:833
 msgid "Please provide PO file content or upload a file."
 msgstr ""
 
-#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:881
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:871
 msgid "File not found: {0}"
 msgstr ""
 
-#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:947
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:942
 msgid "No valid paths found to scan."
 msgstr ""
 
-#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:980
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:975
 msgid "Failed to create output directory: {0}"
 msgstr ""
 
-#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:991
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:986
 msgid "Output directory is not writable: {0}"
 msgstr ""
 
-#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:1096
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:1091
 msgid "Dry run completed. Preview of extracted strings shown below."
 msgstr ""
 
-#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:1121
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:1116
 msgid "Extraction completed. Generated: {0}"
 msgstr ""
 
-#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:1123
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:1147
+msgid "Import partially completed: {0} of {1} strings imported. Errors: {2}"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:1149
+msgid "Import completed: {0} of {1} strings imported to database."
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:1153
 msgid "Extraction completed but no POT files were generated. Check if your code uses __d('{0}', ...) calls."
 msgstr ""
 
-#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:1126
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:1156
 msgid "Extraction completed with return code: {0}"
 msgstr ""
 
-#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:1129
+#: ./vendor/dereuromark/cakephp-translate/src/Controller/Admin/TranslateStringsController.php:1159
 msgid "Extraction failed: {0}"
 msgstr ""
 
@@ -505,18 +520,18 @@ msgstr ""
 #: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:65
 #: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/view.php:87
 #: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateLocales/index.php:27
-#: ./vendor/dereuromark/cakephp-translate/templates/Translate/index.php:62
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/index.php:63
 msgid "Locales"
 msgstr ""
 
 #: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:72
-#: ./vendor/dereuromark/cakephp-translate/templates/Translate/index.php:75
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/index.php:76
 #: ./vendor/dereuromark/cakephp-translate/templates/Translate/translate.php:17
 msgid "Domains"
 msgstr ""
 
 #: ./vendor/dereuromark/cakephp-translate/templates/Admin/Translate/index.php:79
-#: ./vendor/dereuromark/cakephp-translate/templates/Translate/index.php:88
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/index.php:89
 msgid "Strings"
 msgstr ""
 
@@ -735,7 +750,7 @@ msgstr ""
 #: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/edit.php:70
 #: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateProjects/view.php:65
 #: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/view.php:124
-#: ./vendor/dereuromark/cakephp-translate/templates/Translate/index.php:31
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/index.php:32
 msgid "Status"
 msgstr ""
 
@@ -1253,7 +1268,7 @@ msgstr ""
 
 #: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateBehavior/index.php:162
 #: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/view.php:113
-#: ./vendor/dereuromark/cakephp-translate/templates/Translate/index.php:101
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/index.php:102
 #: ./vendor/dereuromark/cakephp-translate/templates/Translate/terms.php:119
 msgid "Translations"
 msgstr ""
@@ -1830,7 +1845,7 @@ msgstr ""
 
 #: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/analyze.php:22
 #: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/run_extract.php:24
-#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/run_extract.php:184
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/run_extract.php:195
 msgid "Extract/Import"
 msgstr ""
 
@@ -1946,8 +1961,8 @@ msgid "With Context"
 msgstr ""
 
 #: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/analyze.php:172
-#: ./vendor/dereuromark/cakephp-translate/templates/Translate/index.php:46
-#: ./vendor/dereuromark/cakephp-translate/templates/Translate/index.php:140
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/index.php:47
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/index.php:141
 msgid "translated"
 msgstr ""
 
@@ -2194,43 +2209,51 @@ msgstr ""
 msgid "Extract core strings"
 msgstr ""
 
-#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/run_extract.php:122
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/run_extract.php:125
+msgid "Import directly to database"
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/run_extract.php:128
+msgid "When checked, the extracted strings will be imported directly into the database after extraction."
+msgstr ""
+
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/run_extract.php:133
 msgid "Run Extract"
 msgstr ""
 
-#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/run_extract.php:130
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/run_extract.php:141
 msgid "Results"
 msgstr ""
 
-#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/run_extract.php:134
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/run_extract.php:145
 msgid "Command Executed"
 msgstr ""
 
-#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/run_extract.php:144
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/run_extract.php:155
 msgid "Output"
 msgstr ""
 
-#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/run_extract.php:146
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/run_extract.php:157
 msgid "Exit code: {0}"
 msgstr ""
 
-#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/run_extract.php:158
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/run_extract.php:169
 msgid "Dry Run Preview"
 msgstr ""
 
-#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/run_extract.php:161
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/run_extract.php:172
 msgid "The following POT files would be generated:"
 msgstr ""
 
-#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/run_extract.php:167
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/run_extract.php:178
 msgid "{0} strings"
 msgstr ""
 
-#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/run_extract.php:177
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/run_extract.php:188
 msgid "This was a dry run. Uncheck \"Dry run\" and submit again to actually write the files."
 msgstr ""
 
-#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/run_extract.php:184
+#: ./vendor/dereuromark/cakephp-translate/templates/Admin/TranslateStrings/run_extract.php:195
 msgid "POT files have been generated. You can now import them via the {0} page."
 msgstr ""
 
@@ -2464,31 +2487,31 @@ msgstr ""
 msgid "Content"
 msgstr ""
 
-#: ./vendor/dereuromark/cakephp-translate/templates/Translate/index.php:17
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/index.php:18
 msgid "Translate Plugin"
 msgstr ""
 
-#: ./vendor/dereuromark/cakephp-translate/templates/Translate/index.php:20
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/index.php:21
 msgid "Easily manage i18n/translations from your backend."
 msgstr ""
 
-#: ./vendor/dereuromark/cakephp-translate/templates/Translate/index.php:41
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/index.php:42
 msgid "Current Translation Coverage"
 msgstr ""
 
-#: ./vendor/dereuromark/cakephp-translate/templates/Translate/index.php:120
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/index.php:121
 msgid "Quick Start"
 msgstr ""
 
-#: ./vendor/dereuromark/cakephp-translate/templates/Translate/index.php:127
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/index.php:128
 msgid "Select Domain"
 msgstr ""
 
-#: ./vendor/dereuromark/cakephp-translate/templates/Translate/index.php:159
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/index.php:160
 msgid "Start Translating Next"
 msgstr ""
 
-#: ./vendor/dereuromark/cakephp-translate/templates/Translate/index.php:164
+#: ./vendor/dereuromark/cakephp-translate/templates/Translate/index.php:165
 msgid "Browse All Terms"
 msgstr ""
 

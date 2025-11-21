@@ -1,6 +1,6 @@
 <?php
 /**
- * Footer copyright element
+ * @var \App\View\AppView $this
  */
 ?>
 <small>

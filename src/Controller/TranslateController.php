@@ -4,6 +4,7 @@ namespace Translate\Controller;
 
 use Cake\Http\Exception\NotFoundException;
 use Translate\Model\Entity\TranslateProject;
+use Translate\Utility\ReferenceResolver;
 
 /**
  * @property \Translate\Model\Table\TranslateDomainsTable $TranslateDomains
@@ -42,7 +43,7 @@ class TranslateController extends TranslateAppController {
 			->toArray();
 
 		$count = $id ? $this->TranslateDomains->statistics($id, $languages) : 0;
-		$coverage = $this->TranslateDomains->TranslateStrings->coverage($id);
+		$coverage = $id ? $this->TranslateDomains->TranslateStrings->coverage($id) : 0;
 
 		// Calculate translated counts per locale
 		$translateStringsTable = $this->fetchTable('Translate.TranslateStrings');
@@ -157,7 +158,7 @@ class TranslateController extends TranslateAppController {
 		$translateStringsTable = $this->fetchTable('Translate.TranslateStrings');
 		$projectId = $this->Translation->currentProjectId();
 
-		if (!$domain) {
+		if (!$domain || !$id) {
 			/** @var \Translate\Model\Entity\TranslateString|null $next */
 			$next = $translateStringsTable->getNext(null, null)->contain(['TranslateDomains'])->first();
 			if ($next) {
@@ -329,49 +330,25 @@ class TranslateController extends TranslateAppController {
 	public function displayReference(int $id, int $reference) {
 		$this->viewBuilder()->setLayout('ajax');
 
-		$translateString = $this->fetchTable('Translate.TranslateStrings')->get($id, ['contain' => ['TranslateDomains']]);
+		$translateString = $this->fetchTable('Translate.TranslateStrings')->get($id, ['contain' => ['TranslateDomains' => 'TranslateProjects']]);
 
-		$sep = explode(PHP_EOL, $translateString->references);
-		$occ = [];
-		foreach ($sep as $s) {
-			$s = trim($s);
-			if ($s !== '') {
-				$occ[] = $s;
-			}
-		}
-		if (!isset($occ[$reference])) {
-			throw new NotFoundException('Could not find reference `' . $reference . '`');
-		}
+		$referenceString = ReferenceResolver::getReferenceByIndex($translateString->references, $reference);
+		$parsed = ReferenceResolver::parseReference($referenceString);
+		$referencePath = $parsed['path'];
+		$lines = $parsed['lines'];
 
-		$reference = $occ[$reference];
-		[$reference, $lines] = explode(':', $reference);
-		$lines = explode(';', $lines);
-
-		$path = $translateString->translate_domain->translate_project->path ?? null;
-		if (!$path) {
-			$path = ROOT;
-		} elseif (!str_starts_with($path, '/')) {
-			$path = ROOT . DS . $path;
-		}
-		$path = rtrim((string)realpath($path), '/') . '/';
-		if (!is_dir($path)) {
-			throw new NotFoundException('Path not found: ' . ($translateString->translate_domain->translate_project->path ?? 'ROOT'));
-		}
-
-		$file = $path . $reference;
-		if (!file_exists($file)) {
-			throw new NotFoundException('File not found: ' . $file);
-		}
+		$projectPath = $translateString->translate_domain->translate_project->path ?? null;
+		$file = ReferenceResolver::resolveFilePath($referencePath, $projectPath);
 
 		$fileArray = file($file);
 
-		$this->set(compact('fileArray', 'lines', 'reference'));
+		$this->set(compact('fileArray', 'lines', 'referencePath'));
 	}
 
 	/**
 	 * Switch the application language/locale
 	 *
-	 * @return \Cake\Http\Response
+	 * @return \Cake\Http\Response|null
 	 */
 	public function switchLanguage() {
 		$locale = $this->request->getQuery('locale');
@@ -410,7 +387,7 @@ class TranslateController extends TranslateAppController {
 	/**
 	 * Switch the current translation project
 	 *
-	 * @return \Cake\Http\Response
+	 * @return \Cake\Http\Response|null
 	 */
 	public function switchProject() {
 		$projectId = (int)$this->request->getData('project_switch');

@@ -4,6 +4,7 @@
  * @var array $count
  * @var mixed $coverage
  * @var array $projectSwitchArray
+ * @var array $domainStats
  */
 
 $totalCoverage = (int)$this->Translation->totalCoverage($coverage);

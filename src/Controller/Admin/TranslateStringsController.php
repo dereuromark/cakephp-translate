@@ -14,6 +14,7 @@ use Translate\Filesystem\Dumper;
 use Translate\Model\Entity\TranslateProject;
 use Translate\Service\ExtractService;
 use Translate\Service\PoAnalyzerService;
+use Translate\Utility\ReferenceResolver;
 
 /**
  * TranslateStrings Controller
@@ -609,39 +610,13 @@ class TranslateStringsController extends TranslateAppController {
 			throw new NotFoundException(__d('translate', 'String not found.'));
 		}
 
-		$sep = explode(PHP_EOL, $translateString->references);
-		$occ = [];
-		foreach ($sep as $s) {
-			$s = trim($s);
-			if ($s !== '') {
-				$occ[] = $s;
-			}
-		}
-		if (!isset($occ[$reference])) {
-			throw new NotFoundException('Could not find reference `' . $reference . '`');
-		}
+		$referenceString = ReferenceResolver::getReferenceByIndex($translateString->references, $reference);
+		$parsed = ReferenceResolver::parseReference($referenceString);
+		$referencePath = $parsed['path'];
+		$lines = $parsed['lines'];
 
-		$referenceString = $occ[$reference];
-		$parts = explode(':', $referenceString, 2);
-		$referencePath = $parts[0];
-		$lines = isset($parts[1]) ? explode(';', $parts[1]) : [];
-
-		// Get path from project instead of domain
-		$path = $translateString->translate_domain->translate_project->path ?? null;
-		if (!$path) {
-			$path = ROOT;
-		} elseif (!str_starts_with($path, '/')) {
-			$path = ROOT . DS . $path;
-		}
-		$path = rtrim((string)realpath($path), '/') . '/';
-		if (!is_dir($path)) {
-			throw new NotFoundException('Path not found: ' . ($translateString->translate_domain->translate_project->path ?? 'ROOT'));
-		}
-
-		$file = $path . $referencePath;
-		if (!file_exists($file)) {
-			throw new NotFoundException('File not found: ' . $file);
-		}
+		$projectPath = $translateString->translate_domain->translate_project->path ?? null;
+		$file = ReferenceResolver::resolveFilePath($referencePath, $projectPath);
 
 		// Handle POST request to edit source file (debug mode only)
 		if ($this->request->is('post') && Configure::read('debug')) {
@@ -783,6 +758,7 @@ class TranslateStringsController extends TranslateAppController {
 			$projectPath = ROOT . DS . $projectPath;
 		}
 		$localePath = rtrim($projectPath, DS) . DS . 'resources' . DS . 'locales' . DS;
+		$extractService->setLocalePath($localePath);
 
 		// Get available PO/POT files (same as extract action)
 		$potFiles = $extractService->getPotFiles();
@@ -1119,6 +1095,41 @@ class TranslateStringsController extends TranslateAppController {
 							$fileInfo[] = basename($file) . ' (' . $count . ' strings)';
 						}
 						$this->Flash->success(__d('translate', 'Extraction completed. Generated: {0}', implode(', ', $fileInfo)));
+
+						// Direct import to database if requested
+						$directImport = (bool)$this->request->getData('direct_import');
+						if ($directImport) {
+							$extractService = new ExtractService($outputPath);
+							$importCount = 0;
+							$importTotal = 0;
+							$importErrors = [];
+
+							foreach ($copiedFiles as $file) {
+								$domain = pathinfo($file, PATHINFO_FILENAME);
+								$translations = $extractService->extractPotFile($domain);
+								$translationDomain = $this->TranslateStrings->TranslateDomains->getDomain(
+									$this->Translation->currentProjectId(),
+									$domain,
+								);
+
+								foreach ($translations as $translation) {
+									$importTotal++;
+									$success = (bool)$this->TranslateStrings->import($translation, $translationDomain->id);
+									if (!$success) {
+										$importErrors[] = '`' . h($translation['name']) . '` (' . h($domain) . ')';
+
+										continue;
+									}
+									$importCount += (int)$success;
+								}
+							}
+
+							if ($importErrors) {
+								$this->Flash->warning(__d('translate', 'Import partially completed: {0} of {1} strings imported. Errors: {2}', $importCount, $importTotal, implode(', ', array_slice($importErrors, 0, 5))));
+							} else {
+								$this->Flash->success(__d('translate', 'Import completed: {0} of {1} strings imported to database.', $importCount, $importTotal));
+							}
+						}
 					} else {
 						$this->Flash->warning(__d('translate', 'Extraction completed but no POT files were generated. Check if your code uses __d(\'{0}\', ...) calls.', $pluginDomain ?? 'default'));
 					}

@@ -147,11 +147,16 @@ If you need to use more than 2 plurals (for some languages), make sure you exten
 Add `plural_3` up to `plural_6` if needed to the "translation_terms".
 
 
-## Extract right into DB instead of the POT file detour.
+## Extract right into DB instead of the POT file detour
 
+### Via CLI
 ```
 bin/cake i18n extract_to_db
 ```
+
+### Via Web Interface
+Navigate to `/admin/translate/translate-strings/run-extract` and check the **"Import directly to database"** option.
+This will extract strings and immediately import them into the database in one step.
 
 ## Directly read translations from the DB.
 Configure I18n to use the Translate DbMessagesLoader for default domain:

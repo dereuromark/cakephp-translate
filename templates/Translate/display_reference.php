@@ -2,11 +2,9 @@
 
 /**
  * @var \App\View\AppView $this
- * @var \Translate\Model\Entity\TranslateLocale[] $translateLocales
- * @var \Translate\Model\Entity\TranslateString $translateString
  * @var array $fileArray
- * @var array<int> $lines
- * @var string $reference
+ * @var array<string> $lines
+ * @var string $referencePath
  */
 use Cake\Core\Configure;
 
@@ -39,7 +37,7 @@ foreach ($lines as $k => $line) {
 
 <?php if (Configure::read('Translate.onlineRepoUrl')) { ?>
 	<?php
-	$url = Configure::read('Translate.onlineRepoUrl') . $reference;
+	$url = Configure::read('Translate.onlineRepoUrl') . $referencePath;
 	if (count($lines) > 1) {
 		$url .= '#L' . array_shift($lines) . '-L' . array_pop($lines);
 	} else {

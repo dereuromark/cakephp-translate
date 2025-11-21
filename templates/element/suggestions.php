@@ -19,7 +19,7 @@ $target = 'content-' . $key;
 
 ?>
 <div class="form-group suggestions">
-	<label class="control-label col-md-4 col-lg-3"><small><?php echo __('Suggestions'); ?></small></label>
+	<label class="control-label col-md-4 col-lg-3"><small><?= __d('translate', 'Suggestions') ?></small></label>
 	<div class="col-md-8 col-lg-9">
 		<ul>
 	<?php foreach ($suggestionsArray as $suggestion => $engines) { ?>

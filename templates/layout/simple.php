@@ -278,12 +278,7 @@ $title = $this->fetch('title');
 		<div class="container">
 			<div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
 				<div class="flex-grow-1">
-					<small>
-						<i class="fas fa-code"></i>
-						Translation Manager &copy; <?= date('Y') ?>
-						|
-						Powered by <a href="https://cakephp.org" target="_blank" rel="noopener">CakePHP</a>
-					</small>
+					<?= $this->element('Translate.footer_copyright') ?>
 				</div>
 				<div class="flex-shrink-0">
 					<?= $this->element('Translate.language_switcher') ?>

@@ -50,12 +50,12 @@ class TranslateApiTranslationsController extends AppController {
 		if ($this->request->is('post')) {
 			$translateApiTranslation = $this->TranslateApiTranslations->patchEntity($translateApiTranslation, $this->request->getData());
 			if ($this->TranslateApiTranslations->save($translateApiTranslation)) {
-				$this->Flash->success(__('The translate api translation has been saved.'));
+				$this->Flash->success(__d('translate', 'The translate api translation has been saved.'));
 
 				return $this->redirect(['action' => 'index']);
 			}
 
-			$this->Flash->error(__('The translate api translation could not be saved. Please, try again.'));
+			$this->Flash->error(__d('translate', 'The translate api translation could not be saved. Please, try again.'));
 		}
 
 		$this->set(compact('translateApiTranslation'));
@@ -76,12 +76,12 @@ class TranslateApiTranslationsController extends AppController {
 		if ($this->request->is(['patch', 'post', 'put'])) {
 			$translateApiTranslation = $this->TranslateApiTranslations->patchEntity($translateApiTranslation, $this->request->getData());
 			if ($this->TranslateApiTranslations->save($translateApiTranslation)) {
-				$this->Flash->success(__('The translate api translation has been saved.'));
+				$this->Flash->success(__d('translate', 'The translate api translation has been saved.'));
 
 				return $this->redirect(['action' => 'index']);
 			}
 
-			$this->Flash->error(__('The translate api translation could not be saved. Please, try again.'));
+			$this->Flash->error(__d('translate', 'The translate api translation could not be saved. Please, try again.'));
 		}
 
 		$this->set(compact('translateApiTranslation'));
@@ -99,9 +99,9 @@ class TranslateApiTranslationsController extends AppController {
 		$this->request->allowMethod(['post', 'delete']);
 		$translateApiTranslation = $this->TranslateApiTranslations->get($id);
 		if ($this->TranslateApiTranslations->delete($translateApiTranslation)) {
-			$this->Flash->success(__('The translate api translation has been deleted.'));
+			$this->Flash->success(__d('translate', 'The translate api translation has been deleted.'));
 		} else {
-			$this->Flash->error(__('The translate api translation could not be deleted. Please, try again.'));
+			$this->Flash->error(__d('translate', 'The translate api translation could not be deleted. Please, try again.'));
 		}
 
 		return $this->redirect(['action' => 'index']);

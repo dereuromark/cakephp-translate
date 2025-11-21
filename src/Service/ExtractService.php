@@ -10,6 +10,30 @@ use Translate\Parser\PoParser;
 class ExtractService {
 
 	/**
+	 * @var string
+	 */
+	protected string $localePath = LOCALE;
+
+	/**
+	 * @param string|null $localePath
+	 */
+	public function __construct(?string $localePath = null) {
+		if ($localePath !== null) {
+			$this->localePath = rtrim($localePath, DS) . DS;
+		}
+	}
+
+	/**
+	 * @param string $localePath
+	 * @return $this
+	 */
+	public function setLocalePath(string $localePath) {
+		$this->localePath = rtrim($localePath, DS) . DS;
+
+		return $this;
+	}
+
+	/**
 	 * Singular + plural!
 	 *
 	 * @param array $list
@@ -35,8 +59,8 @@ class ExtractService {
 	/**
 	 * @return array
 	 */
-	public function getPotFiles() {
-		$folder = new Folder(LOCALE);
+	public function getPotFiles(): array {
+		$folder = new Folder($this->localePath);
 		$files = $folder->read(true, true);
 		$potFiles = [];
 		if (!empty($files[1])) {
@@ -56,8 +80,8 @@ class ExtractService {
 	/**
 	 * @return array
 	 */
-	public function getPoFileLanguages() {
-		$folder = new Folder(LOCALE);
+	public function getPoFileLanguages(): array {
+		$folder = new Folder($this->localePath);
 		$files = $folder->read(true, true);
 
 		$languages = [];
@@ -73,8 +97,8 @@ class ExtractService {
 	 *
 	 * @return array
 	 */
-	public function getPoFiles($locale) {
-		$folder = new Folder(LOCALE . $locale . DS);
+	public function getPoFiles($locale): array {
+		$folder = new Folder($this->localePath . $locale . DS);
 		$files = $folder->read(true, true);
 
 		$poFiles = [];
@@ -96,7 +120,7 @@ class ExtractService {
 	 *
 	 * @return array
 	 */
-	public function extractPotFile(string $domain, string $dir = LOCALE) {
+	public function extractPotFile(string $domain, string $dir = LOCALE): array {
 		$names = [];
 
 		$file = $dir . $domain . '.pot';
@@ -120,7 +144,7 @@ class ExtractService {
 	 *
 	 * @return array
 	 */
-	public function extractPoFile(string $domain, string $lang, string $dir = LOCALE) {
+	public function extractPoFile(string $domain, string $lang, string $dir = LOCALE): array {
 		$names = [];
 
 		$file = $dir . $lang . DS . $domain . '.po';
@@ -141,7 +165,7 @@ class ExtractService {
 	 * @param array $entries
 	 * @return array
 	 */
-	protected function _map(array $entries) {
+	protected function _map(array $entries): array {
 		$translations = [];
 
 		foreach ($entries as $entry) {
@@ -188,7 +212,7 @@ class ExtractService {
 	 *
 	 * @return array
 	 */
-	protected function _mapSepia(array $entries) {
+	protected function _mapSepia(array $entries): array {
 		$translations = [];
 
 		foreach ($entries as $entry) {
@@ -228,7 +252,7 @@ class ExtractService {
 	 *
 	 * @return array
 	 */
-	public function parseFile($file) {
+	public function parseFile($file): array {
 		if (!file_exists($file)) {
 			return [];
 		}

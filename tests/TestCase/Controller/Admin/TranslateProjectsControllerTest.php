@@ -2,7 +2,6 @@
 
 namespace Translate\Test\TestCase\Controller\Admin;
 
-use Cake\Core\Configure;
 use Cake\ORM\TableRegistry;
 use Translate\Test\TestCase\IntegrationTestCase;
 
@@ -90,25 +89,6 @@ class TranslateProjectsControllerTest extends IntegrationTestCase {
 
 		$this->assertResponseCode(302);
 		$this->assertRedirect();
-	}
-
-	/**
-	 * Test switchProject method
-	 *
-	 * @return void
-	 */
-	public function testSwitchProject() {
-		$this->skipIf(version_compare(Configure::version(), '5.2.0', '<'), 'Session handling in integration tests requires CakePHP 5.2+');
-
-		$this->enableRetainFlashMessages();
-
-		$data = ['project_switch' => 1];
-		$this->post(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateProjects', 'action' => 'switchProject'], $data);
-
-		$this->assertResponseCode(302);
-		$this->assertRedirect(['plugin' => 'Translate', 'controller' => 'Translate', 'action' => 'index']);
-		$this->assertFlashMessage('Project switched');
-		$this->assertSession(1, 'TranslateProject.id');
 	}
 
 	/**

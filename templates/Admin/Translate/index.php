@@ -136,7 +136,7 @@ $totalColor = $this->Translation->getColor($totalCoverage);
 							<th><?= __d('translate', 'Locale') ?></th>
 							<th class="text-center"><?= __d('translate', 'Confirmed') ?></th>
 							<th class="text-center"><?= __d('translate', 'Unconfirmed') ?></th>
-							<th><?= __d('translate', 'Quality') ?></th>
+							<th><?= __d('translate', 'Progress') ?></th>
 						</tr>
 					</thead>
 					<tbody>

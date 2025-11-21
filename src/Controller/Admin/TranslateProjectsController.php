@@ -115,19 +115,6 @@ class TranslateProjectsController extends TranslateAppController {
 	}
 
 	/**
-	 * @return \Cake\Http\Response
-	 */
-	public function switchProject() {
-		$projectId = (int)$this->request->getData('project_switch');
-		$translateProject = $this->TranslateProjects->get($projectId);
-
-		$this->request->getSession()->write('TranslateProject.id', $translateProject->id);
-		$this->Flash->success(__d('translate', 'Project switched'));
-
-		return $this->Translation->autoRedirect(['controller' => 'Translate', 'action' => 'index']);
-	}
-
-	/**
 	 * @return void
 	 */
 	public function reset() {

@@ -40,7 +40,7 @@ class TranslateProjectsFixture extends TestFixture {
 			'type' => TranslateProject::TYPE_APP,
 			'default' => 1,
 			'status' => TranslateProject::STATUS_HIDDEN,
-			'path' => 'tests',
+			'path' => null,
 			'created' => '2017-04-15 01:23:08',
 			'modified' => '2017-04-15 01:23:08',
 		],

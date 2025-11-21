@@ -26,6 +26,11 @@ use Cake\Core\Plugin;
 					['action' => 'add'],
 					['escape' => false, 'class' => 'list-group-item list-group-item-action'],
 				) ?>
+				<?= $this->Html->link(
+					'<i class="fas fa-search-plus"></i> ' . __d('translate', 'Analyze PO File'),
+					['action' => 'analyze'],
+					['escape' => false, 'class' => 'list-group-item list-group-item-action'],
+				) ?>
 			</div>
 		</div>
 	</nav>

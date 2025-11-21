@@ -231,14 +231,19 @@ class TranslateTermsTable extends Table {
 	 * @return \Translate\Model\Entity\TranslateTerm|null
 	 */
 	public function import(array $translation, $translateStringId, $translateLocaleId) {
+		// Add original string for placeholder validation (name from PO file becomes string for validation context)
+		if (isset($translation['name']) && !isset($translation['string'])) {
+			$translation['string'] = $translation['name'];
+		}
+
 		$translation += [
 			//'user_id' => null,
 			'translate_string_id' => $translateStringId,
 			'translate_locale_id' => $translateLocaleId,
 		];
 
+		// Find existing term by string_id and locale_id (not content) to handle updates
 		$translateTerm = $this->find()->where([
-			'content IS' => $translation['content'],
 			'translate_string_id' => $translateStringId,
 			'translate_locale_id' => $translateLocaleId,
 		])->first();
@@ -248,8 +253,14 @@ class TranslateTermsTable extends Table {
 			$translateTerm = $this->patchEntity($translateTerm, $translation);
 		}
 
-		if (!$this->save($translateTerm)) {
-			Log::write('info', 'Term `' . $translateTerm->content . '` for String # `' . $translateStringId . '`: ' . print_r($translateTerm->getErrors(), true), ['scope' => 'import']);
+		try {
+			if (!$this->save($translateTerm)) {
+				Log::write('info', 'Term `' . $translateTerm->content . '` for String # `' . $translateStringId . '`: ' . print_r($translateTerm->getErrors(), true), ['scope' => 'import']);
+
+				return null;
+			}
+		} catch (\Exception $e) {
+			Log::write('error', 'Term import exception for String # `' . $translateStringId . '`: ' . $e->getMessage(), ['scope' => 'import']);
 
 			return null;
 		}

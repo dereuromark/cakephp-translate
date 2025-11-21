@@ -281,4 +281,33 @@ Template/Account/foo.ctp:15', $translateString->references);
 		$this->assertRedirect(['action' => 'extract']);
 	}
 
+	/**
+	 * Test analyze method GET
+	 *
+	 * @return void
+	 */
+	public function testAnalyzeGet() {
+		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateStrings', 'action' => 'analyze']);
+
+		$this->assertResponseCode(200);
+		$this->assertNoRedirect();
+	}
+
+	/**
+	 * Test analyze method POST with content
+	 *
+	 * @return void
+	 */
+	public function testAnalyzePost() {
+		$data = [
+			'content' => 'msgid "Hello"
+msgstr "Hallo"',
+		];
+		$this->post(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateStrings', 'action' => 'analyze'], $data);
+
+		$this->assertResponseCode(200);
+		$this->assertNoRedirect();
+		$this->assertNotNull($this->viewVariable('result'));
+	}
+
 }

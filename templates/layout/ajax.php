@@ -57,7 +57,7 @@
 	</style>
 </head>
 <body>
-	<?= $this->Flash->render() ?>
+	<?= $this->Flash->render('flash', ['plugin' => 'Translate']) ?>
 	<?= $this->fetch('content') ?>
 	<?= $this->fetch('script') ?>
 </body>

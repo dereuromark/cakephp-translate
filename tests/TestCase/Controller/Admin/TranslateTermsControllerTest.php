@@ -86,4 +86,50 @@ class TranslateTermsControllerTest extends IntegrationTestCase {
 		$this->assertRedirect();
 	}
 
+	/**
+	 * Test pending method
+	 *
+	 * @return void
+	 */
+	public function testPending() {
+		$this->disableErrorHandlerMiddleware();
+		$this->session(['TranslateProject.id' => 1]);
+
+		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateTerms', 'action' => 'pending']);
+
+		$this->assertResponseCode(200);
+		$this->assertNoRedirect();
+	}
+
+	/**
+	 * Test batchConfirm method POST
+	 *
+	 * @return void
+	 */
+	public function testBatchConfirmPost() {
+		$this->disableErrorHandlerMiddleware();
+		$this->session(['TranslateProject.id' => 1]);
+
+		$this->post(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateTerms', 'action' => 'batchConfirm']);
+
+		$this->assertResponseCode(302);
+		$this->assertRedirect();
+	}
+
+	/**
+	 * Test confirm method
+	 *
+	 * @return void
+	 */
+	public function testConfirm() {
+		$this->disableErrorHandlerMiddleware();
+		$this->session(['TranslateProject.id' => 1]);
+
+		$id = 1;
+		$this->post(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateTerms', 'action' => 'confirm', $id]);
+
+		$this->assertResponseCode(302);
+		$this->assertRedirect();
+	}
+
 }

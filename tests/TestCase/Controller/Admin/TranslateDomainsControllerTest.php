@@ -95,4 +95,56 @@ class TranslateDomainsControllerTest extends IntegrationTestCase {
 		$this->assertRedirect();
 	}
 
+	/**
+	 * Test index only shows domains for current project
+	 *
+	 * @return void
+	 */
+	public function testIndexOnlyShowsCurrentProjectDomains() {
+		$this->disableErrorHandlerMiddleware();
+
+		// Create a domain for a different project
+		$TranslateDomains = $this->fetchTable('Translate.TranslateDomains');
+		$otherDomain = $TranslateDomains->newEntity([
+			'name' => 'other-project-domain',
+			'translate_project_id' => 999,
+			'active' => true,
+		]);
+		$TranslateDomains->save($otherDomain);
+
+		// Access index with project 1 selected
+		$this->session(['TranslateProject.id' => 1]);
+		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateDomains', 'action' => 'index']);
+
+		$this->assertResponseCode(200);
+
+		/** @var \Cake\ORM\ResultSet<\Translate\Model\Entity\TranslateDomain> $domains */
+		$domains = $this->viewVariable('translateDomains');
+		foreach ($domains as $domain) {
+			$this->assertSame(1, $domain->translate_project_id, 'All domains should belong to project 1');
+		}
+	}
+
+	/**
+	 * Test view returns 404 for domain from different project
+	 *
+	 * @return void
+	 */
+	public function testViewDomainFromOtherProjectReturns404() {
+		// Create a domain for a different project
+		$TranslateDomains = $this->fetchTable('Translate.TranslateDomains');
+		$otherDomain = $TranslateDomains->newEntity([
+			'name' => 'other-project-domain',
+			'translate_project_id' => 999,
+			'active' => true,
+		]);
+		$TranslateDomains->save($otherDomain);
+
+		// Access with project 1 selected
+		$this->session(['TranslateProject.id' => 1]);
+		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateDomains', 'action' => 'view', $otherDomain->id]);
+
+		$this->assertResponseCode(404);
+	}
+
 }

@@ -37,7 +37,10 @@ class TranslateController extends TranslateAppController {
 	public function index() {
 		$translateLocalesTable = $this->fetchTable('Translate.TranslateLocales');
 		$languages = $translateLocalesTable->find('all')
-			->where(['translate_project_id' => $this->Translation->currentProjectId()])
+			->where([
+				'translate_project_id' => $this->Translation->currentProjectId(),
+				'active' => true,
+			])
 			->toArray();
 
 		$id = $this->Translation->currentProjectId();
@@ -129,10 +132,16 @@ class TranslateController extends TranslateAppController {
 				}
 			}
 
-			// Get confirmation statistics per locale
+			// Get confirmation statistics per locale (filtered by current project and active domains)
 			foreach ($languages as $language) {
 				$total = $this->TranslateDomains->TranslateStrings->TranslateTerms
 					->find()
+					->innerJoinWith('TranslateStrings.TranslateDomains', function ($q) use ($id) {
+						return $q->where([
+							'TranslateDomains.translate_project_id' => $id,
+							'TranslateDomains.active' => true,
+						]);
+					})
 					->where([
 						'TranslateTerms.translate_locale_id' => $language->id,
 						'TranslateTerms.content IS NOT' => null,
@@ -142,6 +151,12 @@ class TranslateController extends TranslateAppController {
 
 				$confirmed = $this->TranslateDomains->TranslateStrings->TranslateTerms
 					->find()
+					->innerJoinWith('TranslateStrings.TranslateDomains', function ($q) use ($id) {
+						return $q->where([
+							'TranslateDomains.translate_project_id' => $id,
+							'TranslateDomains.active' => true,
+						]);
+					})
 					->where([
 						'TranslateTerms.translate_locale_id' => $language->id,
 						'TranslateTerms.content IS NOT' => null,
@@ -317,6 +332,29 @@ class TranslateController extends TranslateAppController {
 		$redirect = $this->request->getQuery('redirect') ?: ['action' => 'index'];
 
 		return $this->redirect($redirect);
+	}
+
+	/**
+	 * Switch the current project.
+	 *
+	 * @return \Cake\Http\Response
+	 */
+	public function switchProject() {
+		$this->request->allowMethod(['post']);
+
+		$projectId = (int)$this->request->getData('project_switch');
+		if (!$projectId) {
+			$this->Flash->error(__d('translate', 'Invalid project'));
+
+			return $this->redirect(['action' => 'index']);
+		}
+
+		$translateProject = $this->TranslateDomains->TranslateProjects->get($projectId);
+
+		$this->request->getSession()->write('TranslateProject.id', $translateProject->id);
+		$this->Flash->success(__d('translate', 'Project switched to {0}', $translateProject->name));
+
+		return $this->Translation->autoRedirect(['action' => 'index']);
 	}
 
 }

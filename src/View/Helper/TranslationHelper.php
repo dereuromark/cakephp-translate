@@ -153,11 +153,29 @@ class TranslationHelper extends Helper {
 	}
 
 	/**
+	 * Check if code references can be displayed (clickable links).
+	 *
+	 * Controlled by `Translate.showCodeReferences` config:
+	 * - true: Always show clickable references
+	 * - false: Never show clickable references
+	 * - null (default): Show for admin routes, hide for frontend
+	 *
 	 * @param \Translate\Model\Entity\TranslateDomain $translateDomain
 	 *
 	 * @return bool
 	 */
-	public function canDisplayReference(TranslateDomain $translateDomain) {
+	public function canDisplayReference(TranslateDomain $translateDomain): bool {
+		$showCodeReferences = Configure::read('Translate.showCodeReferences');
+		if ($showCodeReferences !== null) {
+			return (bool)$showCodeReferences;
+		}
+
+		// By default, only show clickable references for admin routes
+		$prefix = $this->getView()->getRequest()->getParam('prefix');
+		if ($prefix !== 'Admin') {
+			return false;
+		}
+
 		if ($translateDomain->translate_project->path) {
 			return true;
 		}

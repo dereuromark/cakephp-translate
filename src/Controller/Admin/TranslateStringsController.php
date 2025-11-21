@@ -6,7 +6,9 @@ use Cake\Core\Configure;
 use Cake\Http\Exception\NotFoundException;
 use Translate\Controller\TranslateAppController;
 use Translate\Filesystem\Dumper;
+use Translate\Model\Entity\TranslateProject;
 use Translate\Service\ExtractService;
+use Translate\Service\PoAnalyzerService;
 
 /**
  * TranslateStrings Controller
@@ -46,13 +48,19 @@ class TranslateStringsController extends TranslateAppController {
 		$query->contain([
 			'TranslateDomains',
 		])->innerJoinWith('TranslateDomains', function ($q) {
-			return $q->where(['TranslateDomains.translate_project_id' => $this->Translation->currentProjectId()]);
+			return $q->where([
+				'TranslateDomains.translate_project_id' => $this->Translation->currentProjectId(),
+				'TranslateDomains.active' => true,
+			]);
 		});
 		$translateStrings = $this->paginate($query);
 
 		$translateDomains = $this->TranslateStrings->TranslateDomains
 			->find('list')
-			->where(['translate_project_id' => $this->Translation->currentProjectId()])
+			->where([
+				'translate_project_id' => $this->Translation->currentProjectId(),
+				'active' => true,
+			])
 			->toArray();
 		$this->set(compact('translateStrings', 'translateDomains'));
 	}
@@ -203,16 +211,47 @@ class TranslateStringsController extends TranslateAppController {
 	 * @return void
 	 */
 	public function extract(ExtractService $extractService) {
-		$potFiles = $extractService->getPotFiles();
+		// Get locale path for display
+		$TranslateProjects = $this->fetchTable('Translate.TranslateProjects');
+		$project = $TranslateProjects->get($this->Translation->currentProjectId());
+		$projectPath = $project->path ?? null;
+		if (!$projectPath) {
+			$projectPath = ROOT;
+		} elseif (!str_starts_with($projectPath, '/')) {
+			$projectPath = ROOT . DS . $projectPath;
+		}
+		$localePath = rtrim($projectPath, DS) . DS . 'resources' . DS . 'locales' . DS;
+
+		// Set the locale path on the service
+		$extractService->setLocalePath($localePath);
+
 		$translateLocales = $this->TranslateStrings->TranslateTerms->TranslateLocales->getExtractableAsList($this->Translation->currentProjectId());
 		$poFileLanguages = $extractService->getPoFileLanguages();
+
+		// Filter to only include files that actually exist
+		$potFiles = [];
+		foreach ($extractService->getPotFiles() as $potFile) {
+			if (file_exists($localePath . $potFile . '.pot')) {
+				$potFiles[$potFile] = $potFile;
+			}
+		}
+
 		$poFiles = [];
 		foreach ($poFileLanguages as $poFileLanguage) {
-			$poFiles[$poFileLanguage] = $extractService->getPoFiles($poFileLanguage);
+			$existingFiles = [];
+			foreach ($extractService->getPoFiles($poFileLanguage) as $key => $poFile) {
+				if (file_exists($localePath . $poFileLanguage . DS . $poFile . '.po')) {
+					$existingFiles[$key] = $poFile;
+				}
+			}
+			if ($existingFiles) {
+				$poFiles[$poFileLanguage] = $existingFiles;
+			}
 		}
 
 		if ($this->Translation->isPosted()) {
 			$count = 0;
+			$total = 0;
 			$errors = [];
 
 			foreach ((array)$this->request->getData('sel_pot') as $key => $domain) {
@@ -227,9 +266,10 @@ class TranslateStringsController extends TranslateAppController {
 				$translationDomain = $this->TranslateStrings->TranslateDomains->getDomain($this->Translation->currentProjectId(), $domain);
 
 				foreach ($translations as $translation) {
+					$total++;
 					$success = (bool)$this->TranslateStrings->import($translation, $translationDomain->id);
 					if (!$success) {
-						$errors[] = '`' . h($translation['name']) . '`';
+						$errors[] = '`' . h($translation['name']) . '` (' . h($domain) . ')';
 
 						continue;
 					}
@@ -238,11 +278,15 @@ class TranslateStringsController extends TranslateAppController {
 			}
 
 			foreach ((array)$this->request->getData('sel_po') as $key => $name) {
-				[$locale, $domain] = explode('-', $name, 2);
+				$parts = explode('-', $name, 2);
+				if (count($parts) < 2) {
+					continue;
+				}
+				[$locale, $domain] = $parts;
 				if (!$domain) {
 					continue;
 				}
-				if (!isset($poFiles[$locale][$locale . '-' . $domain])) {
+				if (!isset($poFiles[$locale]) || !in_array($domain, $poFiles[$locale], true)) {
 					continue;
 				}
 				$separatorPos = strpos($locale, '_');
@@ -268,14 +312,17 @@ class TranslateStringsController extends TranslateAppController {
 				$translationDomain = $this->TranslateStrings->TranslateDomains->getDomain($this->Translation->currentProjectId(), $domain);
 
 				foreach ($translations as $translation) {
+					$total++;
 					$translationString = $this->TranslateStrings->import($translation, $translationDomain->id);
 					if (!$translationString) {
-						$errors[] = '`' . h($translation['name']) . '`';
+						$errors[] = '`' . h($translation['name']) . '` (' . h($domain) . ')';
+
+						continue;
 					}
 
 					$success = (bool)$this->TranslateStrings->TranslateTerms->import($translation, $translationString->id, $translateLocales[$lang]);
 					if (!$success) {
-						$errors[] = '`' . h($translation['name']) . '`';
+						$errors[] = '`' . h($translation['name']) . '` (' . h($domain) . ')';
 
 						continue;
 					}
@@ -283,16 +330,22 @@ class TranslateStringsController extends TranslateAppController {
 				}
 			}
 
-			$this->Flash->success('Done: ' . $count);
+			$this->Flash->success(__d('translate', 'Done: {0}/{1}', $count, $total));
 			if ($errors) {
 				$this->Flash->error(count($errors) . ' errors: ' . implode(', ', $errors));
 			}
 			//$this->redirect(array('action'=>'index'));
 
 		} else {
+			// For plugin projects, exclude default/cake domains from default selection
+			$isPlugin = $project->type === TranslateProject::TYPE_PLUGIN;
+			$excludeFromDefault = $isPlugin ? ['default', 'cake'] : [];
+
 			$selPot = [];
 			foreach ($potFiles as $key => $val) {
-				$selPot[] = $val;
+				if (!in_array($val, $excludeFromDefault, true)) {
+					$selPot[] = $val;
+				}
 			}
 			$this->request = $this->request->withData('sel_pot', $selPot);
 
@@ -302,13 +355,15 @@ class TranslateStringsController extends TranslateAppController {
 					continue;
 				}
 				foreach ($val as $k => $v) {
-					$selPo[] = $k;
+					if (!in_array($v, $excludeFromDefault, true)) {
+						$selPo[] = $k;
+					}
 				}
 			}
 			$this->request = $this->request->withData('sel_po', $selPo);
 		}
 
-		$this->set(compact('potFiles', 'poFiles'));
+		$this->set(compact('potFiles', 'poFiles', 'localePath'));
 	}
 
 	/**
@@ -700,6 +755,127 @@ class TranslateStringsController extends TranslateAppController {
 		}
 
 		return $updatedCount;
+	}
+
+	/**
+	 * Analyze PO/POT file content for issues.
+	 *
+	 * @param \Translate\Service\ExtractService $extractService
+	 * @return \Cake\Http\Response|null|void
+	 */
+	public function analyze(ExtractService $extractService) {
+		$result = null;
+		$content = '';
+		$selectedFile = null;
+
+		// Get locale path for file existence checks
+		$TranslateProjects = $this->fetchTable('Translate.TranslateProjects');
+		$project = $TranslateProjects->get($this->Translation->currentProjectId());
+		$projectPath = $project->path ?? null;
+		if (!$projectPath) {
+			$projectPath = ROOT;
+		} elseif (!str_starts_with($projectPath, '/')) {
+			$projectPath = ROOT . DS . $projectPath;
+		}
+		$localePath = rtrim($projectPath, DS) . DS . 'resources' . DS . 'locales' . DS;
+
+		// Get available PO/POT files (same as extract action)
+		$potFiles = $extractService->getPotFiles();
+		$poFileLanguages = $extractService->getPoFileLanguages();
+		$poFiles = [];
+		foreach ($poFileLanguages as $poFileLanguage) {
+			$poFiles[$poFileLanguage] = $extractService->getPoFiles($poFileLanguage);
+		}
+
+		// Build flat list for dropdown, only include existing files
+		$availableFiles = [];
+		foreach ($potFiles as $potFile) {
+			$filePath = $localePath . $potFile . '.pot';
+			if (file_exists($filePath)) {
+				$availableFiles['pot:' . $potFile] = $potFile . '.pot';
+			}
+		}
+		foreach ($poFiles as $locale => $files) {
+			foreach ($files as $key => $file) {
+				$filePath = $localePath . $locale . DS . $file . '.po';
+				if (file_exists($filePath)) {
+					$availableFiles['po:' . $locale . ':' . $file] = $locale . '/' . $file . '.po';
+				}
+			}
+		}
+
+		// Check for query string selection
+		$fileParam = $this->request->getQuery('file');
+		if ($fileParam && isset($availableFiles[$fileParam])) {
+			$selectedFile = $fileParam;
+			$content = $this->readPoFile($fileParam, $extractService);
+			if ($content) {
+				$analyzer = new PoAnalyzerService();
+				$result = $analyzer->analyze($content);
+			}
+		} elseif ($this->Translation->isPosted()) {
+			// Handle form submission
+			$selectedFile = $this->request->getData('selected_file');
+			if ($selectedFile) {
+				$content = $this->readPoFile((string)$selectedFile, $extractService);
+			} else {
+				$content = (string)$this->request->getData('content');
+				$file = $this->request->getUploadedFile('file');
+
+				// Handle file upload
+				if ($file && $file->getError() === UPLOAD_ERR_OK) {
+					$content = (string)$file->getStream();
+				}
+			}
+
+			if ($content) {
+				$analyzer = new PoAnalyzerService();
+				$result = $analyzer->analyze($content);
+			} else {
+				$this->Flash->error(__d('translate', 'Please provide PO file content or upload a file.'));
+			}
+		}
+
+		$this->set(compact('result', 'content', 'availableFiles', 'selectedFile'));
+	}
+
+	/**
+	 * Read PO/POT file content based on selection key.
+	 *
+	 * @param string $fileKey Format: "pot:domain" or "po:locale:domain"
+	 * @param \Translate\Service\ExtractService $extractService
+	 * @return string|null
+	 */
+	protected function readPoFile(string $fileKey, ExtractService $extractService): ?string {
+		$parts = explode(':', $fileKey);
+		$type = $parts[0];
+
+		// Get path from current project
+		$TranslateProjects = $this->fetchTable('Translate.TranslateProjects');
+		$project = $TranslateProjects->get($this->Translation->currentProjectId());
+		$path = $project->path ?? null;
+		if (!$path) {
+			$path = ROOT;
+		} elseif (!str_starts_with($path, '/')) {
+			$path = ROOT . DS . $path;
+		}
+		$localePath = rtrim($path, DS) . DS . 'resources' . DS . 'locales' . DS;
+
+		if ($type === 'pot' && isset($parts[1])) {
+			$filePath = $localePath . $parts[1] . '.pot';
+		} elseif ($type === 'po' && isset($parts[1], $parts[2])) {
+			$filePath = $localePath . $parts[1] . DS . $parts[2] . '.po';
+		} else {
+			return null;
+		}
+
+		if (!file_exists($filePath)) {
+			$this->Flash->error(__d('translate', 'File not found: {0}', $filePath));
+
+			return null;
+		}
+
+		return file_get_contents($filePath) ?: null;
 	}
 
 }

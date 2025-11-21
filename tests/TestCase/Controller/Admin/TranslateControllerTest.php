@@ -211,4 +211,51 @@ class TranslateControllerTest extends IntegrationTestCase {
 		$this->assertNotNull($this->viewVariable('text'));
 	}
 
+	/**
+	 * Test switchProject method
+	 *
+	 * @return void
+	 */
+	public function testSwitchProject() {
+		$this->skipIf(version_compare(Configure::version(), '5.2.0', '<'), 'Session handling in integration tests requires CakePHP 5.2+');
+
+		$this->enableRetainFlashMessages();
+
+		$data = ['project_switch' => 1];
+		$this->post(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'Translate', 'action' => 'switchProject'], $data);
+
+		$this->assertResponseCode(302);
+		$this->assertRedirect(['plugin' => 'Translate', 'controller' => 'Translate', 'action' => 'index']);
+		$flash = $this->_requestSession->read('Flash.flash');
+		$this->assertNotEmpty($flash);
+		$this->assertStringContainsString('Project switched to', $flash[0]['message']);
+		$this->assertSession(1, 'TranslateProject.id');
+	}
+
+	/**
+	 * Test switchLanguage method
+	 *
+	 * @return void
+	 */
+	public function testSwitchLanguage() {
+		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'Translate', 'action' => 'switchLanguage', '?' => ['locale' => 'de']]);
+
+		$this->assertResponseCode(302);
+		$this->assertRedirect();
+	}
+
+	/**
+	 * Test switchLanguage method with invalid locale
+	 *
+	 * @return void
+	 */
+	public function testSwitchLanguageInvalid() {
+		$this->enableRetainFlashMessages();
+
+		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'Translate', 'action' => 'switchLanguage', '?' => ['locale' => 'invalid']]);
+
+		$this->assertResponseCode(302);
+		$this->assertRedirect(['action' => 'index']);
+	}
+
 }

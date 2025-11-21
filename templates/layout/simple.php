@@ -263,7 +263,7 @@ $title = $this->fetch('title');
 		<div class="container-fluid">
 			<!-- Flash Messages -->
 			<div class="flash-messages">
-				<?= $this->Flash->render() ?>
+				<?= $this->Flash->render('flash', ['plugin' => 'Translate']) ?>
 			</div>
 
 			<!-- Content -->

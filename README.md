@@ -19,6 +19,10 @@ WARNING: Not fully upgraded yet, help needed!
 - Translate strings in all languages simultaneously.
 - Allow others to help translating without having to know technical details.
 - Auto-Translate and Auto-Suggest with Translate APIs (e.g. Google Translate PHP/JS, Yandex, ...) for efficiency.
+- Run i18n extract directly from web interface (with dry run support).
+- Multi-project support with project-specific locale paths.
+- Translation coverage dashboard with progress tracking.
+- PO/POT file analyzer for detecting issues.
 
 ## Benefits over normal PO editing
 - Prevent duplicates, missing translations, collisions.
@@ -102,8 +106,51 @@ Navigate to `/admin/translate/translate-behavior` for:
 
 Accessible from the main dashboard under "Quick Actions".
 
+### Web-based i18n Extract
+
+Run CakePHP's i18n extract command directly from the web interface without needing CLI access.
+
+Navigate to `/admin/translate/translate-strings/run-extract` for:
+- **Dry Run Mode**: Preview extracted strings before writing files
+- **Custom Paths**: Specify which directories to scan
+- **Plugin Support**: Automatic domain detection for plugin-type projects
+- **Live Output**: See extraction progress and results in real-time
+
+**Features**:
+- Extracts to temp directory first, then copies to final location (ensures consistent behavior)
+- For plugins, automatically uses the plugin name as domain (e.g., `translate.pot` for Translate plugin)
+- Filters out unwanted POT files (like `default.pot`) for plugin projects
+- Shows string count and preview of generated POT files
+- Supports merge and overwrite options
+
+**Example workflow**:
+1. Navigate to `/admin/translate/translate-strings/run-extract`
+2. Configure paths to scan (defaults to `src/` and `templates/`)
+3. Enable "Dry run" to preview first
+4. Review the extracted strings
+5. Disable "Dry run" and run again to write files
+6. Import the generated POT file via the Extract/Import page
+
+### PO File Analyzer
+
+Analyze PO/POT files for common issues and inconsistencies.
+
+Navigate to `/admin/translate/translate-strings/analyze` to:
+- Upload or paste PO file content
+- Select from existing project PO/POT files
+- Detect formatting issues, missing translations, fuzzy entries
+- Identify placeholder mismatches between source and translation
+
+### Translation Coverage
+
+The main dashboard shows translation coverage across all domains and locales:
+- Progress bars for each language
+- Counts of translated vs. total strings
+- Quick links to untranslated strings
+- Batch confirm functionality for reviewed translations
+
 ## Tips
-- Use [TinyAuth](https://github.com/dereuromark/cakephp-tinyauth) or alike to manage access to the translation backend for user groups.
+- Use [TinyAuth](https://github.com/dereuromark/cakephp-tinyauth) or Cake Authentication plugin to manage access to the translation backend for user groups.
 - Implement your own Translation engine if you want to have even better auto-suggest.
 
 ## Configuration and documentation

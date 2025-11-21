@@ -305,4 +305,73 @@ class TranslateBehaviorControllerTest extends IntegrationTestCase {
 		$this->assertFlashMessage('Table non_existent_table not found');
 	}
 
+	/**
+	 * Test save migration action
+	 *
+	 * @return void
+	 */
+	public function testSaveMigration() {
+		$migrationCode = '<?php
+declare(strict_types=1);
+
+use Migrations\BaseMigration;
+
+class AddI18nForTestTable extends BaseMigration
+{
+    public function change(): void
+    {
+        // Migration code here
+    }
+}';
+
+		$migrationPath = ROOT . DS . 'config' . DS . 'Migrations';
+		if (!is_dir($migrationPath)) {
+			mkdir($migrationPath, 0755, true);
+		}
+
+		$this->post(
+			['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateBehavior', 'action' => 'saveMigration'],
+			[
+				'table_name' => 'test_table',
+				'migration_name' => 'AddI18nForTestTable',
+				'migration_code' => $migrationCode,
+			],
+		);
+
+		$this->assertResponseCode(302);
+		$this->assertRedirect(['action' => 'generate', 'test_table']);
+		$this->assertFlashElement('flash/success');
+
+		// Check that the flash message contains the expected text
+		$session = $this->_requestSession;
+		$flash = $session->read('Flash.flash');
+		$this->assertNotEmpty($flash);
+		$this->assertStringContainsString('Migration file created successfully', $flash[0]['message']);
+
+		// Cleanup - find and delete the created migration file
+		$files = glob($migrationPath . DS . '*_AddI18nForTestTable.php');
+		foreach ($files as $file) {
+			if (file_exists($file)) {
+				unlink($file);
+			}
+		}
+	}
+
+	/**
+	 * Test save migration with missing data
+	 *
+	 * @return void
+	 */
+	public function testSaveMigrationMissingData() {
+		$this->post(
+			['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateBehavior', 'action' => 'saveMigration'],
+			[
+				'table_name' => 'test_table',
+			],
+		);
+
+		$this->assertResponseCode(302);
+		$this->assertFlashMessage('Missing required data');
+	}
+
 }

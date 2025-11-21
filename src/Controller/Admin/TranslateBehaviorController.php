@@ -66,16 +66,48 @@ class TranslateBehaviorController extends TranslateAppController {
 	 */
 	protected function filterApplicationTables(array $tables, bool $excludeI18n = false): array {
 		return array_filter($tables, function ($table) use ($excludeI18n) {
-			$systemPrefixes = ['phinxlog', 'translate_', 'queue_', 'audit_'];
+			// Prefixes for plugin/system tables
+			$systemPrefixes = ['cake_migrations', 'cake_seeds', 'translate_', 'queue_', 'audit_'];
 
+			// Suffixes for migration/seed tables
+			$systemSuffixes = ['phinxlog'];
+
+			// Check if it's a shadow table
+			if (str_ends_with($table, '_i18n')) {
+				$baseTableName = substr($table, 0, -5);
+
+				// Check if base table is a system table (by prefix)
+				foreach ($systemPrefixes as $prefix) {
+					if (str_starts_with($baseTableName, $prefix)) {
+						return false;
+					}
+				}
+
+				// Check if base table is a system table (by suffix)
+				foreach ($systemSuffixes as $suffix) {
+					if (str_ends_with($baseTableName, $suffix)) {
+						return false;
+					}
+				}
+
+				// If excludeI18n is true, exclude all remaining shadow tables
+				if ($excludeI18n) {
+					return false;
+				}
+			}
+
+			// Check regular table prefixes
 			foreach ($systemPrefixes as $prefix) {
 				if (str_starts_with($table, $prefix)) {
 					return false;
 				}
 			}
 
-			if ($excludeI18n && str_ends_with($table, '_i18n')) {
-				return false;
+			// Check regular table suffixes
+			foreach ($systemSuffixes as $suffix) {
+				if (str_ends_with($table, $suffix)) {
+					return false;
+				}
 			}
 
 			return true;
@@ -238,14 +270,8 @@ class TranslateBehaviorController extends TranslateAppController {
 		$schemaCollection = $connection->getSchemaCollection();
 		$allTables = $schemaCollection->listTables();
 
-		// Get main app tables (excluding system/plugin tables)
-		$appTables = array_filter($allTables, function ($table) {
-			return !str_starts_with($table, 'translate_')
-				&& !str_starts_with($table, 'phinxlog')
-				&& !str_starts_with($table, 'queue_')
-				&& !str_starts_with($table, 'audit_')
-				&& !str_ends_with($table, '_i18n');
-		});
+		// Get main app tables (excluding system/plugin tables and shadow tables)
+		$appTables = $this->filterApplicationTables($allTables, true);
 
 		foreach ($appTables as $tableName) {
 			try {
@@ -284,13 +310,8 @@ class TranslateBehaviorController extends TranslateAppController {
 	protected function findCandidateTables(array $allTables, array $shadowTables, CollectionInterface $schemaCollection): array {
 		$candidates = [];
 
-		$appTables = array_filter($allTables, function ($table) {
-			return !str_starts_with($table, 'translate_')
-				&& !str_starts_with($table, 'phinxlog')
-				&& !str_starts_with($table, 'queue_')
-				&& !str_starts_with($table, 'audit_')
-				&& !str_ends_with($table, '_i18n');
-		});
+		// Get main app tables (excluding system/plugin tables and shadow tables)
+		$appTables = $this->filterApplicationTables($allTables, true);
 
 		foreach ($appTables as $tableName) {
 			// Skip if already has shadow table
@@ -502,18 +523,15 @@ class TranslateBehaviorController extends TranslateAppController {
 <?php
 declare(strict_types=1);
 
-use Migrations\AbstractMigration;
+use Migrations\BaseMigration;
 
 /**
  * Add i18n translation table for {$baseTableName} using EAV strategy
  */
-class {$className} extends AbstractMigration
+class {$className} extends BaseMigration
 {
     /**
      * Change Method.
-     *
-     * More information on this method is available here:
-     * https://book.cakephp.org/phinx/0/en/migrations.html#the-change-method
      *
      * @return void
      */
@@ -613,18 +631,15 @@ PHP;
 <?php
 declare(strict_types=1);
 
-use Migrations\AbstractMigration;
+use Migrations\BaseMigration;
 
 /**
  * Add i18n translation table for {$baseTableName} using Shadow Table strategy
  */
-class {$className} extends AbstractMigration
+class {$className} extends BaseMigration
 {
     /**
      * Change Method.
-     *
-     * More information on this method is available here:
-     * https://book.cakephp.org/phinx/0/en/migrations.html#the-change-method
      *
      * @return void
      */
@@ -663,6 +678,54 @@ class {$className} extends AbstractMigration
     }
 }
 PHP;
+	}
+
+	/**
+	 * Save migration file directly
+	 *
+	 * @return \Cake\Http\Response
+	 */
+	public function saveMigration() {
+		$this->request->allowMethod(['post']);
+
+		$tableName = $this->request->getData('table_name');
+		$migrationCode = $this->request->getData('migration_code');
+		$migrationName = $this->request->getData('migration_name');
+
+		if (!$tableName || !$migrationCode || !$migrationName) {
+			$this->Flash->error(__d('translate', 'Missing required data'));
+
+			return $this->redirect(['action' => 'generate', $tableName]);
+		}
+
+		// Determine migration directory
+		$migrationPath = ROOT . DS . 'config' . DS . 'Migrations';
+		if (!is_dir($migrationPath)) {
+			mkdir($migrationPath, 0755, true);
+		}
+
+		// Generate timestamped filename
+		$timestamp = date('YmdHis');
+		$filename = $timestamp . '_' . $migrationName . '.php';
+		$filePath = $migrationPath . DS . $filename;
+
+		// Check if file already exists
+		if (file_exists($filePath)) {
+			$this->Flash->error(__d('translate', 'Migration file already exists: {0}', $filename));
+
+			return $this->redirect(['action' => 'generate', $tableName]);
+		}
+
+		// Save the file
+		if (file_put_contents($filePath, $migrationCode) === false) {
+			$this->Flash->error(__d('translate', 'Failed to write migration file'));
+
+			return $this->redirect(['action' => 'generate', $tableName]);
+		}
+
+		$this->Flash->success(__d('translate', 'Migration file created successfully: {0}', $filename));
+
+		return $this->redirect(['action' => 'generate', $tableName]);
 	}
 
 }

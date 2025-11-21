@@ -215,6 +215,18 @@ $fieldsFormatted .= "        ]";
 						<button class="btn btn-sm btn-outline-primary" onclick="copyToClipboard()">
 							<i class="fas fa-copy"></i> <?= __d('translate', 'Copy to Clipboard') ?>
 						</button>
+						<?= $this->Form->create(null, [
+							'url' => ['action' => 'saveMigration'],
+							'style' => 'display: inline-block; margin-left: 5px;',
+						]) ?>
+							<?= $this->Form->hidden('table_name', ['value' => $tableName]) ?>
+							<?= $this->Form->hidden('migration_name', ['value' => $migrationName]) ?>
+							<?= $this->Form->hidden('migration_code', ['value' => $migrationCode]) ?>
+							<?= $this->Form->button(
+								'<i class="fas fa-save"></i> ' . __d('translate', 'Save Migration File'),
+								['type' => 'submit', 'class' => 'btn btn-sm btn-success', 'escapeTitle' => false],
+							) ?>
+						<?= $this->Form->end() ?>
 						<?= $this->Html->link(
 							'<i class="fas fa-arrow-left"></i> ' . __d('translate', 'Back to Overview'),
 							['action' => 'index'],

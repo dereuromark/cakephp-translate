@@ -13,8 +13,8 @@ use Cake\Validation\Validator;
 use Translate\Model\Filter\TranslateTermsCollection;
 
 /**
- * @property \Cake\ORM\Association\BelongsTo<\Translate\Model\Table\TranslateStringsTable> $TranslateStrings
- * @property \Cake\ORM\Association\BelongsTo<\Translate\Model\Table\TranslateLocalesTable> $TranslateLocales
+ * @property \Translate\Model\Table\TranslateStringsTable&\Cake\ORM\Association\BelongsTo $TranslateStrings
+ * @property \Translate\Model\Table\TranslateLocalesTable&\Cake\ORM\Association\BelongsTo $TranslateLocales
  *
  * @method \Translate\Model\Entity\TranslateTerm get(mixed $primaryKey, array|string $finder = 'all', \Psr\SimpleCache\CacheInterface|string|null $cache = null, \Closure|string|null $cacheKey = null, mixed ...$args)
  * @method \Translate\Model\Entity\TranslateTerm newEntity(array $data, array $options = [])
@@ -31,7 +31,8 @@ use Translate\Model\Filter\TranslateTermsCollection;
  * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateTerm> saveManyOrFail(iterable $entities, array $options = [])
  * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateTerm>|false deleteMany(iterable $entities, array $options = [])
  * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateTerm> deleteManyOrFail(iterable $entities, array $options = [])
- * @extends \Cake\ORM\Table<array{Nullable: \Translate\Model\Behavior\NullableBehavior, Search: \Search\Model\Behavior\SearchBehavior}>
+ * @extends \Cake\ORM\Table<array{AuditLog: \AuditStash\Model\Behavior\AuditLogBehavior, Nullable: \Translate\Model\Behavior\NullableBehavior, Search: \Search\Model\Behavior\SearchBehavior}>
+ * @mixin \AuditStash\Model\Behavior\AuditLogBehavior
  */
 class TranslateTermsTable extends Table {
 

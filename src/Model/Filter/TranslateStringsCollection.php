@@ -13,6 +13,8 @@ class TranslateStringsCollection extends FilterCollection {
 	public function initialize(): void {
 		$this
 			->add('translate_domain_id', 'Search.Value')
+			->add('skipped', 'Search.Boolean')
+			->add('is_html', 'Search.Boolean')
 			->add('missing_translation', 'Search.Callback', [
 				'callback' => function (SelectQuery $query, array $args, $filter) {
 					if (empty($args['missing_translation'])) {
@@ -21,6 +23,21 @@ class TranslateStringsCollection extends FilterCollection {
 
 					$query->leftJoinWith('TranslateTerms')
 						->where(['TranslateTerms.content IS' => null]);
+
+					return true;
+				},
+			])
+			->add('has_plural', 'Search.Callback', [
+				'callback' => function (SelectQuery $query, array $args, $filter) {
+					if (!isset($args['has_plural'])) {
+						return false;
+					}
+
+					if ($args['has_plural']) {
+						$query->where(['TranslateStrings.plural IS NOT' => null]);
+					} else {
+						$query->where(['TranslateStrings.plural IS' => null]);
+					}
 
 					return true;
 				},

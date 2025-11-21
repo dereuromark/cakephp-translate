@@ -4,6 +4,8 @@
  * @var iterable<\Translate\Model\Entity\TranslateLocale> $translateLocales
  * @var \Translate\Model\Entity\TranslateString $translateString
  * @var array $suggestions
+ * @var array $braceMatches
+ * @var array $sprintfMatches
  */
 
 ?>
@@ -97,10 +99,12 @@
 					?>
 					</fieldset>
 
-					<div class="btn-group">
-						<?= $this->Form->button(__d('translate', 'Save'), ['name' => 'save', 'value' => 'Task', 'class' => 'btn btn-primary']) ?>
-						<?= $this->Form->button(__d('translate', 'Save') . ' + ' . __d('translate', 'Next'), ['name' => 'next', 'value' => 'Task', 'class' => 'btn btn-success']) ?>
-						<?= $this->Form->button(__d('translate', 'Skip'), ['name' => 'skip', 'value' => 'skip', 'class' => 'btn btn-secondary']) ?>
+					<div class="mt-4 mb-4">
+						<div class="d-flex gap-2">
+							<?= $this->Form->submit(__d('translate', 'Save'), ['name' => 'save', 'class' => 'btn btn-primary']) ?>
+							<?= $this->Form->submit(__d('translate', 'Save') . ' + ' . __d('translate', 'Next'), ['name' => 'next', 'class' => 'btn btn-success']) ?>
+							<?= $this->Form->submit(__d('translate', 'Skip'), ['name' => 'skip', 'class' => 'btn btn-secondary']) ?>
+						</div>
 					</div>
 
 				<?= $this->Form->end() ?>

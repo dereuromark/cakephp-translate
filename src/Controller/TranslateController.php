@@ -8,6 +8,7 @@ use Translate\Model\Entity\TranslateProject;
 /**
  * @property \Translate\Model\Table\TranslateDomainsTable $TranslateDomains
  * @property \Translate\Controller\Component\TranslationComponent $Translation
+ * @property \Search\Controller\Component\SearchComponent $Search
  */
 class TranslateController extends TranslateAppController {
 
@@ -17,15 +18,29 @@ class TranslateController extends TranslateAppController {
 	protected ?string $defaultTable = 'Translate.TranslateDomains';
 
 	/**
+	 * @return void
+	 */
+	public function initialize(): void {
+		parent::initialize();
+
+		$this->loadComponent('Search.Search', [
+			'actions' => ['terms'],
+		]);
+	}
+
+	/**
 	 * Initial page / overview
 	 *
 	 * @return void
 	 */
 	public function index() {
-		$translateLocalesTable = $this->fetchTable('Translate.TranslateLocales');
-		$languages = $translateLocalesTable->find('all')->toArray();
-
 		$id = $this->Translation->currentProjectId();
+
+		$translateLocalesTable = $this->fetchTable('Translate.TranslateLocales');
+		$languages = $translateLocalesTable->find('all')
+			->where(['translate_project_id' => $id])
+			->toArray();
+
 		$count = $id ? $this->TranslateDomains->statistics($id, $languages) : 0;
 		$coverage = $this->TranslateDomains->TranslateStrings->coverage($id);
 		$projectSwitchArray = $this->TranslateDomains->TranslateProjects->find('list')
@@ -39,12 +54,49 @@ class TranslateController extends TranslateAppController {
 	}
 
 	/**
+	 * List all translation terms with filtering
+	 *
+	 * @return void
+	 */
+	public function terms() {
+		$projectId = $this->Translation->currentProjectId();
+		$translateStringsTable = $this->fetchTable('Translate.TranslateStrings');
+
+		$query = $translateStringsTable->find('search', search: $this->request->getQuery());
+		$query->contain([
+			'TranslateDomains',
+			'TranslateTerms' => ['TranslateLocales'],
+		])->innerJoinWith('TranslateDomains', function ($q) use ($projectId) {
+			return $q->where(['TranslateDomains.translate_project_id' => $projectId]);
+		});
+
+		$translateStrings = $this->paginate($query);
+
+		// Get filter options
+		$translateDomains = $translateStringsTable->TranslateDomains
+			->find('list')
+			->where(['translate_project_id' => $projectId])
+			->orderBy(['name' => 'ASC'])
+			->toArray();
+
+		$translateLocales = $translateStringsTable->TranslateTerms->TranslateLocales
+			->find('list', ['keyField' => 'id', 'valueField' => 'name'])
+			->where(['translate_project_id' => $projectId])
+			->orderBy(['name' => 'ASC'])
+			->toArray();
+
+		$this->set(compact('translateStrings', 'translateDomains', 'translateLocales'));
+	}
+
+	/**
 	 * @param string|null $domain
 	 * @param int|null $id
 	 * @return \Cake\Http\Response|null|void
 	 */
 	public function translate(?string $domain = null, ?int $id = null) {
 		$translateStringsTable = $this->fetchTable('Translate.TranslateStrings');
+		$projectId = $this->Translation->currentProjectId();
+
 		if (!$domain) {
 			/** @var \Translate\Model\Entity\TranslateString|null $next */
 			$next = $translateStringsTable->getNext(null, null)->contain(['TranslateDomains'])->first();
@@ -60,7 +112,39 @@ class TranslateController extends TranslateAppController {
 		$translateString = $translateStringsTable->get($id, ['contain' => ['TranslateDomains' => 'TranslateProjects']]);
 
 		/** @var \Translate\Model\Entity\TranslateLocale[] $translateLocales */
-		$translateLocales = $translateStringsTable->TranslateTerms->TranslateLocales->find()->all()->toArray();
+		$translateLocales = $translateStringsTable->TranslateTerms->TranslateLocales->find()
+			->where(['translate_project_id' => $projectId])
+			->all()
+			->toArray();
+
+		// Get all domains for current project with statistics
+		$domainsTable = $this->fetchTable('Translate.TranslateDomains');
+		$domains = $domainsTable->find()
+			->where(['translate_project_id' => $projectId, 'active' => true])
+			->orderBy(['name' => 'ASC'])
+			->all()
+			->toArray();
+
+		$domainStats = [];
+		foreach ($domains as $domainEntity) {
+			$totalStrings = $translateStringsTable->find()
+				->where(['translate_domain_id' => $domainEntity->id])
+				->count();
+
+			$translatedStrings = $translateStringsTable->find()
+				->where(['translate_domain_id' => $domainEntity->id])
+				->matching('TranslateTerms', function ($q) {
+					return $q->where(['TranslateTerms.content IS NOT' => null]);
+				})
+				->count();
+
+			$domainStats[$domainEntity->id] = [
+				'name' => $domainEntity->name,
+				'total' => $totalStrings,
+				'translated' => $translatedStrings,
+				'percentage' => $totalStrings > 0 ? (int)(($translatedStrings / $totalStrings) * 100) : 0,
+			];
+		}
 		if (!$translateLocales) {
 			$this->Flash->error(__d('translate', 'You need at least one language to translate'));
 
@@ -68,20 +152,34 @@ class TranslateController extends TranslateAppController {
 		}
 
 		$translateTerms = $translateStringsTable->TranslateTerms->getTranslatedArray($id);
-
 		if ($this->Translation->isPosted()) {
 			if ($this->request->getData('skip')) {
 				$translateString->skipped = true;
 				$translateStringsTable->saveOrFail($translateString);
 
-				$next = $translateStringsTable->getNext($translateString->translate_domain_id, $translateString->id)->first();
-				if (!empty($next['id'])) {
-					return $this->redirect([$next['id']]);
+				// Try to find next in same domain first
+				$next = $translateStringsTable->getNext($translateString->translate_domain_id, null)
+					->contain(['TranslateDomains'])
+					->where(['TranslateStrings.id >' => $id])
+					->orderBy(['TranslateStrings.id' => 'ASC'])
+					->first();
+
+				// If no more in this domain, try any domain
+				if (!$next) {
+					$next = $translateStringsTable->getNext(null, null)
+						->contain(['TranslateDomains'])
+						->where(['TranslateStrings.id >' => $id])
+						->orderBy(['TranslateStrings.id' => 'ASC'])
+						->first();
 				}
 
-				$this->Flash->success('No more open translations for domain `' . h($translateString->translate_domain->name) . '`.');
+				if ($next) {
+					return $this->redirect(['action' => 'translate', $next->translate_domain->name, $next->id]);
+				}
 
-				return $this->redirect(['action' => 'view', $id]);
+				$this->Flash->success(__d('translate', 'No more open translations.'));
+
+				return $this->redirect(['action' => 'index']);
 			}
 
 			$success = true;
@@ -117,15 +215,34 @@ class TranslateController extends TranslateAppController {
 
 			if ($success) {
 				if (array_key_exists('next', $this->request->getData())) {
-					$next = $translateStringsTable->getNext($translateString->translate_domain_id, $translateString->id)->first();
-					if (!empty($next['id'])) {
-						return $this->redirect([$next['id']]);
+					// Try to find next in same domain first
+					$next = $translateStringsTable->getNext($translateString->translate_domain_id, null)
+						->contain(['TranslateDomains'])
+						->where(['TranslateStrings.id >' => $id])
+						->orderBy(['TranslateStrings.id' => 'ASC'])
+						->first();
+
+					// If no more in this domain, try any domain
+					if (!$next) {
+						$next = $translateStringsTable->getNext(null, null)
+							->contain(['TranslateDomains'])
+							->where(['TranslateStrings.id >' => $id])
+							->orderBy(['TranslateStrings.id' => 'ASC'])
+							->first();
 					}
 
-					$this->Flash->success('No more open translations for domain `' . h($translateString->translate_domain->name) . '`.');
+					if ($next) {
+						return $this->redirect(['action' => 'translate', $next->translate_domain->name, $next->id]);
+					}
+
+					$this->Flash->success(__d('translate', 'No more open translations.'));
+
+					return $this->redirect(['action' => 'index']);
 				}
 
-				return $this->redirect(['action' => 'view', $id]);
+				$this->Flash->success(__d('translate', 'Translation saved successfully.'));
+
+				return $this->redirect(['action' => 'translate', $translateString->translate_domain->name, $id]);
 			}
 		} else {
 			foreach ($translateTerms as $translateTerm) {
@@ -137,7 +254,7 @@ class TranslateController extends TranslateAppController {
 
 		$suggestions = $translateStringsTable->getSuggestions($translateString, $translateLocales, $translateTerms);
 
-		$this->set(compact('translateString', 'suggestions', 'translateLocales'));
+		$this->set(compact('translateString', 'suggestions', 'translateLocales', 'domainStats'));
 	}
 
 	/**
@@ -224,6 +341,22 @@ class TranslateController extends TranslateAppController {
 		$redirect = $this->request->getQuery('redirect') ?: ['action' => 'index'];
 
 		return $this->redirect($redirect);
+	}
+
+	/**
+	 * Switch the current translation project
+	 *
+	 * @return \Cake\Http\Response
+	 */
+	public function switchProject() {
+		$projectId = (int)$this->request->getData('project_switch');
+		$translateProjectsTable = $this->fetchTable('Translate.TranslateProjects');
+		$translateProject = $translateProjectsTable->get($projectId);
+
+		$this->request->getSession()->write('TranslateProject.id', $translateProject->id);
+		$this->Flash->success(__d('translate', 'Project switched to {0}', $translateProject->name));
+
+		return $this->redirect(['action' => 'index']);
 	}
 
 }

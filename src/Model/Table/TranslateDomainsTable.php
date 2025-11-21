@@ -7,8 +7,8 @@ use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
 /**
- * @property \Cake\ORM\Association\BelongsTo<\Translate\Model\Table\TranslateProjectsTable> $TranslateProjects
- * @property \Cake\ORM\Association\HasMany<\Translate\Model\Table\TranslateStringsTable> $TranslateStrings
+ * @property \Translate\Model\Table\TranslateProjectsTable&\Cake\ORM\Association\BelongsTo $TranslateProjects
+ * @property \Translate\Model\Table\TranslateStringsTable&\Cake\ORM\Association\HasMany $TranslateStrings
  *
  * @method \Translate\Model\Entity\TranslateDomain get(mixed $primaryKey, array|string $finder = 'all', \Psr\SimpleCache\CacheInterface|string|null $cache = null, \Closure|string|null $cacheKey = null, mixed ...$args)
  * @method \Translate\Model\Entity\TranslateDomain newEntity(array $data, array $options = [])

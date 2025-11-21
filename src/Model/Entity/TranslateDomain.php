@@ -14,7 +14,7 @@ use Tools\Model\Entity\Entity;
  * @property \Cake\I18n\DateTime|null $created
  * @property \Cake\I18n\DateTime|null $modified
  *
- * @property \Translate\Model\Entity\TranslateProject|null $translate_project
+ * @property \Translate\Model\Entity\TranslateProject $translate_project
  * @property array<\Translate\Model\Entity\TranslateString> $translate_strings
  * @property int $translate_project_id
  */

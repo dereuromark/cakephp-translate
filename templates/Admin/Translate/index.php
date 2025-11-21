@@ -190,7 +190,10 @@ $totalColor = $this->Translation->getColor($totalCoverage);
 								<small><strong><?= h($string->name) ?></strong></small>
 								<br>
 								<small class="text-muted">
-									<?= h($string->translate_domain->name) ?> &middot; <?= $this->Time->timeAgoInWords($string->modified) ?>
+									<?= h($string->translate_domain->name) ?>
+									<?php if ($string->modified) { ?>
+										&middot; <?= $this->Time->timeAgoInWords($string->modified) ?>
+									<?php } ?>
 								</small>
 							</div>
 							<div class="btn-group" role="group">
@@ -493,9 +496,11 @@ $totalColor = $this->Translation->getColor($totalCoverage);
 								<br>
 								<small class="text-muted">
 									<i class="fas fa-folder"></i> <?= h($string->translate_domain->name) ?>
-									&middot;
-									<i class="fas fa-calendar"></i> <?= $this->Time->format($string->last_import, 'yyyy-MM-dd') ?>
-									<span class="text-muted">(<?= $this->Time->timeAgoInWords($string->last_import) ?>)</span>
+									<?php if ($string->last_import) { ?>
+										&middot;
+										<i class="fas fa-calendar"></i> <?= $this->Time->format($string->last_import, 'yyyy-MM-dd') ?>
+										<span class="text-muted">(<?= $this->Time->timeAgoInWords($string->last_import) ?>)</span>
+									<?php } ?>
 								</small>
 							</div>
 							<div>
@@ -848,24 +853,6 @@ $totalColor = $this->Translation->getColor($totalCoverage);
 							</td>
 						</tr>
 
-						<!-- Nullable Behavior -->
-						<tr>
-							<td>
-								<i class="fas fa-wrench"></i> <?= __d('translate', 'Nullable Behavior') ?>
-								<small class="text-muted d-block"><?= __d('translate', 'Built-in data consistency') ?></small>
-							</td>
-							<td class="text-end">
-								<?php if (class_exists('\Translate\Model\Behavior\NullableBehavior')) { ?>
-									<span class="badge bg-success">
-										<i class="fas fa-check"></i> <?= __d('translate', 'Built-in') ?>
-									</span>
-								<?php } else { ?>
-									<span class="badge bg-danger">
-										<i class="fas fa-exclamation-triangle"></i> <?= __d('translate', 'Missing') ?>
-									</span>
-								<?php } ?>
-							</td>
-						</tr>
 					</tbody>
 				</table>
 			</div>
@@ -883,7 +870,7 @@ $totalColor = $this->Translation->getColor($totalCoverage);
 					</a>
 				</h6>
 			</div>
-			<div id="actionsCollapse" class="collapse">
+			<div id="actionsCollapse" class="collapse show">
 				<div class="card-body p-0">
 					<div class="list-group list-group-flush">
 						<?= $this->Html->link(
@@ -899,6 +886,11 @@ $totalColor = $this->Translation->getColor($totalCoverage);
 						<?= $this->Html->link(
 							'<i class="fas fa-folder-open"></i> ' . __d('translate', 'Import locales from filesystem'),
 							['controller' => 'TranslateLocales', 'action' => 'fromLocale'],
+							['escape' => false, 'class' => 'list-group-item list-group-item-action'],
+						) ?>
+						<?= $this->Html->link(
+							'<i class="fas fa-language"></i> ' . __d('translate', 'TranslateBehavior & Shadow Tables'),
+							['controller' => 'TranslateBehavior', 'action' => 'index'],
 							['escape' => false, 'class' => 'list-group-item list-group-item-action'],
 						) ?>
 						<?= $this->Html->link(

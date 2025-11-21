@@ -14,7 +14,7 @@ use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
 /**
- * @property \Cake\ORM\Association\HasMany<\Translate\Model\Table\TranslateTermsTable> $TranslateTerms
+ * @property \Translate\Model\Table\TranslateTermsTable&\Cake\ORM\Association\HasMany $TranslateTerms
  *
  * @method \Translate\Model\Entity\TranslateLocale get(mixed $primaryKey, array|string $finder = 'all', \Psr\SimpleCache\CacheInterface|string|null $cache = null, \Closure|string|null $cacheKey = null, mixed ...$args)
  * @method \Translate\Model\Entity\TranslateLocale newEntity(array $data, array $options = [])
@@ -24,7 +24,7 @@ use Cake\Validation\Validator;
  * @method array<\Translate\Model\Entity\TranslateLocale> patchEntities(iterable $entities, array $data, array $options = [])
  * @method \Translate\Model\Entity\TranslateLocale findOrCreate(\Cake\ORM\Query\SelectQuery|callable|array $search, ?callable $callback = null, array $options = [])
  * @mixin \Translate\Model\Behavior\NullableBehavior
- * @property \Cake\ORM\Association\BelongsTo<\Translate\Model\Table\TranslateProjectsTable> $TranslateProjects
+ * @property \Translate\Model\Table\TranslateProjectsTable&\Cake\ORM\Association\BelongsTo $TranslateProjects
  * @method \Translate\Model\Entity\TranslateLocale saveOrFail(\Cake\Datasource\EntityInterface $entity, array $options = [])
  * @property \Data\Model\Table\LanguagesTable&\Cake\ORM\Association\BelongsTo $Languages
  * @method \Translate\Model\Entity\TranslateLocale newEmptyEntity()

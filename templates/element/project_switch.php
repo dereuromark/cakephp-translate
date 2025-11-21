@@ -26,7 +26,7 @@ $isHomepage = ($controller === 'Translate' && $action === 'index');
 		</label>
 		<?php
 		echo $this->Form->create(null, [
-			'url' => ['controller' => 'TranslateProjects', 'action' => 'switchProject'],
+			'url' => ['controller' => 'Translate', 'action' => 'switchProject'],
 		]);
 
 		echo $this->Form->control('project_switch', [

@@ -414,7 +414,10 @@ class TranslateStringsController extends TranslateAppController {
 		}
 
 		/** @var \Translate\Model\Entity\TranslateLocale[] $translateLocales */
-		$translateLocales = $this->TranslateStrings->TranslateTerms->TranslateLocales->find()->all()->toArray();
+		$translateLocales = $this->TranslateStrings->TranslateTerms->TranslateLocales->find()
+			->where(['translate_project_id' => $this->Translation->currentProjectId()])
+			->all()
+			->toArray();
 		if (!$translateLocales) {
 			$this->Flash->error(__d('translate', 'You need at least one language to translate'));
 
@@ -428,14 +431,29 @@ class TranslateStringsController extends TranslateAppController {
 				$translateString->skipped = true;
 				$this->TranslateStrings->saveOrFail($translateString);
 
-				$next = $this->TranslateStrings->getNext($translateString->translate_domain_id, $translateString->id)->first();
-				if (!empty($next['id'])) {
-					return $this->redirect([$next['id']]);
+				// Try to find next in same domain first
+				$next = $this->TranslateStrings->getNext($translateString->translate_domain_id, null)
+					->contain(['TranslateDomains'])
+					->where(['TranslateStrings.id >' => $id])
+					->orderBy(['TranslateStrings.id' => 'ASC'])
+					->first();
+
+				// If no more in this domain, try any domain
+				if (!$next) {
+					$next = $this->TranslateStrings->getNext(null, null)
+						->contain(['TranslateDomains'])
+						->where(['TranslateStrings.id >' => $id])
+						->orderBy(['TranslateStrings.id' => 'ASC'])
+						->first();
 				}
 
-				$this->Flash->success('No more open translations for domain `' . h($translateString->translate_domain->name) . '`.');
+				if ($next) {
+					return $this->redirect(['action' => 'translate', $next->id]);
+				}
 
-				return $this->redirect(['action' => 'view', $id]);
+				$this->Flash->success(__d('translate', 'No more open translations.'));
+
+				return $this->redirect(['action' => 'index']);
 			}
 
 			$success = true;
@@ -471,15 +489,34 @@ class TranslateStringsController extends TranslateAppController {
 
 			if ($success) {
 				if (array_key_exists('next', $this->request->getData())) {
-					$next = $this->TranslateStrings->getNext($translateString->translate_domain_id, $id)->first();
-					if (!empty($next['id'])) {
-						return $this->redirect([$next['id']]);
+					// Try to find next in same domain first
+					$next = $this->TranslateStrings->getNext($translateString->translate_domain_id, null)
+						->contain(['TranslateDomains'])
+						->where(['TranslateStrings.id >' => $id])
+						->orderBy(['TranslateStrings.id' => 'ASC'])
+						->first();
+
+					// If no more in this domain, try any domain
+					if (!$next) {
+						$next = $this->TranslateStrings->getNext(null, null)
+							->contain(['TranslateDomains'])
+							->where(['TranslateStrings.id >' => $id])
+							->orderBy(['TranslateStrings.id' => 'ASC'])
+							->first();
 					}
 
-					$this->Flash->success('No more open translations for domain `' . h($translateString->translate_domain->name) . '`.');
+					if ($next) {
+						return $this->redirect(['action' => 'translate', $next->id]);
+					}
+
+					$this->Flash->success(__d('translate', 'No more open translations.'));
+
+					return $this->redirect(['action' => 'index']);
 				}
 
-				return $this->redirect(['action' => 'view', $id]);
+				$this->Flash->success(__d('translate', 'Translation saved successfully.'));
+
+				return $this->redirect(['action' => 'translate', $id]);
 			}
 		} else {
 			foreach ($translateTerms as $translateTerm) {

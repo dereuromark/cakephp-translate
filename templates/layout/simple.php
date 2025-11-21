@@ -119,20 +119,33 @@ $title = $this->fetch('title');
 			border-radius: 0.25rem;
 		}
 
-		.btn {
+		.btn,
+		input[type="submit"].btn {
 			border-radius: 0.375rem;
 			font-weight: 500;
 			padding: 0.5rem 1rem;
 			transition: all 0.2s ease-in-out;
+			border: 1px solid transparent;
+			display: inline-block;
+			text-align: center;
+			vertical-align: middle;
+			cursor: pointer;
+			user-select: none;
+			line-height: 1.5;
 		}
 
 		.btn i {
 			margin-right: 0.375rem;
 		}
 
-		.btn:hover {
+		.btn:hover,
+		input[type="submit"].btn:hover {
 			transform: translateY(-1px);
 			box-shadow: 0 0.25rem 0.5rem rgba(0,0,0,.15);
+		}
+
+		input[type="submit"].btn:active {
+			transform: translateY(0);
 		}
 
 		.table {
@@ -287,13 +300,6 @@ $title = $this->fetch('title');
 
 	<script>
 		$(document).ready(function() {
-			// Auto-hide alerts after 5 seconds
-			setTimeout(function() {
-				$('.alert').fadeOut('slow', function() {
-					$(this).remove();
-				});
-			}, 5000);
-
 			// Add loading state to buttons on form submit
 			$('form').on('submit', function() {
 				var $btn = $(this).find('button[type="submit"]');

@@ -70,6 +70,38 @@ Web Backend
 CLI
 - Run `bin/cake translate`.
 
+### TranslateBehavior Support
+
+This plugin now includes comprehensive support for CakePHP's built-in TranslateBehavior and shadow table (`_i18n`) management - all in one unified interface.
+
+Navigate to `/admin/translate/translate-behavior` for:
+- **View All Shadow Tables**: See all existing `_i18n` tables and their translation data
+- **Detect Behavior Usage**: Automatically detect which models are using CakePHP's TranslateBehavior
+- **Find Candidates**: Discover tables with translatable fields that don't yet have translation support
+- **Generate Migrations**: Create shadow table migrations with just a few clicks
+
+**Features**:
+- Choose between **Shadow Table** (better performance, recommended) or **EAV** (more flexible) strategies
+- Select which fields to translate from your existing tables
+- Get complete, ready-to-use migration code with proper indexes and constraints
+- Step-by-step instructions for adding the behavior to your Table class
+- Automatic detection of translatable text fields
+- Preview of shadow table schemas and translation data
+- Shows which locales are in use
+- Identifies orphaned shadow tables (shadow tables without base tables)
+
+**Example workflow**:
+1. Navigate to `/admin/translate/translate-behavior`
+2. Click "Generate Migration" on a candidate table (e.g., `articles`)
+3. Select fields to translate (e.g., `title`, `body`)
+4. Choose strategy (Shadow Table is default and recommended)
+5. Copy generated migration code
+6. Save to `config/Migrations/AddI18nForArticles.php`
+7. Run `bin/cake migrations migrate`
+8. Add behavior to your ArticlesTable class
+
+Accessible from the main dashboard under "Quick Actions".
+
 ## Tips
 - Use [TinyAuth](https://github.com/dereuromark/cakephp-tinyauth) or alike to manage access to the translation backend for user groups.
 - Implement your own Translation engine if you want to have even better auto-suggest.

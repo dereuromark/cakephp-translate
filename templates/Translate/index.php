@@ -54,40 +54,56 @@ $totalColor = $this->Translation->getColor($totalCoverage);
 
 						<div class="row text-center mt-4">
 							<div class="col-3">
-								<div class="card border-primary">
-									<div class="card-body">
-										<i class="fas fa-folder text-primary fa-2x mb-2"></i>
-										<h4 class="mb-0"><?= $count['groups'] ?></h4>
-										<small class="text-muted"><?= h(__d('translate', 'Groups')); ?></small>
-									</div>
-								</div>
+								<?= $this->Html->link(
+									'<div class="card border-success">
+										<div class="card-body">
+											<i class="fas fa-flag text-success fa-2x mb-2"></i>
+											<h4 class="mb-0">' . $count['locales'] . '</h4>
+											<small class="text-muted">' . h(__d('translate', 'Locales')) . '</small>
+										</div>
+									</div>',
+									['action' => 'terms'],
+									['escape' => false, 'class' => 'text-decoration-none'],
+								) ?>
 							</div>
 							<div class="col-3">
-								<div class="card border-info">
-									<div class="card-body">
-										<i class="fas fa-file-alt text-info fa-2x mb-2"></i>
-										<h4 class="mb-0"><?= $count['strings'] ?></h4>
-										<small class="text-muted"><?= h(__d('translate', 'Strings')); ?></small>
-									</div>
-								</div>
+								<?= $this->Html->link(
+									'<div class="card border-primary">
+										<div class="card-body">
+											<i class="fas fa-folder text-primary fa-2x mb-2"></i>
+											<h4 class="mb-0">' . $count['domains'] . '</h4>
+											<small class="text-muted">' . h(__d('translate', 'Domains')) . '</small>
+										</div>
+									</div>',
+									['action' => 'terms'],
+									['escape' => false, 'class' => 'text-decoration-none'],
+								) ?>
 							</div>
 							<div class="col-3">
-								<div class="card border-success">
-									<div class="card-body">
-										<i class="fas fa-flag text-success fa-2x mb-2"></i>
-										<h4 class="mb-0"><?= $count['languages'] ?></h4>
-										<small class="text-muted"><?= h(__d('translate', 'Locales')); ?></small>
-									</div>
-								</div>
+								<?= $this->Html->link(
+									'<div class="card border-info">
+										<div class="card-body">
+											<i class="fas fa-file-alt text-info fa-2x mb-2"></i>
+											<h4 class="mb-0">' . $count['strings'] . '</h4>
+											<small class="text-muted">' . h(__d('translate', 'Strings')) . '</small>
+										</div>
+									</div>',
+									['action' => 'terms'],
+									['escape' => false, 'class' => 'text-decoration-none'],
+								) ?>
 							</div>
 							<div class="col-3">
-								<div class="card border-warning">
-									<div class="card-body">
-										<i class="fas fa-language text-warning fa-2x mb-2"></i>
-										<h4 class="mb-0"><?= $count['translations'] ?></h4>
-										<small class="text-muted"><?= h(__d('translate', 'Translations')); ?></small>
-									</div>
-								</div>
+								<?= $this->Html->link(
+									'<div class="card border-warning">
+										<div class="card-body">
+											<i class="fas fa-language text-warning fa-2x mb-2"></i>
+											<h4 class="mb-0">' . $count['translations'] . '</h4>
+											<small class="text-muted">' . h(__d('translate', 'Translations')) . '</small>
+										</div>
+									</div>',
+									['action' => 'terms'],
+									['escape' => false, 'class' => 'text-decoration-none'],
+								) ?>
 							</div>
 						</div>
 					<?php } ?>

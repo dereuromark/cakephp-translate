@@ -69,10 +69,6 @@
 						<td><?= $this->element('Translate.yes_no', ['value' => $translateDomain->active]) ?></td>
 					</tr>
 					<tr>
-						<th><?= __d('translate', 'Path') ?></th>
-						<td><?= h($translateDomain->path) ?></td>
-					</tr>
-					<tr>
 						<th><?= __d('translate', 'Prio') ?></th>
 						<td><?= $this->Number->format($translateDomain->prio) ?></td>
 					</tr>

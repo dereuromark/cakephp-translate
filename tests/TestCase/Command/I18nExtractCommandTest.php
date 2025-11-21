@@ -8,6 +8,7 @@ use Cake\TestSuite\TestCase;
 
 /**
  * @uses \Translate\Command\TranslationsCommand
+ * @uses \Translate\Command\I18nExtractCommand
  */
 class I18nExtractCommandTest extends TestCase {
 

@@ -24,11 +24,10 @@ This is a standalone layout template for the CakePHP Translate plugin with a mod
 
 ### Built-in JavaScript Functionality
 
-1. **Auto-hide Alerts** - Flash messages automatically fade out after 5 seconds
-2. **Form Loading States** - Submit buttons show spinner and disable on form submission
-3. **Delete Confirmations** - Automatic confirmation dialogs for delete actions
-4. **Bootstrap Components** - Auto-initialization of tooltips and popovers
-5. **Custom Scrollbar** - Styled scrollbar for webkit browsers
+1. **Form Loading States** - Submit buttons show spinner and disable on form submission
+2. **Delete Confirmations** - Automatic confirmation dialogs for delete actions
+3. **Bootstrap Components** - Auto-initialization of tooltips and popovers
+4. **Custom Scrollbar** - Styled scrollbar for webkit browsers
 
 ### Template Blocks
 

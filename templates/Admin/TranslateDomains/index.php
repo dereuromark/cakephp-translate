@@ -44,7 +44,6 @@ use Cake\Core\Plugin;
 							<tr>
 								<th><?= $this->Paginator->sort('name') ?></th>
 								<th class="text-center"><?= $this->Paginator->sort('active') ?></th>
-								<th class="text-center"><?= $this->Paginator->sort('path') ?></th>
 								<th><?= $this->Paginator->sort('created', null, ['direction' => 'desc']) ?></th>
 								<th><?= $this->Paginator->sort('modified', null, ['direction' => 'desc']) ?></th>
 								<th class="actions text-center"><?= __d('translate', 'Actions') ?></th>
@@ -58,9 +57,6 @@ use Cake\Core\Plugin;
 								</td>
 								<td class="text-center">
 									<?= $this->element('Translate.yes_no', ['value' => $translateDomain->active]) ?>
-								</td>
-								<td class="text-center">
-									<?= $this->element('Translate.yes_no', ['value' => (bool)$translateDomain->path]) ?>
 								</td>
 								<td>
 									<small><?= $this->Time->nice($translateDomain->created) ?></small>

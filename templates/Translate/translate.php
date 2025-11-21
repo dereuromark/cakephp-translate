@@ -4,16 +4,69 @@
  * @var iterable<\Translate\Model\Entity\TranslateLocale> $translateLocales
  * @var \Translate\Model\Entity\TranslateString $translateString
  * @var array $suggestions
+ * @var array $domainStats
  */
 
 ?>
-<nav class="actions col-md-3 col-sm-4 col-12">
-	<ul class="nav nav-pills flex-column">
-		<li class="heading"><?= __d('translate', 'Actions') ?></li>
-		<li><?= $this->Html->link(__d('translate', 'Overview'), ['controller' => 'Translate', 'action' => 'index']) ?></li>
-	</ul>
-</nav>
-<div class="translateStrings index col-md-9 col-sm-8 col-12">
+<!-- Domain Navigation -->
+<div class="mb-4">
+	<div class="card">
+		<div class="card-header d-flex justify-content-between align-items-center">
+			<h5 class="mb-0">
+				<i class="fas fa-folder"></i>
+				<?= __d('translate', 'Domains') ?>
+			</h5>
+			<?= $this->Html->link(
+				'<i class="fas fa-arrow-left"></i> ' . __d('translate', 'Overview'),
+				['controller' => 'Translate', 'action' => 'index'],
+				['class' => 'btn btn-sm btn-secondary', 'escape' => false]
+			) ?>
+		</div>
+		<div class="card-body p-2">
+			<div class="row g-2">
+				<?php foreach ($domainStats as $domainId => $stats) { ?>
+					<div class="col-md-3 col-sm-6">
+						<?php
+						$isActive = $stats['name'] === $translateString->translate_domain->name;
+						$cardClass = $isActive ? 'border-primary' : 'border-secondary';
+						$bgClass = $isActive ? 'bg-primary text-white' : '';
+						?>
+						<div class="card <?= $cardClass ?> h-100">
+							<div class="card-body p-2 <?= $bgClass ?>">
+								<h6 class="mb-1">
+									<?php if ($isActive) { ?>
+										<i class="fas fa-check-circle"></i>
+									<?php } ?>
+									<?= h($stats['name']) ?>
+								</h6>
+								<small class="d-block">
+									<i class="fas fa-file-alt"></i>
+									<?= $stats['translated'] ?> / <?= $stats['total'] ?>
+									<?= __d('translate', 'strings') ?>
+								</small>
+								<div class="progress mt-2" style="height: 5px;">
+									<div class="progress-bar bg-success"
+										role="progressbar"
+										style="width: <?= $stats['percentage'] ?>%"
+										aria-valuenow="<?= $stats['percentage'] ?>"
+										aria-valuemin="0"
+										aria-valuemax="100">
+									</div>
+								</div>
+								<small class="d-block mt-1">
+									<strong><?= $stats['percentage'] ?>%</strong>
+									<?= __d('translate', 'complete') ?>
+								</small>
+							</div>
+						</div>
+					</div>
+				<?php } ?>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="translateStrings index">
 
 <h3>String</h3>
 
@@ -71,20 +124,17 @@
 	?>
 	</fieldset>
 
-	<div class="form-group buttons">
-		<div class="col-md-offset-4 col-lg-offset-3 col-md-8 col-lg-9">
-<?php echo $this->Form->button(__d('translate', 'Save'), ['name' => 'save', 'value' => 'Task', 'class' => 'btn btn-primary']);?>
-
-<?php echo $this->Form->button(__d('translate', 'Save') . ' + ' . __d('translate', 'Next'), ['name' => 'next', 'value' => 'Task', 'class' => 'btn btn-success']);?>
-
-<?php echo $this->Form->button(__d('translate', 'Skip'), ['name' => 'skip', 'value' => 'skip', 'class' => 'btn btn-secondary']);?>
-
-<?php echo $this->Form->end();?>
+	<div class="form-group mt-4 mb-4">
+		<div class="d-flex gap-2">
+			<?php echo $this->Form->submit(__d('translate', 'Save'), ['name' => 'save', 'class' => 'btn btn-primary']); ?>
+			<?php echo $this->Form->submit(__d('translate', 'Save') . ' + ' . __d('translate', 'Next'), ['name' => 'next', 'class' => 'btn btn-success']); ?>
+			<?php echo $this->Form->submit(__d('translate', 'Skip'), ['name' => 'skip', 'class' => 'btn btn-secondary']); ?>
 		</div>
 	</div>
+<?php echo $this->Form->end(); ?>
 <br/>
 <?php
-$sep = explode(PHP_EOL, $translateString['references']);
+$sep = explode(PHP_EOL, $translateString->references);
 $references = [];
 foreach ($sep as $s) {
 	$s = trim($s);

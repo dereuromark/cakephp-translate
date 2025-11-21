@@ -111,51 +111,59 @@ $totalColor = $this->Translation->getColor($totalCoverage);
 			</div>
 		</div>
 
-		<!-- How to Translate Card -->
+		<!-- Quick Start Card -->
 		<div class="col-lg-6">
 			<div class="card h-100">
 				<div class="card-header">
 					<h3 class="mb-0">
-						<i class="fas fa-question-circle"></i>
-						<?= __d('translate', 'How to Translate') ?>
+						<i class="fas fa-rocket"></i>
+						<?= __d('translate', 'Quick Start') ?>
 					</h3>
 				</div>
 				<div class="card-body">
-					<div class="list-group list-group-numbered mb-4">
-						<div class="list-group-item d-flex align-items-start">
-							<div class="ms-2 me-auto">
-								<div class="fw-bold">
-									<i class="fas fa-folder-open text-primary"></i>
-									<?= __d('translate', 'Select Domain') ?>
-								</div>
-								<?= __d('translate', 'Select "domain" you want to translate') ?>
-							</div>
+					<?php if (!empty($domainStats)) { ?>
+						<h5 class="mb-3">
+							<i class="fas fa-folder-open text-primary"></i>
+							<?= __d('translate', 'Select Domain') ?>
+						</h5>
+						<div class="list-group mb-4">
+							<?php foreach ($domainStats as $domainName => $data) { ?>
+								<?php
+								$percentage = $data['percentage'];
+								$progressColor = $percentage >= 80 ? 'success' : ($percentage >= 50 ? 'warning' : 'danger');
+								?>
+								<?= $this->Html->link(
+									'<div class="d-flex w-100 justify-content-between align-items-center">
+										<div>
+											<strong>' . h($domainName) . '</strong>
+											<br>
+											<small class="text-muted">' . $data['translated'] . ' / ' . $data['total'] . ' ' . __d('translate', 'translated') . '</small>
+										</div>
+										<div class="text-end">
+											<div class="progress" style="width: 100px; height: 20px;">
+												<div class="progress-bar bg-' . $progressColor . '" role="progressbar" style="width: ' . $percentage . '%">
+													' . $percentage . '%
+												</div>
+											</div>
+										</div>
+									</div>',
+									['action' => 'terms', '?' => ['domain' => $domainName]],
+									['class' => 'list-group-item list-group-item-action', 'escape' => false],
+								) ?>
+							<?php } ?>
 						</div>
-						<div class="list-group-item d-flex align-items-start">
-							<div class="ms-2 me-auto">
-								<div class="fw-bold">
-									<i class="fas fa-flag text-info"></i>
-									<?= __d('translate', 'Choose Language') ?>
-								</div>
-								<?= __d('translate', 'Select language you want to translate into (or from)') ?>
-							</div>
-						</div>
-						<div class="list-group-item d-flex align-items-start">
-							<div class="ms-2 me-auto">
-								<div class="fw-bold">
-									<i class="fas fa-edit text-success"></i>
-									<?= __d('translate', 'Translate & Submit') ?>
-								</div>
-								<?= __d('translate', 'Translate and submit the form') ?>
-							</div>
-						</div>
-					</div>
+					<?php } ?>
 
-					<div class="d-grid">
+					<div class="d-grid gap-2">
 						<?= $this->Html->link(
-							'<i class="fas fa-arrow-right"></i> ' . __d('translate', 'Continue translating'),
+							'<i class="fas fa-play"></i> ' . __d('translate', 'Start Translating Next'),
 							['action' => 'translate'],
-							['class' => 'btn btn-primary btn-lg', 'escape' => false],
+							['class' => 'btn btn-success btn-lg', 'escape' => false],
+						); ?>
+						<?= $this->Html->link(
+							'<i class="fas fa-list"></i> ' . __d('translate', 'Browse All Terms'),
+							['action' => 'terms'],
+							['class' => 'btn btn-primary', 'escape' => false],
 						); ?>
 					</div>
 				</div>

@@ -13,6 +13,17 @@ class TranslateStringsCollection extends FilterCollection {
 	public function initialize(): void {
 		$this
 			->add('translate_domain_id', 'Search.Value')
+			->add('domain', 'Search.Callback', [
+				'callback' => function (SelectQuery $query, array $args, $filter) {
+					if (empty($args['domain'])) {
+						return false;
+					}
+
+					$query->where(['TranslateDomains.name' => $args['domain']]);
+
+					return true;
+				},
+			])
 			->add('skipped', 'Search.Boolean')
 			->add('is_html', 'Search.Boolean')
 			->add('missing_translation', 'Search.Callback', [

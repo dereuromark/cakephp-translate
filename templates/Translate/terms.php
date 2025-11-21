@@ -21,7 +21,7 @@
 		<?= __d('translate', 'Filters') ?>
 	</div>
 	<div class="card-body">
-		<?= $this->Form->create(null, ['type' => 'get', 'valueSources' => 'query']) ?>
+		<?= $this->Form->create(null, ['valueSources' => 'query']) ?>
 		<div class="row g-3">
 			<div class="col-md-3">
 				<?= $this->Form->control('search', [
@@ -31,7 +31,7 @@
 				]) ?>
 			</div>
 			<div class="col-md-3">
-				<?= $this->Form->control('translate_domain_id', [
+				<?= $this->Form->control('domain', [
 					'label' => __d('translate', 'Domain'),
 					'options' => $translateDomains,
 					'empty' => __d('translate', 'All domains'),
@@ -76,8 +76,12 @@
 			<div class="col-md-3">
 				<?= $this->Form->control('missing_translation', [
 					'label' => __d('translate', 'Missing Translation'),
-					'type' => 'checkbox',
-					'class' => 'form-check-input',
+					'options' => [
+						1 => __d('translate', 'Yes'),
+						0 => __d('translate', 'No'),
+					],
+					'empty' => __d('translate', 'All'),
+					'class' => 'form-select',
 				]) ?>
 			</div>
 			<div class="col-md-9 text-end">
@@ -85,9 +89,11 @@
 					'type' => 'submit',
 					'class' => 'btn btn-primary',
 				]) ?>
-				<?= $this->Html->link(__d('translate', 'Reset'), ['action' => 'terms'], [
-					'class' => 'btn btn-secondary',
-				]) ?>
+				<?php if ($this->request->getQuery()) { ?>
+					<?= $this->Html->link(__d('translate', 'Reset'), ['action' => 'terms'], [
+						'class' => 'btn btn-secondary',
+					]) ?>
+				<?php } ?>
 			</div>
 		</div>
 		<?= $this->Form->end() ?>

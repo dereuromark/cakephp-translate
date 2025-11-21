@@ -2,6 +2,7 @@
 
 namespace Translate\Test\TestCase\Controller\Admin;
 
+use Cake\Database\Driver\Sqlite;
 use Cake\Datasource\ConnectionManager;
 use Translate\Test\TestCase\IntegrationTestCase;
 
@@ -68,18 +69,38 @@ class TranslateBehaviorControllerTest extends IntegrationTestCase {
 		// First, create a test shadow table
 		$connection = ConnectionManager::get('test');
 		$connection->execute('DROP TABLE IF EXISTS test_articles_i18n');
-		$connection->execute('
-			CREATE TABLE test_articles_i18n (
-				id INTEGER PRIMARY KEY AUTOINCREMENT,
-				locale VARCHAR(6) NOT NULL,
-				model VARCHAR(255) NOT NULL,
-				foreign_key INTEGER NOT NULL,
-				field VARCHAR(255) NOT NULL,
-				content TEXT
-			)
-		');
-		$connection->execute('CREATE INDEX idx_locale ON test_articles_i18n (locale)');
-		$connection->execute('CREATE UNIQUE INDEX idx_model_foreign_key_locale_field ON test_articles_i18n (model, foreign_key, locale, field)');
+
+		// Detect database driver for appropriate syntax
+		$driver = $connection->getDriver();
+		$isSqlite = $driver instanceof Sqlite;
+
+		if ($isSqlite) {
+			$connection->execute('
+				CREATE TABLE test_articles_i18n (
+					id INTEGER PRIMARY KEY AUTOINCREMENT,
+					locale VARCHAR(6) NOT NULL,
+					model VARCHAR(255) NOT NULL,
+					foreign_key INTEGER NOT NULL,
+					field VARCHAR(255) NOT NULL,
+					content TEXT
+				)
+			');
+			$connection->execute('CREATE INDEX idx_locale ON test_articles_i18n (locale)');
+			$connection->execute('CREATE UNIQUE INDEX idx_model_foreign_key_locale_field ON test_articles_i18n (model, foreign_key, locale, field)');
+		} else {
+			$connection->execute('
+				CREATE TABLE test_articles_i18n (
+					id INT AUTO_INCREMENT PRIMARY KEY,
+					locale VARCHAR(6) NOT NULL,
+					model VARCHAR(255) NOT NULL,
+					foreign_key INT NOT NULL,
+					field VARCHAR(255) NOT NULL,
+					content TEXT,
+					INDEX idx_locale (locale),
+					UNIQUE KEY idx_model_foreign_key_locale_field (model, foreign_key, locale, field)
+				)
+			');
+		}
 
 		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateBehavior', 'action' => 'view', 'test_articles_i18n']);
 
@@ -145,15 +166,31 @@ class TranslateBehaviorControllerTest extends IntegrationTestCase {
 		// Create a test table with text fields
 		$connection = ConnectionManager::get('test');
 		$connection->execute('DROP TABLE IF EXISTS test_articles');
-		$connection->execute('
-			CREATE TABLE test_articles (
-				id INTEGER PRIMARY KEY AUTOINCREMENT,
-				title VARCHAR(255) NOT NULL,
-				body TEXT,
-				created DATETIME,
-				modified DATETIME
-			)
-		');
+
+		$driver = $connection->getDriver();
+		$isSqlite = $driver instanceof Sqlite;
+
+		if ($isSqlite) {
+			$connection->execute('
+				CREATE TABLE test_articles (
+					id INTEGER PRIMARY KEY AUTOINCREMENT,
+					title VARCHAR(255) NOT NULL,
+					body TEXT,
+					created DATETIME,
+					modified DATETIME
+				)
+			');
+		} else {
+			$connection->execute('
+				CREATE TABLE test_articles (
+					id INT AUTO_INCREMENT PRIMARY KEY,
+					title VARCHAR(255) NOT NULL,
+					body TEXT,
+					created DATETIME,
+					modified DATETIME
+				)
+			');
+		}
 
 		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateBehavior', 'action' => 'generate', 'test_articles']);
 
@@ -179,14 +216,29 @@ class TranslateBehaviorControllerTest extends IntegrationTestCase {
 		// Create a test table with text fields
 		$connection = ConnectionManager::get('test');
 		$connection->execute('DROP TABLE IF EXISTS test_posts');
-		$connection->execute('
-			CREATE TABLE test_posts (
-				id INTEGER PRIMARY KEY AUTOINCREMENT,
-				title VARCHAR(255) NOT NULL,
-				content TEXT,
-				created DATETIME
-			)
-		');
+
+		$driver = $connection->getDriver();
+		$isSqlite = $driver instanceof Sqlite;
+
+		if ($isSqlite) {
+			$connection->execute('
+				CREATE TABLE test_posts (
+					id INTEGER PRIMARY KEY AUTOINCREMENT,
+					title VARCHAR(255) NOT NULL,
+					content TEXT,
+					created DATETIME
+				)
+			');
+		} else {
+			$connection->execute('
+				CREATE TABLE test_posts (
+					id INT AUTO_INCREMENT PRIMARY KEY,
+					title VARCHAR(255) NOT NULL,
+					content TEXT,
+					created DATETIME
+				)
+			');
+		}
 
 		$this->post(
 			['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateBehavior', 'action' => 'generate', 'test_posts'],
@@ -223,14 +275,29 @@ class TranslateBehaviorControllerTest extends IntegrationTestCase {
 		// Create a test table with text fields
 		$connection = ConnectionManager::get('test');
 		$connection->execute('DROP TABLE IF EXISTS test_products');
-		$connection->execute('
-			CREATE TABLE test_products (
-				id INTEGER PRIMARY KEY AUTOINCREMENT,
-				name VARCHAR(255) NOT NULL,
-				description TEXT,
-				created DATETIME
-			)
-		');
+
+		$driver = $connection->getDriver();
+		$isSqlite = $driver instanceof Sqlite;
+
+		if ($isSqlite) {
+			$connection->execute('
+				CREATE TABLE test_products (
+					id INTEGER PRIMARY KEY AUTOINCREMENT,
+					name VARCHAR(255) NOT NULL,
+					description TEXT,
+					created DATETIME
+				)
+			');
+		} else {
+			$connection->execute('
+				CREATE TABLE test_products (
+					id INT AUTO_INCREMENT PRIMARY KEY,
+					name VARCHAR(255) NOT NULL,
+					description TEXT,
+					created DATETIME
+				)
+			');
+		}
 
 		$this->post(
 			['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateBehavior', 'action' => 'generate', 'test_products'],
@@ -267,12 +334,25 @@ class TranslateBehaviorControllerTest extends IntegrationTestCase {
 		// Create a test table
 		$connection = ConnectionManager::get('test');
 		$connection->execute('DROP TABLE IF EXISTS test_items');
-		$connection->execute('
-			CREATE TABLE test_items (
-				id INTEGER PRIMARY KEY AUTOINCREMENT,
-				title VARCHAR(255) NOT NULL
-			)
-		');
+
+		$driver = $connection->getDriver();
+		$isSqlite = $driver instanceof Sqlite;
+
+		if ($isSqlite) {
+			$connection->execute('
+				CREATE TABLE test_items (
+					id INTEGER PRIMARY KEY AUTOINCREMENT,
+					title VARCHAR(255) NOT NULL
+				)
+			');
+		} else {
+			$connection->execute('
+				CREATE TABLE test_items (
+					id INT AUTO_INCREMENT PRIMARY KEY,
+					title VARCHAR(255) NOT NULL
+				)
+			');
+		}
 
 		$this->post(
 			['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateBehavior', 'action' => 'generate', 'test_items'],

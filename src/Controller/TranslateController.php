@@ -50,7 +50,38 @@ class TranslateController extends TranslateAppController {
 			throw new NotFoundException('No public projects');
 		}
 
-		$this->set(compact('coverage', 'languages', 'count', 'projectSwitchArray'));
+		// Get domain statistics
+		$translateStringsTable = $this->fetchTable('Translate.TranslateStrings');
+		$domains = $this->TranslateDomains->find()
+			->where(['translate_project_id' => $id, 'active' => true])
+			->orderBy(['name' => 'ASC'])
+			->toArray();
+
+		$domainStats = [];
+		foreach ($domains as $domainEntity) {
+			$totalStrings = $translateStringsTable->find()
+				->where(['translate_domain_id' => $domainEntity->id])
+				->count();
+
+			$translatedStrings = $translateStringsTable->find()
+				->where(['translate_domain_id' => $domainEntity->id])
+				->matching('TranslateTerms', function ($q) {
+					return $q->where([
+						'TranslateTerms.content IS NOT' => null,
+						'TranslateTerms.content !=' => '',
+					]);
+				})
+				->group(['TranslateStrings.id'])
+				->count();
+
+			$domainStats[$domainEntity->name] = [
+				'total' => $totalStrings,
+				'translated' => $translatedStrings,
+				'percentage' => $totalStrings > 0 ? (int)(($translatedStrings / $totalStrings) * 100) : 0,
+			];
+		}
+
+		$this->set(compact('coverage', 'languages', 'count', 'projectSwitchArray', 'domainStats'));
 	}
 
 	/**
@@ -67,15 +98,18 @@ class TranslateController extends TranslateAppController {
 			'TranslateDomains',
 			'TranslateTerms' => ['TranslateLocales'],
 		])->innerJoinWith('TranslateDomains', function ($q) use ($projectId) {
-			return $q->where(['TranslateDomains.translate_project_id' => $projectId]);
+			return $q->where(['TranslateDomains.translate_project_id' => $projectId, 'TranslateDomains.active' => true]);
 		});
 
 		$translateStrings = $this->paginate($query);
 
 		// Get filter options
 		$translateDomains = $translateStringsTable->TranslateDomains
-			->find('list')
-			->where(['translate_project_id' => $projectId])
+			->find('list', [
+				'keyField' => 'name',
+				'valueField' => 'name',
+			])
+			->where(['translate_project_id' => $projectId, 'active' => true])
 			->orderBy(['name' => 'ASC'])
 			->toArray();
 
@@ -134,8 +168,12 @@ class TranslateController extends TranslateAppController {
 			$translatedStrings = $translateStringsTable->find()
 				->where(['translate_domain_id' => $domainEntity->id])
 				->matching('TranslateTerms', function ($q) {
-					return $q->where(['TranslateTerms.content IS NOT' => null]);
+					return $q->where([
+						'TranslateTerms.content IS NOT' => null,
+						'TranslateTerms.content !=' => '',
+					]);
 				})
+				->group(['TranslateStrings.id'])
 				->count();
 
 			$domainStats[$domainEntity->id] = [

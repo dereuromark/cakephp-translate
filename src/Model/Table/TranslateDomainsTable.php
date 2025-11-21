@@ -122,10 +122,10 @@ class TranslateDomainsTable extends Table {
 		}
 
 		$count = [];
-		$count['domains'] = $this->find('list', ['fields' => [$this->getAlias() . '.id'], 'conditions' => [$this->getAlias() . '.translate_project_id' => $id]])->toArray();
+		$count['domains'] = $this->find('list', ['fields' => [$this->getAlias() . '.id'], 'conditions' => [$this->getAlias() . '.translate_project_id' => $id, $this->getAlias() . '.active' => true]])->toArray();
 		// recursive = 0;
 		//$this->TranslateStrings->bindModel(['belongsTo' => $this->TranslateStrings->habtmJoin], false);
-		$count['strings'] = $this->TranslateStrings->find()->where(['TranslateDomains.translate_project_id' => $id])->contain(['TranslateDomains'])->count();
+		$count['strings'] = $this->TranslateStrings->find()->where(['TranslateDomains.translate_project_id' => $id, 'TranslateDomains.active' => true])->contain(['TranslateDomains'])->count();
 		$count['locales'] = count($languages);
 		$count['translations'] = $count['strings'] * $count['locales'];
 		$count['domains'] = count($count['domains']);

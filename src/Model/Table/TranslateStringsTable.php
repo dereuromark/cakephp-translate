@@ -266,6 +266,28 @@ class TranslateStringsTable extends Table {
 	}
 
 	/**
+	 * Find orphaned strings (no references to source code).
+	 *
+	 * @param int $projectId Project ID to filter by
+	 * @return \Cake\ORM\Query\SelectQuery
+	 */
+	public function findOrphaned(int $projectId): SelectQuery {
+		return $this->find()
+			->matching('TranslateDomains', function ($q) use ($projectId) {
+				return $q->where([
+					'TranslateDomains.translate_project_id' => $projectId,
+				]);
+			})
+			->where([
+				'OR' => [
+					['TranslateStrings.references IS' => null],
+					['TranslateStrings.references' => ''],
+				],
+			])
+			->orderByDesc('TranslateStrings.modified');
+	}
+
+	/**
 	 * @param int $translateLocaleId
 	 * @param array<\Translate\Model\Entity\TranslateLocale> $translateLocales
 	 *@throws \Cake\Http\Exception\InternalErrorException

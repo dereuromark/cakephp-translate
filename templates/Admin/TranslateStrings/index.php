@@ -31,6 +31,11 @@ use Cake\Core\Plugin;
 					['action' => 'analyze'],
 					['escape' => false, 'class' => 'list-group-item list-group-item-action'],
 				) ?>
+				<?= $this->Html->link(
+					'<i class="fas fa-unlink"></i> ' . __d('translate', 'Orphaned Strings'),
+					['action' => 'orphaned'],
+					['escape' => false, 'class' => 'list-group-item list-group-item-action'],
+				) ?>
 			</div>
 		</div>
 	</nav>

@@ -44,6 +44,20 @@ class TranslateStringsControllerTest extends IntegrationTestCase {
 	}
 
 	/**
+	 * Test orphaned method
+	 *
+	 * @return void
+	 */
+	public function testOrphaned() {
+		$this->disableErrorHandlerMiddleware();
+
+		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateStrings', 'action' => 'orphaned']);
+
+		$this->assertResponseCode(200);
+		$this->assertNoRedirect();
+	}
+
+	/**
 	 * Test view method
 	 *
 	 * @return void

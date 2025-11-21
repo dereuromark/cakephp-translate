@@ -72,6 +72,46 @@ class TranslateStringsController extends TranslateAppController {
 	}
 
 	/**
+	 * Orphaned strings - strings with no references to source code.
+	 *
+	 * @return \Cake\Http\Response|null|void
+	 */
+	public function orphaned() {
+		$projectId = $this->Translation->currentProjectId();
+		if ($projectId === null) {
+			$this->Flash->error(__d('translate', 'No project selected.'));
+
+			return $this->redirect(['controller' => 'Translate', 'action' => 'index']);
+		}
+
+		$query = $this->TranslateStrings->findOrphaned($projectId);
+		$count = $query->count();
+
+		// Handle bulk actions for ALL orphaned strings
+		if ($this->request->is('post') && $count > 0) {
+			$action = $this->request->getData('bulk_action');
+			$orphanedIds = $this->TranslateStrings->findOrphaned($projectId)->select(['id'])->all()->extract('id')->toArray();
+
+			if ($action === 'delete') {
+				$deleted = $this->TranslateStrings->deleteAll(['id IN' => $orphanedIds]);
+				$this->Flash->success(__d('translate', '{0} orphaned strings deleted.', $deleted));
+
+				return $this->redirect(['action' => 'orphaned']);
+			}
+			if ($action === 'deactivate') {
+				$updated = $this->TranslateStrings->updateAll(['active' => false], ['id IN' => $orphanedIds]);
+				$this->Flash->success(__d('translate', '{0} orphaned strings marked as inactive.', $updated));
+
+				return $this->redirect(['action' => 'orphaned']);
+			}
+		}
+
+		$translateStrings = $this->paginate($query);
+
+		$this->set(compact('translateStrings', 'count'));
+	}
+
+	/**
 	 * View method
 	 *
 	 * @param string|null $id Translate String id.

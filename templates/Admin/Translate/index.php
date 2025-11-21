@@ -900,6 +900,11 @@ $totalColor = $this->Translation->getColor($totalCoverage);
 							['escape' => false, 'class' => 'list-group-item list-group-item-action'],
 						) ?>
 						<?= $this->Html->link(
+							'<i class="fas fa-unlink"></i> ' . __d('translate', 'Orphaned Strings'),
+							['controller' => 'TranslateStrings', 'action' => 'orphaned'],
+							['escape' => false, 'class' => 'list-group-item list-group-item-action'],
+						) ?>
+						<?= $this->Html->link(
 							'<i class="fas fa-info-circle"></i> ' . __d('translate', 'Best Practices'),
 							['action' => 'bestPractice'],
 							['escape' => false, 'class' => 'list-group-item list-group-item-action'],

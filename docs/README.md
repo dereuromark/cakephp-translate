@@ -41,13 +41,82 @@ translate_projects (top level)
 
 The structure of the plugin is as follows:
 
-![Diagram](diagram.svg)
+```mermaid
+erDiagram
+    translate_projects ||--o{ translate_domains : has
+    translate_projects ||--o{ translate_locales : has
+    translate_domains ||--o{ translate_strings : contains
+    translate_strings ||--o{ translate_terms : has
+    translate_locales ||--o{ translate_terms : has
+
+    translate_projects {
+        int id PK
+        string name
+        int type
+        bool default
+        int status
+        datetime created
+        datetime modified
+    }
+    translate_domains {
+        int id PK
+        int translate_project_id FK
+        string name
+        bool active
+        int prio
+        string path
+        datetime created
+        datetime modified
+    }
+    translate_locales {
+        int id PK
+        int translate_project_id FK
+        int language_id
+        string name
+        string iso2
+        string locale
+        bool active
+        bool base
+        bool primary
+    }
+    translate_strings {
+        int id PK
+        int translate_domain_id FK
+        string context
+        text name
+        text plural
+        text references
+        bool active
+        bool is_html
+        datetime created
+        datetime modified
+    }
+    translate_terms {
+        int id PK
+        int translate_string_id FK
+        int translate_locale_id FK
+        text content
+        string plural_2
+        bool confirmed
+        int confirmed_by
+        datetime created
+        datetime modified
+    }
+    translate_api_translations {
+        int id PK
+        int translate_string_id FK
+        int translate_locale_id FK
+        string engine
+        text content
+        datetime created
+    }
+```
 
 - By default, you only need one project.
 - You can import the strings per locale (language) and domain.
 - Those get translated in the terms.
 
-The api_translations table holds any engine related imports.
+The api_translations table is only needed when working with external APIs and holds any engine related imports.
 So on update you know what changed.
 
 

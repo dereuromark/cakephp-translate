@@ -88,8 +88,10 @@ bin/cake i18n extract_to_db
 Configure I18n to use the Translate DbMessagesLoader for default domain:
 
 ```php
+use Translate\I18n\DbMessagesLoader;
+
 I18n::config('default', function ($domain, $locale) {
-    return new MessagesDbLoader(
+    return new DbMessagesLoader(
         $domain,
         $locale
     );

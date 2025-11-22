@@ -130,6 +130,8 @@ class PotWriter {
 	/**
 	 * Write POT content to file
 	 *
+	 * Only writes if actual content changed (ignoring timestamp).
+	 *
 	 * @param string $path File path
 	 * @param array<string, array<string, mixed>> $strings Extracted strings
 	 * @param array<string, mixed> $options Options for header
@@ -143,7 +145,44 @@ class PotWriter {
 			mkdir($dir, 0755, true);
 		}
 
+		// Only write if content actually changed (ignoring timestamp)
+		if (file_exists($path)) {
+			$existing = (string)file_get_contents($path);
+			if ($this->stripTimestamp($existing) === $this->stripTimestamp($content)) {
+				return true;
+			}
+		}
+
 		return file_put_contents($path, $content) !== false;
+	}
+
+	/**
+	 * Check if file needs to be updated
+	 *
+	 * @param string $path File path
+	 * @param array<string, array<string, mixed>> $strings Extracted strings
+	 * @param array<string, mixed> $options Options for header
+	 * @return bool True if file needs update, false if content is identical
+	 */
+	public function needsUpdate(string $path, array $strings, array $options = []): bool {
+		if (!file_exists($path)) {
+			return true;
+		}
+
+		$content = $this->generate($strings, $options);
+		$existing = (string)file_get_contents($path);
+
+		return $this->stripTimestamp($existing) !== $this->stripTimestamp($content);
+	}
+
+	/**
+	 * Strip POT-Creation-Date for comparison
+	 *
+	 * @param string $content POT file content
+	 * @return string
+	 */
+	protected function stripTimestamp(string $content): string {
+		return preg_replace('/^"POT-Creation-Date: .+\\\\n"$/m', '', $content) ?? $content;
 	}
 
 }

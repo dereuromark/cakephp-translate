@@ -108,17 +108,22 @@ class PotUpdater {
 		// Update if requested
 		if (!$this->options['dryRun']) {
 			$writer = new PotWriter();
-			$success = $writer->write($potPath, $currentStrings, [
-				'project' => $domain,
-			]);
+			$writerOptions = ['project' => $domain];
+			$needsUpdate = $writer->needsUpdate($potPath, $currentStrings, $writerOptions);
 
-			if ($success) {
-				$this->info('');
-				$this->success('POT file updated: ' . $potPath);
+			if ($needsUpdate) {
+				$success = $writer->write($potPath, $currentStrings, $writerOptions);
+				if ($success) {
+					$this->info('');
+					$this->success('POT file updated: ' . $potPath);
+				} else {
+					$this->error('Failed to write POT file: ' . $potPath);
+
+					return 2;
+				}
 			} else {
-				$this->error('Failed to write POT file: ' . $potPath);
-
-				return 2;
+				$this->info('');
+				$this->success('POT file already up to date (no write needed).');
 			}
 		}
 

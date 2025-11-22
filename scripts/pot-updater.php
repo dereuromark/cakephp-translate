@@ -30,7 +30,7 @@
 // Find autoloader
 $autoloaders = [
 	// When running from vendor directory of another project
-	dirname(__DIR__, 4) . '/autoload.php',
+	dirname(__DIR__, 4) . '/vendor/autoload.php',
 	// When running from plugin root during development
 	dirname(__DIR__) . '/vendor/autoload.php',
 ];

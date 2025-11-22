@@ -43,6 +43,7 @@ Add to your plugin's `composer.json` for convenience:
 ```json
 {
     "scripts": {
+        "pot-setup": "cp composer.json composer.backup && composer require --dev dereuromark/cakephp-translate && mv composer.backup composer.json",
         "pot-check": "php vendor/dereuromark/cakephp-translate/scripts/pot-updater.php --fail-on-diff",
         "pot-update": "php vendor/dereuromark/cakephp-translate/scripts/pot-updater.php --update"
     }

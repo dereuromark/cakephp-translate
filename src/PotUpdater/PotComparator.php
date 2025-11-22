@@ -10,26 +10,9 @@ class PotComparator {
 	/**
 	 * Compare existing strings with current strings
 	 *
-	 * @param array<string, array{
-	 *   msgid: string,
-	 *   msgid_plural: string|null,
-	 *   msgctxt: string|null,
-	 *   references: array<string>,
-	 *   comments: array<string>
-	 * }> $existing Strings from existing POT file
-	 * @param array<string, array{
-	 *   msgid: string,
-	 *   msgid_plural: string|null,
-	 *   msgctxt: string|null,
-	 *   references: array<string>,
-	 *   comments: array<string>
-	 * }> $current Strings from current extraction
-	 * @return array{
-	 *   added: array<string, array>,
-	 *   removed: array<string, array>,
-	 *   changed: array<string, array{existing: array, current: array}>,
-	 *   unchanged: array<string, array>
-	 * }
+	 * @param array<string, array<string, mixed>> $existing Strings from existing POT file
+	 * @param array<string, array<string, mixed>> $current Strings from current extraction
+	 * @return array<string, array<string, mixed>>
 	 */
 	public function compare(array $existing, array $current): array {
 		$added = array_diff_key($current, $existing);
@@ -63,20 +46,8 @@ class PotComparator {
 	/**
 	 * Check if a string entry has changes
 	 *
-	 * @param array{
-	 *   msgid: string,
-	 *   msgid_plural: string|null,
-	 *   msgctxt: string|null,
-	 *   references: array<string>,
-	 *   comments: array<string>
-	 * } $existing Existing entry
-	 * @param array{
-	 *   msgid: string,
-	 *   msgid_plural: string|null,
-	 *   msgctxt: string|null,
-	 *   references: array<string>,
-	 *   comments: array<string>
-	 * } $current Current entry
+	 * @param array<string, mixed> $existing Existing entry
+	 * @param array<string, mixed> $current Current entry
 	 * @param bool $ignoreReferences Whether to ignore reference changes
 	 * @return bool
 	 */
@@ -109,12 +80,7 @@ class PotComparator {
 	/**
 	 * Check if there are any meaningful differences
 	 *
-	 * @param array{
-	 *   added: array<string, array>,
-	 *   removed: array<string, array>,
-	 *   changed: array<string, array>,
-	 *   unchanged: array<string, array>
-	 * } $diff Comparison result
+	 * @param array<string, array<string, mixed>> $diff Comparison result
 	 * @param bool $ignoreReferences Whether to ignore reference-only changes
 	 * @return bool
 	 */
@@ -133,20 +99,8 @@ class PotComparator {
 	/**
 	 * Get summary statistics
 	 *
-	 * @param array{
-	 *   added: array<string, array>,
-	 *   removed: array<string, array>,
-	 *   changed: array<string, array>,
-	 *   unchanged: array<string, array>
-	 * } $diff Comparison result
-	 * @return array{
-	 *   added: int,
-	 *   removed: int,
-	 *   changed: int,
-	 *   unchanged: int,
-	 *   total_existing: int,
-	 *   total_current: int
-	 * }
+	 * @param array<string, array<string, mixed>> $diff Comparison result
+	 * @return array<string, int>
 	 */
 	public function getSummary(array $diff): array {
 		return [

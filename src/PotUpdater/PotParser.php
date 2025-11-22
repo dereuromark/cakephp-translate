@@ -179,12 +179,15 @@ class PotParser {
 		switch ($field) {
 			case 'msgctxt':
 				$msgctxt = $value;
+
 				break;
 			case 'msgid':
 				$msgid = $value;
+
 				break;
 			case 'msgid_plural':
 				$msgidPlural = $value;
+
 				break;
 			// msgstr fields are ignored for POT files
 		}
@@ -217,18 +220,23 @@ class PotParser {
 				switch ($next) {
 					case 'n':
 						$result .= "\n";
+
 						break;
 					case 'r':
 						$result .= "\r";
+
 						break;
 					case 't':
 						$result .= "\t";
+
 						break;
 					case '"':
 						$result .= '"';
+
 						break;
 					case '\\':
 						$result .= '\\';
+
 						break;
 					default:
 						$result .= $next;

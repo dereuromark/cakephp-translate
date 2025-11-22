@@ -10,13 +10,7 @@ class PotWriter {
 	/**
 	 * Generate POT file content
 	 *
-	 * @param array<string, array{
-	 *   msgid: string,
-	 *   msgid_plural: string|null,
-	 *   msgctxt: string|null,
-	 *   references: array<string>,
-	 *   comments: array<string>
-	 * }> $strings Extracted strings
+	 * @param array<string, array<string, mixed>> $strings Extracted strings
 	 * @param array<string, mixed> $options Options for header
 	 * @return string
 	 */
@@ -67,13 +61,7 @@ class PotWriter {
 	/**
 	 * Generate a single POT entry
 	 *
-	 * @param array{
-	 *   msgid: string,
-	 *   msgid_plural: string|null,
-	 *   msgctxt: string|null,
-	 *   references: array<string>,
-	 *   comments: array<string>
-	 * } $data String data
+	 * @param array<string, mixed> $data String data
 	 * @return string
 	 */
 	protected function generateEntry(array $data): string {
@@ -143,13 +131,7 @@ class PotWriter {
 	 * Write POT content to file
 	 *
 	 * @param string $path File path
-	 * @param array<string, array{
-	 *   msgid: string,
-	 *   msgid_plural: string|null,
-	 *   msgctxt: string|null,
-	 *   references: array<string>,
-	 *   comments: array<string>
-	 * }> $strings Extracted strings
+	 * @param array<string, array<string, mixed>> $strings Extracted strings
 	 * @param array<string, mixed> $options Options for header
 	 * @return bool
 	 */

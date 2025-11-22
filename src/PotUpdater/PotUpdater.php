@@ -64,7 +64,7 @@ class PotUpdater {
 			return 2;
 		}
 
-		$this->info("POT Updater - " . ($this->options['dryRun'] ? 'Checking' : 'Updating') . " plugin");
+		$this->info('POT Updater - ' . ($this->options['dryRun'] ? 'Checking' : 'Updating') . ' plugin');
 		$this->info(str_repeat('=', 50));
 		$this->info('');
 		$this->info('Plugin path: ' . $this->pluginPath);
@@ -227,20 +227,8 @@ class PotUpdater {
 	/**
 	 * Display diff results
 	 *
-	 * @param array{
-	 *   added: array<string, array>,
-	 *   removed: array<string, array>,
-	 *   changed: array<string, array>,
-	 *   unchanged: array<string, array>
-	 * } $diff Comparison result
-	 * @param array{
-	 *   added: int,
-	 *   removed: int,
-	 *   changed: int,
-	 *   unchanged: int,
-	 *   total_existing: int,
-	 *   total_current: int
-	 * } $summary Summary statistics
+	 * @param array<string, array<string, mixed>> $diff Comparison result
+	 * @param array<string, int> $summary Summary statistics
 	 * @return void
 	 */
 	protected function displayDiff(array $diff, array $summary): void {
@@ -368,7 +356,7 @@ class PotUpdater {
 	 * @param array<string, mixed> $options Options to set
 	 * @return $this
 	 */
-	public function setOptions(array $options): self {
+	public function setOptions(array $options) {
 		$this->options = array_merge($this->options, $options);
 
 		return $this;

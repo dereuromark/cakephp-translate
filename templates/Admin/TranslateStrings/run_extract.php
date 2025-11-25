@@ -33,7 +33,7 @@ $this->assign('title', __d('translate', 'Run i18n Extract (Experimental)'));
 	<h2>
 		<i class="fas fa-flask"></i>
 		<?= __d('translate', 'Run i18n Extract') ?>
-		<span class="badge badge-warning"><?= __d('translate', 'Experimental') ?></span>
+		<span class="badge bg-warning text-dark"><?= __d('translate', 'Experimental') ?></span>
 	</h2>
 
 	<div class="alert alert-warning">

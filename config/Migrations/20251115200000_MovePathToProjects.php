@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-use Migrations\AbstractMigration;
+use Migrations\BaseMigration;
 
 /**
  * Move path field from translate_domains to translate_projects
  */
-class MovePathToProjects extends AbstractMigration {
+class MovePathToProjects extends BaseMigration {
 
 	/**
 	 * Change Method.

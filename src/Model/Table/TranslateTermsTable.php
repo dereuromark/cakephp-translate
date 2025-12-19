@@ -10,6 +10,7 @@ use Cake\Log\Log;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Exception;
 use Translate\Model\Filter\TranslateTermsCollection;
 
 /**
@@ -259,7 +260,7 @@ class TranslateTermsTable extends Table {
 
 				return null;
 			}
-		} catch (\Exception $e) {
+		} catch (Exception $e) {
 			Log::write('error', 'Term import exception for String # `' . $translateStringId . '`: ' . $e->getMessage(), ['scope' => 'import']);
 
 			return null;

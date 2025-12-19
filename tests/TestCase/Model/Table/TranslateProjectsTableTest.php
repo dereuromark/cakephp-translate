@@ -4,6 +4,7 @@ namespace Translate\Test\TestCase\Model\Table;
 
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
+use Exception;
 use Translate\Model\Entity\TranslateProject;
 use Translate\Model\Table\TranslateProjectsTable;
 
@@ -89,7 +90,7 @@ class TranslateProjectsTableTest extends TestCase {
 	 * @return void
 	 */
 	public function testReset() {
-		$this->expectException(\Exception::class);
+		$this->expectException(Exception::class);
 		$this->expectExceptionMessage('Invalid type');
 
 		$this->TranslateProjects->reset(1, ['invalid_type'], [1]);

@@ -3,6 +3,8 @@
 namespace Translate\Controller\Admin;
 
 use Cake\View\JsonView;
+use DateTime;
+use Exception;
 use Translate\Controller\TranslateAppController;
 use Translate\Lib\ConvertLib;
 use Translate\Translator\Translator;
@@ -127,7 +129,7 @@ class TranslateController extends TranslateAppController {
 						}
 						$auditData[$key][] = $log;
 					}
-				} catch (\Exception $e) {
+				} catch (Exception $e) {
 					// Table doesn't exist or error loading, skip audit logs
 					$auditLogs = [];
 				}
@@ -184,7 +186,7 @@ class TranslateController extends TranslateAppController {
 				->where([
 					'TranslateDomains.translate_project_id' => $id,
 					'TranslateStrings.last_import IS NOT' => null,
-					'TranslateStrings.last_import >=' => new \DateTime('-30 days'),
+					'TranslateStrings.last_import >=' => new DateTime('-30 days'),
 				])
 				->orderBy(['TranslateStrings.last_import' => 'DESC'])
 				->limit(10)

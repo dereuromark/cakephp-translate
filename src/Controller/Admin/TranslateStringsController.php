@@ -9,6 +9,7 @@ use Cake\Console\ConsoleOutput;
 use Cake\Core\Configure;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Utility\Inflector;
+use Throwable;
 use Translate\Controller\TranslateAppController;
 use Translate\Filesystem\Dumper;
 use Translate\Model\Entity\TranslateProject;
@@ -1195,7 +1196,7 @@ class TranslateStringsController extends TranslateAppController {
 				} else {
 					$this->Flash->warning(__d('translate', 'Extraction completed with return code: {0}', $returnCode));
 				}
-			} catch (\Throwable $e) {
+			} catch (Throwable $e) {
 				$this->Flash->error(__d('translate', 'Extraction failed: {0}', $e->getMessage()));
 				$output = $e->getMessage() . "\n" . $e->getTraceAsString();
 				$returnCode = 1;

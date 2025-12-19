@@ -7,6 +7,7 @@ use Cake\Database\Schema\TableSchemaInterface;
 use Cake\Datasource\ConnectionManager;
 use Cake\ORM\Locator\LocatorAwareTrait;
 use Cake\Utility\Inflector;
+use Exception;
 use Translate\Controller\TranslateAppController;
 
 /**
@@ -186,7 +187,7 @@ class TranslateBehaviorController extends TranslateAppController {
 
 		try {
 			$schema = $schemaCollection->describe($tableName);
-		} catch (\Exception $e) {
+		} catch (Exception $e) {
 			$this->Flash->error('Shadow table not found');
 
 			return $this->redirect(['action' => 'index']);
@@ -291,7 +292,7 @@ class TranslateBehaviorController extends TranslateAppController {
 						'has_shadow_table' => in_array($tableName . '_i18n', $allTables),
 					];
 				}
-			} catch (\Exception $e) {
+			} catch (Exception $e) {
 				// Table class doesn't exist or can't be loaded, skip
 				continue;
 			}
@@ -345,7 +346,7 @@ class TranslateBehaviorController extends TranslateAppController {
 						'field_count' => count($textFields),
 					];
 				}
-			} catch (\Exception $e) {
+			} catch (Exception $e) {
 				continue;
 			}
 		}
@@ -412,7 +413,7 @@ class TranslateBehaviorController extends TranslateAppController {
 				'alias' => $table->getAlias(),
 				'has_behavior' => $table->hasBehavior('Translate'),
 			];
-		} catch (\Exception $e) {
+		} catch (Exception $e) {
 			return null;
 		}
 	}

@@ -3,11 +3,15 @@
  * @license http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
+use Cake\Cache\Cache;
 use Cake\Core\Configure;
+use Cake\Datasource\ConnectionManager;
 use Cake\TestSuite\Fixture\SchemaLoader;
 use Templating\View\Icon\FontAwesome5Icon;
 use TestApp\Application;
 use TestApp\Controller\AppController;
+use TestApp\Model\Entity\User;
+use TestApp\Model\Table\UsersTable;
 use TestApp\View\AppView;
 
 if (!defined('DS')) {
@@ -43,7 +47,7 @@ require CAKE . 'functions.php';
 
 require ROOT . DS . 'config' . DS . 'bootstrap.php';
 
-Cake\Core\Configure::write('App', [
+Configure::write('App', [
 	'encoding' => 'UTF-8',
 	'namespace' => 'TestApp',
 	'paths' => [
@@ -53,13 +57,13 @@ Cake\Core\Configure::write('App', [
 
 Configure::write('TestSuite.errorLevel', E_ALL & ~E_USER_DEPRECATED);
 
-Cake\Core\Configure::write('debug', true);
+Configure::write('debug', true);
 
 // Disable audit logging during tests to avoid needing audit_logs table everywhere
-Cake\Core\Configure::write('Translate.disableAuditLog', true);
+Configure::write('Translate.disableAuditLog', true);
 
-Cake\Core\Configure::write('Yandex.key', env('YANDEX_KEY'));
-Cake\Core\Configure::write('Transltr.live', env('TRANSLTR_LIVE'));
+Configure::write('Yandex.key', env('YANDEX_KEY'));
+Configure::write('Transltr.live', env('TRANSLTR_LIVE'));
 
 $cache = [
 	'default' => [
@@ -81,7 +85,7 @@ $cache = [
 	],
 ];
 
-Cake\Cache\Cache::setConfig($cache);
+Cache::setConfig($cache);
 
 Configure::write('Icon', [
 	'sets' => [
@@ -94,8 +98,8 @@ Configure::write('Icon', [
 class_alias(Application::class, 'App\Application');
 class_alias(AppController::class, 'App\Controller\AppController');
 class_alias(AppView::class, 'App\View\AppView');
-class_alias(\TestApp\Model\Table\UsersTable::class, 'App\Model\Table\UsersTable');
-class_alias(\TestApp\Model\Entity\User::class, 'App\Model\Entity\User');
+class_alias(UsersTable::class, 'App\Model\Table\UsersTable');
+class_alias(User::class, 'App\Model\Entity\User');
 
 //Cake\Core\Plugin::getCollection()->add(new \Tools\Plugin());
 //Cake\Core\Plugin::getCollection()->add(new \Translate\Plugin());
@@ -108,7 +112,7 @@ if (!getenv('DB_URL')) {
 	putenv('DB_URL=sqlite:///:memory:');
 }
 
-Cake\Datasource\ConnectionManager::setConfig('test', [
+ConnectionManager::setConfig('test', [
 	'url' => getenv('DB_URL') ?: null,
 	'timezone' => 'UTC',
 	'quoteIdentifiers' => true,

@@ -8,6 +8,7 @@ use Cake\Console\ConsoleIo;
 use Cake\Console\TestSuite\StubConsoleInput;
 use Cake\Console\TestSuite\StubConsoleOutput;
 use Cake\Core\App;
+use ReflectionClass;
 
 /**
  * String extractor that wraps CakePHP's I18nExtractCommand.
@@ -153,7 +154,7 @@ class CakeStringExtractor extends I18nExtractCommand {
 		}
 		if (!defined('CAKE')) {
 			// Point to CakePHP source - find it via autoloader
-			$cakePath = dirname((string)(new \ReflectionClass(App::class))->getFileName(), 2);
+			$cakePath = dirname((string)(new ReflectionClass(App::class))->getFileName(), 2);
 			define('CAKE', $cakePath . DIRECTORY_SEPARATOR);
 		}
 		if (!defined('CAKE_CORE_INCLUDE_PATH')) {

@@ -4,7 +4,7 @@ declare(strict_types=1);
 use Migrations\BaseMigration;
 
 /**
- * Rename translate_locales to translate_locales for better clarity
+ * Rename translate_languages to translate_locales for better clarity.
  * Since locales can represent multiple variants of the same language (de_DE, de_CH, etc.)
  */
 class RenameLanguagesToLocales extends BaseMigration {

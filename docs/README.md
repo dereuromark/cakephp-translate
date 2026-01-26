@@ -55,6 +55,7 @@ erDiagram
         int type
         bool default
         int status
+        string path
         datetime created
         datetime modified
     }
@@ -64,7 +65,6 @@ erDiagram
         string name
         bool active
         int prio
-        string path
         datetime created
         datetime modified
     }

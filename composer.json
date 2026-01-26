@@ -26,7 +26,7 @@
 	},
 	"require-dev": {
 		"ext-json": "*",
-		"cakephp/migrations": "^4.6.3",
+		"cakephp/migrations": "^5.0.0",
 		"friendsofcake/bootstrap-ui": "^5.1.1",
 		"dereuromark/cakephp-queue": "^8.0",
 		"dereuromark/cakephp-data": "@stable",

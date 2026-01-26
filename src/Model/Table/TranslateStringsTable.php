@@ -347,13 +347,13 @@ class TranslateStringsTable extends Table {
 	 * @return bool
 	 */
 	protected function containsHtml(array $translation) {
-		if (strpos($translation['name'], '<') !== false || strpos($translation['name'], '>') !== false) {
+		if (str_contains($translation['name'], '<') || str_contains($translation['name'], '>')) {
 			return true;
 		}
 		if (empty($translation['plural'])) {
 			return false;
 		}
-		if (strpos($translation['plural'], '<') !== false || strpos($translation['plural'], '>') !== false) {
+		if (str_contains($translation['plural'], '<') || str_contains($translation['plural'], '>')) {
 			return true;
 		}
 

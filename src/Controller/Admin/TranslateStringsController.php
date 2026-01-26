@@ -686,6 +686,10 @@ class TranslateStringsController extends TranslateAppController {
 			}
 		}
 
+		if (!file_exists($file)) {
+			throw new NotFoundException(__d('translate', 'Source file not found: {0}', $referencePath));
+		}
+
 		$fileArray = file($file);
 		$fileContent = file_get_contents($file);
 		$canEdit = Configure::read('debug') && Configure::read('Translate.editor') && is_writable($file);

@@ -70,7 +70,6 @@ class DbMessagesLoader {
 	 * Fetches the translation messages from db and returns package with those
 	 * messages.
 	 *
-	 * @throws \RuntimeException If model could not be loaded.
 	 * @return \Cake\I18n\Package
 	 */
 	public function __invoke(): Package {
@@ -79,7 +78,11 @@ class DbMessagesLoader {
 		$translateProject = $this->fetchTable('Translate.TranslateProjects')
 			->find()
 			->where(['type' => TranslateProject::TYPE_APP, 'default' => true])
-			->firstOrFail();
+			->first();
+		if (!$translateProject) {
+			return new Package($this->formatter);
+		}
+
 		$translateProjectId = $translateProject->id;
 		$query = $model->find();
 
@@ -96,15 +99,6 @@ class DbMessagesLoader {
 
 		$query->contain(['TranslateStrings' => 'TranslateDomains', 'TranslateLocales']);
 		$query->select(['TranslateStrings.name', 'TranslateStrings.plural', 'TranslateStrings.context']);
-
-		// Get list of fields without primaryKey, domain, locale.
-		$fields = $model->getSchema()->columns();
-		$fields = array_flip(array_diff(
-			$fields,
-			$model->getSchema()->getPrimaryKey(),
-		));
-		unset($fields['domain'], $fields['locale']);
-		$query->select(array_flip($fields));
 
 		$results = $query
 			->where(['TranslateDomains.translate_project_id' => $translateProjectId])

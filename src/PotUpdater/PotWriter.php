@@ -112,7 +112,7 @@ class PotWriter {
 		$string = str_replace(['\\', '"', "\r"], ['\\\\', '\\"', ''], $string);
 
 		// Check for newlines
-		if (strpos($string, "\n") !== false) {
+		if (str_contains($string, "\n")) {
 			// Multiline string
 			$lines = explode("\n", $string);
 			$output = "\"\"\n";

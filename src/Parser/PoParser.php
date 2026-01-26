@@ -236,7 +236,7 @@ class PoParser {
 
 				break;
 			default:
-				if (strpos($data['key'], 'msgstr[') !== false) {
+				if (str_contains($data['key'], 'msgstr[')) {
 					// translated plurals
 					$this->state = 'msgstr';
 					$this->addEntryData($data['value']);

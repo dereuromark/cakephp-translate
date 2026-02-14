@@ -474,20 +474,23 @@ class TranslateBehaviorController extends TranslateAppController {
 		$selectedFields = [];
 		$strategy = 'shadow_table';
 
+		$includeAutoField = true;
+
 		if ($this->request->is('post')) {
 			$data = $this->request->getData();
 			$selectedFields = $data['fields'] ?? [];
 			$strategy = $data['strategy'] ?? 'eav';
+			$includeAutoField = (bool)($data['include_auto_field'] ?? true);
 
 			if (empty($selectedFields)) {
 				$this->Flash->warning(__d('translate', 'Please select at least one field to translate'));
 			} else {
-				$migrationCode = $this->generateMigrationCode($tableName, $selectedFields, $translatableFields, $strategy);
+				$migrationCode = $this->generateMigrationCode($tableName, $selectedFields, $translatableFields, $strategy, $includeAutoField);
 				$migrationName = 'AddI18nFor' . Inflector::camelize($tableName);
 			}
 		}
 
-		$this->set(compact('tableName', 'translatableFields', 'migrationCode', 'migrationName', 'selectedFields', 'strategy'));
+		$this->set(compact('tableName', 'translatableFields', 'migrationCode', 'migrationName', 'selectedFields', 'strategy', 'includeAutoField'));
 
 		return null;
 	}
@@ -499,17 +502,18 @@ class TranslateBehaviorController extends TranslateAppController {
 	 * @param array $selectedFields Selected field names
 	 * @param array $allFields All translatable fields info
 	 * @param string $strategy Translation strategy
+	 * @param bool $includeAutoField Whether to include the auto field for tracking machine translations
 	 * @return string
 	 */
-	protected function generateMigrationCode(string $tableName, array $selectedFields, array $allFields, string $strategy): string {
+	protected function generateMigrationCode(string $tableName, array $selectedFields, array $allFields, string $strategy, bool $includeAutoField = true): string {
 		$shadowTableName = $tableName . '_i18n';
 		$className = 'AddI18nFor' . Inflector::camelize($tableName);
 
 		if ($strategy === 'eav') {
-			return $this->generateEavMigration($className, $shadowTableName, $tableName);
+			return $this->generateEavMigration($className, $shadowTableName, $tableName, $includeAutoField);
 		}
 
-		return $this->generateShadowTableMigration($className, $shadowTableName, $tableName, $selectedFields, $allFields);
+		return $this->generateShadowTableMigration($className, $shadowTableName, $tableName, $selectedFields, $allFields, $includeAutoField);
 	}
 
 	/**
@@ -518,9 +522,22 @@ class TranslateBehaviorController extends TranslateAppController {
 	 * @param string $className Class name
 	 * @param string $shadowTableName Shadow table name
 	 * @param string $baseTableName Base table name
+	 * @param bool $includeAutoField Whether to include the auto field
 	 * @return string
 	 */
-	protected function generateEavMigration(string $className, string $shadowTableName, string $baseTableName): string {
+	protected function generateEavMigration(string $className, string $shadowTableName, string $baseTableName, bool $includeAutoField = true): string {
+		$autoFieldCode = '';
+		if ($includeAutoField) {
+			$autoFieldCode = <<<'AUTOFIELD'
+
+            ->addColumn('auto', 'boolean', [
+                'default' => false,
+                'null' => false,
+                'comment' => 'True if translation was machine-generated',
+            ])
+AUTOFIELD;
+		}
+
 		return <<<PHP
 <?php
 declare(strict_types=1);
@@ -565,7 +582,7 @@ class {$className} extends BaseMigration
             ->addColumn('content', 'text', [
                 'default' => null,
                 'null' => true,
-            ])
+            ]){$autoFieldCode}
             ->addIndex(
                 [
                     'locale',
@@ -597,9 +614,10 @@ PHP;
 	 * @param string $baseTableName Base table name
 	 * @param array $selectedFields Selected fields
 	 * @param array $allFields All field info
+	 * @param bool $includeAutoField Whether to include the auto field
 	 * @return string
 	 */
-	protected function generateShadowTableMigration(string $className, string $shadowTableName, string $baseTableName, array $selectedFields, array $allFields): string {
+	protected function generateShadowTableMigration(string $className, string $shadowTableName, string $baseTableName, array $selectedFields, array $allFields, bool $includeAutoField = true): string {
 		$fieldsMap = [];
 		foreach ($allFields as $field) {
 			$fieldsMap[$field['name']] = $field;
@@ -628,6 +646,18 @@ PHP;
 		}
 
 		$columnsCode = implode("\n", $columnDefinitions);
+
+		$autoFieldCode = '';
+		if ($includeAutoField) {
+			$autoFieldCode = <<<'AUTOFIELD'
+
+            ->addColumn('auto', 'boolean', [
+                'default' => false,
+                'null' => false,
+                'comment' => 'True if translation was machine-generated',
+            ])
+AUTOFIELD;
+		}
 
 		return <<<PHP
 <?php
@@ -660,7 +690,7 @@ class {$className} extends BaseMigration
                 'limit' => 10,
                 'null' => false,
             ])
-{$columnsCode}
+{$columnsCode}{$autoFieldCode}
             ->addIndex(
                 [
                     'locale',

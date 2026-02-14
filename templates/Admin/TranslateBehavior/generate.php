@@ -7,6 +7,7 @@
  * @var string|null $migrationName
  * @var array $selectedFields
  * @var string $strategy
+ * @var bool $includeAutoField
  * @var array|null $availableTables
  */
 ?>
@@ -102,6 +103,24 @@
 							<strong>Shadow Table:</strong> <?= __d('translate', 'Creates columns for each field. Better performance, recommended.') ?><br>
 							<strong>EAV:</strong> <?= __d('translate', 'Flexible, stores each field translation as a row. More flexible but slower.') ?>
 						</div>
+					</div>
+
+					<!-- Auto Field Option -->
+					<div class="mb-3">
+						<div class="form-check">
+							<input type="checkbox"
+								   name="include_auto_field"
+								   value="1"
+								   id="include-auto-field"
+								   class="form-check-input"
+								   <?= (isset($includeAutoField) && $includeAutoField) || !isset($includeAutoField) ? 'checked' : '' ?>>
+							<label class="form-check-label" for="include-auto-field">
+								<strong><i class="fas fa-robot"></i> <?= __d('translate', 'Include "auto" field') ?></strong>
+							</label>
+						</div>
+						<small class="text-muted">
+							<?= __d('translate', 'Adds a boolean field to track which translations were machine-generated. Recommended for auto-translation workflows.') ?>
+						</small>
 					</div>
 
 					<hr>

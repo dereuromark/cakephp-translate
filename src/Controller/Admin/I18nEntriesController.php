@@ -497,7 +497,7 @@ class I18nEntriesController extends TranslateAppController {
 	 * Get a Table instance for a translation table
 	 *
 	 * @param string $tableName Table name
-	 * @return Table
+	 * @return \Cake\ORM\Table
 	 */
 	protected function getTranslationTable(string $tableName): Table {
 		return $this->fetchTable(Inflector::camelize($tableName), [
@@ -650,7 +650,7 @@ class I18nEntriesController extends TranslateAppController {
 	/**
 	 * Detect translation strategy from schema
 	 *
-	 * @param TableSchemaInterface $schema Schema
+	 * @param \Cake\Database\Schema\TableSchemaInterface $schema Schema
 	 * @return string 'eav' or 'shadow_table'
 	 */
 	protected function detectTranslationStrategy(TableSchemaInterface $schema): string {
@@ -668,7 +668,7 @@ class I18nEntriesController extends TranslateAppController {
 	/**
 	 * Get the foreign key column name from schema
 	 *
-	 * @param TableSchemaInterface $schema Schema
+	 * @param \Cake\Database\Schema\TableSchemaInterface $schema Schema
 	 * @return string Foreign key column name ('foreign_key' or 'id')
 	 */
 	protected function getForeignKeyColumn(TableSchemaInterface $schema): string {
@@ -686,7 +686,7 @@ class I18nEntriesController extends TranslateAppController {
 	/**
 	 * Get translated fields from schema
 	 *
-	 * @param TableSchemaInterface $schema Schema
+	 * @param \Cake\Database\Schema\TableSchemaInterface $schema Schema
 	 * @param string $strategy Translation strategy
 	 * @return array<string>
 	 */
@@ -776,7 +776,7 @@ class I18nEntriesController extends TranslateAppController {
 				if (!$term instanceof EntityInterface) {
 					continue;
 				}
-				/** @var EntityInterface|null $translateString */
+				/** @var \Cake\Datasource\EntityInterface|null $translateString */
 				$translateString = $term->get('translate_string');
 				if (!$translateString instanceof EntityInterface) {
 					continue;

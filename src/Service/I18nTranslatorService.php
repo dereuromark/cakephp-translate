@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace Translate\Service;
 
-use Cake\Core\Configure;
 use Cake\Log\Log;
 use Cake\ORM\Locator\LocatorAwareTrait;
+use Exception;
 use Translate\Translator\Translator;
 
 /**
@@ -49,7 +49,7 @@ class I18nTranslatorService {
 			$result = $translator->translate($text, $targetLang, $sourceLang);
 
 			return $result;
-		} catch (\Exception $e) {
+		} catch (Exception $e) {
 			Log::warning('I18nTranslatorService: Translation failed - ' . $e->getMessage());
 
 			return null;
@@ -94,7 +94,7 @@ class I18nTranslatorService {
 			$translator = $this->getTranslator();
 
 			return $translator->suggest($text, $targetLang, $sourceLang);
-		} catch (\Exception $e) {
+		} catch (Exception $e) {
 			Log::warning('I18nTranslatorService: Suggestions failed - ' . $e->getMessage());
 
 			return [];
@@ -170,7 +170,7 @@ class I18nTranslatorService {
 					}
 				}
 			}
-		} catch (\Exception $e) {
+		} catch (Exception $e) {
 			// Translate tables might not exist
 			Log::debug('I18nTranslatorService: Glossary lookup failed - ' . $e->getMessage());
 		}
@@ -224,12 +224,19 @@ class I18nTranslatorService {
 	 */
 	protected function extractSignificantWords(string $text): array {
 		// Remove common words and short words
-		$stopWords = ['the', 'a', 'an', 'and', 'or', 'but', 'is', 'are', 'was', 'were', 'be', 'been', 'being',
-			'have', 'has', 'had', 'do', 'does', 'did', 'will', 'would', 'could', 'should', 'may', 'might',
-			'must', 'shall', 'can', 'for', 'of', 'to', 'in', 'on', 'at', 'by', 'with', 'from', 'as', 'into',
-			'der', 'die', 'das', 'den', 'dem', 'des', 'ein', 'eine', 'einer', 'eines', 'einem', 'einen',
-			'und', 'oder', 'aber', 'ist', 'sind', 'war', 'waren', 'sein', 'haben', 'hat', 'hatte', 'hatten',
-			'werden', 'wird', 'wurde', 'wurden', 'für', 'von', 'zu', 'in', 'an', 'auf', 'bei', 'mit', 'aus',
+		$stopWords = [
+			'the', 'a', 'an', 'and', 'or', 'but', 'is', 'are', 'was', 'were',
+			'be', 'been', 'being',
+			'have', 'has', 'had', 'do', 'does', 'did', 'will', 'would', 'could', 'should',
+			'may', 'might',
+			'must', 'shall', 'can', 'for', 'of', 'to', 'in', 'on', 'at', 'by',
+			'with', 'from', 'as', 'into',
+			'der', 'die', 'das', 'den', 'dem', 'des', 'ein', 'eine', 'einer', 'eines',
+			'einem', 'einen',
+			'und', 'oder', 'aber', 'ist', 'sind', 'war', 'waren', 'sein', 'haben', 'hat',
+			'hatte', 'hatten',
+			'werden', 'wird', 'wurde', 'wurden', 'für', 'von', 'zu', 'in', 'an', 'auf',
+			'bei', 'mit', 'aus',
 		];
 
 		$words = preg_split('/[\s,.:;!?()[\]{}]+/', strtolower($text));

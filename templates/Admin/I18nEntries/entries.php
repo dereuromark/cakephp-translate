@@ -8,6 +8,7 @@
  * @var array<string> $translatedFields
  * @var array<string> $locales
  * @var bool $hasAutoField
+ * @var string $foreignKeyColumn
  */
 
 $this->Html->script('https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js', ['block' => true]);
@@ -176,7 +177,7 @@ $this->Html->css('https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/c
 										<span class="badge bg-primary"><?= h($entry->locale) ?></span>
 									</td>
 									<?php if ($strategy === 'eav') { ?>
-										<td><?= h($entry->foreign_key) ?></td>
+										<td><?= h($entry->{$foreignKeyColumn}) ?></td>
 										<td>
 											<span class="badge bg-info"><?= h($entry->field) ?></span>
 										</td>
@@ -191,7 +192,7 @@ $this->Html->css('https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/c
 											?>
 										</td>
 									<?php } else { ?>
-										<td><?= h($entry->foreign_key) ?></td>
+										<td><?= h($entry->{$foreignKeyColumn}) ?></td>
 										<?php foreach ($translatedFields as $field) { ?>
 											<td>
 												<?php

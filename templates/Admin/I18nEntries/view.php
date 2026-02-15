@@ -9,6 +9,7 @@
  * @var bool $hasAutoField
  * @var \Cake\Datasource\EntityInterface|null $baseRecord
  * @var array<array<string, string>> $glossarySuggestions
+ * @var string $foreignKeyColumn
  */
 ?>
 <nav aria-label="breadcrumb">
@@ -43,7 +44,7 @@
 					</dd>
 
 					<dt class="col-sm-3"><?= __d('translate', 'Foreign Key') ?>:</dt>
-					<dd class="col-sm-9"><?= h($entry->foreign_key) ?></dd>
+					<dd class="col-sm-9"><?= h($entry->{$foreignKeyColumn}) ?></dd>
 
 					<?php if ($strategy === 'eav') { ?>
 						<dt class="col-sm-3"><?= __d('translate', 'Model') ?>:</dt>
@@ -106,7 +107,7 @@
 			<div class="card mb-4">
 				<div class="card-header bg-secondary text-white">
 					<h6 class="mb-0">
-						<i class="fas fa-database"></i> <?= __d('translate', 'Source Record') ?> (<?= h($baseTableName) ?> #<?= h($entry->foreign_key) ?>)
+						<i class="fas fa-database"></i> <?= __d('translate', 'Source Record') ?> (<?= h($baseTableName) ?> #<?= h($entry->{$foreignKeyColumn}) ?>)
 					</h6>
 				</div>
 				<div class="card-body">

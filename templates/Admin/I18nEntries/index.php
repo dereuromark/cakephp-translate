@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var array<string, array<string, mixed>> $shadowTables
+ * @var array<string, array<string, mixed>> $translationTables
  * @var array<string> $locales
  */
 ?>
@@ -10,7 +10,7 @@
 		<li class="breadcrumb-item">
 			<?= $this->Html->link(__d('translate', 'Translate'), ['controller' => 'Translate', 'action' => 'index']) ?>
 		</li>
-		<li class="breadcrumb-item active"><?= __d('translate', 'I18n Entries') ?></li>
+		<li class="breadcrumb-item active"><?= __d('translate', 'Translation Entries') ?></li>
 	</ol>
 </nav>
 
@@ -19,12 +19,12 @@
 		<div class="card">
 			<div class="card-header bg-primary text-white">
 				<h5 class="mb-0">
-					<i class="fas fa-database"></i> <?= __d('translate', 'TranslateBehavior Shadow Tables') ?>
+					<i class="fas fa-database"></i> <?= __d('translate', 'TranslateBehavior Tables') ?>
 				</h5>
 			</div>
 			<div class="card-body">
 				<p class="text-muted">
-					<?= __d('translate', 'Manage translations stored in TranslateBehavior shadow tables (*_i18n). These are dynamic content translations stored in the database.') ?>
+					<?= __d('translate', 'Manage translations stored in TranslateBehavior tables. Supports both EAV (*_i18n) and ShadowTable (*_translations) strategies.') ?>
 				</p>
 
 				<?php if (!empty($locales)) { ?>
@@ -40,10 +40,10 @@
 	</div>
 </div>
 
-<?php if (empty($shadowTables)) { ?>
+<?php if (empty($translationTables)) { ?>
 	<div class="alert alert-info">
 		<i class="fas fa-info-circle"></i>
-		<?= __d('translate', 'No TranslateBehavior shadow tables found. Create them using the TranslateBehavior generator.') ?>
+		<?= __d('translate', 'No TranslateBehavior tables found. Create them using the TranslateBehavior generator or add the Translate behavior to your models.') ?>
 		<?= $this->Html->link(
 			__d('translate', 'Go to Generator'),
 			['controller' => 'TranslateBehavior', 'action' => 'index'],
@@ -52,7 +52,7 @@
 	</div>
 <?php } else { ?>
 	<div class="row">
-		<?php foreach ($shadowTables as $tableName => $info) { ?>
+		<?php foreach ($translationTables as $tableName => $info) { ?>
 			<div class="col-md-6 col-lg-4 mb-4">
 				<div class="card h-100 <?= $info['row_count'] > 0 ? '' : 'border-warning' ?>">
 					<div class="card-header">
@@ -68,12 +68,12 @@
 					</div>
 					<div class="card-body">
 						<dl class="row mb-0">
-							<dt class="col-6"><?= __d('translate', 'Shadow Table') ?>:</dt>
-							<dd class="col-6"><code><?= h($tableName) ?></code></dd>
+							<dt class="col-6"><?= __d('translate', 'Table') ?>:</dt>
+							<dd class="col-6"><code style="font-size: 0.75rem;"><?= h($tableName) ?></code></dd>
 
 							<dt class="col-6"><?= __d('translate', 'Strategy') ?>:</dt>
 							<dd class="col-6">
-								<span class="badge bg-<?= $info['strategy'] === 'eav' ? 'primary' : 'secondary' ?>">
+								<span class="badge bg-<?= $info['strategy'] === 'eav' ? 'primary' : 'info' ?>">
 									<?= h(strtoupper($info['strategy'])) ?>
 								</span>
 							</dd>
@@ -136,8 +136,12 @@
 						<?= __d('translate', 'Tables with the "auto" field can track which translations were machine-translated. Add it via migration to enable this feature.') ?>
 					</li>
 					<li>
-						<strong><?= __d('translate', 'EAV vs Shadow Table') ?>:</strong>
-						<?= __d('translate', 'EAV stores all fields in a single table with field/content columns. Shadow Table stores each field as a column.') ?>
+						<strong><?= __d('translate', 'EAV Strategy') ?>:</strong>
+						<?= __d('translate', 'Uses *_i18n tables with locale, model, foreign_key, field, content columns. More flexible but slower.') ?>
+					</li>
+					<li>
+						<strong><?= __d('translate', 'ShadowTable Strategy') ?>:</strong>
+						<?= __d('translate', 'Uses *_translations tables with id, locale, and field columns directly. Better performance.') ?>
 					</li>
 					<li>
 						<strong><?= __d('translate', 'Glossary') ?>:</strong>

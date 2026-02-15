@@ -10,6 +10,7 @@
  * @var array<string> $locales
  * @var string|null $sourceText
  * @var array<array<string, string>> $glossarySuggestions
+ * @var string $foreignKeyColumn
  */
 ?>
 <nav aria-label="breadcrumb">
@@ -44,7 +45,7 @@
 					</div>
 					<div class="col-md-4">
 						<label class="form-label"><?= __d('translate', 'Foreign Key') ?></label>
-						<div class="form-control-plaintext"><?= h($entry->foreign_key) ?></div>
+						<div class="form-control-plaintext"><?= h($entry->{$foreignKeyColumn}) ?></div>
 					</div>
 					<?php if ($strategy === 'eav') { ?>
 						<div class="col-md-4">

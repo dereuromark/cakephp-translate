@@ -4,10 +4,14 @@ declare(strict_types=1);
 namespace Translate\Controller\Admin;
 
 use Cake\Database\Connection;
+use Cake\Database\Schema\TableSchemaInterface;
 use Cake\Datasource\ConnectionManager;
+use Cake\Datasource\EntityInterface;
 use Cake\Http\Exception\NotFoundException;
 use Cake\ORM\Locator\LocatorAwareTrait;
+use Cake\ORM\Table;
 use Cake\Utility\Inflector;
+use Exception;
 use Translate\Controller\TranslateAppController;
 use Translate\Service\I18nTranslatorService;
 
@@ -27,6 +31,8 @@ class I18nEntriesController extends TranslateAppController {
 
 	/**
 	 * Supported table suffixes for translation tables
+	 *
+	 * @var array<string>
 	 */
 	protected const TABLE_SUFFIXES = ['_i18n', '_translations'];
 
@@ -173,7 +179,7 @@ class I18nEntriesController extends TranslateAppController {
 			try {
 				$baseTable = $this->fetchTable(Inflector::camelize($baseTableName));
 				$baseRecord = $baseTable->get($foreignKey);
-			} catch (\Exception $e) {
+			} catch (Exception $e) {
 				// Base record not found or table doesn't exist
 			}
 		}
@@ -376,7 +382,7 @@ class I18nEntriesController extends TranslateAppController {
 			}
 		}
 
-		/** @var array<\Cake\ORM\Entity> $entries */
+		/** @var array<\Cake\ORM\Entity> $entries Entities from the query */
 		$entries = $query->toArray();
 		$translated = 0;
 		$failed = 0;
@@ -491,9 +497,9 @@ class I18nEntriesController extends TranslateAppController {
 	 * Get a Table instance for a translation table
 	 *
 	 * @param string $tableName Table name
-	 * @return \Cake\ORM\Table
+	 * @return Table
 	 */
-	protected function getTranslationTable(string $tableName): \Cake\ORM\Table {
+	protected function getTranslationTable(string $tableName): Table {
 		return $this->fetchTable(Inflector::camelize($tableName), [
 			'table' => $tableName,
 		]);
@@ -644,10 +650,10 @@ class I18nEntriesController extends TranslateAppController {
 	/**
 	 * Detect translation strategy from schema
 	 *
-	 * @param \Cake\Database\Schema\TableSchemaInterface $schema Schema
+	 * @param TableSchemaInterface $schema Schema
 	 * @return string 'eav' or 'shadow_table'
 	 */
-	protected function detectTranslationStrategy(\Cake\Database\Schema\TableSchemaInterface $schema): string {
+	protected function detectTranslationStrategy(TableSchemaInterface $schema): string {
 		$columns = $schema->columns();
 
 		// EAV strategy has: id, locale, model, foreign_key, field, content
@@ -662,10 +668,10 @@ class I18nEntriesController extends TranslateAppController {
 	/**
 	 * Get the foreign key column name from schema
 	 *
-	 * @param \Cake\Database\Schema\TableSchemaInterface $schema Schema
+	 * @param TableSchemaInterface $schema Schema
 	 * @return string Foreign key column name ('foreign_key' or 'id')
 	 */
-	protected function getForeignKeyColumn(\Cake\Database\Schema\TableSchemaInterface $schema): string {
+	protected function getForeignKeyColumn(TableSchemaInterface $schema): string {
 		$columns = $schema->columns();
 
 		// EAV uses 'foreign_key'
@@ -680,11 +686,11 @@ class I18nEntriesController extends TranslateAppController {
 	/**
 	 * Get translated fields from schema
 	 *
-	 * @param \Cake\Database\Schema\TableSchemaInterface $schema Schema
+	 * @param TableSchemaInterface $schema Schema
 	 * @param string $strategy Translation strategy
 	 * @return array<string>
 	 */
-	protected function getTranslatedFieldsFromSchema(\Cake\Database\Schema\TableSchemaInterface $schema, string $strategy): array {
+	protected function getTranslatedFieldsFromSchema(TableSchemaInterface $schema, string $strategy): array {
 		if ($strategy === 'eav') {
 			return ['content'];
 		}
@@ -722,7 +728,7 @@ class I18nEntriesController extends TranslateAppController {
 			$record = $baseTable->get($foreignKey);
 
 			return $record->get($field);
-		} catch (\Exception $e) {
+		} catch (Exception $e) {
 			return null;
 		}
 	}
@@ -746,7 +752,7 @@ class I18nEntriesController extends TranslateAppController {
 			if ($words === false) {
 				return [];
 			}
-			$words = array_filter($words, fn($w): bool => strlen((string)$w) > 2);
+			$words = array_filter($words, fn ($w): bool => strlen((string)$w) > 2);
 
 			if (empty($words)) {
 				return [];
@@ -767,12 +773,12 @@ class I18nEntriesController extends TranslateAppController {
 			}
 
 			foreach ($query as $term) {
-				if (!$term instanceof \Cake\Datasource\EntityInterface) {
+				if (!$term instanceof EntityInterface) {
 					continue;
 				}
-				/** @var \Cake\Datasource\EntityInterface|null $translateString */
+				/** @var EntityInterface|null $translateString */
 				$translateString = $term->get('translate_string');
-				if (!$translateString instanceof \Cake\Datasource\EntityInterface) {
+				if (!$translateString instanceof EntityInterface) {
 					continue;
 				}
 				$suggestions[] = [
@@ -780,7 +786,7 @@ class I18nEntriesController extends TranslateAppController {
 					'translation' => (string)$term->get('content'),
 				];
 			}
-		} catch (\Exception $e) {
+		} catch (Exception $e) {
 			// Translate tables might not exist
 		}
 

@@ -376,6 +376,7 @@ class I18nEntriesController extends TranslateAppController {
 			}
 		}
 
+		/** @var array<\Cake\ORM\Entity> $entries */
 		$entries = $query->toArray();
 		$translated = 0;
 		$failed = 0;
@@ -766,9 +767,17 @@ class I18nEntriesController extends TranslateAppController {
 			}
 
 			foreach ($query as $term) {
+				if (!$term instanceof \Cake\Datasource\EntityInterface) {
+					continue;
+				}
+				/** @var \Cake\Datasource\EntityInterface|null $translateString */
+				$translateString = $term->get('translate_string');
+				if (!$translateString instanceof \Cake\Datasource\EntityInterface) {
+					continue;
+				}
 				$suggestions[] = [
-					'source' => $term->translate_string->name,
-					'translation' => $term->content,
+					'source' => (string)$translateString->get('name'),
+					'translation' => (string)$term->get('content'),
 				];
 			}
 		} catch (\Exception $e) {

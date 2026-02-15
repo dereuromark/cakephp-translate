@@ -186,7 +186,7 @@ class I18nTranslatorService {
 
 		usort($unique, fn ($a, $b) => $b['confidence'] <=> $a['confidence']);
 
-		return array_values(array_slice($unique, 0, 10));
+		return array_slice($unique, 0, 10);
 	}
 
 	/**
@@ -233,11 +233,14 @@ class I18nTranslatorService {
 		];
 
 		$words = preg_split('/[\s,.:;!?()[\]{}]+/', strtolower($text));
-		$words = array_filter($words, function ($word) use ($stopWords) {
-			return strlen($word) > 3 && !in_array($word, $stopWords);
+		if ($words === false) {
+			return [];
+		}
+		$words = array_filter($words, function ($word) use ($stopWords): bool {
+			return strlen($word) > 3 && !in_array($word, $stopWords, true);
 		});
 
-		return array_unique(array_values($words));
+		return array_values(array_unique($words));
 	}
 
 }

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Translate\Controller\Admin;
 
+use Cake\Database\Connection;
 use Cake\Datasource\ConnectionManager;
 use Cake\Http\Exception\NotFoundException;
 use Cake\ORM\Locator\LocatorAwareTrait;
@@ -47,8 +48,7 @@ class I18nEntriesController extends TranslateAppController {
 	 * @return void
 	 */
 	public function index(): void {
-		/** @var \Cake\Database\Connection $connection */
-		$connection = ConnectionManager::get('default');
+		$connection = $this->getConnection();
 		$schemaCollection = $connection->getSchemaCollection();
 		$allTables = $schemaCollection->listTables();
 
@@ -71,8 +71,7 @@ class I18nEntriesController extends TranslateAppController {
 			return $this->redirect(['action' => 'index']);
 		}
 
-		/** @var \Cake\Database\Connection $connection */
-		$connection = ConnectionManager::get('default');
+		$connection = $this->getConnection();
 		$schemaCollection = $connection->getSchemaCollection();
 
 		if (!in_array($tableName, $schemaCollection->listTables(), true)) {
@@ -160,7 +159,8 @@ class I18nEntriesController extends TranslateAppController {
 		$entry = $table->get($id);
 
 		$baseTableName = $this->getBaseTableName($tableName);
-		$schema = ConnectionManager::get('default')->getSchemaCollection()->describe($tableName);
+		$connection = $this->getConnection();
+		$schema = $connection->getSchemaCollection()->describe($tableName);
 		$strategy = $this->detectTranslationStrategy($schema);
 		$translatedFields = $this->getTranslatedFieldsFromSchema($schema, $strategy);
 		$hasAutoField = $schema->hasColumn('auto');
@@ -168,7 +168,7 @@ class I18nEntriesController extends TranslateAppController {
 
 		// Get base record info if possible
 		$baseRecord = null;
-		$foreignKey = $entry->{$foreignKeyColumn} ?? null;
+		$foreignKey = $entry->get($foreignKeyColumn);
 		if ($foreignKey) {
 			try {
 				$baseTable = $this->fetchTable(Inflector::camelize($baseTableName));
@@ -180,8 +180,12 @@ class I18nEntriesController extends TranslateAppController {
 
 		// Get glossary suggestions
 		$glossarySuggestions = [];
-		if ($strategy === 'eav' && $entry->content) {
-			$glossarySuggestions = $this->getGlossarySuggestions($entry->content, $entry->locale);
+		/** @var string|null $content */
+		$content = $entry->get('content');
+		/** @var string|null $locale */
+		$locale = $entry->get('locale');
+		if ($strategy === 'eav' && $content && $locale) {
+			$glossarySuggestions = $this->getGlossarySuggestions($content, $locale);
 		}
 
 		$this->set(compact(
@@ -214,7 +218,8 @@ class I18nEntriesController extends TranslateAppController {
 		$table = $this->getTranslationTable($tableName);
 		$entry = $table->get($id);
 
-		$schema = ConnectionManager::get('default')->getSchemaCollection()->describe($tableName);
+		$connection = $this->getConnection();
+		$schema = $connection->getSchemaCollection()->describe($tableName);
 		$strategy = $this->detectTranslationStrategy($schema);
 		$translatedFields = $this->getTranslatedFieldsFromSchema($schema, $strategy);
 		$hasAutoField = $schema->hasColumn('auto');
@@ -227,11 +232,11 @@ class I18nEntriesController extends TranslateAppController {
 			// If content was manually edited, mark as non-auto
 			if ($hasAutoField) {
 				$contentChanged = false;
-				if ($strategy === 'eav' && isset($data['content']) && $data['content'] !== $entry->content) {
+				if ($strategy === 'eav' && isset($data['content']) && $data['content'] !== $entry->get('content')) {
 					$contentChanged = true;
 				} elseif ($strategy === 'shadow_table') {
 					foreach ($translatedFields as $field) {
-						if (isset($data[$field]) && $data[$field] !== $entry->{$field}) {
+						if (isset($data[$field]) && $data[$field] !== $entry->get($field)) {
 							$contentChanged = true;
 
 							break;
@@ -255,21 +260,22 @@ class I18nEntriesController extends TranslateAppController {
 
 		// Get source text for reference
 		$sourceText = null;
-		$foreignKey = $entry->{$foreignKeyColumn} ?? null;
-		if ($strategy === 'eav' && $foreignKey && $entry->field) {
-			$sourceText = $this->getSourceText($baseTableName, $foreignKey, $entry->field);
+		$foreignKey = $entry->get($foreignKeyColumn);
+		/** @var string|null $field */
+		$field = $entry->get('field');
+		if ($strategy === 'eav' && $foreignKey && $field) {
+			$sourceText = $this->getSourceText($baseTableName, (int)$foreignKey, $field);
 		}
 
 		// Get glossary suggestions
 		$glossarySuggestions = [];
-		if ($sourceText) {
-			$glossarySuggestions = $this->getGlossarySuggestions($sourceText, $entry->locale);
+		/** @var string|null $locale */
+		$locale = $entry->get('locale');
+		if ($sourceText && $locale) {
+			$glossarySuggestions = $this->getGlossarySuggestions($sourceText, $locale);
 		}
 
-		$locales = $this->getLocalesForTable(
-			ConnectionManager::get('default'),
-			$tableName,
-		);
+		$locales = $this->getLocalesForTable($connection, $tableName);
 
 		$this->set(compact(
 			'tableName',
@@ -292,7 +298,7 @@ class I18nEntriesController extends TranslateAppController {
 	 *
 	 * @param string $tableName Translation table name
 	 * @param int $id Entry ID
-	 * @return \Cake\Http\Response
+	 * @return \Cake\Http\Response|null
 	 */
 	public function delete(string $tableName, int $id) {
 		$this->request->allowMethod(['post', 'delete']);
@@ -317,7 +323,7 @@ class I18nEntriesController extends TranslateAppController {
 	 * Auto-translate entries using configured translation engine
 	 *
 	 * @param string $tableName Translation table name
-	 * @return \Cake\Http\Response
+	 * @return \Cake\Http\Response|null
 	 */
 	public function autoTranslate(string $tableName) {
 		$this->request->allowMethod(['post']);
@@ -335,7 +341,8 @@ class I18nEntriesController extends TranslateAppController {
 			return $this->redirect(['action' => 'entries', $tableName]);
 		}
 
-		$schema = ConnectionManager::get('default')->getSchemaCollection()->describe($tableName);
+		$connection = $this->getConnection();
+		$schema = $connection->getSchemaCollection()->describe($tableName);
 		$hasAutoField = $schema->hasColumn('auto');
 		$strategy = $this->detectTranslationStrategy($schema);
 		$foreignKeyColumn = $this->getForeignKeyColumn($schema);
@@ -376,9 +383,11 @@ class I18nEntriesController extends TranslateAppController {
 		foreach ($entries as $entry) {
 			// Get source text
 			$sourceText = null;
-			$foreignKey = $entry->{$foreignKeyColumn} ?? null;
-			if ($strategy === 'eav' && $foreignKey) {
-				$sourceText = $this->getSourceText($baseTableName, $foreignKey, $entry->field);
+			$foreignKey = $entry->get($foreignKeyColumn);
+			/** @var string|null $field */
+			$field = $entry->get('field');
+			if ($strategy === 'eav' && $foreignKey && $field) {
+				$sourceText = $this->getSourceText($baseTableName, (int)$foreignKey, $field);
 			}
 
 			if (!$sourceText) {
@@ -388,12 +397,20 @@ class I18nEntriesController extends TranslateAppController {
 			}
 
 			// Translate
-			$translatedText = $service->translate($sourceText, $entry->locale, $sourceLocale);
+			/** @var string|null $locale */
+			$locale = $entry->get('locale');
+			if (!$locale) {
+				$failed++;
+
+				continue;
+			}
+
+			$translatedText = $service->translate($sourceText, $locale, (string)$sourceLocale);
 
 			if ($translatedText) {
-				$entry->content = $translatedText;
+				$entry->set('content', $translatedText);
 				if ($hasAutoField) {
-					$entry->auto = true;
+					$entry->set('auto', true);
 				}
 
 				if ($table->save($entry)) {
@@ -420,7 +437,7 @@ class I18nEntriesController extends TranslateAppController {
 	 * Batch mark entries as auto or manual
 	 *
 	 * @param string $tableName Translation table name
-	 * @return \Cake\Http\Response
+	 * @return \Cake\Http\Response|null
 	 */
 	public function batchUpdateAuto(string $tableName) {
 		$this->request->allowMethod(['post']);
@@ -429,7 +446,8 @@ class I18nEntriesController extends TranslateAppController {
 			throw new NotFoundException(__d('translate', 'Invalid translation table.'));
 		}
 
-		$schema = ConnectionManager::get('default')->getSchemaCollection()->describe($tableName);
+		$connection = $this->getConnection();
+		$schema = $connection->getSchemaCollection()->describe($tableName);
 		if (!$schema->hasColumn('auto')) {
 			$this->Flash->error(__d('translate', 'This table does not have an auto field.'));
 
@@ -457,6 +475,18 @@ class I18nEntriesController extends TranslateAppController {
 	}
 
 	/**
+	 * Get a database connection
+	 *
+	 * @return \Cake\Database\Connection
+	 */
+	protected function getConnection(): Connection {
+		/** @var \Cake\Database\Connection $connection */
+		$connection = ConnectionManager::get('default');
+
+		return $connection;
+	}
+
+	/**
 	 * Get a Table instance for a translation table
 	 *
 	 * @param string $tableName Table name
@@ -475,7 +505,7 @@ class I18nEntriesController extends TranslateAppController {
 	 * @param \Cake\Database\Connection $connection Database connection
 	 * @return array<string, array<string, mixed>>
 	 */
-	protected function getTranslationTablesInfo(array $allTables, $connection): array {
+	protected function getTranslationTablesInfo(array $allTables, Connection $connection): array {
 		$translationTables = [];
 		$systemPrefixes = ['cake_migrations', 'cake_seeds', 'translate_', 'queue_', 'audit_', 'phinxlog'];
 
@@ -536,7 +566,7 @@ class I18nEntriesController extends TranslateAppController {
 	 * @param \Cake\Database\Connection $connection Database connection
 	 * @return array<string>
 	 */
-	protected function getAvailableLocales(array $translationTables, $connection): array {
+	protected function getAvailableLocales(array $translationTables, Connection $connection): array {
 		$locales = [];
 
 		foreach ($translationTables as $info) {
@@ -616,7 +646,7 @@ class I18nEntriesController extends TranslateAppController {
 	 * @param \Cake\Database\Schema\TableSchemaInterface $schema Schema
 	 * @return string 'eav' or 'shadow_table'
 	 */
-	protected function detectTranslationStrategy($schema): string {
+	protected function detectTranslationStrategy(\Cake\Database\Schema\TableSchemaInterface $schema): string {
 		$columns = $schema->columns();
 
 		// EAV strategy has: id, locale, model, foreign_key, field, content
@@ -634,7 +664,7 @@ class I18nEntriesController extends TranslateAppController {
 	 * @param \Cake\Database\Schema\TableSchemaInterface $schema Schema
 	 * @return string Foreign key column name ('foreign_key' or 'id')
 	 */
-	protected function getForeignKeyColumn($schema): string {
+	protected function getForeignKeyColumn(\Cake\Database\Schema\TableSchemaInterface $schema): string {
 		$columns = $schema->columns();
 
 		// EAV uses 'foreign_key'
@@ -653,7 +683,7 @@ class I18nEntriesController extends TranslateAppController {
 	 * @param string $strategy Translation strategy
 	 * @return array<string>
 	 */
-	protected function getTranslatedFieldsFromSchema($schema, string $strategy): array {
+	protected function getTranslatedFieldsFromSchema(\Cake\Database\Schema\TableSchemaInterface $schema, string $strategy): array {
 		if ($strategy === 'eav') {
 			return ['content'];
 		}
@@ -671,7 +701,7 @@ class I18nEntriesController extends TranslateAppController {
 	 * @param string $tableName Table name
 	 * @return array<string>
 	 */
-	protected function getLocalesForTable($connection, string $tableName): array {
+	protected function getLocalesForTable(Connection $connection, string $tableName): array {
 		$result = $connection->execute("SELECT DISTINCT locale FROM `{$tableName}` ORDER BY locale")->fetchAll('assoc');
 
 		return array_column($result, 'locale');
@@ -712,7 +742,10 @@ class I18nEntriesController extends TranslateAppController {
 
 			// Extract words/phrases from text
 			$words = preg_split('/\s+/', $text);
-			$words = array_filter($words, fn($w) => strlen($w) > 2);
+			if ($words === false) {
+				return [];
+			}
+			$words = array_filter($words, fn($w): bool => strlen((string)$w) > 2);
 
 			if (empty($words)) {
 				return [];

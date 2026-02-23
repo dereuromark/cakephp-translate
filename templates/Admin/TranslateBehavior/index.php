@@ -12,10 +12,22 @@
 <div class="row mb-3">
 	<div class="col-12">
 		<div class="card">
-			<div class="card-header bg-primary text-white">
+			<div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
 				<h5 class="mb-0">
 					<i class="fas fa-language"></i> <?= __d('translate', 'CakePHP TranslateBehavior Overview') ?>
 				</h5>
+				<div class="btn-group">
+					<?= $this->Html->link(
+						'<i class="fas fa-list"></i> ' . __d('translate', 'Manage Entries'),
+						['controller' => 'I18nEntries', 'action' => 'index'],
+						['escape' => false, 'class' => 'btn btn-light btn-sm'],
+					) ?>
+					<?= $this->Html->link(
+						'<i class="fas fa-plus"></i> ' . __d('translate', 'Generate Migration'),
+						['action' => 'generate'],
+						['escape' => false, 'class' => 'btn btn-success btn-sm'],
+					) ?>
+				</div>
 			</div>
 			<div class="card-body">
 				<p class="mb-0">

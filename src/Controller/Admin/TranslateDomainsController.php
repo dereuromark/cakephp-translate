@@ -26,7 +26,7 @@ class TranslateDomainsController extends TranslateAppController {
 	 */
 	public function index() {
 		$query = $this->TranslateDomains->find()
-			->where(['TranslateDomains.translate_project_id' => $this->Translation->currentProjectId()])
+			->where(['TranslateDomains.translate_project_id IS' => $this->Translation->currentProjectId()])
 			->contain(['TranslateProjects']);
 		$translateDomains = $this->paginate($query);
 

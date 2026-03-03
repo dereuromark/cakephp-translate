@@ -179,13 +179,13 @@ class TranslateStringsTable extends Table {
 		$res = [];
 		if ($languages === null) {
 			$languages = $this->TranslateTerms->TranslateLocales->find()
-				->where(['translate_project_id' => $id])
+				->where(['translate_project_id IS' => $id])
 				->find('list', ['keyField' => 'id', 'valueField' => 'locale'])->toArray();
 		}
 
 		$options = [
 			//'TranslateStrings.active' => true,
-			'TranslateDomains.translate_project_id' => $id,
+			'TranslateDomains.translate_project_id IS' => $id,
 		];
 		$total = $this->find()->contain(['TranslateDomains'])->where($options)->count();
 

@@ -104,6 +104,8 @@ $this->Html->css('https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/c
 
 <!-- Batch Actions -->
 <?= $this->Form->create(null, ['url' => ['action' => 'batch', $tableName], 'id' => 'batch-form']) ?>
+<?php $this->Form->unlockField('batch_action'); ?>
+<?php $this->Form->unlockField('auto'); ?>
 <?= $this->Form->hidden('batch_action', ['id' => 'batch-action-field', 'value' => 'autoTranslate']) ?>
 <?= $this->Form->hidden('auto', ['id' => 'batch-auto-field', 'value' => '']) ?>
 <div class="row mb-3">

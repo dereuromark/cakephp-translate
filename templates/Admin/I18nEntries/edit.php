@@ -119,7 +119,7 @@
 			<div class="card-footer">
 				<?= $this->Form->button(
 					'<i class="fas fa-save"></i> ' . __d('translate', 'Save'),
-					['class' => 'btn btn-primary', 'escape' => false],
+					['class' => 'btn btn-primary', 'escapeTitle' => false],
 				) ?>
 				<?= $this->Html->link(
 					'<i class="fas fa-times"></i> ' . __d('translate', 'Cancel'),
@@ -156,7 +156,7 @@
 				</div>
 				<?= $this->Form->button(
 					'<i class="fas fa-language"></i> ' . __d('translate', 'Translate Now'),
-					['class' => 'btn btn-info w-100', 'escape' => false],
+					['class' => 'btn btn-info w-100', 'escapeTitle' => false],
 				) ?>
 				<?= $this->Form->end() ?>
 			</div>

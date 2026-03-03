@@ -326,6 +326,24 @@ class I18nEntriesController extends TranslateAppController {
 	}
 
 	/**
+	 * Batch action dispatcher - routes to appropriate batch method
+	 *
+	 * @param string $tableName Translation table name
+	 * @return \Cake\Http\Response|null
+	 */
+	public function batch(string $tableName) {
+		$this->request->allowMethod(['post']);
+
+		$batchAction = $this->request->getData('batch_action', 'autoTranslate');
+
+		if ($batchAction === 'batchUpdateAuto') {
+			return $this->batchUpdateAuto($tableName);
+		}
+
+		return $this->autoTranslate($tableName);
+	}
+
+	/**
 	 * Auto-translate entries using configured translation engine
 	 *
 	 * @param string $tableName Translation table name
@@ -501,6 +519,7 @@ class I18nEntriesController extends TranslateAppController {
 	 */
 	protected function getTranslationTable(string $tableName): Table {
 		return $this->fetchTable(Inflector::camelize($tableName), [
+			'className' => Table::class,
 			'table' => $tableName,
 		]);
 	}

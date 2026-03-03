@@ -92,7 +92,7 @@ $this->Html->css('https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/c
 						<?= $this->Form->button('<i class="fas fa-filter"></i>', [
 							'type' => 'submit',
 							'class' => 'btn btn-primary',
-							'escape' => false,
+							'escapeTitle' => false,
 							'title' => __d('translate', 'Filter'),
 						]) ?>
 					</div>
@@ -103,7 +103,9 @@ $this->Html->css('https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/c
 </div>
 
 <!-- Batch Actions -->
-<?= $this->Form->create(null, ['url' => ['action' => 'autoTranslate', $tableName], 'id' => 'batch-form']) ?>
+<?= $this->Form->create(null, ['url' => ['action' => 'batch', $tableName], 'id' => 'batch-form']) ?>
+<?= $this->Form->hidden('batch_action', ['id' => 'batch-action-field', 'value' => 'autoTranslate']) ?>
+<?= $this->Form->hidden('auto', ['id' => 'batch-auto-field', 'value' => '']) ?>
 <div class="row mb-3">
 	<div class="col-12">
 		<div class="btn-toolbar justify-content-between">
@@ -118,16 +120,17 @@ $this->Html->css('https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/c
 
 			<div class="btn-group">
 				<?php if ($hasAutoField) { ?>
-					<button type="submit" formaction="<?= $this->Url->build(['action' => 'batchUpdateAuto', $tableName]) ?>"
-							name="auto" value="0" class="btn btn-outline-warning">
+					<button type="submit" class="btn btn-outline-warning batch-action-btn"
+							data-action="batchUpdateAuto" data-auto="0">
 						<i class="fas fa-user"></i> <?= __d('translate', 'Mark as Manual') ?>
 					</button>
-					<button type="submit" formaction="<?= $this->Url->build(['action' => 'batchUpdateAuto', $tableName]) ?>"
-							name="auto" value="1" class="btn btn-outline-info">
+					<button type="submit" class="btn btn-outline-info batch-action-btn"
+							data-action="batchUpdateAuto" data-auto="1">
 						<i class="fas fa-robot"></i> <?= __d('translate', 'Mark as Auto') ?>
 					</button>
 				<?php } ?>
-				<button type="submit" class="btn btn-primary">
+				<button type="submit" class="btn btn-primary batch-action-btn"
+						data-action="autoTranslate" data-auto="">
 					<i class="fas fa-language"></i> <?= __d('translate', 'Auto-Translate Selected') ?>
 				</button>
 			</div>
@@ -262,6 +265,8 @@ document.addEventListener('DOMContentLoaded', function() {
 	const selectAll = document.getElementById('select-all');
 	const selectNone = document.getElementById('select-none');
 	const checkboxes = document.querySelectorAll('.entry-checkbox');
+	const batchActionField = document.getElementById('batch-action-field');
+	const batchAutoField = document.getElementById('batch-auto-field');
 
 	if (checkAll) {
 		checkAll.addEventListener('change', function() {
@@ -282,5 +287,17 @@ document.addEventListener('DOMContentLoaded', function() {
 			if (checkAll) checkAll.checked = false;
 		});
 	}
+
+	// Handle batch action buttons
+	document.querySelectorAll('.batch-action-btn').forEach(function(btn) {
+		btn.addEventListener('click', function(e) {
+			if (batchActionField) {
+				batchActionField.value = this.getAttribute('data-action');
+			}
+			if (batchAutoField) {
+				batchAutoField.value = this.getAttribute('data-auto');
+			}
+		});
+	});
 });
 </script>

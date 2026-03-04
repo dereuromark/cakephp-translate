@@ -180,6 +180,7 @@ class TranslateController extends TranslateAppController {
 
 		// Get all domains for current project with statistics
 		$domainsTable = $this->fetchTable('Translate.TranslateDomains');
+		/** @var \Translate\Model\Entity\TranslateDomain[] $domains */
 		$domains = $domainsTable->find()
 			->where(['translate_project_id IS' => $projectId, 'active' => true])
 			->orderBy(['name' => 'ASC'])

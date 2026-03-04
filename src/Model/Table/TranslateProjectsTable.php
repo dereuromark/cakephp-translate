@@ -181,7 +181,7 @@ class TranslateProjectsTable extends Table {
 			switch ($type) {
 				case 'terms':
 					// Find term IDs that match the criteria (need to join through TranslateStrings -> TranslateDomains)
-					$conditions = ['TranslateDomains.translate_project_id' => $id];
+					$conditions = ['TranslateDomains.translate_project_id IS' => $id];
 					if ($languages) {
 						$conditions['TranslateTerms.translate_locale_id IN'] = $languages;
 					}
@@ -206,7 +206,7 @@ class TranslateProjectsTable extends Table {
 						->select(['TranslateStrings.id'])
 						->innerJoinWith('TranslateDomains')
 						->where([
-							'TranslateDomains.translate_project_id' => $id,
+							'TranslateDomains.translate_project_id IS' => $id,
 						])
 						->all()
 						->extract('id')
@@ -220,14 +220,14 @@ class TranslateProjectsTable extends Table {
 				case 'groups':
 				case 'domains':
 					$this->TranslateDomains->deleteAll([
-						'translate_project_id' => $id,
+						'translate_project_id IS' => $id,
 					]);
 
 					break;
 				case 'languages':
 					$translateLocales = TableRegistry::getTableLocator()->get('Translate.TranslateLocales');
 					$translateLocales->deleteAll([
-						'translate_project_id' => $id,
+						'translate_project_id IS' => $id,
 					]);
 
 					break;

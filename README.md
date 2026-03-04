@@ -22,6 +22,7 @@ This branch is for use with **CakePHP 5.1+**. For details see [version map](http
 - Multi-project support with project-specific locale paths.
 - Translation coverage dashboard with progress tracking.
 - PO/POT file analyzer for detecting issues.
+- **TranslateBehavior CRUD**: Manage translations in `*_i18n` and `*_translations` tables with auto-translate and glossary support.
 
 ## Benefits over normal PO editing
 - Prevent duplicates, missing translations, collisions.
@@ -104,6 +105,29 @@ Navigate to `/admin/translate/translate-behavior` for:
 8. Add behavior to your ArticlesTable class
 
 Accessible from the main dashboard under "Quick Actions".
+
+### TranslateBehavior Entries CRUD
+
+Manage individual translation entries in your TranslateBehavior tables directly from the web interface.
+
+Navigate to `/admin/translate/i18n-entries` for:
+- **Overview Dashboard**: See all translation tables with entry counts and strategies
+- **List & Filter**: Browse entries by locale, field, or translation type
+- **Edit Translations**: Modify individual translation entries
+- **Batch Auto-Translate**: Translate multiple entries using configured translation engine
+- **Glossary Suggestions**: Get translation suggestions from your existing PO files
+
+**Supported Table Strategies**:
+- **EAV** (`*_i18n` tables): Entity-Attribute-Value with `foreign_key`, `field`, `content` columns
+- **ShadowTable** (`*_translations` tables): Direct field columns like `name`, `description`
+
+**Auto Field Support**:
+Tables with an `auto` boolean column can track machine vs. manual translations:
+- Machine translations (`auto = true`) can be safely re-translated
+- Manual edits (`auto = false`) are protected from automatic overwrites
+- Filter entries by translation type for quality review
+
+See [I18nEntries Documentation](docs/I18nEntries.md) for detailed usage.
 
 ### Web-based i18n Extract
 

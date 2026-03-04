@@ -39,13 +39,13 @@ class TranslateTermsController extends TranslateAppController {
 		$query = $this->TranslateTerms->find('search', search: $this->request->getQuery())
 			->contain(['TranslateStrings' => 'TranslateDomains', 'TranslateLocales'])
 			->innerJoinWith('TranslateStrings.TranslateDomains', function ($q) {
-				return $q->where(['TranslateDomains.translate_project_id' => $this->Translation->currentProjectId()]);
+				return $q->where(['TranslateDomains.translate_project_id IS' => $this->Translation->currentProjectId()]);
 			});
 		$translateTerms = $this->paginate($query);
 
 		$translateLocales = $this->TranslateTerms->TranslateLocales
 			->find('list')
-			->where(['translate_project_id' => $this->Translation->currentProjectId()])
+			->where(['translate_project_id IS' => $this->Translation->currentProjectId()])
 			->orderBy(['TranslateLocales.name' => 'ASC']);
 
 		$this->set(compact('translateTerms', 'translateLocales'));
@@ -101,11 +101,11 @@ class TranslateTermsController extends TranslateAppController {
 		$translateStrings = $this->TranslateTerms->TranslateStrings
 			->find('list')
 			->innerJoinWith('TranslateDomains', function ($q) {
-				return $q->where(['TranslateDomains.translate_project_id' => $this->Translation->currentProjectId()]);
+				return $q->where(['TranslateDomains.translate_project_id IS' => $this->Translation->currentProjectId()]);
 			});
 		$translateLocales = $this->TranslateTerms->TranslateLocales
 			->find('list')
-			->where(['translate_project_id' => $this->Translation->currentProjectId()]);
+			->where(['translate_project_id IS' => $this->Translation->currentProjectId()]);
 
 		$this->set(compact('translateTerm', 'translateStrings', 'translateLocales'));
 		//$this->set('_serialize', ['translateTerm']);
@@ -154,7 +154,7 @@ class TranslateTermsController extends TranslateAppController {
 			->contain(['TranslateStrings' => 'TranslateDomains', 'TranslateLocales'])
 			->innerJoinWith('TranslateStrings.TranslateDomains', function ($q) use ($projectId) {
 				return $q->where([
-					'TranslateDomains.translate_project_id' => $projectId,
+					'TranslateDomains.translate_project_id IS' => $projectId,
 					'TranslateDomains.active' => true,
 				]);
 			})
@@ -166,7 +166,7 @@ class TranslateTermsController extends TranslateAppController {
 		$localeStats = [];
 		$locales = $this->TranslateTerms->TranslateLocales
 			->find()
-			->where(['translate_project_id' => $projectId, 'active' => true])
+			->where(['translate_project_id IS' => $projectId, 'active' => true])
 			->toArray();
 
 		foreach ($locales as $locale) {
@@ -179,7 +179,7 @@ class TranslateTermsController extends TranslateAppController {
 				])
 				->innerJoinWith('TranslateStrings.TranslateDomains', function ($q) use ($projectId) {
 					return $q->where([
-						'TranslateDomains.translate_project_id' => $projectId,
+						'TranslateDomains.translate_project_id IS' => $projectId,
 						'TranslateDomains.active' => true,
 					]);
 				})
@@ -221,7 +221,7 @@ class TranslateTermsController extends TranslateAppController {
 			->where($conditions)
 			->innerJoinWith('TranslateStrings.TranslateDomains', function ($q) use ($projectId) {
 				return $q->where([
-					'TranslateDomains.translate_project_id' => $projectId,
+					'TranslateDomains.translate_project_id IS' => $projectId,
 					'TranslateDomains.active' => true,
 				]);
 			})

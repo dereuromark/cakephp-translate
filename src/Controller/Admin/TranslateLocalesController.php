@@ -39,7 +39,7 @@ class TranslateLocalesController extends TranslateAppController {
 		$creator = new Creator();
 		$existingFolders = $creator->findLocaleFolders($path);
 		$languages = $this->TranslateLocales->find('list', ['keyField' => 'locale'])
-			->where(['translate_project_id' => $this->Translation->currentProjectId()])
+			->where(['translate_project_id IS' => $this->Translation->currentProjectId()])
 			->toArray();
 
 		if ($this->Translation->isPosted()) {
@@ -88,7 +88,7 @@ class TranslateLocalesController extends TranslateAppController {
 		$creator = new Creator();
 		$folders = $creator->findLocaleFolders($path);
 		$existingLanguages = $this->TranslateLocales->find('list', ['keyField' => 'locale'])
-			->where(['translate_project_id' => $this->Translation->currentProjectId()])
+			->where(['translate_project_id IS' => $this->Translation->currentProjectId()])
 			->toArray();
 
 		if ($this->Translation->isPosted()) {
@@ -103,7 +103,7 @@ class TranslateLocalesController extends TranslateAppController {
 					'locale' => $key,
 					'name' => !empty($data['name']) ? $data['name'] : $key,
 					//'active' => true,
-					'translate_project_id' => $this->Translation->currentProjectId(),
+					'translate_project_id IS' => $this->Translation->currentProjectId(),
 				];
 				if (strlen($localeData['locale']) === 2) {
 					$localeData['iso2'] = $localeData['locale'];
@@ -151,7 +151,7 @@ class TranslateLocalesController extends TranslateAppController {
 	 */
 	public function index() {
 		$query = $this->TranslateLocales->find()
-			->where(['TranslateLocales.translate_project_id' => $this->Translation->currentProjectId()]);
+			->where(['TranslateLocales.translate_project_id IS' => $this->Translation->currentProjectId()]);
 		$translateLocales = $this->paginate($query);
 
 		$this->set(compact('translateLocales'));

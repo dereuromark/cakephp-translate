@@ -42,7 +42,7 @@ class TranslateController extends TranslateAppController {
 		$translateLocalesTable = $this->fetchTable('Translate.TranslateLocales');
 		$languages = $translateLocalesTable->find('all')
 			->where([
-				'translate_project_id' => $id,
+				'translate_project_id IS' => $id,
 				'active' => true,
 			])
 			->toArray();
@@ -65,7 +65,7 @@ class TranslateController extends TranslateAppController {
 				])
 				->innerJoinWith('TranslateStrings.TranslateDomains', function ($q) use ($id) {
 					return $q->where([
-						'TranslateDomains.translate_project_id' => $id,
+						'TranslateDomains.translate_project_id IS' => $id,
 						'TranslateDomains.active' => true,
 					]);
 				})
@@ -90,7 +90,7 @@ class TranslateController extends TranslateAppController {
 			$recentStrings = $this->TranslateDomains->TranslateStrings
 				->find()
 				->contain(['TranslateDomains'])
-				->where(['TranslateDomains.translate_project_id' => $id])
+				->where(['TranslateDomains.translate_project_id IS' => $id])
 				->orderBy(['TranslateStrings.modified' => 'DESC'])
 				->limit(10)
 				->toArray();
@@ -102,7 +102,7 @@ class TranslateController extends TranslateAppController {
 					'TranslateStrings' => ['TranslateDomains'],
 					'TranslateLocales',
 				])
-				->where(['TranslateDomains.translate_project_id' => $id])
+				->where(['TranslateDomains.translate_project_id IS' => $id])
 				->orderBy(['TranslateTerms.modified' => 'DESC'])
 				->limit(10)
 				->toArray();
@@ -141,7 +141,7 @@ class TranslateController extends TranslateAppController {
 					->find()
 					->innerJoinWith('TranslateStrings.TranslateDomains', function ($q) use ($id) {
 						return $q->where([
-							'TranslateDomains.translate_project_id' => $id,
+							'TranslateDomains.translate_project_id IS' => $id,
 							'TranslateDomains.active' => true,
 						]);
 					})
@@ -156,7 +156,7 @@ class TranslateController extends TranslateAppController {
 					->find()
 					->innerJoinWith('TranslateStrings.TranslateDomains', function ($q) use ($id) {
 						return $q->where([
-							'TranslateDomains.translate_project_id' => $id,
+							'TranslateDomains.translate_project_id IS' => $id,
 							'TranslateDomains.active' => true,
 						]);
 					})
@@ -184,7 +184,7 @@ class TranslateController extends TranslateAppController {
 				->find()
 				->contain(['TranslateDomains'])
 				->where([
-					'TranslateDomains.translate_project_id' => $id,
+					'TranslateDomains.translate_project_id IS' => $id,
 					'TranslateStrings.last_import IS NOT' => null,
 					'TranslateStrings.last_import >=' => new DateTime('-30 days'),
 				])

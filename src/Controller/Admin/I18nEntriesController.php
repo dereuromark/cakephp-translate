@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Translate\Controller\Admin;
 
+use Cake\Core\Configure;
 use Cake\Database\Connection;
 use Cake\Database\Schema\TableSchemaInterface;
 use Cake\Datasource\ConnectionManager;
@@ -65,7 +66,9 @@ class I18nEntriesController extends TranslateAppController {
 	}
 
 	/**
-	 * Entries - list entries for a specific translation table
+	 * Entries - list base table records with their translation status
+	 *
+	 * Shows all records from the base table and indicates which have translations.
 	 *
 	 * @param string $tableName Translation table name (e.g., 'articles_i18n' or 'articles_translations')
 	 * @return \Cake\Http\Response|null
@@ -90,10 +93,29 @@ class I18nEntriesController extends TranslateAppController {
 		$schema = $schemaCollection->describe($tableName);
 		$strategy = $this->detectTranslationStrategy($schema);
 		$translatedFields = $this->getTranslatedFieldsFromSchema($schema, $strategy);
-		$locales = $this->getLocalesForTable($connection, $tableName);
 		$foreignKeyColumn = $this->getForeignKeyColumn($schema);
+		$hasAutoField = $schema->hasColumn('auto');
 
-		// Build query
+		// Get configured locales from app or use existing ones from table
+		$configuredLocales = $this->getConfiguredLocales();
+		$existingLocales = $this->getLocalesForTable($connection, $tableName);
+		$locales = array_unique(array_merge($configuredLocales, $existingLocales));
+		sort($locales);
+
+		// For shadow table strategy, show base table records with translation status
+		if ($strategy === 'shadow_table' && in_array($baseTableName, $schemaCollection->listTables(), true)) {
+			return $this->entriesWithBaseTable(
+				$tableName,
+				$baseTableName,
+				$locales,
+				$translatedFields,
+				$hasAutoField,
+				$strategy,
+				$foreignKeyColumn,
+			);
+		}
+
+		// For EAV strategy or when base table doesn't exist, show translation entries directly
 		$table = $this->getTranslationTable($tableName);
 		$query = $table->find();
 
@@ -133,8 +155,6 @@ class I18nEntriesController extends TranslateAppController {
 		$query->orderBy(['id' => 'DESC']);
 		$entries = $this->paginate($query);
 
-		$hasAutoField = $schema->hasColumn('auto');
-
 		$this->set(compact(
 			'tableName',
 			'baseTableName',
@@ -145,6 +165,309 @@ class I18nEntriesController extends TranslateAppController {
 			'hasAutoField',
 			'foreignKeyColumn',
 		));
+		$this->set('showBaseRecords', false);
+
+		return null;
+	}
+
+	/**
+	 * Show entries with base table records and their translation status
+	 *
+	 * @param string $tableName Translation table name
+	 * @param string $baseTableName Base table name
+	 * @param array<string> $locales Available locales
+	 * @param array<string> $translatedFields Fields that are translated
+	 * @param bool $hasAutoField Whether the translation table has an auto field
+	 * @param string $strategy Translation strategy
+	 * @param string $foreignKeyColumn Foreign key column name
+	 * @return \Cake\Http\Response|null
+	 */
+	protected function entriesWithBaseTable(
+		string $tableName,
+		string $baseTableName,
+		array $locales,
+		array $translatedFields,
+		bool $hasAutoField,
+		string $strategy,
+		string $foreignKeyColumn,
+	) {
+		$connection = $this->getConnection();
+
+		// Get base table records
+		$baseTable = $this->getTranslationTable($baseTableName);
+		$query = $baseTable->find();
+
+		// Try to get a display field for better identification
+		$baseSchema = $connection->getSchemaCollection()->describe($baseTableName);
+		$displayField = $this->guessDisplayField($baseSchema);
+
+		// Apply search filter
+		$search = $this->request->getQuery('search');
+		if ($search && $displayField) {
+			$query->where([$displayField . ' LIKE' => '%' . $search . '%']);
+		}
+
+		// Apply translation status filter
+		$translationStatus = $this->request->getQuery('status');
+		$selectedLocale = $this->request->getQuery('locale');
+
+		$query->orderBy(['id' => 'ASC']);
+		$baseRecords = $this->paginate($query);
+
+		// Get translation status for each base record
+		$baseIds = array_map(fn ($r) => $r->id, iterator_to_array($baseRecords));
+
+		$translationStatus = [];
+		if (!empty($baseIds)) {
+			$translationTable = $this->getTranslationTable($tableName);
+			$translations = $translationTable->find()
+				->where(['id IN' => $baseIds])
+				->toArray();
+
+			foreach ($translations as $translation) {
+				$id = $translation->id;
+				$locale = $translation->locale;
+				if (!isset($translationStatus[$id])) {
+					$translationStatus[$id] = [];
+				}
+				$translationStatus[$id][$locale] = [
+					'exists' => true,
+					'auto' => $hasAutoField ? (bool)$translation->auto : null,
+					'fields' => [],
+				];
+				// Check which fields have content
+				foreach ($translatedFields as $field) {
+					$value = $translation->get($field);
+					$translationStatus[$id][$locale]['fields'][$field] = !empty($value);
+				}
+			}
+		}
+
+		$this->set(compact(
+			'tableName',
+			'baseTableName',
+			'baseRecords',
+			'translationStatus',
+			'locales',
+			'translatedFields',
+			'hasAutoField',
+			'strategy',
+			'foreignKeyColumn',
+			'displayField',
+		));
+		$this->set('showBaseRecords', true);
+
+		$this->render('entries_base');
+
+		return null;
+	}
+
+	/**
+	 * View all translations for a base record
+	 *
+	 * @param string $tableName Translation table name
+	 * @param int $id Base record ID
+	 * @return \Cake\Http\Response|null
+	 */
+	public function viewRecord(string $tableName, int $id) {
+		if (!$this->validateTranslationTableName($tableName)) {
+			throw new NotFoundException(__d('translate', 'Invalid translation table.'));
+		}
+
+		$baseTableName = $this->getBaseTableName($tableName);
+		$connection = $this->getConnection();
+		$schema = $connection->getSchemaCollection()->describe($tableName);
+		$translatedFields = $this->getTranslatedFieldsFromSchema($schema, $this->detectTranslationStrategy($schema));
+		$hasAutoField = $schema->hasColumn('auto');
+
+		// Get base record
+		$baseTable = $this->getTranslationTable($baseTableName);
+		$baseRecord = $baseTable->get($id);
+
+		$baseSchema = $connection->getSchemaCollection()->describe($baseTableName);
+		$displayField = $this->guessDisplayField($baseSchema);
+
+		// Get all translations for this record
+		$translationTable = $this->getTranslationTable($tableName);
+		$translations = $translationTable->find()
+			->where(['id' => $id])
+			->toArray();
+
+		// Get configured locales
+		$configuredLocales = $this->getConfiguredLocales();
+		$existingLocales = array_map(fn ($t) => $t->locale, $translations);
+		$locales = array_unique(array_merge($configuredLocales, $existingLocales));
+		sort($locales);
+
+		// Index translations by locale
+		$translationsByLocale = [];
+		foreach ($translations as $translation) {
+			$translationsByLocale[$translation->locale] = $translation;
+		}
+
+		$this->set(compact(
+			'tableName',
+			'baseTableName',
+			'baseRecord',
+			'translations',
+			'translationsByLocale',
+			'locales',
+			'translatedFields',
+			'hasAutoField',
+			'displayField',
+		));
+
+		return null;
+	}
+
+	/**
+	 * Add a translation for a base record
+	 *
+	 * @param string $tableName Translation table name
+	 * @param int $id Base record ID
+	 * @param string $locale Locale code
+	 * @return \Cake\Http\Response|null
+	 */
+	public function addTranslation(string $tableName, int $id, string $locale) {
+		if (!$this->validateTranslationTableName($tableName)) {
+			throw new NotFoundException(__d('translate', 'Invalid translation table.'));
+		}
+
+		$baseTableName = $this->getBaseTableName($tableName);
+		$connection = $this->getConnection();
+		$schema = $connection->getSchemaCollection()->describe($tableName);
+		$translatedFields = $this->getTranslatedFieldsFromSchema($schema, $this->detectTranslationStrategy($schema));
+		$hasAutoField = $schema->hasColumn('auto');
+
+		// Get base record for reference
+		$baseTable = $this->getTranslationTable($baseTableName);
+		$baseRecord = $baseTable->get($id);
+
+		$baseSchema = $connection->getSchemaCollection()->describe($baseTableName);
+		$displayField = $this->guessDisplayField($baseSchema);
+
+		// Check if translation already exists
+		$translationTable = $this->getTranslationTable($tableName);
+		$existing = $translationTable->find()
+			->where(['id' => $id, 'locale' => $locale])
+			->first();
+
+		if ($existing) {
+			return $this->redirect(['action' => 'editTranslation', $tableName, $id, $locale]);
+		}
+
+		// Create new translation entity
+		$translation = $translationTable->newEmptyEntity();
+		$translation->set('id', $id);
+		$translation->set('locale', $locale);
+
+		if ($this->request->is(['patch', 'post', 'put'])) {
+			$data = $this->request->getData();
+			$data['id'] = $id;
+			$data['locale'] = $locale;
+
+			$translation = $translationTable->patchEntity($translation, $data);
+			if ($translationTable->save($translation)) {
+				$this->Flash->success(__d('translate', 'Translation saved successfully.'));
+
+				return $this->redirect(['action' => 'viewRecord', $tableName, $id]);
+			}
+
+			$this->Flash->error(__d('translate', 'Could not save translation. Please try again.'));
+		}
+
+		$this->set(compact(
+			'tableName',
+			'baseTableName',
+			'baseRecord',
+			'translation',
+			'locale',
+			'translatedFields',
+			'hasAutoField',
+			'displayField',
+		));
+
+		$this->render('translation_form');
+
+		return null;
+	}
+
+	/**
+	 * Edit a translation for a base record
+	 *
+	 * @param string $tableName Translation table name
+	 * @param int $id Base record ID
+	 * @param string $locale Locale code
+	 * @return \Cake\Http\Response|null
+	 */
+	public function editTranslation(string $tableName, int $id, string $locale) {
+		if (!$this->validateTranslationTableName($tableName)) {
+			throw new NotFoundException(__d('translate', 'Invalid translation table.'));
+		}
+
+		$baseTableName = $this->getBaseTableName($tableName);
+		$connection = $this->getConnection();
+		$schema = $connection->getSchemaCollection()->describe($tableName);
+		$translatedFields = $this->getTranslatedFieldsFromSchema($schema, $this->detectTranslationStrategy($schema));
+		$hasAutoField = $schema->hasColumn('auto');
+
+		// Get base record for reference
+		$baseTable = $this->getTranslationTable($baseTableName);
+		$baseRecord = $baseTable->get($id);
+
+		$baseSchema = $connection->getSchemaCollection()->describe($baseTableName);
+		$displayField = $this->guessDisplayField($baseSchema);
+
+		// Get existing translation
+		$translationTable = $this->getTranslationTable($tableName);
+		$translation = $translationTable->find()
+			->where(['id' => $id, 'locale' => $locale])
+			->first();
+
+		if (!$translation) {
+			return $this->redirect(['action' => 'addTranslation', $tableName, $id, $locale]);
+		}
+
+		if ($this->request->is(['patch', 'post', 'put'])) {
+			$data = $this->request->getData();
+
+			// If content changed and auto field exists, mark as manual
+			if ($hasAutoField && !isset($data['auto'])) {
+				$contentChanged = false;
+				foreach ($translatedFields as $field) {
+					if (isset($data[$field]) && $data[$field] !== $translation->get($field)) {
+						$contentChanged = true;
+
+						break;
+					}
+				}
+				if ($contentChanged) {
+					$data['auto'] = false;
+				}
+			}
+
+			$translation = $translationTable->patchEntity($translation, $data);
+			if ($translationTable->save($translation)) {
+				$this->Flash->success(__d('translate', 'Translation updated successfully.'));
+
+				return $this->redirect(['action' => 'viewRecord', $tableName, $id]);
+			}
+
+			$this->Flash->error(__d('translate', 'Could not save translation. Please try again.'));
+		}
+
+		$this->set(compact(
+			'tableName',
+			'baseTableName',
+			'baseRecord',
+			'translation',
+			'locale',
+			'translatedFields',
+			'hasAutoField',
+			'displayField',
+		));
+
+		$this->render('translation_form');
 
 		return null;
 	}
@@ -810,6 +1133,56 @@ class I18nEntriesController extends TranslateAppController {
 		}
 
 		return $suggestions;
+	}
+
+	/**
+	 * Get configured locales from app configuration
+	 *
+	 * @return array<string>
+	 */
+	protected function getConfiguredLocales(): array {
+		$locales = [];
+
+		// Try I18n.supportedLocales first
+		$supported = Configure::read('I18n.supportedLocales');
+		if (is_array($supported)) {
+			$locales = array_keys($supported);
+		}
+
+		// Also check App.supportedLocales
+		if (empty($locales)) {
+			$supported = Configure::read('App.supportedLocales');
+			if (is_array($supported)) {
+				$locales = is_string(array_key_first($supported)) ? array_keys($supported) : array_values($supported);
+			}
+		}
+
+		// Add default locale if not already included
+		$defaultLocale = Configure::read('App.defaultLocale') ?? Configure::read('I18n.defaultLocale') ?? 'en_US';
+		if (!in_array($defaultLocale, $locales, true)) {
+			$locales[] = $defaultLocale;
+		}
+
+		return $locales;
+	}
+
+	/**
+	 * Guess the display field from table schema
+	 *
+	 * @param \Cake\Database\Schema\TableSchemaInterface $schema Table schema
+	 * @return string|null
+	 */
+	protected function guessDisplayField(TableSchemaInterface $schema): ?string {
+		$columns = $schema->columns();
+		$candidates = ['name', 'title', 'label', 'slug', 'username', 'email'];
+
+		foreach ($candidates as $candidate) {
+			if (in_array($candidate, $columns, true)) {
+				return $candidate;
+			}
+		}
+
+		return null;
 	}
 
 }

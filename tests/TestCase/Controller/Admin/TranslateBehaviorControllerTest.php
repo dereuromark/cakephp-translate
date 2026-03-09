@@ -254,13 +254,13 @@ class TranslateBehaviorControllerTest extends IntegrationTestCase {
 		// Check that migration code was generated
 		$migrationCode = $this->viewVariable('migrationCode');
 		$this->assertNotEmpty($migrationCode);
-		$this->assertStringContainsString('test_posts_i18n', $migrationCode);
-		$this->assertStringContainsString('AddI18nForTestPosts', $migrationCode);
+		$this->assertStringContainsString('test_posts_translations', $migrationCode);
+		$this->assertStringContainsString('AddTranslationsForTestPosts', $migrationCode);
 		$this->assertStringContainsString("'title'", $migrationCode);
 		$this->assertStringContainsString("'content'", $migrationCode);
 		$this->assertStringContainsString('Shadow Table strategy', $migrationCode);
 
-		$this->assertEquals('AddI18nForTestPosts', $this->viewVariable('migrationName'));
+		$this->assertEquals('AddTranslationsForTestPosts', $this->viewVariable('migrationName'));
 
 		// Cleanup
 		$connection->execute('DROP TABLE IF EXISTS test_posts');
@@ -313,7 +313,7 @@ class TranslateBehaviorControllerTest extends IntegrationTestCase {
 		// Check that migration code was generated with EAV strategy
 		$migrationCode = $this->viewVariable('migrationCode');
 		$this->assertNotEmpty($migrationCode);
-		$this->assertStringContainsString('test_products_i18n', $migrationCode);
+		$this->assertStringContainsString('test_products_translations', $migrationCode);
 		$this->assertStringContainsString('EAV strategy', $migrationCode);
 		$this->assertStringContainsString('locale', $migrationCode);
 		$this->assertStringContainsString('model', $migrationCode);

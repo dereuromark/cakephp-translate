@@ -78,11 +78,25 @@
 								</span>
 							</dd>
 
+							<dt class="col-6"><?= __d('translate', 'Base Records') ?>:</dt>
+							<dd class="col-6">
+								<span class="badge bg-secondary">
+									<?= number_format($info['base_count']) ?>
+								</span>
+							</dd>
+
 							<dt class="col-6"><?= __d('translate', 'Entries') ?>:</dt>
 							<dd class="col-6">
-								<span class="badge bg-<?= $info['row_count'] > 0 ? 'success' : 'warning' ?>">
-									<?= number_format($info['row_count']) ?>
+								<?php
+								$isSynced = $info['row_count'] >= $info['base_count'];
+								$syncPercentage = $info['base_count'] > 0 ? round(($info['row_count'] / $info['base_count']) * 100) : 0;
+								?>
+								<span class="badge bg-<?= $isSynced ? 'success' : 'warning' ?>" title="<?= $syncPercentage ?>%">
+									<?= number_format($info['row_count']) ?> / <?= number_format($info['base_count']) ?>
 								</span>
+								<?php if (!$isSynced && $info['base_count'] > 0) { ?>
+									<small class="text-warning"><i class="fas fa-exclamation-circle"></i></small>
+								<?php } ?>
 							</dd>
 
 							<?php if ($info['has_auto_field']) { ?>
@@ -111,6 +125,18 @@
 							['action' => 'entries', $tableName],
 							['class' => 'btn btn-primary btn-sm', 'escape' => false],
 						) ?>
+						<?php if ($info['base_exists'] && $info['row_count'] < $info['base_count']) { ?>
+							<?= $this->Form->postLink(
+								'<i class="fas fa-sync"></i> ' . __d('translate', 'Sync'),
+								['action' => 'sync', $tableName],
+								[
+									'class' => 'btn btn-warning btn-sm',
+									'escape' => false,
+									'title' => __d('translate', 'Create missing translation entries'),
+									'confirm' => __d('translate', 'Create empty translation entries for {0} missing records?', $info['base_count'] - $info['row_count']),
+								],
+							) ?>
+						<?php } ?>
 						<?= $this->Html->link(
 							'<i class="fas fa-cog"></i>',
 							['controller' => 'TranslateBehavior', 'action' => 'view', $tableName],

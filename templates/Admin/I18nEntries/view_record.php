@@ -49,10 +49,10 @@
 						<dd class="col-sm-10">
 							<?php
 							$value = $baseRecord->$field ?? '';
-							if (strlen($value) > 200) {
-								echo '<div class="text-truncate" style="max-width: 600px;">' . h(substr($value, 0, 200)) . '...</div>';
+							if ($value) {
+								echo '<div class="text-break">' . h($value) . '</div>';
 							} else {
-								echo h($value) ?: '<span class="text-muted">(' . __d('translate', 'empty') . ')</span>';
+								echo '<span class="text-muted">(' . __d('translate', 'empty') . ')</span>';
 							}
 							?>
 						</dd>
@@ -66,10 +66,19 @@
 <div class="row">
 	<div class="col-12">
 		<div class="card">
-			<div class="card-header">
+			<div class="card-header d-flex justify-content-between align-items-center">
 				<h5 class="mb-0">
 					<i class="fas fa-language"></i> <?= __d('translate', 'Translations') ?>
 				</h5>
+				<?= $this->Form->postLink(
+					'<i class="fas fa-magic"></i> ' . __d('translate', 'Auto-translate All'),
+					['action' => 'autoTranslateRecord', $tableName, $baseRecord->id],
+					[
+						'class' => 'btn btn-info btn-sm',
+						'escape' => false,
+						'confirm' => __d('translate', 'Auto-translate this record to all configured locales?'),
+					],
+				) ?>
 			</div>
 			<div class="card-body p-0">
 				<table class="table table-striped mb-0">
@@ -90,8 +99,26 @@
 							<?php
 							$translation = $translationsByLocale[$locale] ?? null;
 							$hasTranslation = $translation !== null;
+
+							// Check if fully translated - only consider fields that have content in base record
+							$isFullyTranslated = false;
+							if ($hasTranslation) {
+								$neededCount = 0;
+								$translatedCount = 0;
+								foreach ($translatedFields as $field) {
+									if (!empty($baseRecord->$field)) {
+										$neededCount++;
+										if (!empty($translation->$field)) {
+											$translatedCount++;
+										}
+									}
+								}
+								$isFullyTranslated = $neededCount > 0 && $translatedCount === $neededCount;
+							}
+
+							$rowClass = !$hasTranslation ? 'table-warning' : '';
 							?>
-							<tr class="<?= $hasTranslation ? '' : 'table-warning' ?>">
+							<tr class="<?= $rowClass ?>">
 								<td>
 									<span class="badge bg-<?= $hasTranslation ? 'primary' : 'secondary' ?>">
 										<?= h($locale) ?>
@@ -102,10 +129,10 @@
 										<?php if ($hasTranslation) { ?>
 											<?php
 											$value = $translation->$field ?? '';
-											if (strlen($value) > 80) {
-												echo h(substr($value, 0, 77)) . '...';
+											if ($value) {
+												echo '<div class="text-break" style="max-width: 400px;">' . h($value) . '</div>';
 											} else {
-												echo h($value) ?: '<span class="text-muted">(' . __d('translate', 'empty') . ')</span>';
+												echo '<span class="text-muted">(' . __d('translate', 'empty') . ')</span>';
 											}
 											?>
 										<?php } else { ?>
@@ -135,15 +162,28 @@
 								<td class="actions">
 									<?php if ($hasTranslation) { ?>
 										<?= $this->Html->link(
-											'<i class="fas fa-edit"></i> ' . __d('translate', 'Edit'),
+											'<i class="fas fa-edit"></i>',
 											['action' => 'editTranslation', $tableName, $baseRecord->id, $locale],
-											['class' => 'btn btn-sm btn-outline-primary', 'escape' => false],
+											['class' => 'btn btn-sm btn-outline-primary', 'escape' => false, 'title' => __d('translate', 'Edit')],
 										) ?>
 									<?php } else { ?>
 										<?= $this->Html->link(
-											'<i class="fas fa-plus"></i> ' . __d('translate', 'Add'),
+											'<i class="fas fa-plus"></i>',
 											['action' => 'addTranslation', $tableName, $baseRecord->id, $locale],
-											['class' => 'btn btn-sm btn-success', 'escape' => false],
+											['class' => 'btn btn-sm btn-success', 'escape' => false, 'title' => __d('translate', 'Add')],
+										) ?>
+									<?php } ?>
+									<?php if (!$isFullyTranslated) { ?>
+										<?= $this->Form->postLink(
+											'<i class="fas fa-magic"></i>',
+											['action' => 'autoTranslateRecord', $tableName, $baseRecord->id, '?' => ['locales' => [$locale]]],
+											[
+												'class' => 'btn btn-sm btn-outline-info',
+												'escape' => false,
+												'title' => __d('translate', 'Auto-translate'),
+												'confirm' => __d('translate', 'Auto-translate to {0}?', $locale),
+												'block' => true,
+											],
 										) ?>
 									<?php } ?>
 								</td>

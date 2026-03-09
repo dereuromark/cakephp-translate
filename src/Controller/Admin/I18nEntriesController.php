@@ -519,7 +519,15 @@ class I18nEntriesController extends TranslateAppController {
 	 * @return \Cake\ORM\Table
 	 */
 	protected function getTranslationTable(string $tableName): Table {
-		return $this->fetchTable(Inflector::camelize($tableName), [
+		$alias = Inflector::camelize($tableName);
+
+		// Clear from registry if already registered to allow reconfiguration
+		$locator = $this->getTableLocator();
+		if ($locator->exists($alias)) {
+			$locator->remove($alias);
+		}
+
+		return $this->fetchTable($alias, [
 			'className' => Table::class,
 			'table' => $tableName,
 		]);

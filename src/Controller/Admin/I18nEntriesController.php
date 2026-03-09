@@ -240,6 +240,9 @@ class I18nEntriesController extends TranslateAppController {
 			}
 		}
 
+		// Source locale (base record language)
+		$sourceLocale = Configure::read('App.defaultLocale') ?? Configure::read('I18n.defaultLocale') ?? 'en_US';
+
 		$this->set(compact(
 			'tableName',
 			'baseTableName',
@@ -251,6 +254,7 @@ class I18nEntriesController extends TranslateAppController {
 			'strategy',
 			'foreignKeyColumn',
 			'displayField',
+			'sourceLocale',
 		));
 		$this->set('showBaseRecords', true);
 
@@ -300,6 +304,9 @@ class I18nEntriesController extends TranslateAppController {
 			$translationsByLocale[$translation->locale] = $translation;
 		}
 
+		// Source locale (base record language)
+		$sourceLocale = Configure::read('App.defaultLocale') ?? Configure::read('I18n.defaultLocale') ?? 'en_US';
+
 		$this->set(compact(
 			'tableName',
 			'baseTableName',
@@ -310,6 +317,7 @@ class I18nEntriesController extends TranslateAppController {
 			'translatedFields',
 			'hasAutoField',
 			'displayField',
+			'sourceLocale',
 		));
 
 		return null;

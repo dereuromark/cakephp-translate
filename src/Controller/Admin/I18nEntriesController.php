@@ -942,21 +942,6 @@ class I18nEntriesController extends TranslateAppController {
 	}
 
 	/**
-	 * Get configured locales for translations
-	 *
-	 * @return array<string>
-	 */
-	protected function getConfiguredLocales(): array {
-		$locales = \Cake\Core\Configure::read('Translate.locales', []);
-		if (empty($locales)) {
-			// Fallback: try to get from App.supportedLocales or I18n config
-			$locales = \Cake\Core\Configure::read('App.supportedLocales', []);
-		}
-
-		return $locales;
-	}
-
-	/**
 	 * Get info about all translation tables
 	 *
 	 * @param array<string> $allTables All table names
@@ -1266,15 +1251,30 @@ class I18nEntriesController extends TranslateAppController {
 	/**
 	 * Get configured locales from app configuration
 	 *
+	 * Checks the following configuration keys in order:
+	 * 1. Translate.locales - plugin-specific config
+	 * 2. I18n.supportedLocales - CakePHP I18n config
+	 * 3. App.supportedLocales - common app config
+	 *
+	 * For associative arrays (locale => label), only the keys are returned.
+	 *
 	 * @return array<string>
 	 */
 	protected function getConfiguredLocales(): array {
 		$locales = [];
 
-		// Try I18n.supportedLocales first
-		$supported = Configure::read('I18n.supportedLocales');
-		if (is_array($supported)) {
-			$locales = array_keys($supported);
+		// Try Translate.locales first (plugin-specific)
+		$supported = Configure::read('Translate.locales');
+		if (is_array($supported) && !empty($supported)) {
+			$locales = is_string(array_key_first($supported)) ? array_keys($supported) : array_values($supported);
+		}
+
+		// Try I18n.supportedLocales
+		if (empty($locales)) {
+			$supported = Configure::read('I18n.supportedLocales');
+			if (is_array($supported)) {
+				$locales = is_string(array_key_first($supported)) ? array_keys($supported) : array_values($supported);
+			}
 		}
 
 		// Also check App.supportedLocales

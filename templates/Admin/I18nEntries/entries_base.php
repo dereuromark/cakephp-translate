@@ -5,6 +5,7 @@
  * @var string $baseTableName
  * @var iterable $baseRecords
  * @var array<int, array<string, array<string, mixed>>> $translationStatus
+ * @var array<int, array<string, bool>> $baseFieldStatus
  * @var array<string> $locales
  * @var array<string> $translatedFields
  * @var bool $hasAutoField
@@ -147,10 +148,22 @@
 										<td class="text-center">
 											<?php
 											$status = $translationStatus[$record->id][$locale] ?? null;
+											$baseFields = $baseFieldStatus[$record->id] ?? [];
+
 											if ($status && $status['exists']) {
-												// Check if all fields have content
-												$allFilled = !empty($status['fields']) && !in_array(false, $status['fields'], true);
-												$partialFilled = !empty($status['fields']) && in_array(true, $status['fields'], true);
+												// Only consider fields that have content in the base record
+												$neededFields = array_filter($baseFields);
+												$translatedCount = 0;
+												$neededCount = count($neededFields);
+
+												foreach ($neededFields as $field => $hasContent) {
+													if (!empty($status['fields'][$field])) {
+														$translatedCount++;
+													}
+												}
+
+												$allFilled = $neededCount > 0 && $translatedCount === $neededCount;
+												$partialFilled = $translatedCount > 0 && $translatedCount < $neededCount;
 
 												if ($allFilled) {
 													if ($hasAutoField && $status['auto']) {

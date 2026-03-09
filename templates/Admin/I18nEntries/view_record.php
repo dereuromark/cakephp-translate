@@ -100,16 +100,20 @@
 							$translation = $translationsByLocale[$locale] ?? null;
 							$hasTranslation = $translation !== null;
 
-							// Check if fully translated (all fields have content)
+							// Check if fully translated - only consider fields that have content in base record
 							$isFullyTranslated = false;
 							if ($hasTranslation) {
-								$isFullyTranslated = true;
+								$neededCount = 0;
+								$translatedCount = 0;
 								foreach ($translatedFields as $field) {
-									if (empty($translation->$field)) {
-										$isFullyTranslated = false;
-										break;
+									if (!empty($baseRecord->$field)) {
+										$neededCount++;
+										if (!empty($translation->$field)) {
+											$translatedCount++;
+										}
 									}
 								}
+								$isFullyTranslated = $neededCount > 0 && $translatedCount === $neededCount;
 							}
 
 							$rowClass = !$hasTranslation ? 'table-warning' : '';

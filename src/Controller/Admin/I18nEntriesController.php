@@ -212,7 +212,17 @@ class I18nEntriesController extends TranslateAppController {
 		$baseRecords = $this->paginate($query);
 
 		// Get translation status for each base record
-		$baseIds = array_map(fn ($r) => $r->id, iterator_to_array($baseRecords));
+		$baseRecordsArray = iterator_to_array($baseRecords);
+		$baseIds = array_map(fn ($r) => $r->id, $baseRecordsArray);
+
+		// Track which fields have content in base records
+		$baseFieldStatus = [];
+		foreach ($baseRecordsArray as $record) {
+			$baseFieldStatus[$record->id] = [];
+			foreach ($translatedFields as $field) {
+				$baseFieldStatus[$record->id][$field] = !empty($record->get($field));
+			}
+		}
 
 		$translationStatus = [];
 		if (!empty($baseIds)) {
@@ -249,6 +259,7 @@ class I18nEntriesController extends TranslateAppController {
 			'baseTableName',
 			'baseRecords',
 			'translationStatus',
+			'baseFieldStatus',
 			'locales',
 			'translatedFields',
 			'hasAutoField',

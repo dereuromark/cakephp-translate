@@ -66,10 +66,19 @@
 <div class="row">
 	<div class="col-12">
 		<div class="card">
-			<div class="card-header">
+			<div class="card-header d-flex justify-content-between align-items-center">
 				<h5 class="mb-0">
 					<i class="fas fa-language"></i> <?= __d('translate', 'Translations') ?>
 				</h5>
+				<?= $this->Form->postLink(
+					'<i class="fas fa-magic"></i> ' . __d('translate', 'Auto-translate All'),
+					['action' => 'autoTranslateRecord', $tableName, $baseRecord->id],
+					[
+						'class' => 'btn btn-info btn-sm',
+						'escape' => false,
+						'confirm' => __d('translate', 'Auto-translate this record to all configured locales?'),
+					],
+				) ?>
 			</div>
 			<div class="card-body p-0">
 				<table class="table table-striped mb-0">
@@ -135,17 +144,28 @@
 								<td class="actions">
 									<?php if ($hasTranslation) { ?>
 										<?= $this->Html->link(
-											'<i class="fas fa-edit"></i> ' . __d('translate', 'Edit'),
+											'<i class="fas fa-edit"></i>',
 											['action' => 'editTranslation', $tableName, $baseRecord->id, $locale],
-											['class' => 'btn btn-sm btn-outline-primary', 'escape' => false],
+											['class' => 'btn btn-sm btn-outline-primary', 'escape' => false, 'title' => __d('translate', 'Edit')],
 										) ?>
 									<?php } else { ?>
 										<?= $this->Html->link(
-											'<i class="fas fa-plus"></i> ' . __d('translate', 'Add'),
+											'<i class="fas fa-plus"></i>',
 											['action' => 'addTranslation', $tableName, $baseRecord->id, $locale],
-											['class' => 'btn btn-sm btn-success', 'escape' => false],
+											['class' => 'btn btn-sm btn-success', 'escape' => false, 'title' => __d('translate', 'Add')],
 										) ?>
 									<?php } ?>
+									<?= $this->Form->postLink(
+										'<i class="fas fa-magic"></i>',
+										['action' => 'autoTranslateRecord', $tableName, $baseRecord->id, '?' => ['locales' => [$locale]]],
+										[
+											'class' => 'btn btn-sm btn-outline-info',
+											'escape' => false,
+											'title' => __d('translate', 'Auto-translate'),
+											'confirm' => __d('translate', 'Auto-translate to {0}?', $locale),
+											'block' => true,
+										],
+									) ?>
 								</td>
 							</tr>
 						<?php } ?>

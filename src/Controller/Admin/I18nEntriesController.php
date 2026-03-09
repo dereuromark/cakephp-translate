@@ -466,6 +466,230 @@ class I18nEntriesController extends TranslateAppController {
 	}
 
 	/**
+	 * Auto-translate a single record to specified locales
+	 *
+	 * @param string $tableName Translation table name
+	 * @param int $id Base record ID
+	 * @return \Cake\Http\Response|null
+	 */
+	public function autoTranslateRecord(string $tableName, int $id) {
+		$this->request->allowMethod(['post']);
+
+		if (!$this->validateTranslationTableName($tableName)) {
+			throw new NotFoundException(__d('translate', 'Invalid translation table.'));
+		}
+
+		$baseTableName = $this->getBaseTableName($tableName);
+		$connection = $this->getConnection();
+		$schema = $connection->getSchemaCollection()->describe($tableName);
+		$strategy = $this->detectTranslationStrategy($schema);
+		$translatedFields = $this->getTranslatedFieldsFromSchema($schema, $strategy);
+		$hasAutoField = $schema->hasColumn('auto');
+
+		// Get base record
+		$baseTable = $this->getTranslationTable($baseTableName);
+		$baseRecord = $baseTable->get($id);
+
+		// Get target locales from request or use all configured
+		/** @var array<string> $targetLocales */
+		$targetLocales = $this->request->getData('locales', []);
+		if (empty($targetLocales)) {
+			$targetLocales = $this->getConfiguredLocales();
+		}
+
+		// Get source locale (default locale of the app)
+		$sourceLocale = Configure::read('App.defaultLocale') ?? Configure::read('I18n.defaultLocale') ?? 'en_US';
+
+		$service = new I18nTranslatorService();
+		$translationTable = $this->getTranslationTable($tableName);
+
+		$translated = 0;
+		$failed = 0;
+
+		foreach ($targetLocales as $locale) {
+			// Skip source locale
+			if ($locale === $sourceLocale) {
+				continue;
+			}
+
+			// Get or create translation entry
+			/** @var \Cake\ORM\Entity|null $translation */
+			$translation = $translationTable->find()
+				->where(['id' => $id, 'locale' => $locale])
+				->first();
+
+			if (!$translation) {
+				/** @var \Cake\ORM\Entity $translation */
+				$translation = $translationTable->newEntity([
+					'id' => $id,
+					'locale' => $locale,
+				]);
+			}
+
+			$hasChanges = false;
+			foreach ($translatedFields as $field) {
+				$sourceText = $baseRecord->get($field);
+				if (empty($sourceText)) {
+					continue;
+				}
+
+				$translatedText = $service->translate($sourceText, $locale, $sourceLocale);
+				if ($translatedText) {
+					$translation->set($field, $translatedText);
+					$hasChanges = true;
+				}
+			}
+
+			if ($hasChanges) {
+				if ($hasAutoField) {
+					$translation->set('auto', true);
+				}
+
+				if ($translationTable->save($translation)) {
+					$translated++;
+				} else {
+					$failed++;
+				}
+			}
+		}
+
+		if ($translated > 0) {
+			$this->Flash->success(__d('translate', '{0} locale(s) translated successfully.', $translated));
+		}
+		if ($failed > 0) {
+			$this->Flash->warning(__d('translate', '{0} locale(s) could not be translated.', $failed));
+		}
+		if ($translated === 0 && $failed === 0) {
+			$this->Flash->info(__d('translate', 'No translations needed.'));
+		}
+
+		return $this->redirect(['action' => 'viewRecord', $tableName, $id]);
+	}
+
+	/**
+	 * Batch auto-translate multiple records
+	 *
+	 * @param string $tableName Translation table name
+	 * @return \Cake\Http\Response|null
+	 */
+	public function autoTranslateBatch(string $tableName) {
+		$this->request->allowMethod(['post']);
+
+		if (!$this->validateTranslationTableName($tableName)) {
+			$this->Flash->error(__d('translate', 'Invalid translation table name.'));
+
+			return $this->redirect(['action' => 'index']);
+		}
+
+		$baseTableName = $this->getBaseTableName($tableName);
+		$connection = $this->getConnection();
+		$schemaCollection = $connection->getSchemaCollection();
+
+		if (!in_array($baseTableName, $schemaCollection->listTables(), true)) {
+			$this->Flash->error(__d('translate', 'Base table not found.'));
+
+			return $this->redirect(['action' => 'index']);
+		}
+
+		$schema = $schemaCollection->describe($tableName);
+		$strategy = $this->detectTranslationStrategy($schema);
+		$translatedFields = $this->getTranslatedFieldsFromSchema($schema, $strategy);
+		$hasAutoField = $schema->hasColumn('auto');
+
+		// Get selected record IDs
+		/** @var array<int> $recordIds */
+		$recordIds = $this->request->getData('record_ids', []);
+		if (empty($recordIds)) {
+			$this->Flash->warning(__d('translate', 'No records selected.'));
+
+			return $this->redirect(['action' => 'entries', $tableName]);
+		}
+
+		// Get target locales
+		/** @var array<string> $targetLocales */
+		$targetLocales = $this->request->getData('locales', []);
+		if (empty($targetLocales)) {
+			$targetLocales = $this->getConfiguredLocales();
+		}
+
+		// Get source locale
+		$sourceLocale = Configure::read('App.defaultLocale') ?? Configure::read('I18n.defaultLocale') ?? 'en_US';
+
+		$service = new I18nTranslatorService();
+		$baseTable = $this->getTranslationTable($baseTableName);
+		$translationTable = $this->getTranslationTable($tableName);
+
+		$translated = 0;
+		$failed = 0;
+
+		foreach ($recordIds as $recordId) {
+			try {
+				$baseRecord = $baseTable->get($recordId);
+			} catch (Exception $e) {
+				$failed++;
+
+				continue;
+			}
+
+			foreach ($targetLocales as $locale) {
+				// Skip source locale
+				if ($locale === $sourceLocale) {
+					continue;
+				}
+
+				// Get or create translation entry
+				/** @var \Cake\ORM\Entity|null $translation */
+				$translation = $translationTable->find()
+					->where(['id' => $recordId, 'locale' => $locale])
+					->first();
+
+				if (!$translation) {
+					/** @var \Cake\ORM\Entity $translation */
+					$translation = $translationTable->newEntity([
+						'id' => $recordId,
+						'locale' => $locale,
+					]);
+				}
+
+				$hasChanges = false;
+				foreach ($translatedFields as $field) {
+					$sourceText = $baseRecord->get($field);
+					if (empty($sourceText)) {
+						continue;
+					}
+
+					$translatedText = $service->translate($sourceText, $locale, $sourceLocale);
+					if ($translatedText) {
+						$translation->set($field, $translatedText);
+						$hasChanges = true;
+					}
+				}
+
+				if ($hasChanges) {
+					if ($hasAutoField) {
+						$translation->set('auto', true);
+					}
+
+					if ($translationTable->save($translation)) {
+						$translated++;
+					} else {
+						$failed++;
+					}
+				}
+			}
+		}
+
+		if ($translated > 0) {
+			$this->Flash->success(__d('translate', '{0} translation(s) created successfully.', $translated));
+		}
+		if ($failed > 0) {
+			$this->Flash->warning(__d('translate', '{0} translation(s) could not be created.', $failed));
+		}
+
+		return $this->redirect(['action' => 'entries', $tableName]);
+	}
+
+	/**
 	 * View a single translation entry
 	 *
 	 * @param string $tableName Translation table name

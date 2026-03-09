@@ -79,12 +79,33 @@
 <!-- Records Table -->
 <div class="row">
 	<div class="col-12">
+		<?= $this->Form->create(null, ['url' => ['action' => 'autoTranslateBatch', $tableName], 'id' => 'batch-form']) ?>
 		<div class="card">
+			<div class="card-header d-flex justify-content-between align-items-center">
+				<div>
+					<input type="checkbox" id="select-all" class="form-check-input me-2">
+					<label for="select-all" class="form-check-label"><?= __d('translate', 'Select All') ?></label>
+				</div>
+				<div class="d-flex align-items-center gap-2">
+					<div class="input-group input-group-sm" style="width: auto;">
+						<span class="input-group-text"><?= __d('translate', 'Locales') ?></span>
+						<select name="locales[]" multiple class="form-select form-select-sm" style="min-width: 150px;" id="locale-select">
+							<?php foreach ($locales as $locale) { ?>
+								<option value="<?= h($locale) ?>" selected><?= h($locale) ?></option>
+							<?php } ?>
+						</select>
+					</div>
+					<button type="submit" class="btn btn-info btn-sm" onclick="return confirmBatch()">
+						<i class="fas fa-magic"></i> <?= __d('translate', 'Auto-translate Selected') ?>
+					</button>
+				</div>
+			</div>
 			<div class="card-body p-0">
 				<div class="table-responsive">
 					<table class="table table-striped table-hover mb-0">
 						<thead class="table-light">
 							<tr>
+								<th style="width: 40px;"></th>
 								<th><?= __d('translate', 'ID') ?></th>
 								<?php if ($displayField) { ?>
 									<th><?= h(ucfirst($displayField)) ?></th>
@@ -101,6 +122,9 @@
 						<tbody>
 							<?php foreach ($baseRecords as $record) { ?>
 								<tr>
+									<td>
+										<input type="checkbox" name="record_ids[]" value="<?= h($record->id) ?>" class="form-check-input record-checkbox">
+									</td>
 									<td><?= h($record->id) ?></td>
 									<?php if ($displayField) { ?>
 										<td>
@@ -172,7 +196,7 @@
 
 							<?php if (empty(iterator_to_array($baseRecords))) { ?>
 								<tr>
-									<td colspan="<?= 4 + count($locales) ?>" class="text-center text-muted py-4">
+									<td colspan="<?= 5 + count($locales) ?>" class="text-center text-muted py-4">
 										<i class="fas fa-inbox fa-2x mb-2"></i><br>
 										<?= __d('translate', 'No records found.') ?>
 									</td>
@@ -186,8 +210,35 @@
 				<?= $this->element('Tools.pagination') ?>
 			</div>
 		</div>
+		<?= $this->Form->end() ?>
 	</div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+	const selectAll = document.getElementById('select-all');
+	const checkboxes = document.querySelectorAll('.record-checkbox');
+
+	selectAll.addEventListener('change', function() {
+		checkboxes.forEach(cb => cb.checked = this.checked);
+	});
+
+	checkboxes.forEach(cb => {
+		cb.addEventListener('change', function() {
+			selectAll.checked = [...checkboxes].every(c => c.checked);
+		});
+	});
+});
+
+function confirmBatch() {
+	const selected = document.querySelectorAll('.record-checkbox:checked').length;
+	if (selected === 0) {
+		alert('<?= __d('translate', 'Please select at least one record.') ?>');
+		return false;
+	}
+	return confirm('<?= __d('translate', 'Auto-translate {0} selected record(s)?') ?>'.replace('{0}', selected));
+}
+</script>
 
 <div class="row mt-4">
 	<div class="col-12">

@@ -45,6 +45,14 @@ class TranslateAppController extends AppController {
 	public function beforeFilter(EventInterface $event): void {
 		parent::beforeFilter($event);
 
+		// Disable form protection for the Translate plugin admin area
+		// as it uses dynamic forms with batch operations
+		if ($this->components()->has('FormProtection')) {
+			/** @var \Cake\Controller\Component\FormProtectionComponent $formProtection */
+			$formProtection = $this->components()->get('FormProtection');
+			$formProtection->setConfig('validate', false);
+		}
+
 		// Apply language from session, or default to English for translation manager
 		$locale = $this->request->getSession()->read('Config.language');
 		if (!$locale) {

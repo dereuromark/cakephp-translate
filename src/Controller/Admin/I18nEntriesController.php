@@ -240,8 +240,9 @@ class I18nEntriesController extends TranslateAppController {
 			}
 		}
 
-		// Source locale (base record language)
+		// Source locale (base record language) - filter it out, no translations needed
 		$sourceLocale = Configure::read('App.defaultLocale') ?? Configure::read('I18n.defaultLocale') ?? 'en_US';
+		$locales = array_values(array_filter($locales, fn ($l) => $l !== $sourceLocale));
 
 		$this->set(compact(
 			'tableName',
@@ -254,7 +255,6 @@ class I18nEntriesController extends TranslateAppController {
 			'strategy',
 			'foreignKeyColumn',
 			'displayField',
-			'sourceLocale',
 		));
 		$this->set('showBaseRecords', true);
 
@@ -304,8 +304,9 @@ class I18nEntriesController extends TranslateAppController {
 			$translationsByLocale[$translation->locale] = $translation;
 		}
 
-		// Source locale (base record language)
+		// Source locale (base record language) - filter it out, no translations needed
 		$sourceLocale = Configure::read('App.defaultLocale') ?? Configure::read('I18n.defaultLocale') ?? 'en_US';
+		$locales = array_values(array_filter($locales, fn ($l) => $l !== $sourceLocale));
 
 		$this->set(compact(
 			'tableName',
@@ -317,7 +318,6 @@ class I18nEntriesController extends TranslateAppController {
 			'translatedFields',
 			'hasAutoField',
 			'displayField',
-			'sourceLocale',
 		));
 
 		return null;
@@ -334,6 +334,14 @@ class I18nEntriesController extends TranslateAppController {
 	public function addTranslation(string $tableName, int $id, string $locale) {
 		if (!$this->validateTranslationTableName($tableName)) {
 			throw new NotFoundException(__d('translate', 'Invalid translation table.'));
+		}
+
+		// Reject attempts to add translation for source locale
+		$sourceLocale = Configure::read('App.defaultLocale') ?? Configure::read('I18n.defaultLocale') ?? 'en_US';
+		if ($locale === $sourceLocale) {
+			$this->Flash->error(__d('translate', 'Cannot add translation for the source locale. Edit the base record instead.'));
+
+			return $this->redirect(['action' => 'entries', $tableName]);
 		}
 
 		$baseTableName = $this->getBaseTableName($tableName);
@@ -404,6 +412,14 @@ class I18nEntriesController extends TranslateAppController {
 	public function editTranslation(string $tableName, int $id, string $locale) {
 		if (!$this->validateTranslationTableName($tableName)) {
 			throw new NotFoundException(__d('translate', 'Invalid translation table.'));
+		}
+
+		// Reject attempts to edit translation for source locale
+		$sourceLocale = Configure::read('App.defaultLocale') ?? Configure::read('I18n.defaultLocale') ?? 'en_US';
+		if ($locale === $sourceLocale) {
+			$this->Flash->error(__d('translate', 'Cannot edit translation for the source locale. Edit the base record instead.'));
+
+			return $this->redirect(['action' => 'entries', $tableName]);
 		}
 
 		$baseTableName = $this->getBaseTableName($tableName);

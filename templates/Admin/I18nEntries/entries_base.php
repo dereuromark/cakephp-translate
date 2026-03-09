@@ -11,7 +11,6 @@
  * @var string $strategy
  * @var string $foreignKeyColumn
  * @var string|null $displayField
- * @var string $sourceLocale
  */
 ?>
 <nav aria-label="breadcrumb">
@@ -113,13 +112,8 @@
 								<?php } ?>
 								<th><?= __d('translate', 'Translated Fields') ?></th>
 								<?php foreach ($locales as $locale) { ?>
-									<th class="text-center <?= $locale === $sourceLocale ? 'text-muted' : '' ?>">
-										<span class="badge bg-<?= $locale === $sourceLocale ? 'dark' : 'secondary' ?>">
-											<?= h($locale) ?>
-										</span>
-										<?php if ($locale === $sourceLocale) { ?>
-											<br><small class="text-muted">(<?= __d('translate', 'source') ?>)</small>
-										<?php } ?>
+									<th class="text-center">
+										<span class="badge bg-secondary"><?= h($locale) ?></span>
 									</th>
 								<?php } ?>
 								<th class="actions"><?= __d('translate', 'Actions') ?></th>
@@ -150,48 +144,42 @@
 										</small>
 									</td>
 									<?php foreach ($locales as $locale) { ?>
-										<?php $isSourceLocale = ($locale === $sourceLocale); ?>
-										<td class="text-center <?= $isSourceLocale ? 'table-light' : '' ?>">
-											<?php if ($isSourceLocale) { ?>
-												<span class="text-muted" title="<?= __d('translate', 'Source language - uses base record') ?>">
-													<i class="fas fa-database"></i>
-												</span>
-											<?php } else {
-												$status = $translationStatus[$record->id][$locale] ?? null;
-												if ($status && $status['exists']) {
-													// Check if all fields have content
-													$allFilled = !empty($status['fields']) && !in_array(false, $status['fields'], true);
-													$partialFilled = !empty($status['fields']) && in_array(true, $status['fields'], true);
+										<td class="text-center">
+											<?php
+											$status = $translationStatus[$record->id][$locale] ?? null;
+											if ($status && $status['exists']) {
+												// Check if all fields have content
+												$allFilled = !empty($status['fields']) && !in_array(false, $status['fields'], true);
+												$partialFilled = !empty($status['fields']) && in_array(true, $status['fields'], true);
 
-													if ($allFilled) {
-														if ($hasAutoField && $status['auto']) {
-															echo '<span class="badge bg-info" title="' . __d('translate', 'Auto-translated') . '"><i class="fas fa-robot"></i></span>';
-														} else {
-															echo '<span class="badge bg-success" title="' . __d('translate', 'Translated') . '"><i class="fas fa-check"></i></span>';
-														}
-													} elseif ($partialFilled) {
-														echo '<span class="badge bg-warning text-dark" title="' . __d('translate', 'Partially translated') . '"><i class="fas fa-exclamation"></i></span>';
+												if ($allFilled) {
+													if ($hasAutoField && $status['auto']) {
+														echo '<span class="badge bg-info" title="' . __d('translate', 'Auto-translated') . '"><i class="fas fa-robot"></i></span>';
 													} else {
-														echo '<span class="badge bg-danger" title="' . __d('translate', 'Empty translation') . '"><i class="fas fa-times"></i></span>';
+														echo '<span class="badge bg-success" title="' . __d('translate', 'Translated') . '"><i class="fas fa-check"></i></span>';
 													}
-
-													// Edit link
-													echo ' ';
-													echo $this->Html->link(
-														'<i class="fas fa-edit"></i>',
-														['action' => 'editTranslation', $tableName, $record->id, $locale],
-														['class' => 'btn btn-sm btn-outline-secondary', 'escape' => false, 'title' => __d('translate', 'Edit {0}', $locale)],
-													);
+												} elseif ($partialFilled) {
+													echo '<span class="badge bg-warning text-dark" title="' . __d('translate', 'Partially translated') . '"><i class="fas fa-exclamation"></i></span>';
 												} else {
-													// No translation exists
-													echo '<span class="badge bg-secondary" title="' . __d('translate', 'Not translated') . '"><i class="fas fa-minus"></i></span>';
-													echo ' ';
-													echo $this->Html->link(
-														'<i class="fas fa-plus"></i>',
-														['action' => 'addTranslation', $tableName, $record->id, $locale],
-														['class' => 'btn btn-sm btn-outline-success', 'escape' => false, 'title' => __d('translate', 'Add {0}', $locale)],
-													);
+													echo '<span class="badge bg-danger" title="' . __d('translate', 'Empty translation') . '"><i class="fas fa-times"></i></span>';
 												}
+
+												// Edit link
+												echo ' ';
+												echo $this->Html->link(
+													'<i class="fas fa-edit"></i>',
+													['action' => 'editTranslation', $tableName, $record->id, $locale],
+													['class' => 'btn btn-sm btn-outline-secondary', 'escape' => false, 'title' => __d('translate', 'Edit {0}', $locale)],
+												);
+											} else {
+												// No translation exists
+												echo '<span class="badge bg-secondary" title="' . __d('translate', 'Not translated') . '"><i class="fas fa-minus"></i></span>';
+												echo ' ';
+												echo $this->Html->link(
+													'<i class="fas fa-plus"></i>',
+													['action' => 'addTranslation', $tableName, $record->id, $locale],
+													['class' => 'btn btn-sm btn-outline-success', 'escape' => false, 'title' => __d('translate', 'Add {0}', $locale)],
+												);
 											}
 											?>
 										</td>

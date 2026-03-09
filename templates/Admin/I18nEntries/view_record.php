@@ -10,7 +10,6 @@
  * @var array<string> $translatedFields
  * @var bool $hasAutoField
  * @var string|null $displayField
- * @var string $sourceLocale
  */
 ?>
 <nav aria-label="breadcrumb">
@@ -100,7 +99,6 @@
 							<?php
 							$translation = $translationsByLocale[$locale] ?? null;
 							$hasTranslation = $translation !== null;
-							$isSourceLocale = ($locale === $sourceLocale);
 
 							// Check if fully translated (all fields have content)
 							$isFullyTranslated = false;
@@ -114,30 +112,17 @@
 								}
 							}
 
-							// Determine row class
-							$rowClass = '';
-							if ($isSourceLocale) {
-								$rowClass = 'table-light text-muted';
-							} elseif (!$hasTranslation) {
-								$rowClass = 'table-warning';
-							}
+							$rowClass = !$hasTranslation ? 'table-warning' : '';
 							?>
 							<tr class="<?= $rowClass ?>">
 								<td>
-									<span class="badge bg-<?= $isSourceLocale ? 'dark' : ($hasTranslation ? 'primary' : 'secondary') ?>">
+									<span class="badge bg-<?= $hasTranslation ? 'primary' : 'secondary' ?>">
 										<?= h($locale) ?>
 									</span>
-									<?php if ($isSourceLocale) { ?>
-										<small class="text-muted">(<?= __d('translate', 'source') ?>)</small>
-									<?php } ?>
 								</td>
 								<?php foreach ($translatedFields as $field) { ?>
 									<td>
-										<?php if ($isSourceLocale) { ?>
-											<span class="text-muted">
-												<?= __d('translate', 'Uses base record') ?>
-											</span>
-										<?php } elseif ($hasTranslation) { ?>
+										<?php if ($hasTranslation) { ?>
 											<?php
 											$value = $translation->$field ?? '';
 											if (strlen($value) > 80) {
@@ -155,9 +140,7 @@
 								<?php } ?>
 								<?php if ($hasAutoField) { ?>
 									<td>
-										<?php if ($isSourceLocale) { ?>
-											<span class="text-muted">-</span>
-										<?php } elseif ($hasTranslation) { ?>
+										<?php if ($hasTranslation) { ?>
 											<?php if ($translation->auto) { ?>
 												<span class="badge bg-info" title="<?= __d('translate', 'Auto-translated') ?>">
 													<i class="fas fa-robot"></i> <?= __d('translate', 'Auto') ?>
@@ -173,35 +156,31 @@
 									</td>
 								<?php } ?>
 								<td class="actions">
-									<?php if ($isSourceLocale) { ?>
-										<span class="text-muted">-</span>
+									<?php if ($hasTranslation) { ?>
+										<?= $this->Html->link(
+											'<i class="fas fa-edit"></i>',
+											['action' => 'editTranslation', $tableName, $baseRecord->id, $locale],
+											['class' => 'btn btn-sm btn-outline-primary', 'escape' => false, 'title' => __d('translate', 'Edit')],
+										) ?>
 									<?php } else { ?>
-										<?php if ($hasTranslation) { ?>
-											<?= $this->Html->link(
-												'<i class="fas fa-edit"></i>',
-												['action' => 'editTranslation', $tableName, $baseRecord->id, $locale],
-												['class' => 'btn btn-sm btn-outline-primary', 'escape' => false, 'title' => __d('translate', 'Edit')],
-											) ?>
-										<?php } else { ?>
-											<?= $this->Html->link(
-												'<i class="fas fa-plus"></i>',
-												['action' => 'addTranslation', $tableName, $baseRecord->id, $locale],
-												['class' => 'btn btn-sm btn-success', 'escape' => false, 'title' => __d('translate', 'Add')],
-											) ?>
-										<?php } ?>
-										<?php if (!$isFullyTranslated) { ?>
-											<?= $this->Form->postLink(
-												'<i class="fas fa-magic"></i>',
-												['action' => 'autoTranslateRecord', $tableName, $baseRecord->id, '?' => ['locales' => [$locale]]],
-												[
-													'class' => 'btn btn-sm btn-outline-info',
-													'escape' => false,
-													'title' => __d('translate', 'Auto-translate'),
-													'confirm' => __d('translate', 'Auto-translate to {0}?', $locale),
-													'block' => true,
-												],
-											) ?>
-										<?php } ?>
+										<?= $this->Html->link(
+											'<i class="fas fa-plus"></i>',
+											['action' => 'addTranslation', $tableName, $baseRecord->id, $locale],
+											['class' => 'btn btn-sm btn-success', 'escape' => false, 'title' => __d('translate', 'Add')],
+										) ?>
+									<?php } ?>
+									<?php if (!$isFullyTranslated) { ?>
+										<?= $this->Form->postLink(
+											'<i class="fas fa-magic"></i>',
+											['action' => 'autoTranslateRecord', $tableName, $baseRecord->id, '?' => ['locales' => [$locale]]],
+											[
+												'class' => 'btn btn-sm btn-outline-info',
+												'escape' => false,
+												'title' => __d('translate', 'Auto-translate'),
+												'confirm' => __d('translate', 'Auto-translate to {0}?', $locale),
+												'block' => true,
+											],
+										) ?>
 									<?php } ?>
 								</td>
 							</tr>

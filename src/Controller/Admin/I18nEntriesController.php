@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Translate\Controller\Admin;
 
+use Cake\Core\Configure;
 use Cake\Database\Connection;
 use Cake\Database\Schema\TableSchemaInterface;
 use Cake\Datasource\ConnectionManager;
@@ -638,12 +639,12 @@ class I18nEntriesController extends TranslateAppController {
 	 * @return array<string>
 	 */
 	protected function getConfiguredLocales(): array {
-		$locales = \Cake\Core\Configure::read('Translate.locales');
+		$locales = Configure::read('Translate.locales');
 		if (!$locales) {
-			$locales = \Cake\Core\Configure::read('App.supportedLocales');
+			$locales = Configure::read('App.supportedLocales');
 		}
 		if (!$locales) {
-			$locales = \Cake\Core\Configure::read('I18n.supportedLocales');
+			$locales = Configure::read('I18n.supportedLocales');
 		}
 		if (!is_array($locales)) {
 			return [];

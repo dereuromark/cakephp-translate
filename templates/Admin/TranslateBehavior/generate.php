@@ -9,6 +9,7 @@
  * @var string $strategy
  * @var bool $includeAutoField
  * @var array|null $availableTables
+ * @var string $shadowTableSuffix
  */
 ?>
 
@@ -63,7 +64,7 @@
 				<div class="card-body">
 					<p>
 						<?= __d('translate', 'This will create a shadow table named') ?>
-						<code><?= h($tableName) ?>_i18n</code>
+						<code><?= h($tableName . $shadowTableSuffix) ?></code>
 						<?= __d('translate', 'to store translations for the selected fields.') ?>
 					</p>
 				</div>

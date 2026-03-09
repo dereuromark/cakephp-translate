@@ -841,6 +841,122 @@ class I18nEntriesController extends TranslateAppController {
 	}
 
 	/**
+	 * Sync missing translation entries for a table
+	 *
+	 * Creates empty translation entries for all base table records that don't have translations yet.
+	 *
+	 * @param string $tableName Translation table name
+	 * @return \Cake\Http\Response|null
+	 */
+	public function sync(string $tableName) {
+		$this->request->allowMethod(['post']);
+
+		if (!$this->validateTranslationTableName($tableName)) {
+			$this->Flash->error(__d('translate', 'Invalid translation table name.'));
+
+			return $this->redirect(['action' => 'index']);
+		}
+
+		$connection = $this->getConnection();
+		$schemaCollection = $connection->getSchemaCollection();
+
+		if (!in_array($tableName, $schemaCollection->listTables(), true)) {
+			$this->Flash->error(__d('translate', 'Translation table not found.'));
+
+			return $this->redirect(['action' => 'index']);
+		}
+
+		$baseTableName = $this->getBaseTableName($tableName);
+		if (!in_array($baseTableName, $schemaCollection->listTables(), true)) {
+			$this->Flash->error(__d('translate', 'Base table not found.'));
+
+			return $this->redirect(['action' => 'index']);
+		}
+
+		$schema = $schemaCollection->describe($tableName);
+		$strategy = $this->detectTranslationStrategy($schema);
+
+		// Get target locales from request or use configured ones
+		$targetLocales = $this->request->getData('locales', []);
+		if (empty($targetLocales)) {
+			$targetLocales = $this->getConfiguredLocales();
+		}
+
+		if (empty($targetLocales)) {
+			$this->Flash->warning(__d('translate', 'No target locales configured. Please specify locales to sync.'));
+
+			return $this->redirect(['action' => 'index']);
+		}
+
+		$translatedFields = $this->getTranslatedFieldsFromSchema($schema, $strategy);
+		$hasAutoField = $schema->hasColumn('auto');
+
+		// Get all base table IDs
+		$baseTable = $this->fetchTable(Inflector::camelize($baseTableName));
+		$baseIds = $baseTable->find()->select(['id'])->all()->extract('id')->toArray();
+
+		// Get existing translation entries
+		$translationTable = $this->getTranslationTable($tableName);
+
+		$created = 0;
+		foreach ($targetLocales as $locale) {
+			// Find which IDs are missing for this locale
+			$existingIds = $translationTable->find()
+				->select(['id'])
+				->where(['locale' => $locale])
+				->all()
+				->extract('id')
+				->toArray();
+
+			$missingIds = array_diff($baseIds, $existingIds);
+
+			foreach ($missingIds as $id) {
+				$data = [
+					'id' => $id,
+					'locale' => $locale,
+				];
+
+				// Initialize translated fields as null
+				foreach ($translatedFields as $field) {
+					$data[$field] = null;
+				}
+
+				if ($hasAutoField) {
+					$data['auto'] = true;
+				}
+
+				$entry = $translationTable->newEntity($data);
+				if ($translationTable->save($entry)) {
+					$created++;
+				}
+			}
+		}
+
+		if ($created > 0) {
+			$this->Flash->success(__d('translate', '{0} translation entries created.', $created));
+		} else {
+			$this->Flash->info(__d('translate', 'All entries are already synced.'));
+		}
+
+		return $this->redirect(['action' => 'entries', $tableName]);
+	}
+
+	/**
+	 * Get configured locales for translations
+	 *
+	 * @return array<string>
+	 */
+	protected function getConfiguredLocales(): array {
+		$locales = \Cake\Core\Configure::read('Translate.locales', []);
+		if (empty($locales)) {
+			// Fallback: try to get from App.supportedLocales or I18n config
+			$locales = \Cake\Core\Configure::read('App.supportedLocales', []);
+		}
+
+		return $locales;
+	}
+
+	/**
 	 * Get info about all translation tables
 	 *
 	 * @param array<string> $allTables All table names
@@ -885,11 +1001,30 @@ class I18nEntriesController extends TranslateAppController {
 				$manualCount = (int)$rowCount - (int)$autoCount;
 			}
 
+			// Count base table records
+			$baseCount = 0;
+			$baseExists = in_array($baseTableName, $allTables, true);
+			if ($baseExists) {
+				$baseCount = $connection->execute("SELECT COUNT(*) as count FROM `{$baseTableName}`")->fetch('assoc')['count'] ?? 0;
+			}
+
+			// Get unique locales for this table
+			$localesResult = $connection->execute("SELECT DISTINCT locale FROM `{$tableName}`")->fetchAll('assoc');
+			$tableLocales = array_column($localesResult, 'locale');
+			$localeCount = count($tableLocales);
+
+			// Calculate potential total (base records * configured locales)
+			$configuredLocales = $this->getConfiguredLocales();
+			$potentialTotal = (int)$baseCount * max(count($configuredLocales), $localeCount, 1);
+
 			$translationTables[$tableName] = [
 				'name' => $tableName,
 				'base_table' => $baseTableName,
-				'base_exists' => in_array($baseTableName, $allTables, true),
+				'base_exists' => $baseExists,
+				'base_count' => (int)$baseCount,
 				'row_count' => (int)$rowCount,
+				'potential_total' => $potentialTotal,
+				'locales' => $tableLocales,
 				'strategy' => $strategy,
 				'suffix' => $suffix,
 				'has_auto_field' => $hasAutoField,

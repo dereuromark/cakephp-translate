@@ -45,7 +45,7 @@
 			<div class="card-body text-center">
 				<i class="fas fa-table fa-2x text-primary mb-2"></i>
 				<h3 class="mb-0"><?= count($shadowTables) ?></h3>
-				<small class="text-muted"><?= __d('translate', 'Shadow Tables (_i18n)') ?></small>
+				<small class="text-muted"><?= __d('translate', 'Shadow Tables') ?></small>
 			</div>
 		</div>
 	</div>
@@ -121,7 +121,7 @@
 								<td>
 									<?php if ($info['has_shadow_table']) { ?>
 										<span class="badge bg-success">
-											<i class="fas fa-check"></i> <?= h($info['table']) ?>_i18n
+											<i class="fas fa-check"></i> <?= h($info['shadow_table']) ?>
 										</span>
 									<?php } else { ?>
 										<span class="badge bg-danger">
@@ -133,7 +133,7 @@
 									<?php if ($info['has_shadow_table']) { ?>
 										<?= $this->Html->link(
 											'<i class="fas fa-eye"></i>',
-											['action' => 'view', $info['table'] . '_i18n'],
+											['action' => 'view', $info['shadow_table']],
 											['escape' => false, 'class' => 'btn btn-sm btn-outline-primary', 'title' => __d('translate', 'View Shadow Table')],
 										) ?>
 									<?php } else { ?>
@@ -161,7 +161,7 @@
 	<div class="col-12">
 		<div class="card">
 			<div class="card-header bg-info text-white">
-				<h6 class="mb-0"><i class="fas fa-table"></i> <?= __d('translate', 'Existing Shadow Tables (_i18n)') ?></h6>
+				<h6 class="mb-0"><i class="fas fa-table"></i> <?= __d('translate', 'Existing Shadow Tables') ?></h6>
 			</div>
 			<div class="card-body p-0">
 				<div class="table-responsive">
@@ -284,18 +284,18 @@
 			</div>
 			<div class="card-body">
 				<p>
-					<?= __d('translate', 'CakePHP\'s TranslateBehavior allows you to translate database fields by storing translations in shadow tables with the "_i18n" suffix.') ?>
+					<?= __d('translate', 'CakePHP\'s TranslateBehavior allows you to translate database fields by storing translations in shadow tables (e.g. articles_translations).') ?>
 				</p>
 
 				<h6><?= __d('translate', 'Translation Strategies') ?>:</h6>
 				<ul>
 					<li>
 						<strong>EAV (Entity-Attribute-Value)</strong>:
-						<?= __d('translate', 'Default strategy. Stores each translated field as a separate row with columns: locale, field, content.') ?>
+						<?= __d('translate', 'Stores each translated field as a separate row with columns: locale, field, content.') ?>
 					</li>
 					<li>
 						<strong>Shadow Table</strong>:
-						<?= __d('translate', 'Creates separate columns for each translated field. Better performance but less flexible.') ?>
+						<?= __d('translate', 'CakePHP default. Creates separate columns for each translated field in *_translations tables. Better performance.') ?>
 					</li>
 				</ul>
 

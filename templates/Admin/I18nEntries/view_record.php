@@ -49,10 +49,10 @@
 						<dd class="col-sm-10">
 							<?php
 							$value = $baseRecord->$field ?? '';
-							if (strlen($value) > 200) {
-								echo '<div class="text-truncate" style="max-width: 600px;">' . h(substr($value, 0, 200)) . '...</div>';
+							if ($value) {
+								echo '<div class="text-break">' . h($value) . '</div>';
 							} else {
-								echo h($value) ?: '<span class="text-muted">(' . __d('translate', 'empty') . ')</span>';
+								echo '<span class="text-muted">(' . __d('translate', 'empty') . ')</span>';
 							}
 							?>
 						</dd>
@@ -125,10 +125,10 @@
 										<?php if ($hasTranslation) { ?>
 											<?php
 											$value = $translation->$field ?? '';
-											if (strlen($value) > 80) {
-												echo h(substr($value, 0, 77)) . '...';
+											if ($value) {
+												echo '<div class="text-break" style="max-width: 400px;">' . h($value) . '</div>';
 											} else {
-												echo h($value) ?: '<span class="text-muted">(' . __d('translate', 'empty') . ')</span>';
+												echo '<span class="text-muted">(' . __d('translate', 'empty') . ')</span>';
 											}
 											?>
 										<?php } else { ?>

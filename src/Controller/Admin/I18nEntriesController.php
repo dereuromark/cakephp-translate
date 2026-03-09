@@ -628,13 +628,27 @@ class I18nEntriesController extends TranslateAppController {
 	/**
 	 * Get configured locales for translations
 	 *
+	 * Checks the following configuration keys in order:
+	 * 1. Translate.locales - plugin-specific config
+	 * 2. App.supportedLocales - common app config
+	 * 3. I18n.supportedLocales - CakePHP I18n config
+	 *
+	 * For associative arrays (locale => label), only the keys are returned.
+	 *
 	 * @return array<string>
 	 */
 	protected function getConfiguredLocales(): array {
 		$locales = \Cake\Core\Configure::read('Translate.locales', []);
 		if (empty($locales)) {
-			// Fallback: try to get from App.supportedLocales or I18n config
 			$locales = \Cake\Core\Configure::read('App.supportedLocales', []);
+		}
+		if (empty($locales)) {
+			$locales = \Cake\Core\Configure::read('I18n.supportedLocales', []);
+		}
+
+		// Handle associative arrays like ['de_CH' => 'Deutsch', 'en_US' => 'English']
+		if (!empty($locales) && !array_is_list($locales)) {
+			$locales = array_keys($locales);
 		}
 
 		return $locales;

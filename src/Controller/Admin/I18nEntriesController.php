@@ -9,6 +9,7 @@ use Cake\Database\Schema\TableSchemaInterface;
 use Cake\Datasource\ConnectionManager;
 use Cake\Datasource\EntityInterface;
 use Cake\Http\Exception\NotFoundException;
+use Cake\ORM\Entity;
 use Cake\ORM\Locator\LocatorAwareTrait;
 use Cake\ORM\Table;
 use Cake\Utility\Inflector;
@@ -420,7 +421,7 @@ class I18nEntriesController extends TranslateAppController {
 		if (!$translation) {
 			return $this->redirect(['action' => 'addTranslation', $tableName, $id, $locale]);
 		}
-		assert($translation instanceof \Cake\ORM\Entity);
+		assert($translation instanceof Entity);
 
 		if ($this->request->is(['patch', 'post', 'put'])) {
 			$data = $this->request->getData();

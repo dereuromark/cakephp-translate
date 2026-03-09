@@ -2,6 +2,7 @@
 
 namespace Translate\Controller\Admin;
 
+use Cake\Core\Configure;
 use Cake\Database\Schema\CollectionInterface;
 use Cake\Database\Schema\TableSchemaInterface;
 use Cake\Datasource\ConnectionManager;
@@ -22,9 +23,80 @@ class TranslateBehaviorController extends TranslateAppController {
 	use LocatorAwareTrait;
 
 	/**
+	 * Default shadow table suffix (CakePHP's ShadowTableStrategy default)
+	 */
+	protected const DEFAULT_SHADOW_TABLE_SUFFIX = '_translations';
+
+	/**
+	 * All supported shadow table suffixes for detection
+	 */
+	protected const SHADOW_TABLE_SUFFIXES = ['_translations', '_i18n'];
+
+	/**
 	 * @var string|null
 	 */
 	protected ?string $defaultTable = null;
+
+	/**
+	 * Get the configured shadow table suffix.
+	 *
+	 * Configure via: Configure::write('Translate.shadowTableSuffix', '_i18n');
+	 *
+	 * @return string
+	 */
+	protected function getShadowTableSuffix(): string {
+		return Configure::read('Translate.shadowTableSuffix', static::DEFAULT_SHADOW_TABLE_SUFFIX);
+	}
+
+	/**
+	 * Get all supported shadow table suffixes for detection.
+	 *
+	 * @return array<string>
+	 */
+	protected function getShadowTableSuffixes(): array {
+		$configured = $this->getShadowTableSuffix();
+		$suffixes = static::SHADOW_TABLE_SUFFIXES;
+
+		// Ensure configured suffix is first (highest priority)
+		if (!in_array($configured, $suffixes, true)) {
+			array_unshift($suffixes, $configured);
+		} else {
+			$suffixes = array_unique(array_merge([$configured], $suffixes));
+		}
+
+		return $suffixes;
+	}
+
+	/**
+	 * Check if a table name is a shadow table and return the suffix if it is.
+	 *
+	 * @param string $tableName Table name
+	 * @return string|null The suffix if it's a shadow table, null otherwise
+	 */
+	protected function getShadowTableSuffixForTable(string $tableName): ?string {
+		foreach ($this->getShadowTableSuffixes() as $suffix) {
+			if (str_ends_with($tableName, $suffix)) {
+				return $suffix;
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * Get the base table name from a shadow table name.
+	 *
+	 * @param string $shadowTableName Shadow table name
+	 * @return string|null Base table name or null if not a shadow table
+	 */
+	protected function getBaseTableName(string $shadowTableName): ?string {
+		$suffix = $this->getShadowTableSuffixForTable($shadowTableName);
+		if ($suffix === null) {
+			return null;
+		}
+
+		return substr($shadowTableName, 0, -strlen($suffix));
+	}
 
 	/**
 	 * Index - show TranslateBehavior usage across the application
@@ -41,7 +113,7 @@ class TranslateBehaviorController extends TranslateAppController {
 		[$shadowTables, $orphanedShadowTables] = $this->findShadowTables($allTables, $schemaCollection, $connection);
 
 		// Scan for models using TranslateBehavior
-		$modelsWithBehavior = $this->scanModelsForTranslateBehavior();
+		$modelsWithBehavior = $this->scanModelsForTranslateBehavior($allTables);
 
 		// Find tables that could use TranslateBehavior
 		$candidateTables = $this->findCandidateTables($allTables, $shadowTables, $schemaCollection);
@@ -62,11 +134,11 @@ class TranslateBehaviorController extends TranslateAppController {
 	 * Filter out system tables from table list
 	 *
 	 * @param array $tables All tables
-	 * @param bool $excludeI18n Whether to exclude _i18n shadow tables
+	 * @param bool $excludeShadowTables Whether to exclude shadow tables
 	 * @return array Filtered application tables
 	 */
-	protected function filterApplicationTables(array $tables, bool $excludeI18n = false): array {
-		return array_filter($tables, function ($table) use ($excludeI18n) {
+	protected function filterApplicationTables(array $tables, bool $excludeShadowTables = false): array {
+		return array_filter($tables, function ($table) use ($excludeShadowTables) {
 			// Prefixes for plugin/system tables
 			$systemPrefixes = ['cake_migrations', 'cake_seeds', 'translate_', 'queue_', 'audit_'];
 
@@ -74,8 +146,9 @@ class TranslateBehaviorController extends TranslateAppController {
 			$systemSuffixes = ['phinxlog'];
 
 			// Check if it's a shadow table
-			if (str_ends_with($table, '_i18n')) {
-				$baseTableName = substr($table, 0, -5);
+			$shadowSuffix = $this->getShadowTableSuffixForTable($table);
+			if ($shadowSuffix !== null) {
+				$baseTableName = substr($table, 0, -strlen($shadowSuffix));
 
 				// Check if base table is a system table (by prefix)
 				foreach ($systemPrefixes as $prefix) {
@@ -91,8 +164,8 @@ class TranslateBehaviorController extends TranslateAppController {
 					}
 				}
 
-				// If excludeI18n is true, exclude all remaining shadow tables
-				if ($excludeI18n) {
+				// If excludeShadowTables is true, exclude all remaining shadow tables
+				if ($excludeShadowTables) {
 					return false;
 				}
 			}
@@ -128,13 +201,15 @@ class TranslateBehaviorController extends TranslateAppController {
 		$orphanedShadowTables = [];
 
 		foreach ($allTables as $tableName) {
-			if (str_ends_with($tableName, '_i18n')) {
-				$baseTableName = substr($tableName, 0, -5);
-				$baseTableExists = in_array($baseTableName, $allTables);
+			$suffix = $this->getShadowTableSuffixForTable($tableName);
+			if ($suffix !== null) {
+				$baseTableName = substr($tableName, 0, -strlen($suffix));
+				$baseTableExists = in_array($baseTableName, $allTables, true);
 
 				$shadowTables[$baseTableName] = [
 					'shadow_table' => $tableName,
 					'base_table' => $baseTableName,
+					'suffix' => $suffix,
 					'exists' => $baseTableExists,
 					'schema' => $schemaCollection->describe($tableName),
 					'row_count' => $connection->execute("SELECT COUNT(*) as count FROM `{$tableName}`")->fetch('assoc')['count'] ?? 0,
@@ -193,12 +268,12 @@ class TranslateBehaviorController extends TranslateAppController {
 			return $this->redirect(['action' => 'index']);
 		}
 
-		$baseTableName = substr($tableName, 0, -5);
+		$baseTableName = $this->getBaseTableName($tableName);
 		$strategy = $this->detectTranslationStrategy($schema);
 		$sampleData = $this->getSampleData($connection, $tableName);
 		$translatedFields = $this->getTranslatedFields($sampleData, $strategy);
 		$locales = $this->getLocalesInUse($connection, $tableName, $strategy);
-		$baseTableExists = in_array($baseTableName, $schemaCollection->listTables());
+		$baseTableExists = $baseTableName !== null && in_array($baseTableName, $schemaCollection->listTables(), true);
 		$modelInfo = $baseTableExists ? $this->getModelInfo($baseTableName) : null;
 
 		$this->set(compact(
@@ -223,7 +298,7 @@ class TranslateBehaviorController extends TranslateAppController {
 	 * @return bool
 	 */
 	protected function validateShadowTableName(?string $tableName): bool {
-		return $tableName && str_ends_with($tableName, '_i18n');
+		return $tableName !== null && $this->getShadowTableSuffixForTable($tableName) !== null;
 	}
 
 	/**
@@ -263,14 +338,11 @@ class TranslateBehaviorController extends TranslateAppController {
 	/**
 	 * Scan application models for TranslateBehavior usage
 	 *
+	 * @param array $allTables All database tables
 	 * @return array
 	 */
-	protected function scanModelsForTranslateBehavior(): array {
+	protected function scanModelsForTranslateBehavior(array $allTables): array {
 		$modelsWithBehavior = [];
-		/** @var \Cake\Database\Connection $connection */
-		$connection = ConnectionManager::get('default');
-		$schemaCollection = $connection->getSchemaCollection();
-		$allTables = $schemaCollection->listTables();
 
 		// Get main app tables (excluding system/plugin tables and shadow tables)
 		$appTables = $this->filterApplicationTables($allTables, true);
@@ -283,13 +355,25 @@ class TranslateBehaviorController extends TranslateAppController {
 					$behavior = $table->behaviors()->get('Translate');
 					$config = $behavior->getConfig();
 
+					// Check for shadow table with any supported suffix
+					$hasShadowTable = false;
+					$shadowTableName = null;
+					foreach ($this->getShadowTableSuffixes() as $suffix) {
+						if (in_array($tableName . $suffix, $allTables, true)) {
+							$hasShadowTable = true;
+							$shadowTableName = $tableName . $suffix;
+							break;
+						}
+					}
+
 					$modelsWithBehavior[$tableName] = [
 						'table' => $tableName,
 						'model' => get_class($table),
 						'fields' => $config['fields'] ?? [],
 						'strategy' => $config['strategy'] ?? 'eav',
 						'strategyClass' => $config['strategyClass'] ?? null,
-						'has_shadow_table' => in_array($tableName . '_i18n', $allTables),
+						'has_shadow_table' => $hasShadowTable,
+						'shadow_table' => $shadowTableName,
 					];
 				}
 			} catch (Exception $e) {
@@ -479,18 +563,20 @@ class TranslateBehaviorController extends TranslateAppController {
 		if ($this->request->is('post')) {
 			$data = $this->request->getData();
 			$selectedFields = $data['fields'] ?? [];
-			$strategy = $data['strategy'] ?? 'eav';
+			$strategy = $data['strategy'] ?? 'shadow_table';
 			$includeAutoField = (bool)($data['include_auto_field'] ?? true);
 
 			if (empty($selectedFields)) {
 				$this->Flash->warning(__d('translate', 'Please select at least one field to translate'));
 			} else {
 				$migrationCode = $this->generateMigrationCode($tableName, $selectedFields, $translatableFields, $strategy, $includeAutoField);
-				$migrationName = 'AddI18nFor' . Inflector::camelize($tableName);
+				$migrationName = 'AddTranslationsFor' . Inflector::camelize($tableName);
 			}
 		}
 
-		$this->set(compact('tableName', 'translatableFields', 'migrationCode', 'migrationName', 'selectedFields', 'strategy', 'includeAutoField'));
+		$shadowTableSuffix = $this->getShadowTableSuffix();
+
+		$this->set(compact('tableName', 'translatableFields', 'migrationCode', 'migrationName', 'selectedFields', 'strategy', 'includeAutoField', 'shadowTableSuffix'));
 
 		return null;
 	}
@@ -506,8 +592,8 @@ class TranslateBehaviorController extends TranslateAppController {
 	 * @return string
 	 */
 	protected function generateMigrationCode(string $tableName, array $selectedFields, array $allFields, string $strategy, bool $includeAutoField = true): string {
-		$shadowTableName = $tableName . '_i18n';
-		$className = 'AddI18nFor' . Inflector::camelize($tableName);
+		$shadowTableName = $tableName . $this->getShadowTableSuffix();
+		$className = 'AddTranslationsFor' . Inflector::camelize($tableName);
 
 		if ($strategy === 'eav') {
 			return $this->generateEavMigration($className, $shadowTableName, $tableName, $includeAutoField);
@@ -545,7 +631,7 @@ declare(strict_types=1);
 use Migrations\BaseMigration;
 
 /**
- * Add i18n translation table for {$baseTableName} using EAV strategy
+ * Add translation table for {$baseTableName} using EAV strategy
  */
 class {$className} extends BaseMigration
 {
@@ -666,7 +752,7 @@ declare(strict_types=1);
 use Migrations\BaseMigration;
 
 /**
- * Add i18n translation table for {$baseTableName} using Shadow Table strategy
+ * Add translation table for {$baseTableName} using Shadow Table strategy
  */
 class {$className} extends BaseMigration
 {

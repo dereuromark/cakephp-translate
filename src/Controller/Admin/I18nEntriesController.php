@@ -420,6 +420,7 @@ class I18nEntriesController extends TranslateAppController {
 		if (!$translation) {
 			return $this->redirect(['action' => 'addTranslation', $tableName, $id, $locale]);
 		}
+		assert($translation instanceof \Cake\ORM\Entity);
 
 		if ($this->request->is(['patch', 'post', 'put'])) {
 			$data = $this->request->getData();
@@ -439,7 +440,6 @@ class I18nEntriesController extends TranslateAppController {
 				}
 			}
 
-			/** @var \Cake\ORM\Entity $translation */
 			$translation = $translationTable->patchEntity($translation, $data);
 			if ($translationTable->save($translation)) {
 				$this->Flash->success(__d('translate', 'Translation updated successfully.'));

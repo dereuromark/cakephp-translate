@@ -253,9 +253,7 @@ class I18nEntriesController extends TranslateAppController {
 		));
 		$this->set('showBaseRecords', true);
 
-		$this->render('entries_base');
-
-		return null;
+		return $this->render('entries_base');
 	}
 
 	/**
@@ -383,9 +381,7 @@ class I18nEntriesController extends TranslateAppController {
 			'displayField',
 		));
 
-		$this->render('translation_form');
-
-		return null;
+		return $this->render('translation_form');
 	}
 
 	/**
@@ -443,6 +439,7 @@ class I18nEntriesController extends TranslateAppController {
 				}
 			}
 
+			/** @var \Cake\ORM\Entity $translation */
 			$translation = $translationTable->patchEntity($translation, $data);
 			if ($translationTable->save($translation)) {
 				$this->Flash->success(__d('translate', 'Translation updated successfully.'));
@@ -464,9 +461,7 @@ class I18nEntriesController extends TranslateAppController {
 			'displayField',
 		));
 
-		$this->render('translation_form');
-
-		return null;
+		return $this->render('translation_form');
 	}
 
 	/**

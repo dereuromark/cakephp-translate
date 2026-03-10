@@ -2,6 +2,7 @@
 /**
  * @var \App\View\AppView $this
  * @var iterable<\Translate\Model\Entity\TranslateString> $translateStrings
+ * @var array<\Translate\Model\Entity\TranslateLocale> $translateLocales
  * @var bool $_isSearch
  */
 
@@ -94,6 +95,18 @@ use Cake\Core\Plugin;
 			</div>
 		</div>
 
+		<!-- Status Legend -->
+		<?php if ($translateLocales) : ?>
+		<div class="mb-3">
+			<small class="text-muted">
+				<i class="fas fa-info-circle"></i> <?= __d('translate', 'Status:') ?>
+				<span class="badge bg-success ms-2"><?= __d('translate', 'Confirmed') ?></span>
+				<span class="badge bg-warning text-dark"><?= __d('translate', 'Pending review') ?></span>
+				<span class="badge bg-danger"><?= __d('translate', 'Missing') ?></span>
+			</small>
+		</div>
+		<?php endif; ?>
+
 		<!-- Results Table -->
 		<div class="card">
 			<div class="card-body">
@@ -102,18 +115,25 @@ use Cake\Core\Plugin;
 						<thead>
 							<tr>
 								<th><?= $this->Paginator->sort('name'); ?></th>
+								<th class="text-center"><?= __d('translate', 'Status') ?></th>
 								<th class="text-center"><?= $this->Paginator->sort('active') ?></th>
 								<th class="text-center"><?= $this->Paginator->sort('is_html', 'HTML') ?></th>
 								<th class="text-center"><?= $this->Paginator->sort('plural') ?></th>
 								<th class="text-center"><?= $this->Paginator->sort('context') ?></th>
 								<th><?= $this->Paginator->sort('last_import', null, ['direction' => 'desc']) ?></th>
-								<th><?= $this->Paginator->sort('created', null, ['direction' => 'desc']) ?></th>
 								<th><?= $this->Paginator->sort('modified', null, ['direction' => 'desc']) ?></th>
 								<th class="text-center"><?= __d('translate', 'Actions') ?></th>
 							</tr>
 						</thead>
 						<tbody>
 							<?php foreach ($translateStrings as $translateString) : ?>
+							<?php
+							// Build a map of locale_id => term for quick lookup
+							$termsMap = [];
+							foreach ($translateString->translate_terms as $term) {
+								$termsMap[$term->translate_locale_id] = $term;
+							}
+							?>
 							<tr>
 								<td>
 									<span class="badge bg-dark me-2">
@@ -121,6 +141,32 @@ use Cake\Core\Plugin;
 										<?= h($translateString->translate_domain->name); ?>
 									</span>
 									<?= h($this->Text->truncate($translateString['name'])); ?>
+								</td>
+								<td class="text-center text-nowrap">
+									<?php foreach ($translateLocales as $locale) : ?>
+										<?php
+										$term = $termsMap[$locale->id] ?? null;
+										if (!$term || $term->content === null || $term->content === '') {
+											// Untranslated - red badge
+											$badgeClass = 'bg-danger';
+											$icon = 'times-circle';
+											$title = __d('translate', 'Missing');
+										} elseif (!$term->confirmed) {
+											// Unconfirmed/Fuzzy - yellow badge
+											$badgeClass = 'bg-warning text-dark';
+											$icon = 'exclamation-circle';
+											$title = __d('translate', 'Pending review');
+										} else {
+											// Confirmed/Done - green badge
+											$badgeClass = 'bg-success';
+											$icon = 'check-circle';
+											$title = __d('translate', 'Confirmed');
+										}
+										?>
+										<span class="badge <?= $badgeClass ?>" title="<?= h($locale->locale) ?>: <?= h($title) ?>" data-bs-toggle="tooltip">
+											<?= h($locale->iso2 ?? substr($locale->locale, 0, 2)) ?>
+										</span>
+									<?php endforeach; ?>
 								</td>
 								<td class="text-center">
 									<?= $this->element('Translate.yes_no', ['value' => $translateString->active]) ?>
@@ -135,7 +181,6 @@ use Cake\Core\Plugin;
 									<?= $this->element('Translate.yes_no', ['value' => $translateString->context, 'title' => $translateString->context]) ?>
 								</td>
 								<td><small><?= $this->Time->nice($translateString->last_import) ?></small></td>
-								<td><small><?= $this->Time->nice($translateString->created) ?></small></td>
 								<td><small><?= $this->Time->nice($translateString->modified) ?></small></td>
 								<td class="text-center">
 									<div class="btn-group btn-group-sm" role="group">

@@ -24,13 +24,15 @@ class TranslateBehaviorController extends TranslateAppController {
 
 	/**
 	 * Default shadow table suffix (CakePHP's ShadowTableStrategy default)
-     * @var string
+	 *
+	 * @var string
 	 */
 	protected const DEFAULT_SHADOW_TABLE_SUFFIX = '_translations';
 
 	/**
 	 * All supported shadow table suffixes for detection
-     * @var array
+	 *
+	 * @var array<string>
 	 */
 	protected const SHADOW_TABLE_SUFFIXES = ['_translations', '_i18n'];
 

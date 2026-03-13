@@ -54,6 +54,7 @@ class TranslateStringsController extends TranslateAppController {
 		$query = $this->TranslateStrings->find('search', search: $this->request->getQuery());
 		$query->contain([
 			'TranslateDomains',
+			'TranslateTerms',
 		])->innerJoinWith('TranslateDomains', function ($q) {
 			return $q->where([
 				'TranslateDomains.translate_project_id IS' => $this->Translation->currentProjectId(),
@@ -69,7 +70,15 @@ class TranslateStringsController extends TranslateAppController {
 				'active' => true,
 			])
 			->toArray();
-		$this->set(compact('translateStrings', 'translateDomains'));
+
+		// Get locales for the current project for status badges
+		$translateLocales = $this->TranslateStrings->TranslateTerms->TranslateLocales->find()
+			->where(['translate_project_id IS' => $this->Translation->currentProjectId()])
+			->orderBy(['locale' => 'ASC'])
+			->all()
+			->toArray();
+
+		$this->set(compact('translateStrings', 'translateDomains', 'translateLocales'));
 	}
 
 	/**

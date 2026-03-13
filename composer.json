@@ -6,7 +6,9 @@
 	"keywords": [
 		"cakephp",
 		"plugin",
-		"i18n"
+		"i18n",
+		"admin-panel",
+		"standalone-ui"
 	],
 	"authors": [
 		{

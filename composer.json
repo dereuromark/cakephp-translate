@@ -8,7 +8,11 @@
 		"plugin",
 		"i18n",
 		"admin-panel",
-		"standalone-ui"
+		"standalone-ui",
+		"l10n",
+		"localization",
+		"translations",
+		"po-files"
 	],
 	"authors": [
 		{

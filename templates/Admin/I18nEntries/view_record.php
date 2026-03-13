@@ -1,0 +1,207 @@
+<?php
+/**
+ * @var \App\View\AppView $this
+ * @var string $tableName
+ * @var string $baseTableName
+ * @var \Cake\ORM\Entity $baseRecord
+ * @var array $translations
+ * @var array<string, \Cake\ORM\Entity> $translationsByLocale
+ * @var array<string> $locales
+ * @var array<string> $translatedFields
+ * @var bool $hasAutoField
+ * @var string|null $displayField
+ */
+?>
+<nav aria-label="breadcrumb">
+	<ol class="breadcrumb">
+		<li class="breadcrumb-item">
+			<?= $this->Html->link(__d('translate', 'I18n Entries'), ['action' => 'index']) ?>
+		</li>
+		<li class="breadcrumb-item">
+			<?= $this->Html->link(h($baseTableName), ['action' => 'entries', $tableName]) ?>
+		</li>
+		<li class="breadcrumb-item active">
+			<?= __d('translate', 'Record #{0}', $baseRecord->id) ?>
+		</li>
+	</ol>
+</nav>
+
+<div class="row mb-4">
+	<div class="col-12">
+		<div class="card">
+			<div class="card-header bg-primary text-white">
+				<h5 class="mb-0">
+					<i class="fas fa-database"></i>
+					<?= h($baseTableName) ?> #<?= h($baseRecord->id) ?>
+					<?php if ($displayField && $baseRecord->$displayField) { ?>
+						- <?= h($baseRecord->$displayField) ?>
+					<?php } ?>
+				</h5>
+			</div>
+			<div class="card-body">
+				<h6><?= __d('translate', 'Base Record Fields') ?></h6>
+				<dl class="row mb-0">
+					<dt class="col-sm-2"><?= __d('translate', 'ID') ?></dt>
+					<dd class="col-sm-10"><?= h($baseRecord->id) ?></dd>
+
+					<?php foreach ($translatedFields as $field) { ?>
+						<dt class="col-sm-2"><?= h(ucfirst($field)) ?></dt>
+						<dd class="col-sm-10">
+							<?php
+							$value = $baseRecord->$field ?? '';
+							if ($value) {
+								echo '<div class="text-break">' . h($value) . '</div>';
+							} else {
+								echo '<span class="text-muted">(' . __d('translate', 'empty') . ')</span>';
+							}
+							?>
+						</dd>
+					<?php } ?>
+				</dl>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-12">
+		<div class="card">
+			<div class="card-header d-flex justify-content-between align-items-center">
+				<h5 class="mb-0">
+					<i class="fas fa-language"></i> <?= __d('translate', 'Translations') ?>
+				</h5>
+				<?= $this->Form->postLink(
+					'<i class="fas fa-magic"></i> ' . __d('translate', 'Auto-translate All'),
+					['action' => 'autoTranslateRecord', $tableName, $baseRecord->id],
+					[
+						'class' => 'btn btn-info btn-sm',
+						'escape' => false,
+						'confirm' => __d('translate', 'Auto-translate this record to all configured locales?'),
+					],
+				) ?>
+			</div>
+			<div class="card-body p-0">
+				<table class="table table-striped mb-0">
+					<thead class="table-light">
+						<tr>
+							<th><?= __d('translate', 'Locale') ?></th>
+							<?php foreach ($translatedFields as $field) { ?>
+								<th><?= h(ucfirst($field)) ?></th>
+							<?php } ?>
+							<?php if ($hasAutoField) { ?>
+								<th><?= __d('translate', 'Type') ?></th>
+							<?php } ?>
+							<th class="actions"><?= __d('translate', 'Actions') ?></th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php foreach ($locales as $locale) { ?>
+							<?php
+							$translation = $translationsByLocale[$locale] ?? null;
+							$hasTranslation = $translation !== null;
+
+							// Check if fully translated - only consider fields that have content in base record
+							$isFullyTranslated = false;
+							if ($hasTranslation) {
+								$neededCount = 0;
+								$translatedCount = 0;
+								foreach ($translatedFields as $field) {
+									if (!empty($baseRecord->$field)) {
+										$neededCount++;
+										if (!empty($translation->$field)) {
+											$translatedCount++;
+										}
+									}
+								}
+								$isFullyTranslated = $neededCount > 0 && $translatedCount === $neededCount;
+							}
+
+							$rowClass = !$hasTranslation ? 'table-warning' : '';
+							?>
+							<tr class="<?= $rowClass ?>">
+								<td>
+									<span class="badge bg-<?= $hasTranslation ? 'primary' : 'secondary' ?>">
+										<?= h($locale) ?>
+									</span>
+								</td>
+								<?php foreach ($translatedFields as $field) { ?>
+									<td>
+										<?php if ($hasTranslation) { ?>
+											<?php
+											$value = $translation->$field ?? '';
+											if ($value) {
+												echo '<div class="text-break" style="max-width: 400px;">' . h($value) . '</div>';
+											} else {
+												echo '<span class="text-muted">(' . __d('translate', 'empty') . ')</span>';
+											}
+											?>
+										<?php } else { ?>
+											<span class="text-muted">
+												<i class="fas fa-minus"></i> <?= __d('translate', 'Not translated') ?>
+											</span>
+										<?php } ?>
+									</td>
+								<?php } ?>
+								<?php if ($hasAutoField) { ?>
+									<td>
+										<?php if ($hasTranslation) { ?>
+											<?php if ($translation->auto) { ?>
+												<span class="badge bg-info" title="<?= __d('translate', 'Auto-translated') ?>">
+													<i class="fas fa-robot"></i> <?= __d('translate', 'Auto') ?>
+												</span>
+											<?php } else { ?>
+												<span class="badge bg-secondary" title="<?= __d('translate', 'Manual') ?>">
+													<i class="fas fa-user"></i> <?= __d('translate', 'Manual') ?>
+												</span>
+											<?php } ?>
+										<?php } else { ?>
+											<span class="text-muted">-</span>
+										<?php } ?>
+									</td>
+								<?php } ?>
+								<td class="actions">
+									<?php if ($hasTranslation) { ?>
+										<?= $this->Html->link(
+											'<i class="fas fa-edit"></i>',
+											['action' => 'editTranslation', $tableName, $baseRecord->id, $locale],
+											['class' => 'btn btn-sm btn-outline-primary', 'escape' => false, 'title' => __d('translate', 'Edit')],
+										) ?>
+									<?php } else { ?>
+										<?= $this->Html->link(
+											'<i class="fas fa-plus"></i>',
+											['action' => 'addTranslation', $tableName, $baseRecord->id, $locale],
+											['class' => 'btn btn-sm btn-success', 'escape' => false, 'title' => __d('translate', 'Add')],
+										) ?>
+									<?php } ?>
+									<?php if (!$isFullyTranslated) { ?>
+										<?= $this->Form->postLink(
+											'<i class="fas fa-magic"></i>',
+											['action' => 'autoTranslateRecord', $tableName, $baseRecord->id, '?' => ['locales' => [$locale]]],
+											[
+												'class' => 'btn btn-sm btn-outline-info',
+												'escape' => false,
+												'title' => __d('translate', 'Auto-translate'),
+												'confirm' => __d('translate', 'Auto-translate to {0}?', $locale),
+												'block' => true,
+											],
+										) ?>
+									<?php } ?>
+								</td>
+							</tr>
+						<?php } ?>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row mt-4">
+	<div class="col-12">
+		<?= $this->Html->link(
+			'<i class="fas fa-arrow-left"></i> ' . __d('translate', 'Back to List'),
+			['action' => 'entries', $tableName],
+			['class' => 'btn btn-secondary', 'escape' => false],
+		) ?>
+	</div>
+</div>

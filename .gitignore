@@ -6,3 +6,4 @@ vendor/
 tmp/
 .idea/
 config/Migrations/schema-dump-default.lock
+.phpcs.cache

@@ -366,4 +366,155 @@ class TranslateController extends TranslateAppController {
 		return $this->Translation->autoRedirect(['action' => 'index']);
 	}
 
+	/**
+	 * Detailed translation progress statistics page.
+	 *
+	 * Shows translation completeness and confirmation status
+	 * broken down by locale and domain.
+	 *
+	 * @return \Cake\Http\Response|null|void
+	 */
+	public function stats() {
+		$projectId = $this->Translation->currentProjectId();
+		if (!$projectId) {
+			$this->Flash->error(__d('translate', 'No project selected.'));
+
+			return $this->redirect(['action' => 'index']);
+		}
+
+		$translateLocalesTable = $this->fetchTable('Translate.TranslateLocales');
+		$translateStringsTable = $this->fetchTable('Translate.TranslateStrings');
+		$translateTermsTable = $this->fetchTable('Translate.TranslateTerms');
+
+		// Get active locales for the project
+		/** @var array<\Translate\Model\Entity\TranslateLocale> $locales */
+		$locales = $translateLocalesTable->find()
+			->where([
+				'translate_project_id' => $projectId,
+				'active' => true,
+			])
+			->orderBy(['name' => 'ASC'])
+			->toArray();
+
+		// Get active domains for the project
+		/** @var array<\Translate\Model\Entity\TranslateDomain> $domains */
+		$domains = $this->TranslateDomains->find()
+			->where([
+				'translate_project_id' => $projectId,
+				'active' => true,
+			])
+			->orderBy(['name' => 'ASC'])
+			->toArray();
+
+		// Calculate stats per locale and domain
+		$stats = [];
+		$localeTotals = [];
+		$domainTotals = [];
+
+		foreach ($locales as $locale) {
+			$localeTotals[$locale->id] = [
+				'locale' => $locale,
+				'total_strings' => 0,
+				'translated' => 0,
+				'confirmed' => 0,
+				'untranslated' => 0,
+				'unconfirmed' => 0,
+				'translation_percentage' => 0,
+				'confirmation_percentage' => 0,
+			];
+		}
+
+		foreach ($domains as $domain) {
+			// Count total strings in this domain
+			$totalStrings = $translateStringsTable->find()
+				->where(['translate_domain_id' => $domain->id])
+				->count();
+
+			$domainTotals[$domain->id] = [
+				'domain' => $domain,
+				'total_strings' => $totalStrings,
+			];
+
+			foreach ($locales as $locale) {
+				$localeId = $locale->id;
+
+				// Count translated strings for this locale/domain
+				$translated = $translateTermsTable->find()
+					->innerJoinWith('TranslateStrings', function ($q) use ($domain) {
+						return $q->where(['TranslateStrings.translate_domain_id' => $domain->id]);
+					})
+					->where([
+						'TranslateTerms.translate_locale_id' => $localeId,
+						'TranslateTerms.content IS NOT' => null,
+						'TranslateTerms.content !=' => '',
+					])
+					->count();
+
+				// Count confirmed translations for this locale/domain
+				$confirmed = $translateTermsTable->find()
+					->innerJoinWith('TranslateStrings', function ($q) use ($domain) {
+						return $q->where(['TranslateStrings.translate_domain_id' => $domain->id]);
+					})
+					->where([
+						'TranslateTerms.translate_locale_id' => $localeId,
+						'TranslateTerms.content IS NOT' => null,
+						'TranslateTerms.content !=' => '',
+						'TranslateTerms.confirmed' => true,
+					])
+					->count();
+
+				$stats[$domain->id][$localeId] = [
+					'total' => $totalStrings,
+					'translated' => $translated,
+					'confirmed' => $confirmed,
+					'untranslated' => $totalStrings - $translated,
+					'unconfirmed' => $translated - $confirmed,
+					'translation_percentage' => $totalStrings > 0 ? (int)(($translated / $totalStrings) * 100) : 0,
+					'confirmation_percentage' => $translated > 0 ? (int)(($confirmed / $translated) * 100) : 0,
+				];
+
+				// Accumulate locale totals
+				if (isset($localeTotals[$localeId])) {
+					$localeTotals[$localeId]['total_strings'] += $totalStrings;
+					$localeTotals[$localeId]['translated'] += $translated;
+					$localeTotals[$localeId]['confirmed'] += $confirmed;
+				}
+			}
+		}
+
+		// Calculate locale total percentages
+		foreach ($localeTotals as $localeId => $data) {
+			$localeTotals[$localeId]['untranslated'] = $data['total_strings'] - $data['translated'];
+			$localeTotals[$localeId]['unconfirmed'] = $data['translated'] - $data['confirmed'];
+			$localeTotals[$localeId]['translation_percentage'] = $data['total_strings'] > 0
+				? (int)(($data['translated'] / $data['total_strings']) * 100)
+				: 0;
+			$localeTotals[$localeId]['confirmation_percentage'] = $data['translated'] > 0
+				? (int)(($data['confirmed'] / $data['translated']) * 100)
+				: 0;
+		}
+
+		// Calculate grand totals
+		$grandTotal = [
+			'total_strings' => 0,
+			'translated' => 0,
+			'confirmed' => 0,
+		];
+		foreach ($localeTotals as $data) {
+			$grandTotal['total_strings'] += $data['total_strings'];
+			$grandTotal['translated'] += $data['translated'];
+			$grandTotal['confirmed'] += $data['confirmed'];
+		}
+		$grandTotal['untranslated'] = $grandTotal['total_strings'] - $grandTotal['translated'];
+		$grandTotal['unconfirmed'] = $grandTotal['translated'] - $grandTotal['confirmed'];
+		$grandTotal['translation_percentage'] = $grandTotal['total_strings'] > 0
+			? (int)(($grandTotal['translated'] / $grandTotal['total_strings']) * 100)
+			: 0;
+		$grandTotal['confirmation_percentage'] = $grandTotal['translated'] > 0
+			? (int)(($grandTotal['confirmed'] / $grandTotal['translated']) * 100)
+			: 0;
+
+		$this->set(compact('locales', 'domains', 'stats', 'localeTotals', 'domainTotals', 'grandTotal'));
+	}
+
 }

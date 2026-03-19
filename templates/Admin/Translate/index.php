@@ -880,6 +880,11 @@ $totalColor = $this->Translation->getColor($totalCoverage);
 				<div class="card-body p-0">
 					<div class="list-group list-group-flush">
 						<?= $this->Html->link(
+							'<i class="fas fa-chart-bar"></i> ' . __d('translate', 'Detailed Statistics'),
+							['action' => 'stats'],
+							['escape' => false, 'class' => 'list-group-item list-group-item-action'],
+						) ?>
+						<?= $this->Html->link(
 							'<i class="fas fa-file-import"></i> ' . __d('translate', 'Import from PO/POT files'),
 							['controller' => 'TranslateStrings', 'action' => 'extract'],
 							['escape' => false, 'class' => 'list-group-item list-group-item-action'],

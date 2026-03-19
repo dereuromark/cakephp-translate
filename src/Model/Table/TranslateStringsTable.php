@@ -378,11 +378,150 @@ class TranslateStringsTable extends Table {
 				continue;
 			}
 
+			// Get API suggestions
 			$translations = $translator->suggest($translateString->name, $translateLocale->locale, $baseLocale);
+
+			// Get Translation Memory suggestions
+			$memorySuggestions = $this->getSuggestionsFromMemory(
+				$translateString->name,
+				$translateString->translate_domain->translate_project_id,
+				$translateLocale->id,
+				$translateString->id,
+			);
+
+			// Merge memory suggestions with API suggestions
+			foreach ($memorySuggestions as $suggestion) {
+				$key = 'Memory (' . $suggestion['similarity'] . '%)';
+				$translations[$key] = $suggestion['translation'];
+			}
+
 			$result[$translateLocale->locale] = $translations;
 		}
 
 		return $result;
+	}
+
+	/**
+	 * Get translation suggestions from existing translations in the database (Translation Memory).
+	 *
+	 * Finds exact and fuzzy matches of similar strings within the same project
+	 * and returns their existing translations for the specified locale.
+	 *
+	 * @param string $text The source text to find matches for
+	 * @param int $projectId The project ID to search within
+	 * @param int $localeId The locale ID to get translations for
+	 * @param int|null $excludeStringId Optional string ID to exclude from results (current string)
+	 * @param int $similarityThreshold Minimum similarity percentage for fuzzy matches (default 90)
+	 * @return array<array{type: string, similarity: int, original: string, translation: string}>
+	 */
+	public function getSuggestionsFromMemory(
+		string $text,
+		int $projectId,
+		int $localeId,
+		?int $excludeStringId = null,
+		int $similarityThreshold = 90,
+	): array {
+		$suggestions = [];
+		$textLength = strlen($text);
+
+		// Skip very short strings (less likely to have meaningful matches)
+		if ($textLength < 3) {
+			return [];
+		}
+
+		// Query for potential matches within ±20% length (for fuzzy matching performance)
+		$minLength = (int)($textLength * 0.8);
+		$maxLength = (int)($textLength * 1.2);
+
+		$query = $this->find()
+			->select([
+				'TranslateStrings.id',
+				'TranslateStrings.name',
+			])
+			->innerJoinWith('TranslateDomains', function ($q) use ($projectId) {
+				return $q->where(['TranslateDomains.translate_project_id' => $projectId]);
+			})
+			->innerJoinWith('TranslateTerms', function ($q) use ($localeId) {
+				return $q->where([
+					'TranslateTerms.translate_locale_id' => $localeId,
+					'TranslateTerms.content IS NOT' => null,
+					'TranslateTerms.content !=' => '',
+				]);
+			})
+			->contain([
+				'TranslateTerms' => function ($q) use ($localeId) {
+					return $q->where(['TranslateTerms.translate_locale_id' => $localeId]);
+				},
+			]);
+
+		if ($excludeStringId !== null) {
+			$query->where(['TranslateStrings.id !=' => $excludeStringId]);
+		}
+
+		/** @var array<\Translate\Model\Entity\TranslateString> $strings */
+		$strings = $query->toArray();
+
+		foreach ($strings as $string) {
+			$stringName = $string->name;
+			$stringLength = strlen($stringName);
+
+			// Exact match
+			if ($stringName === $text) {
+				foreach ($string->translate_terms as $term) {
+					$suggestions[] = [
+						'type' => 'exact',
+						'similarity' => 100,
+						'original' => $stringName,
+						'translation' => $term->content,
+					];
+				}
+
+				continue;
+			}
+
+			// Fuzzy match - only check strings within length range
+			if ($stringLength < $minLength || $stringLength > $maxLength) {
+				continue;
+			}
+
+			$similarity = $this->calculateSimilarity($text, $stringName);
+			if ($similarity >= $similarityThreshold) {
+				foreach ($string->translate_terms as $term) {
+					$suggestions[] = [
+						'type' => 'fuzzy',
+						'similarity' => $similarity,
+						'original' => $stringName,
+						'translation' => $term->content,
+					];
+				}
+			}
+		}
+
+		// Sort by similarity (highest first)
+		usort($suggestions, function ($a, $b) {
+			return $b['similarity'] <=> $a['similarity'];
+		});
+
+		// Limit results to prevent overwhelming the UI
+		return array_slice($suggestions, 0, 5);
+	}
+
+	/**
+	 * Calculate similarity percentage between two strings using Levenshtein distance.
+	 *
+	 * @param string $str1 First string
+	 * @param string $str2 Second string
+	 * @return int Similarity percentage (0-100)
+	 */
+	protected function calculateSimilarity(string $str1, string $str2): int {
+		$maxLength = max(strlen($str1), strlen($str2));
+		if ($maxLength === 0) {
+			return 100;
+		}
+
+		$distance = levenshtein($str1, $str2);
+
+		return (int)((1 - ($distance / $maxLength)) * 100);
 	}
 
 }

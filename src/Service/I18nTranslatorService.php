@@ -24,6 +24,85 @@ class I18nTranslatorService {
 	protected ?Translator $translator = null;
 
 	/**
+	 * Translate text using Translation Memory first, then fall back to API.
+	 *
+	 * Checks for exact matches in previously translated strings.
+	 * Only uses API if no exact match is found.
+	 *
+	 * @param string $text Source text
+	 * @param string $targetLocale Target locale (e.g., 'de', 'de_DE')
+	 * @param string $sourceLocale Source locale (e.g., 'en', 'en_US')
+	 * @return array{translation: string|null, source: string} Translation result with source indicator
+	 */
+	public function translateWithMemory(string $text, string $targetLocale, string $sourceLocale = 'en'): array {
+		if (empty($text)) {
+			return ['translation' => null, 'source' => 'empty'];
+		}
+
+		$targetLang = $this->extractLanguageCode($targetLocale);
+		$sourceLang = $this->extractLanguageCode($sourceLocale);
+
+		if ($targetLang === $sourceLang) {
+			return ['translation' => $text, 'source' => 'same_language'];
+		}
+
+		// Check Translation Memory for exact match first
+		$memoryMatch = $this->findExactMemoryMatch($text, $targetLocale);
+		if ($memoryMatch !== null) {
+			return ['translation' => $memoryMatch, 'source' => 'memory'];
+		}
+
+		// Fall back to API translation
+		$apiTranslation = $this->translate($text, $targetLocale, $sourceLocale);
+
+		return ['translation' => $apiTranslation, 'source' => $apiTranslation !== null ? 'api' : 'failed'];
+	}
+
+	/**
+	 * Find exact match in Translation Memory (previously translated strings).
+	 *
+	 * @param string $text Source text to find
+	 * @param string $targetLocale Target locale
+	 * @return string|null Translated text if exact match found, null otherwise
+	 */
+	protected function findExactMemoryMatch(string $text, string $targetLocale): ?string {
+		try {
+			/** @var \Translate\Model\Table\TranslateTermsTable $termsTable */
+			$termsTable = $this->fetchTable('Translate.TranslateTerms');
+			/** @var \Translate\Model\Table\TranslateStringsTable $stringsTable */
+			$stringsTable = $this->fetchTable('Translate.TranslateStrings');
+
+			// Find exact string match
+			$exactMatch = $stringsTable->find()
+				->where(['name' => $text])
+				->first();
+
+			if (!$exactMatch) {
+				return null;
+			}
+
+			// Find translation for this string in the target locale
+			$term = $termsTable->find()
+				->contain(['TranslateLocales'])
+				->where([
+					'translate_string_id' => $exactMatch->id,
+					'TranslateLocales.locale' => $targetLocale,
+					'TranslateTerms.content IS NOT' => null,
+					'TranslateTerms.content !=' => '',
+				])
+				->first();
+
+			if ($term && !empty($term->content)) {
+				return $term->content;
+			}
+		} catch (Exception $e) {
+			Log::debug('I18nTranslatorService: Memory lookup failed - ' . $e->getMessage());
+		}
+
+		return null;
+	}
+
+	/**
 	 * Translate text using configured translation engine
 	 *
 	 * @param string $text Source text

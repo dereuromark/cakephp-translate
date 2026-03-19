@@ -635,4 +635,5 @@ class TranslateController extends TranslateAppController {
 
 		return $names;
 	}
+
 }

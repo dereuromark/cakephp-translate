@@ -2,8 +2,11 @@
 
 namespace Translate\Controller\Admin;
 
+use Cake\Core\Plugin;
+use Cake\Utility\Inflector;
 use Cake\View\JsonView;
 use DateTime;
+use DirectoryIterator;
 use Exception;
 use Translate\Controller\TranslateAppController;
 use Translate\Lib\ConvertLib;
@@ -517,6 +520,120 @@ class TranslateController extends TranslateAppController {
 			: 0;
 
 		$this->set(compact('locales', 'domains', 'stats', 'localeTotals', 'domainTotals', 'grandTotal'));
+	}
+
+	/**
+	 * Display controller names in singular and plural forms for translation.
+	 *
+	 * Scans the project path (if configured) or loaded plugins for controller files
+	 * and displays them with their singular/plural forms ready for use in translations.
+	 *
+	 * @return void
+	 */
+	public function controllerNames(): void {
+		$projectId = $this->Translation->currentProjectId();
+		$controllerNames = [];
+
+		// Get project path if available
+		$projectPath = null;
+		if ($projectId) {
+			$project = $this->TranslateDomains->TranslateProjects->get($projectId);
+			$projectPath = $project->path ?? null;
+		}
+
+		// Scan project path if available
+		if ($projectPath && is_dir($projectPath)) {
+			$appControllerPath = $projectPath . 'src' . DIRECTORY_SEPARATOR . 'Controller' . DIRECTORY_SEPARATOR;
+			if (is_dir($appControllerPath)) {
+				$names = $this->scanControllerDirectory($appControllerPath);
+				if ($names) {
+					$controllerNames['App'] = $names;
+				}
+			}
+
+			// Scan plugins in the project
+			$pluginsPath = $projectPath . 'plugins' . DIRECTORY_SEPARATOR;
+			if (is_dir($pluginsPath)) {
+				$pluginIterator = new DirectoryIterator($pluginsPath);
+				foreach ($pluginIterator as $pluginDir) {
+					if ($pluginDir->isDot() || !$pluginDir->isDir()) {
+						continue;
+					}
+
+					$pluginControllerPath = $pluginDir->getPathname() . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'Controller' . DIRECTORY_SEPARATOR;
+					if (is_dir($pluginControllerPath)) {
+						$names = $this->scanControllerDirectory($pluginControllerPath);
+						if ($names) {
+							$controllerNames[$pluginDir->getFilename()] = $names;
+						}
+					}
+				}
+			}
+		} else {
+			// Fallback: scan loaded plugins
+			foreach (Plugin::loaded() as $plugin) {
+				try {
+					$pluginPath = Plugin::classPath($plugin) . 'Controller' . DIRECTORY_SEPARATOR;
+					if (is_dir($pluginPath)) {
+						$names = $this->scanControllerDirectory($pluginPath);
+						if ($names) {
+							$controllerNames[$plugin] = $names;
+						}
+					}
+				} catch (Exception $e) {
+					// Skip plugins that can't be scanned
+					continue;
+				}
+			}
+		}
+
+		$this->set(compact('controllerNames', 'projectPath'));
+	}
+
+	/**
+	 * Scan a controller directory for controller files.
+	 *
+	 * @param string $path Directory path
+	 * @return array<string, array{singular: string, plural: string}>
+	 */
+	protected function scanControllerDirectory(string $path): array {
+		$names = [];
+
+		$iterator = new DirectoryIterator($path);
+		foreach ($iterator as $file) {
+			if ($file->isDot() || $file->isDir()) {
+				continue;
+			}
+
+			$filename = $file->getFilename();
+			if (!str_ends_with($filename, 'Controller.php')) {
+				continue;
+			}
+
+			// Skip abstract/base controllers
+			if ($filename === 'AppController.php') {
+				continue;
+			}
+
+			// Extract controller name (e.g., "UsersController.php" -> "Users")
+			$controllerName = substr($filename, 0, -14); // Remove "Controller.php"
+
+			$singular = Inflector::singularize($controllerName);
+			$plural = Inflector::pluralize($singular);
+
+			// Humanize for display
+			$singularHuman = Inflector::humanize(Inflector::underscore($singular));
+			$pluralHuman = Inflector::humanize(Inflector::underscore($plural));
+
+			$names[$controllerName] = [
+				'singular' => $singularHuman,
+				'plural' => $pluralHuman,
+			];
+		}
+
+		ksort($names);
+
+		return $names;
 	}
 
 }

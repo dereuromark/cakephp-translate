@@ -12,7 +12,6 @@ use Cake\Routing\Middleware\RoutingMiddleware;
 use Cake\Routing\Route\DashedRoute;
 use Cake\Routing\RouteBuilder;
 use League\Container\ReflectionContainer;
-use Translate\Command\I18nControllerNamesCommand;
 use Translate\Command\I18nDumpCommand;
 use Translate\Command\I18nExtractCommand;
 use Translate\Command\I18nValidateCommand;
@@ -33,8 +32,7 @@ class Application extends BaseApplication {
 		return $commands
 			->add('i18n extract_to_db', new I18nExtractCommand())
 			->add('i18n dump_from_db', new I18nDumpCommand())
-			->add('i18n validate', new I18nValidateCommand())
-			->add('i18n controller_names', new I18nControllerNamesCommand());
+			->add('i18n validate', new I18nValidateCommand());
 	}
 
 	/**

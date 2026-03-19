@@ -73,7 +73,6 @@ Web Backend
 
 CLI
 - Run `bin/cake translate`.
-- Run `bin/cake i18n controller_names` to list controller names (singular + plural) for translation.
 
 ### TranslateBehavior Support
 

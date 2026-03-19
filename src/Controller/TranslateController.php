@@ -38,6 +38,7 @@ class TranslateController extends TranslateAppController {
 		$id = $this->Translation->currentProjectId();
 
 		$translateLocalesTable = $this->fetchTable('Translate.TranslateLocales');
+		/** @var array<\Translate\Model\Entity\TranslateLocale> $languages */
 		$languages = $translateLocalesTable->find('all')
 			->where(['translate_project_id IS' => $id, 'active' => true])
 			->toArray();
@@ -79,6 +80,7 @@ class TranslateController extends TranslateAppController {
 
 		// Get domain statistics
 		$translateStringsTable = $this->fetchTable('Translate.TranslateStrings');
+		/** @var array<\Translate\Model\Entity\TranslateDomain> $domains */
 		$domains = $this->TranslateDomains->find()
 			->where(['translate_project_id IS' => $id, 'active' => true])
 			->orderBy(['name' => 'ASC'])

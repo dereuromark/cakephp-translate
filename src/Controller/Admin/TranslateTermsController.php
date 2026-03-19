@@ -164,6 +164,7 @@ class TranslateTermsController extends TranslateAppController {
 
 		// Get counts per locale
 		$localeStats = [];
+		/** @var array<\Translate\Model\Entity\TranslateLocale> $locales */
 		$locales = $this->TranslateTerms->TranslateLocales
 			->find()
 			->where(['translate_project_id IS' => $projectId, 'active' => true])
@@ -217,6 +218,7 @@ class TranslateTermsController extends TranslateAppController {
 			$conditions['TranslateTerms.translate_locale_id'] = $localeId;
 		}
 
+		/** @var array<\Translate\Model\Entity\TranslateTerm> $terms */
 		$terms = $this->TranslateTerms->find()
 			->where($conditions)
 			->innerJoinWith('TranslateStrings.TranslateDomains', function ($q) use ($projectId) {
@@ -229,7 +231,7 @@ class TranslateTermsController extends TranslateAppController {
 
 		$count = 0;
 		foreach ($terms as $term) {
-			$term->confirmed = 1;
+			$term->confirmed = true;
 			if ($this->TranslateTerms->save($term)) {
 				$count++;
 			}

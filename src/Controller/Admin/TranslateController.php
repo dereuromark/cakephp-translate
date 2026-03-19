@@ -40,6 +40,7 @@ class TranslateController extends TranslateAppController {
 		$id = $this->Translation->currentProjectId();
 
 		$translateLocalesTable = $this->fetchTable('Translate.TranslateLocales');
+		/** @var array<\Translate\Model\Entity\TranslateLocale> $languages */
 		$languages = $translateLocalesTable->find('all')
 			->where([
 				'translate_project_id IS' => $id,
@@ -112,6 +113,7 @@ class TranslateController extends TranslateAppController {
 			if (class_exists('\AuditStash\Model\Table\AuditLogsTable')) {
 				try {
 					$auditLogsTable = $this->fetchTable('AuditStash.AuditLogs');
+					/** @var array<\Cake\ORM\Entity> $auditLogs */
 					$auditLogs = $auditLogsTable
 						->find()
 						->where([
@@ -123,7 +125,7 @@ class TranslateController extends TranslateAppController {
 
 					// Build audit data map for quick lookup (source => primary_key => logs)
 					foreach ($auditLogs as $log) {
-						$key = $log->source . '_' . $log->primary_key;
+						$key = $log->get('source') . '_' . $log->get('primary_key');
 						if (!isset($auditData[$key])) {
 							$auditData[$key] = [];
 						}

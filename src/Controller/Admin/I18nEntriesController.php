@@ -227,19 +227,22 @@ class I18nEntriesController extends TranslateAppController {
 		$translationStatus = [];
 		if (!empty($baseIds)) {
 			$translationTable = $this->getTranslationTable($tableName);
+			/** @var array<\Cake\ORM\Entity> $translations */
 			$translations = $translationTable->find()
 				->where(['id IN' => $baseIds])
 				->toArray();
 
 			foreach ($translations as $translation) {
-				$id = $translation->id;
-				$locale = $translation->locale;
+				/** @var int $id */
+				$id = $translation->get('id');
+				/** @var string $locale */
+				$locale = $translation->get('locale');
 				if (!isset($translationStatus[$id])) {
 					$translationStatus[$id] = [];
 				}
 				$translationStatus[$id][$locale] = [
 					'exists' => true,
-					'auto' => $hasAutoField ? (bool)$translation->auto : null,
+					'auto' => $hasAutoField ? (bool)$translation->get('auto') : null,
 					'fields' => [],
 				];
 				// Check which fields have content
@@ -299,20 +302,22 @@ class I18nEntriesController extends TranslateAppController {
 
 		// Get all translations for this record
 		$translationTable = $this->getTranslationTable($tableName);
+		/** @var array<\Cake\ORM\Entity> $translations */
 		$translations = $translationTable->find()
 			->where(['id' => $id])
 			->toArray();
 
 		// Get configured locales
 		$configuredLocales = $this->getConfiguredLocales();
-		$existingLocales = array_map(fn ($t) => $t->locale, $translations);
+		/** @var array<string> $existingLocales */
+		$existingLocales = array_map(fn ($t) => $t->get('locale'), $translations);
 		$locales = array_unique(array_merge($configuredLocales, $existingLocales));
 		sort($locales);
 
 		// Index translations by locale
 		$translationsByLocale = [];
 		foreach ($translations as $translation) {
-			$translationsByLocale[$translation->locale] = $translation;
+			$translationsByLocale[$translation->get('locale')] = $translation;
 		}
 
 		// Source locale (base record language) - filter it out, no translations needed

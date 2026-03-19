@@ -469,6 +469,7 @@ class TranslateStringsController extends TranslateAppController {
 
 				$langId = $this->TranslateStrings->TranslateTerms->TranslateLocales->find()->where(['iso2' => $lang])->firstOrFail()->id;
 				$domainId = $this->TranslateStrings->TranslateDomains->find()->where(['name' => $domain, 'translate_project_id IS' => $projectId])->firstOrFail()->id;
+				/** @var array<\Translate\Model\Entity\TranslateTerm> $translations */
 				$translations = $this->TranslateStrings->TranslateTerms->getTranslations($langId, $domainId)->toArray();
 
 				if (!$translations) {

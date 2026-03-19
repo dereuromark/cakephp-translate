@@ -145,6 +145,7 @@ class I18nTranslatorService {
 			$words = $this->extractSignificantWords($text);
 
 			foreach ($words as $word) {
+				/** @var array<\Translate\Model\Entity\TranslateString> $stringMatches */
 				$stringMatches = $stringsTable->find()
 					->where(['name LIKE' => '%' . $word . '%'])
 					->limit(5)
@@ -184,9 +185,11 @@ class I18nTranslatorService {
 			}
 		}
 
-		usort($unique, fn ($a, $b) => $b['confidence'] <=> $a['confidence']);
+		/** @var array<array{type: string, source: string, translation: string, confidence: float}> $result */
+		$result = array_values($unique);
+		usort($result, fn ($a, $b) => $b['confidence'] <=> $a['confidence']);
 
-		return array_slice($unique, 0, 10);
+		return array_slice($result, 0, 10);
 	}
 
 	/**

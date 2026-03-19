@@ -82,6 +82,7 @@ class I18nDumpCommand extends Command {
 		$count = 0;
 		foreach ($domains as $domain) {
 			foreach ($languages as $language) {
+				/** @var array<\Translate\Model\Entity\TranslateTerm> $translations */
 				$translations = $this->fetchTable('Translate.TranslateTerms')->getTranslations($language->id, $domain->id)->toArray();
 
 				if (!$translations) {

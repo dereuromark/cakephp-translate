@@ -224,7 +224,7 @@ For best results also
 
 Optional dependencies:
 - dereuromark/cakephp-data plugin for Languages relation
-- dereuromark/cakphp-queue plugin for background processing
+- dereuromark/cakephp-queue plugin for background processing
 
 You can customize templates by moving them into the right folder in project level.
 See [CakePHP docs](https://book.cakephp.org/5/en/plugins.html#overriding-plugin-templates-from-inside-your-application).

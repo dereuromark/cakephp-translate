@@ -227,7 +227,7 @@ Optional dependencies:
 - dereuromark/cakphp-queue plugin for background processing
 
 You can customize templates by moving them into the right folder in project level.
-See [CakePHP docs](https://book.cakephp.org/3.0/en/plugins.html#overriding-plugin-templates-from-inside-your-application).
+See [CakePHP docs](https://book.cakephp.org/5/en/plugins.html#overriding-plugin-templates-from-inside-your-application).
 
 ## Translating
 See [Translating](Translating.md).

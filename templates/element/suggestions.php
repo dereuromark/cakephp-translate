@@ -10,6 +10,7 @@ if (!$suggestions) {
 	return;
 }
 
+$cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
 $suggestionsArray = [];
 foreach ($suggestions as $engine => $suggestion) {
 	$engineName = substr($engine, strrpos($engine, '\\') + 1);
@@ -57,7 +58,7 @@ $target = 'content-' . $key;
 </style>
 
 <?php $this->append('script'); ?>
-<script>
+<script<?= $cspNonce !== '' ? ' nonce="' . h($cspNonce) . '"' : '' ?>>
 	$(function() {
 		$('.suggest[rel="<?php echo $key; ?>"]').click(function() {
 			var input = $('#<?php echo $target; ?>');

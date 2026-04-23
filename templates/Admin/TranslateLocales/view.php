@@ -12,7 +12,13 @@
 			</div>
 			<div class="list-group list-group-flush">
 				<?= $this->Html->link(__d('translate', 'Edit Locale'), ['action' => 'edit', $translateLocale->id], ['class' => 'list-group-item list-group-item-action']) ?>
-				<?= $this->Form->postLink(__d('translate', 'Delete Locale'), ['action' => 'delete', $translateLocale->id], ['class' => 'list-group-item list-group-item-action text-danger', 'confirm' => __d('translate', 'Are you sure you want to delete # {0}?', $translateLocale->id)]) ?>
+				<?= $this->Form->postButton(__d('translate', 'Delete Locale'), ['action' => 'delete', $translateLocale->id], [
+					'class' => 'list-group-item list-group-item-action text-danger text-start w-100',
+					'form' => [
+						'class' => 'd-inline',
+						'data-confirm-message' => __d('translate', 'Are you sure you want to delete # {0}?', $translateLocale->id),
+					],
+				]) ?>
 				<?= $this->Html->link(__d('translate', 'List Locales'), ['action' => 'index'], ['class' => 'list-group-item list-group-item-action']) ?>
 				<?= $this->Html->link(__d('translate', 'New Locale'), ['action' => 'add'], ['class' => 'list-group-item list-group-item-action']) ?>
 			</div>

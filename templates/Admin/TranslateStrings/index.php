@@ -199,10 +199,19 @@ use Cake\Core\Plugin;
 											['action' => 'edit', $translateString->id],
 											['escape' => false, 'class' => 'btn btn-outline-secondary', 'title' => __d('translate', 'Edit'), 'data-bs-toggle' => 'tooltip'],
 										); ?>
-										<?= $this->Form->postLink(
+										<?= $this->Form->postButton(
 											$this->Icon->render('delete'),
 											['action' => 'delete', $translateString->id],
-											['escape' => false, 'class' => 'btn btn-outline-danger', 'confirm' => __d('translate', 'Are you sure you want to delete # {0}?', $translateString->id), 'title' => __d('translate', 'Delete'), 'data-bs-toggle' => 'tooltip'],
+											[
+												'escape' => false,
+												'class' => 'btn btn-outline-danger',
+												'title' => __d('translate', 'Delete'),
+												'data-bs-toggle' => 'tooltip',
+												'form' => [
+													'class' => 'd-inline',
+													'data-confirm-message' => __d('translate', 'Are you sure you want to delete # {0}?', $translateString->id),
+												],
+											],
 										); ?>
 									</div>
 								</td>

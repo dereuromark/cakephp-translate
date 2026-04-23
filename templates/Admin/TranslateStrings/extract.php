@@ -5,6 +5,7 @@
  * @var mixed $potFiles
  * @var string $localePath
  */
+$cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
 ?>
 <div class="row">
 	<aside class="col-md-3 col-sm-4 col-12">
@@ -71,7 +72,7 @@
 	</div>
 </div>
 
-<script>
+<script<?= $cspNonce !== '' ? ' nonce="' . h($cspNonce) . '"' : '' ?>>
 document.addEventListener('DOMContentLoaded', function() {
 	document.querySelectorAll('.select-all').forEach(function(btn) {
 		btn.addEventListener('click', function() {

@@ -11,6 +11,7 @@ use Cake\Core\Configure;
 
 $this->assign('title', __d('translate', 'Analyze PO File'));
 $isPreselected = $this->request->getQuery('file') !== null;
+$cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
 ?>
 
 <nav class="actions col-sm-4 col-12">
@@ -248,7 +249,7 @@ msgstr[1] "{0} Elemente"',
 												<strong><?= __d('translate', 'Suggested fix for msgid:') ?></strong>
 												<br>
 												<code class="text-success" id="fix-msgid-<?= md5($msgid . $type) ?>"><?= h($details['fixed_msgid']) ?></code>
-												<button type="button" class="btn btn-sm btn-outline-success ms-2" onclick="copyFix(this, 'fix-msgid-<?= md5($msgid . $type) ?>')" title="<?= __d('translate', 'Copy to clipboard') ?>">
+												<button type="button" class="btn btn-sm btn-outline-success ms-2" data-copy-target="fix-msgid-<?= md5($msgid . $type) ?>" title="<?= __d('translate', 'Copy to clipboard') ?>">
 													<i class="fas fa-copy"></i> <?= __d('translate', 'Copy') ?>
 												</button>
 											<?php } ?>
@@ -257,7 +258,7 @@ msgstr[1] "{0} Elemente"',
 												<strong><?= __d('translate', 'Suggested fix for msgstr:') ?></strong>
 												<br>
 												<code class="text-success" id="fix-<?= md5($msgid . $type) ?>"><?= h($details['fixed_msgstr']) ?></code>
-												<button type="button" class="btn btn-sm btn-outline-success ms-2" onclick="copyFix(this, 'fix-<?= md5($msgid . $type) ?>')" title="<?= __d('translate', 'Copy to clipboard') ?>">
+												<button type="button" class="btn btn-sm btn-outline-success ms-2" data-copy-target="fix-<?= md5($msgid . $type) ?>" title="<?= __d('translate', 'Copy to clipboard') ?>">
 													<i class="fas fa-copy"></i> <?= __d('translate', 'Copy') ?>
 												</button>
 											<?php } ?>
@@ -278,7 +279,7 @@ msgstr[1] "{0} Elemente"',
 	<?php } ?>
 </div>
 
-<script>
+<script<?= $cspNonce !== '' ? ' nonce="' . h($cspNonce) . '"' : '' ?>>
 function copyFix(btn, elementId) {
 	var text = document.getElementById(elementId).textContent;
 	if (navigator.clipboard) {
@@ -306,4 +307,11 @@ function copyFix(btn, elementId) {
 		}, 2000);
 	}
 }
+
+// CSP-safe delegate: replaces inline onclick="copyFix(this, 'id')" handlers
+document.querySelectorAll('[data-copy-target]').forEach(function(btn) {
+	btn.addEventListener('click', function() {
+		copyFix(btn, btn.dataset.copyTarget);
+	});
+});
 </script>

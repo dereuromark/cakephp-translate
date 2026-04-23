@@ -49,10 +49,17 @@
 				</p>
 
 				<div class="btn-group">
-					<?= $this->Form->postLink(
+					<?= $this->Form->postButton(
 						'<i class="fas fa-exclamation-triangle"></i> ' . __d('translate', 'Hard reset Translate (fully truncate all tables)'),
 						['?' => ['hard-reset' => '1']],
-						['confirm' => __d('translate', 'Sure?'), 'class' => 'btn btn-danger', 'escapeTitle' => false]
+						[
+							'class' => 'btn btn-danger',
+							'escapeTitle' => false,
+							'form' => [
+								'class' => 'd-inline',
+								'data-confirm-message' => __d('translate', 'Sure?'),
+							],
+						]
 					) ?>
 				</div>
 			</div>

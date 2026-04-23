@@ -126,14 +126,17 @@
 							['class' => 'btn btn-primary btn-sm', 'escape' => false],
 						) ?>
 						<?php if ($info['base_exists'] && $info['row_count'] < $info['base_count']) { ?>
-							<?= $this->Form->postLink(
+							<?= $this->Form->postButton(
 								'<i class="fas fa-sync"></i> ' . __d('translate', 'Sync'),
 								['action' => 'sync', $tableName],
 								[
 									'class' => 'btn btn-warning btn-sm',
 									'escape' => false,
 									'title' => __d('translate', 'Create missing translation entries'),
-									'confirm' => __d('translate', 'Create empty translation entries for {0} missing records?', $info['base_count'] - $info['row_count']),
+									'form' => [
+										'class' => 'd-inline',
+										'data-confirm-message' => __d('translate', 'Create empty translation entries for {0} missing records?', $info['base_count'] - $info['row_count']),
+									],
 								],
 							) ?>
 						<?php } ?>

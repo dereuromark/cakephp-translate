@@ -13,6 +13,7 @@
  * @var string $foreignKeyColumn
  * @var string|null $displayField
  */
+$cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
 ?>
 <nav aria-label="breadcrumb">
 	<ol class="breadcrumb">
@@ -96,7 +97,7 @@
 							<?php } ?>
 						</select>
 					</div>
-					<button type="submit" class="btn btn-info btn-sm" onclick="return confirmBatch()">
+					<button type="submit" class="btn btn-info btn-sm" data-action="confirm-batch">
 						<i class="fas fa-magic"></i> <?= __d('translate', 'Auto-translate Selected') ?>
 					</button>
 				</div>
@@ -227,7 +228,7 @@
 	</div>
 </div>
 
-<script>
+<script<?= $cspNonce !== '' ? ' nonce="' . h($cspNonce) . '"' : '' ?>>
 document.addEventListener('DOMContentLoaded', function() {
 	const selectAll = document.getElementById('select-all');
 	const checkboxes = document.querySelectorAll('.record-checkbox');
@@ -239,6 +240,15 @@ document.addEventListener('DOMContentLoaded', function() {
 	checkboxes.forEach(cb => {
 		cb.addEventListener('change', function() {
 			selectAll.checked = [...checkboxes].every(c => c.checked);
+		});
+	});
+
+	// CSP-safe replacement for <button onclick="return confirmBatch()">
+	document.querySelectorAll('[data-action="confirm-batch"]').forEach(function(btn) {
+		btn.addEventListener('click', function(e) {
+			if (!confirmBatch()) {
+				e.preventDefault();
+			}
 		});
 	});
 });

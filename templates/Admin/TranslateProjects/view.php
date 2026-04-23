@@ -17,10 +17,17 @@
 					['action' => 'edit', $translateProject->id],
 					['escape' => false, 'class' => 'list-group-item list-group-item-action'],
 				) ?>
-				<?= $this->Form->postLink(
+				<?= $this->Form->postButton(
 					'<i class="fas fa-trash"></i> ' . __d('translate', 'Delete Translate Project'),
 					['action' => 'delete', $translateProject->id],
-					['confirm' => __d('translate', 'Are you sure you want to delete # {0}?', $translateProject->id), 'escape' => false, 'class' => 'list-group-item list-group-item-action text-danger'],
+					[
+						'escape' => false,
+						'class' => 'list-group-item list-group-item-action text-danger text-start w-100',
+						'form' => [
+							'class' => 'd-inline',
+							'data-confirm-message' => __d('translate', 'Are you sure you want to delete # {0}?', $translateProject->id),
+						],
+					],
 				) ?>
 				<?= $this->Html->link(
 					'<i class="fas fa-list"></i> ' . __d('translate', 'List Translate Projects'),
@@ -137,10 +144,18 @@
 											['controller' => 'TranslateDomains', 'action' => 'edit', $translateDomain->id],
 											['escape' => false, 'class' => 'btn btn-outline-secondary', 'title' => __d('translate', 'Edit')],
 										) ?>
-										<?= $this->Form->postLink(
+										<?= $this->Form->postButton(
 											$this->Icon->render('delete'),
 											['controller' => 'TranslateDomains', 'action' => 'delete', $translateDomain->id],
-											['confirm' => __d('translate', 'Are you sure you want to delete # {0}?', $translateDomain->id), 'escape' => false, 'class' => 'btn btn-outline-danger', 'title' => __d('translate', 'Delete')],
+											[
+												'escape' => false,
+												'class' => 'btn btn-outline-danger',
+												'title' => __d('translate', 'Delete'),
+												'form' => [
+													'class' => 'd-inline',
+													'data-confirm-message' => __d('translate', 'Are you sure you want to delete # {0}?', $translateDomain->id),
+												],
+											],
 										) ?>
 									</div>
 								</td>

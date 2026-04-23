@@ -6,7 +6,7 @@
  * @var array $suggestions
  * @var array $domainStats
  */
-
+$cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
 ?>
 <!-- Domain Navigation -->
 <div class="mb-4">
@@ -183,7 +183,7 @@ References: <?php echo count($references)?>x
 </div>
 
 <?php $this->append('script'); ?>
-	<script>
+	<script<?= $cspNonce !== '' ? ' nonce="' . h($cspNonce) . '"' : '' ?>>
 		$(function() {
 			$('ul.references').on('click', 'a.reference-link', function (e) {
 				e.preventDefault();

@@ -70,13 +70,16 @@
 				<h5 class="mb-0">
 					<i class="fas fa-language"></i> <?= __d('translate', 'Translations') ?>
 				</h5>
-				<?= $this->Form->postLink(
+				<?= $this->Form->postButton(
 					'<i class="fas fa-magic"></i> ' . __d('translate', 'Auto-translate All'),
 					['action' => 'autoTranslateRecord', $tableName, $baseRecord->id],
 					[
 						'class' => 'btn btn-info btn-sm',
 						'escape' => false,
-						'confirm' => __d('translate', 'Auto-translate this record to all configured locales?'),
+						'form' => [
+							'class' => 'd-inline',
+							'data-confirm-message' => __d('translate', 'Auto-translate this record to all configured locales?'),
+						],
 					],
 				) ?>
 			</div>
@@ -174,15 +177,17 @@
 										) ?>
 									<?php } ?>
 									<?php if (!$isFullyTranslated) { ?>
-										<?= $this->Form->postLink(
+										<?= $this->Form->postButton(
 											'<i class="fas fa-magic"></i>',
 											['action' => 'autoTranslateRecord', $tableName, $baseRecord->id, '?' => ['locales' => [$locale]]],
 											[
 												'class' => 'btn btn-sm btn-outline-info',
 												'escape' => false,
 												'title' => __d('translate', 'Auto-translate'),
-												'confirm' => __d('translate', 'Auto-translate to {0}?', $locale),
-												'block' => true,
+												'form' => [
+													'class' => 'd-inline',
+													'data-confirm-message' => __d('translate', 'Auto-translate to {0}?', $locale),
+												],
 											],
 										) ?>
 									<?php } ?>

@@ -12,10 +12,16 @@
 				<h3 class="card-title"><i class="fa fa-bars"></i> <?= __d('translate', 'Actions') ?></h3>
 			</div>
 			<div class="list-group list-group-flush">
-				<?= $this->Form->postLink(
+				<?= $this->Form->postButton(
 					__d('translate', 'Delete'),
 					['action' => 'delete', $translateLocale->id],
-					['confirm' => __d('translate', 'Are you sure you want to delete # {0}?', $translateLocale->id), 'class' => 'list-group-item list-group-item-action text-danger'],
+					[
+						'class' => 'list-group-item list-group-item-action text-danger text-start w-100',
+						'form' => [
+							'class' => 'd-inline',
+							'data-confirm-message' => __d('translate', 'Are you sure you want to delete # {0}?', $translateLocale->id),
+						],
+					],
 				)
 							?>
 				<?= $this->Html->link(__d('translate', 'List Locales'), ['action' => 'index'], ['class' => 'list-group-item list-group-item-action']) ?>

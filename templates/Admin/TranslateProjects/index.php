@@ -105,10 +105,18 @@ use Cake\Core\Plugin;
 											['action' => 'edit', $translateProject->id],
 											['escape' => false, 'class' => 'btn btn-outline-secondary', 'title' => __d('translate', 'Edit')],
 										) ?>
-										<?= $this->Form->postLink(
+										<?= $this->Form->postButton(
 											$this->Icon->render('delete'),
 											['action' => 'delete', $translateProject->id],
-											['escape' => false, 'confirm' => __d('translate', 'Are you sure you want to delete # {0}?', $translateProject->id), 'class' => 'btn btn-outline-danger', 'title' => __d('translate', 'Delete')],
+											[
+												'escape' => false,
+												'class' => 'btn btn-outline-danger',
+												'title' => __d('translate', 'Delete'),
+												'form' => [
+													'class' => 'd-inline',
+													'data-confirm-message' => __d('translate', 'Are you sure you want to delete # {0}?', $translateProject->id),
+												],
+											],
 										) ?>
 									</div>
 								</td>

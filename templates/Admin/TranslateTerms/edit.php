@@ -17,10 +17,17 @@ use Cake\Core\Plugin;
 				<i class="fas fa-bars"></i> <?= __d('translate', 'Actions') ?>
 			</div>
 			<div class="list-group list-group-flush">
-				<?= $this->Form->postLink(
+				<?= $this->Form->postButton(
 					'<i class="fas fa-trash"></i> ' . __d('translate', 'Delete'),
 					['action' => 'delete', $translateTerm->id],
-					['confirm' => __d('translate', 'Are you sure you want to delete # {0}?', $translateTerm->id), 'escape' => false, 'class' => 'list-group-item list-group-item-action text-danger', 'block' => true],
+					[
+						'escape' => false,
+						'class' => 'list-group-item list-group-item-action text-danger text-start w-100',
+						'form' => [
+							'class' => 'd-inline',
+							'data-confirm-message' => __d('translate', 'Are you sure you want to delete # {0}?', $translateTerm->id),
+						],
+					],
 				) ?>
 				<?= $this->Html->link(
 					'<i class="fas fa-comments"></i> ' . __d('translate', 'List Translate Terms'),

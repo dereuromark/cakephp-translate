@@ -57,7 +57,15 @@ use Cake\Core\Plugin;
 									<div class="btn-group" role="group">
 										<?= $this->Html->link($this->Icon->render('view'), ['action' => 'view', $translateLocale->id], ['escape' => false, 'class' => 'btn btn-sm btn-outline-primary', 'title' => __d('translate', 'View')]) ?>
 										<?= $this->Html->link($this->Icon->render('edit'), ['action' => 'edit', $translateLocale->id], ['escape' => false, 'class' => 'btn btn-sm btn-outline-secondary', 'title' => __d('translate', 'Edit')]) ?>
-										<?= $this->Form->postLink($this->Icon->render('delete'), ['action' => 'delete', $translateLocale->id], ['escape' => false, 'class' => 'btn btn-sm btn-outline-danger', 'title' => __d('translate', 'Delete'), 'confirm' => __d('translate', 'Are you sure you want to delete # {0}?', $translateLocale->id)]) ?>
+										<?= $this->Form->postButton($this->Icon->render('delete'), ['action' => 'delete', $translateLocale->id], [
+											'escape' => false,
+											'class' => 'btn btn-sm btn-outline-danger',
+											'title' => __d('translate', 'Delete'),
+											'form' => [
+												'class' => 'd-inline',
+												'data-confirm-message' => __d('translate', 'Are you sure you want to delete # {0}?', $translateLocale->id),
+											],
+										]) ?>
 									</div>
 								</td>
 							</tr>

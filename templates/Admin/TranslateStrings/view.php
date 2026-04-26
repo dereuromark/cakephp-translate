@@ -64,7 +64,7 @@ use Cake\Core\Configure;
 			<div class="card-body">
 				<h5 class="text-muted mb-3"><?= __d('translate', 'Original String') ?></h5>
 				<div class="alert alert-light border mb-4">
-					<pre class="mb-0" style="white-space: pre-wrap;"><?= h($translateString->name) ?></pre>
+					<pre class="mb-0" data-style="white-space: pre-wrap;"><?= h($translateString->name) ?></pre>
 				</div>
 
 				<div class="row g-3">

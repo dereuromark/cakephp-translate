@@ -44,7 +44,7 @@ $cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
 									<?= $stats['translated'] ?> / <?= $stats['total'] ?>
 									<?= __d('translate', 'strings') ?>
 								</small>
-								<div class="progress mt-2" style="height: 5px;">
+								<div class="progress mt-2" data-style="height: 5px;">
 									<div class="progress-bar bg-success"
 										role="progressbar"
 										data-progress-width="<?= $stats['percentage'] ?>"

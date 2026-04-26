@@ -31,7 +31,7 @@
 			<div class="card-body">
 				<div class="mb-3">
 					<strong><?= __d('translate', 'Translation Progress') ?></strong>
-					<div class="progress mt-1" style="height: 25px;">
+					<div class="progress mt-1" data-style="height: 25px;">
 						<div class="progress-bar <?= $grandTotal['translation_percentage'] >= 80 ? 'bg-success' : ($grandTotal['translation_percentage'] >= 50 ? 'bg-warning' : 'bg-danger') ?>"
 							role="progressbar"
 							data-progress-width="<?= $grandTotal['translation_percentage'] ?>"
@@ -48,7 +48,7 @@
 
 				<div>
 					<strong><?= __d('translate', 'Confirmation Progress') ?></strong>
-					<div class="progress mt-1" style="height: 25px;">
+					<div class="progress mt-1" data-style="height: 25px;">
 						<div class="progress-bar bg-info"
 							role="progressbar"
 							data-progress-width="<?= $grandTotal['confirmation_percentage'] ?>"
@@ -106,8 +106,8 @@
 										<span class="badge bg-secondary">0</span>
 									<?php } ?>
 								</td>
-								<td style="min-width: 150px;">
-									<div class="progress" style="height: 20px;">
+								<td data-style="min-width: 150px;">
+									<div class="progress" data-style="height: 20px;">
 										<div class="progress-bar <?= $data['translation_percentage'] >= 80 ? 'bg-success' : ($data['translation_percentage'] >= 50 ? 'bg-warning' : 'bg-danger') ?>"
 											role="progressbar"
 											data-progress-width="<?= $data['translation_percentage'] ?>"
@@ -128,8 +128,8 @@
 										<span class="badge bg-secondary">0</span>
 									<?php } ?>
 								</td>
-								<td style="min-width: 150px;">
-									<div class="progress" style="height: 20px;">
+								<td data-style="min-width: 150px;">
+									<div class="progress" data-style="height: 20px;">
 										<div class="progress-bar bg-info"
 											role="progressbar"
 											data-progress-width="<?= $data['confirmation_percentage'] ?>"
@@ -191,8 +191,8 @@
 										<span class="badge bg-secondary">0</span>
 									<?php } ?>
 								</td>
-								<td style="min-width: 120px;">
-									<div class="progress" style="height: 18px;">
+								<td data-style="min-width: 120px;">
+									<div class="progress" data-style="height: 18px;">
 										<div class="progress-bar <?= $stat['translation_percentage'] >= 80 ? 'bg-success' : ($stat['translation_percentage'] >= 50 ? 'bg-warning' : 'bg-danger') ?>"
 											role="progressbar"
 											data-progress-width="<?= $stat['translation_percentage'] ?>"
@@ -213,8 +213,8 @@
 										<span class="badge bg-secondary">0</span>
 									<?php } ?>
 								</td>
-								<td style="min-width: 120px;">
-									<div class="progress" style="height: 18px;">
+								<td data-style="min-width: 120px;">
+									<div class="progress" data-style="height: 18px;">
 										<div class="progress-bar bg-info"
 											role="progressbar"
 											data-progress-width="<?= $stat['confirmation_percentage'] ?>"

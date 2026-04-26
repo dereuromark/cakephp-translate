@@ -150,7 +150,7 @@ $isNew = $translation->isNew();
 				<?php foreach ($translatedFields as $field) { ?>
 					<div class="mb-2">
 						<strong><?= h(ucfirst($field)) ?>:</strong>
-						<div class="border rounded p-2 bg-light" style="max-height: 150px; overflow-y: auto;">
+						<div class="border rounded p-2 bg-light" data-style="max-height: 150px; overflow-y: auto;">
 							<?php
 							$value = $baseRecord->$field ?? '';
 							if ($value) {

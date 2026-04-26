@@ -12,10 +12,17 @@
 				<i class="fas fa-bars"></i> <?= __d('translate', 'Actions') ?>
 			</div>
 			<div class="list-group list-group-flush">
-				<?= $this->Form->postLink(
+				<?= $this->Form->postButton(
 					'<i class="fas fa-trash"></i> ' . __d('translate', 'Delete'),
 					['action' => 'delete', $translateDomain->id],
-					['confirm' => __d('translate', 'Are you sure you want to delete # {0}?', $translateDomain->id), 'escape' => false, 'class' => 'list-group-item list-group-item-action text-danger'],
+					[
+						'escape' => false,
+						'class' => 'list-group-item list-group-item-action text-danger text-start w-100',
+						'form' => [
+							'class' => 'd-inline',
+							'data-confirm-message' => __d('translate', 'Are you sure you want to delete # {0}?', $translateDomain->id),
+						],
+					],
 				) ?>
 				<?= $this->Html->link(
 					'<i class="fas fa-list"></i> ' . __d('translate', 'List Translate Domains'),

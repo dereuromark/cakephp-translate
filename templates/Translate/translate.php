@@ -6,7 +6,7 @@
  * @var array $suggestions
  * @var array $domainStats
  */
-
+$cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
 ?>
 <!-- Domain Navigation -->
 <div class="mb-4">
@@ -47,7 +47,7 @@
 								<div class="progress mt-2" style="height: 5px;">
 									<div class="progress-bar bg-success"
 										role="progressbar"
-										style="width: <?= $stats['percentage'] ?>%"
+										data-progress-width="<?= $stats['percentage'] ?>"
 										aria-valuenow="<?= $stats['percentage'] ?>"
 										aria-valuemin="0"
 										aria-valuemax="100">
@@ -183,7 +183,7 @@ References: <?php echo count($references)?>x
 </div>
 
 <?php $this->append('script'); ?>
-	<script>
+	<script<?= $cspNonce !== '' ? ' nonce="' . h($cspNonce) . '"' : '' ?>>
 		$(function() {
 			$('ul.references').on('click', 'a.reference-link', function (e) {
 				e.preventDefault();

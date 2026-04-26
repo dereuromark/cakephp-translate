@@ -143,13 +143,16 @@
 								['action' => 'view', $term->id],
 								['escape' => false, 'class' => 'btn btn-sm btn-info', 'title' => __d('translate', 'View')]
 							) ?>
-							<?= $this->Form->postLink(
+							<?= $this->Form->postButton(
 								'<i class="fas fa-check"></i>',
 								['action' => 'confirm', $term->id],
 								[
 									'escapeTitle' => false,
 									'class' => 'btn btn-sm btn-success',
 									'title' => __d('translate', 'Confirm'),
+									'form' => [
+										'class' => 'd-inline',
+									],
 								]
 							) ?>
 						</td>

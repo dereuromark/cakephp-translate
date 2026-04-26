@@ -168,7 +168,7 @@
 			<div class="card-body">
 				<div class="d-grid gap-2">
 					<?php if ($hasAutoField) { ?>
-						<?= $this->Form->postLink(
+						<?= $this->Form->postButton(
 							$entry->auto
 								? '<i class="fas fa-user"></i> ' . __d('translate', 'Mark as Manual')
 								: '<i class="fas fa-robot"></i> ' . __d('translate', 'Mark as Auto'),
@@ -176,18 +176,22 @@
 							[
 								'class' => 'btn btn-outline-' . ($entry->auto ? 'warning' : 'info'),
 								'escape' => false,
-								'block' => true,
+								'form' => [
+									'class' => 'd-grid',
+								],
 							],
 						) ?>
 					<?php } ?>
-					<?= $this->Form->postLink(
+					<?= $this->Form->postButton(
 						'<i class="fas fa-trash"></i> ' . __d('translate', 'Delete'),
 						['action' => 'delete', $tableName, $entry->id],
 						[
 							'class' => 'btn btn-outline-danger',
 							'escape' => false,
-							'confirm' => __d('translate', 'Are you sure you want to delete this entry?'),
-							'block' => true,
+							'form' => [
+								'class' => 'd-grid',
+								'data-confirm-message' => __d('translate', 'Are you sure you want to delete this entry?'),
+							],
 						],
 					) ?>
 				</div>

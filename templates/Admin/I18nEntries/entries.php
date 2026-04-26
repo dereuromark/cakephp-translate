@@ -13,6 +13,7 @@
 
 $this->Html->script('https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js', ['block' => true]);
 $this->Html->css('https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css', ['block' => true]);
+$cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
 ?>
 <nav aria-label="breadcrumb">
 	<ol class="breadcrumb">
@@ -235,15 +236,17 @@ $this->Html->css('https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/c
 											['action' => 'edit', $tableName, $entry->id],
 											['class' => 'btn btn-sm btn-outline-secondary', 'escape' => false, 'title' => __d('translate', 'Edit')],
 										) ?>
-										<?= $this->Form->postLink(
+										<?= $this->Form->postButton(
 											'<i class="fas fa-trash"></i>',
 											['action' => 'delete', $tableName, $entry->id],
 											[
 												'class' => 'btn btn-sm btn-outline-danger',
 												'escape' => false,
 												'title' => __d('translate', 'Delete'),
-												'confirm' => __d('translate', 'Are you sure you want to delete this entry?'),
-												'block' => true,
+												'form' => [
+													'class' => 'd-inline',
+													'data-confirm-message' => __d('translate', 'Are you sure you want to delete this entry?'),
+												],
 											],
 										) ?>
 									</td>
@@ -261,7 +264,7 @@ $this->Html->css('https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/c
 </div>
 <?= $this->Form->end() ?>
 
-<script>
+<script<?= $cspNonce !== '' ? ' nonce="' . h($cspNonce) . '"' : '' ?>>
 document.addEventListener('DOMContentLoaded', function() {
 	const checkAll = document.getElementById('check-all');
 	const selectAll = document.getElementById('select-all');

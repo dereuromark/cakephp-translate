@@ -16,7 +16,14 @@
 						<?= $this->Html->link('<i class="fa fa-edit"></i> ' . __d('translate', 'Edit API Translation'), ['action' => 'edit', $translateApiTranslation->id], ['escape' => false, 'class' => '']) ?>
 					</li>
 					<li class="list-group-item">
-						<?= $this->Form->postLink('<i class="fa fa-trash"></i> ' . __d('translate', 'Delete API Translation'), ['action' => 'delete', $translateApiTranslation->id], ['escape' => false, 'class' => 'text-danger', 'confirm' => __d('translate', 'Are you sure you want to delete # {0}?', $translateApiTranslation->id)]) ?>
+						<?= $this->Form->postButton('<i class="fa fa-trash"></i> ' . __d('translate', 'Delete API Translation'), ['action' => 'delete', $translateApiTranslation->id], [
+							'escape' => false,
+							'class' => 'btn btn-link text-danger p-0 align-baseline',
+							'form' => [
+								'class' => 'd-inline',
+								'data-confirm-message' => __d('translate', 'Are you sure you want to delete # {0}?', $translateApiTranslation->id),
+							],
+						]) ?>
 					</li>
 					<li class="list-group-item">
 						<?= $this->Html->link('<i class="fa fa-list"></i> ' . __d('translate', 'List API Translations'), ['action' => 'index'], ['escape' => false, 'class' => '']) ?>

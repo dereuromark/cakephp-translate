@@ -25,10 +25,17 @@ use Cake\Core\Configure;
 					['action' => 'translate', $translateString->id],
 					['escape' => false, 'class' => 'list-group-item list-group-item-action'],
 				) ?>
-				<?= $this->Form->postLink(
+				<?= $this->Form->postButton(
 					'<i class="fas fa-trash"></i> ' . __d('translate', 'Delete'),
 					['action' => 'delete', $translateString->id],
-					['confirm' => __d('translate', 'Are you sure you want to delete # {0}?', $translateString->id), 'escape' => false, 'class' => 'list-group-item list-group-item-action text-danger'],
+					[
+						'escape' => false,
+						'class' => 'list-group-item list-group-item-action text-danger text-start w-100',
+						'form' => [
+							'class' => 'd-inline',
+							'data-confirm-message' => __d('translate', 'Are you sure you want to delete # {0}?', $translateString->id),
+						],
+					],
 				) ?>
 				<?= $this->Html->link(
 					'<i class="fas fa-list"></i> ' . __d('translate', 'List Translate Strings'),

@@ -5,6 +5,7 @@
  */
 
 $title = $this->fetch('title');
+$cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -293,7 +294,7 @@ $title = $this->fetch('title');
 	<!-- Bootstrap Bundle (includes Popper) -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js" integrity="sha512-7Pi/otdlbbCR+LnW+F7PwFcSDJOuUJB3OxtEHbg4vSMvzvJjde4Po1v4BR9Gdc9aXNUNFVUY+SK51wWT8WF0Gg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-	<script>
+	<script<?= $cspNonce !== '' ? ' nonce="' . h($cspNonce) . '"' : '' ?>>
 		$(document).ready(function() {
 			// Add loading state to buttons on form submit
 			$('form').on('submit', function() {
@@ -304,14 +305,14 @@ $title = $this->fetch('title');
 				}
 			});
 
-			// Confirm delete actions
-			$('.btn-danger, a[href*="delete"]').on('click', function(e) {
-				if ($(this).data('confirm') !== false) {
-					if (!confirm('Are you sure you want to delete this item?')) {
+			// Confirmation dialogs for postButton forms (CSP-safe replacement for postLink + confirm)
+			document.querySelectorAll('form[data-confirm-message]').forEach(function(form) {
+				form.addEventListener('submit', function(e) {
+					if (!confirm(form.dataset.confirmMessage)) {
 						e.preventDefault();
-						return false;
+						e.stopImmediatePropagation();
 					}
-				}
+				});
 			});
 
 			// Initialize Bootstrap tooltips
@@ -324,6 +325,16 @@ $title = $this->fetch('title');
 			var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
 			popoverTriggerList.map(function (popoverTriggerEl) {
 				return new bootstrap.Popover(popoverTriggerEl);
+			});
+
+			// CSP-safe replacement for inline style="width:N%": apply data-progress-width to .style.width
+			document.querySelectorAll('[data-progress-width]').forEach(function (el) {
+				el.style.width = el.dataset.progressWidth + '%';
+			});
+
+			// CSP-safe replacement for inline style="color:#XYZ": apply data-text-color to .style.color
+			document.querySelectorAll('[data-text-color]').forEach(function (el) {
+				el.style.color = el.dataset.textColor;
 			});
 		});
 	</script>

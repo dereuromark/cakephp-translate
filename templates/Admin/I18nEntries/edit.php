@@ -12,6 +12,7 @@
  * @var array<array<string, string>> $glossarySuggestions
  * @var string $foreignKeyColumn
  */
+$cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
 ?>
 <nav aria-label="breadcrumb">
 	<ol class="breadcrumb">
@@ -209,7 +210,7 @@
 	</div>
 </div>
 
-<script>
+<script<?= $cspNonce !== '' ? ' nonce="' . h($cspNonce) . '"' : '' ?>>
 document.addEventListener('DOMContentLoaded', function() {
 	// Copy suggestion to clipboard
 	document.querySelectorAll('.copy-suggestion').forEach(function(btn) {

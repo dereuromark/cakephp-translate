@@ -19,7 +19,7 @@
 	?>
 <tr>
 	<td><?php echo $this->Translation->flag($this->Translation->resolveFlagCode($language)); ?> <?php echo h($language->locale); ?></td>
-	<td><span style="color:#<?php echo $currentColor;?>;font-weight:bold"><?php echo $currentCoverage; ?>%</span></td>
+	<td><span class="fw-bold" data-text-color="#<?php echo $currentColor; ?>"><?php echo $currentCoverage; ?>%</span></td>
 	<td><?= $stats['translated'] ?> / <?= $stats['total'] ?></td>
 </tr>
 <?php } ?>

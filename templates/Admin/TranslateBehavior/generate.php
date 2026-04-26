@@ -11,6 +11,7 @@
  * @var array|null $availableTables
  * @var string $shadowTableSuffix
  */
+$cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
 ?>
 
 <?php if (!isset($tableName)) { ?>
@@ -154,10 +155,10 @@
 							</div>
 
 							<div class="d-grid gap-2 mt-3">
-								<button type="button" class="btn btn-sm btn-outline-secondary" onclick="selectAll()">
+								<button type="button" class="btn btn-sm btn-outline-secondary" data-action="fields-select-all">
 									<i class="fas fa-check-square"></i> <?= __d('translate', 'Select All') ?>
 								</button>
-								<button type="button" class="btn btn-sm btn-outline-secondary" onclick="deselectAll()">
+								<button type="button" class="btn btn-sm btn-outline-secondary" data-action="fields-deselect-all">
 									<i class="fas fa-square"></i> <?= __d('translate', 'Deselect All') ?>
 								</button>
 							</div>
@@ -232,7 +233,7 @@ $fieldsFormatted .= "        ]";
 						<pre class="mb-0 p-3" style="background: #2d2d2d; color: #f8f8f2; border-radius: 0; max-height: 600px; overflow-y: auto;"><code><?= h($migrationCode) ?></code></pre>
 					</div>
 					<div class="card-footer">
-						<button class="btn btn-sm btn-outline-primary" onclick="copyToClipboard()">
+						<button type="button" class="btn btn-sm btn-outline-primary" data-action="copy-migration">
 							<i class="fas fa-copy"></i> <?= __d('translate', 'Copy to Clipboard') ?>
 						</button>
 						<?= $this->Form->create(null, [
@@ -268,7 +269,7 @@ $fieldsFormatted .= "        ]";
 	</div>
 <?php } ?>
 
-<script>
+<script<?= $cspNonce !== '' ? ' nonce="' . h($cspNonce) . '"' : '' ?>>
 function selectAll() {
 	document.querySelectorAll('input[name="fields[]"]').forEach(el => el.checked = true);
 }
@@ -285,4 +286,15 @@ function copyToClipboard() {
 		console.error('Failed to copy:', err);
 	});
 }
+
+// CSP-safe delegates: replace inline onclick handlers.
+document.querySelectorAll('[data-action="fields-select-all"]').forEach(function(btn) {
+	btn.addEventListener('click', selectAll);
+});
+document.querySelectorAll('[data-action="fields-deselect-all"]').forEach(function(btn) {
+	btn.addEventListener('click', deselectAll);
+});
+document.querySelectorAll('[data-action="copy-migration"]').forEach(function(btn) {
+	btn.addEventListener('click', copyToClipboard);
+});
 </script>

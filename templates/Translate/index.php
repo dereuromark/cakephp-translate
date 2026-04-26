@@ -41,7 +41,7 @@ $totalColor = $this->Translation->getColor($totalCoverage);
 							<div class="flex-grow-1 ms-3">
 								<h5 class="mb-1"><?= __d('translate', 'Current Translation Coverage') ?></h5>
 								<p class="mb-0">
-									<span style="color:#<?= $totalColor; ?>;font-weight:bold;font-size:2rem;">
+									<span class="fw-bold fs-1" data-text-color="#<?= $totalColor; ?>">
 										<?= $totalCoverage ?>%
 									</span>
 									<span class="text-muted"><?= __d('translate', 'translated') ?></span>
@@ -142,7 +142,7 @@ $totalColor = $this->Translation->getColor($totalCoverage);
 										</div>
 										<div class="text-end">
 											<div class="progress" style="width: 100px; height: 20px;">
-												<div class="progress-bar bg-' . $progressColor . '" role="progressbar" style="width: ' . $percentage . '%">
+												<div class="progress-bar bg-' . $progressColor . '" role="progressbar" data-progress-width="' . $percentage . '">
 													' . $percentage . '%
 												</div>
 											</div>

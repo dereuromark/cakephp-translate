@@ -326,6 +326,16 @@ $cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
 			popoverTriggerList.map(function (popoverTriggerEl) {
 				return new bootstrap.Popover(popoverTriggerEl);
 			});
+
+			// CSP-safe replacement for inline style="width:N%": apply data-progress-width to .style.width
+			document.querySelectorAll('[data-progress-width]').forEach(function (el) {
+				el.style.width = el.dataset.progressWidth + '%';
+			});
+
+			// CSP-safe replacement for inline style="color:#XYZ": apply data-text-color to .style.color
+			document.querySelectorAll('[data-text-color]').forEach(function (el) {
+				el.style.color = el.dataset.textColor;
+			});
 		});
 	</script>
 

@@ -34,7 +34,7 @@
 					<div class="progress mt-1" style="height: 25px;">
 						<div class="progress-bar <?= $grandTotal['translation_percentage'] >= 80 ? 'bg-success' : ($grandTotal['translation_percentage'] >= 50 ? 'bg-warning' : 'bg-danger') ?>"
 							role="progressbar"
-							style="width: <?= $grandTotal['translation_percentage'] ?>%"
+							data-progress-width="<?= $grandTotal['translation_percentage'] ?>"
 							aria-valuenow="<?= $grandTotal['translation_percentage'] ?>"
 							aria-valuemin="0"
 							aria-valuemax="100">
@@ -51,7 +51,7 @@
 					<div class="progress mt-1" style="height: 25px;">
 						<div class="progress-bar bg-info"
 							role="progressbar"
-							style="width: <?= $grandTotal['confirmation_percentage'] ?>%"
+							data-progress-width="<?= $grandTotal['confirmation_percentage'] ?>"
 							aria-valuenow="<?= $grandTotal['confirmation_percentage'] ?>"
 							aria-valuemin="0"
 							aria-valuemax="100">
@@ -110,7 +110,7 @@
 									<div class="progress" style="height: 20px;">
 										<div class="progress-bar <?= $data['translation_percentage'] >= 80 ? 'bg-success' : ($data['translation_percentage'] >= 50 ? 'bg-warning' : 'bg-danger') ?>"
 											role="progressbar"
-											style="width: <?= $data['translation_percentage'] ?>%"
+											data-progress-width="<?= $data['translation_percentage'] ?>"
 											aria-valuenow="<?= $data['translation_percentage'] ?>"
 											aria-valuemin="0"
 											aria-valuemax="100">
@@ -132,7 +132,7 @@
 									<div class="progress" style="height: 20px;">
 										<div class="progress-bar bg-info"
 											role="progressbar"
-											style="width: <?= $data['confirmation_percentage'] ?>%"
+											data-progress-width="<?= $data['confirmation_percentage'] ?>"
 											aria-valuenow="<?= $data['confirmation_percentage'] ?>"
 											aria-valuemin="0"
 											aria-valuemax="100">
@@ -195,7 +195,7 @@
 									<div class="progress" style="height: 18px;">
 										<div class="progress-bar <?= $stat['translation_percentage'] >= 80 ? 'bg-success' : ($stat['translation_percentage'] >= 50 ? 'bg-warning' : 'bg-danger') ?>"
 											role="progressbar"
-											style="width: <?= $stat['translation_percentage'] ?>%"
+											data-progress-width="<?= $stat['translation_percentage'] ?>"
 											aria-valuenow="<?= $stat['translation_percentage'] ?>"
 											aria-valuemin="0"
 											aria-valuemax="100">
@@ -217,7 +217,7 @@
 									<div class="progress" style="height: 18px;">
 										<div class="progress-bar bg-info"
 											role="progressbar"
-											style="width: <?= $stat['confirmation_percentage'] ?>%"
+											data-progress-width="<?= $stat['confirmation_percentage'] ?>"
 											aria-valuenow="<?= $stat['confirmation_percentage'] ?>"
 											aria-valuemin="0"
 											aria-valuemax="100">

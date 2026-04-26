@@ -156,7 +156,7 @@ $totalColor = $this->Translation->getColor($totalCoverage);
 								<div class="progress" style="height: 20px;">
 									<div class="progress-bar <?= $stats['percentage'] >= 80 ? 'bg-success' : ($stats['percentage'] >= 50 ? 'bg-warning' : 'bg-danger') ?>"
 										role="progressbar"
-										style="width: <?= $stats['percentage'] ?>%"
+										data-progress-width="<?= $stats['percentage'] ?>"
 										aria-valuenow="<?= $stats['percentage'] ?>"
 										aria-valuemin="0"
 										aria-valuemax="100">

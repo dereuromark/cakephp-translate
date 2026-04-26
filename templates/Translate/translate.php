@@ -47,7 +47,7 @@ $cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
 								<div class="progress mt-2" style="height: 5px;">
 									<div class="progress-bar bg-success"
 										role="progressbar"
-										style="width: <?= $stats['percentage'] ?>%"
+										data-progress-width="<?= $stats['percentage'] ?>"
 										aria-valuenow="<?= $stats['percentage'] ?>"
 										aria-valuemin="0"
 										aria-valuemax="100">

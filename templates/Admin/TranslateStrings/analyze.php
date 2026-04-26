@@ -169,10 +169,10 @@ msgstr[1] "{0} Elemente"',
 						$translatedPct = round(($result['stats']['translated'] / $result['stats']['total']) * 100);
 						$untranslatedPct = 100 - $translatedPct;
 						?>
-						<div class="progress-bar bg-success" style="width: <?= $translatedPct ?>%">
+						<div class="progress-bar bg-success" data-progress-width="<?= $translatedPct ?>">
 							<?= $translatedPct ?>% <?= __d('translate', 'translated') ?>
 						</div>
-						<div class="progress-bar bg-warning" style="width: <?= $untranslatedPct ?>%">
+						<div class="progress-bar bg-warning" data-progress-width="<?= $untranslatedPct ?>">
 							<?= $untranslatedPct ?>%
 						</div>
 					</div>

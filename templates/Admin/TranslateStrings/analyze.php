@@ -164,7 +164,7 @@ msgstr[1] "{0} Elemente"',
 				</div>
 
 				<?php if ($result['stats']['total'] > 0) { ?>
-					<div class="progress mt-3" style="height: 25px;">
+					<div class="progress mt-3" data-style="height: 25px;">
 						<?php
 						$translatedPct = round(($result['stats']['translated'] / $result['stats']['total']) * 100);
 						$untranslatedPct = 100 - $translatedPct;

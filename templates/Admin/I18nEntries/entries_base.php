@@ -89,9 +89,9 @@ $cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
 					<label for="select-all" class="form-check-label"><?= __d('translate', 'Select All') ?></label>
 				</div>
 				<div class="d-flex align-items-center gap-2">
-					<div class="input-group input-group-sm" style="width: auto;">
+					<div class="input-group input-group-sm" data-style="width: auto;">
 						<span class="input-group-text"><?= __d('translate', 'Locales') ?></span>
-						<select name="locales[]" multiple class="form-select form-select-sm" style="min-width: 150px;" id="locale-select">
+						<select name="locales[]" multiple class="form-select form-select-sm" data-style="min-width: 150px;" id="locale-select">
 							<?php foreach ($locales as $locale) { ?>
 								<option value="<?= h($locale) ?>" selected><?= h($locale) ?></option>
 							<?php } ?>
@@ -107,7 +107,7 @@ $cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
 					<table class="table table-striped table-hover mb-0">
 						<thead class="table-light">
 							<tr>
-								<th style="width: 40px;"></th>
+								<th data-style="width: 40px;"></th>
 								<th><?= __d('translate', 'ID') ?></th>
 								<?php if ($displayField) { ?>
 									<th><?= h(ucfirst($displayField)) ?></th>

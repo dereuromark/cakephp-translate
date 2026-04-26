@@ -336,6 +336,12 @@ $cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
 			document.querySelectorAll('[data-text-color]').forEach(function (el) {
 				el.style.color = el.dataset.textColor;
 			});
+
+			// CSP-safe replacement for inline style="...": apply data-style to .style.cssText.
+			// JS-driven style mutation is not subject to style-src 'unsafe-inline'.
+			document.querySelectorAll('[data-style]').forEach(function (el) {
+				el.style.cssText = el.dataset.style;
+			});
 		});
 	</script>
 

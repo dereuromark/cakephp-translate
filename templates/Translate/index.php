@@ -141,7 +141,7 @@ $totalColor = $this->Translation->getColor($totalCoverage);
 											<small class="text-muted">' . $data['translated'] . ' / ' . $data['total'] . ' ' . __d('translate', 'translated') . '</small>
 										</div>
 										<div class="text-end">
-											<div class="progress" style="width: 100px; height: 20px;">
+											<div class="progress" data-style="width: 100px; height: 20px;">
 												<div class="progress-bar bg-' . $progressColor . '" role="progressbar" data-progress-width="' . $percentage . '">
 													' . $percentage . '%
 												</div>

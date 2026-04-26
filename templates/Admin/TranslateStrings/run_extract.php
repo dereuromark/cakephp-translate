@@ -158,7 +158,7 @@ $this->assign('title', __d('translate', 'Run i18n Extract (Experimental)'));
 					</span>
 				</div>
 				<div class="card-body">
-					<pre class="mb-0" style="max-height: 400px; overflow-y: auto;"><?= h($output) ?></pre>
+					<pre class="mb-0" data-style="max-height: 400px; overflow-y: auto;"><?= h($output) ?></pre>
 				</div>
 			</div>
 		<?php } ?>
@@ -178,7 +178,7 @@ $this->assign('title', __d('translate', 'Run i18n Extract (Experimental)'));
 								<span class="badge bg-primary"><?= __d('translate', '{0} strings', $data['count']) ?></span>
 							</div>
 							<div class="card-body p-0">
-								<pre class="mb-0 p-3" style="max-height: 300px; overflow-y: auto; font-size: 0.8rem;"><?= h($data['content']) ?></pre>
+								<pre class="mb-0 p-3" data-style="max-height: 300px; overflow-y: auto; font-size: 0.8rem;"><?= h($data['content']) ?></pre>
 							</div>
 						</div>
 					<?php } ?>

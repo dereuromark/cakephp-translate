@@ -101,7 +101,7 @@ $cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
 							'default' => 'shadow_table',
 						]) ?>
 
-						<div class="alert alert-info mt-2" style="font-size: 0.85rem;">
+						<div class="alert alert-info mt-2" data-style="font-size: 0.85rem;">
 							<strong>Shadow Table:</strong> <?= __d('translate', 'Creates columns for each field. Better performance, recommended.') ?><br>
 							<strong>EAV:</strong> <?= __d('translate', 'Flexible, stores each field translation as a row. More flexible but slower.') ?>
 						</div>
@@ -137,7 +137,7 @@ $cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
 								<?= __d('translate', 'No translatable fields found in this table.') ?>
 							</div>
 						<?php } else { ?>
-							<div class="border rounded p-2" style="max-height: 300px; overflow-y: auto;">
+							<div class="border rounded p-2" data-style="max-height: 300px; overflow-y: auto;">
 								<?php foreach ($translatableFields as $field) { ?>
 									<div class="form-check">
 										<input type="checkbox"
@@ -184,11 +184,11 @@ $cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
 					<h6 class="mb-0"><i class="fas fa-check-circle"></i> <?= __d('translate', 'Next Steps') ?></h6>
 				</div>
 				<div class="card-body">
-					<ol class="mb-0" style="font-size: 0.9rem;">
+					<ol class="mb-0" data-style="font-size: 0.9rem;">
 						<li><?= __d('translate', 'Copy the migration code') ?></li>
 						<li>
 							<?= __d('translate', 'Save to') ?>
-							<br><code style="font-size: 0.75rem;">config/Migrations/<br><?= h($migrationName) ?>.php</code>
+							<br><code data-style="font-size: 0.75rem;">config/Migrations/<br><?= h($migrationName) ?>.php</code>
 						</li>
 						<li>
 							<?= __d('translate', 'Run:') ?>
@@ -196,7 +196,7 @@ $cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
 						</li>
 						<li>
 							<?= __d('translate', 'Add to your Table class:') ?>
-							<pre style="font-size: 0.75rem; background: #f8f9fa; padding: 0.5rem; margin-top: 0.5rem;"><code><?php
+							<pre data-style="font-size: 0.75rem; background: #f8f9fa; padding: 0.5rem; margin-top: 0.5rem;"><code><?php
 // Format fields array with proper indentation
 $fields = array_values($selectedFields);
 $fieldsFormatted = "[\n";
@@ -230,7 +230,7 @@ $fieldsFormatted .= "        ]";
 						</h6>
 					</div>
 					<div class="card-body p-0">
-						<pre class="mb-0 p-3" style="background: #2d2d2d; color: #f8f8f2; border-radius: 0; max-height: 600px; overflow-y: auto;"><code><?= h($migrationCode) ?></code></pre>
+						<pre class="mb-0 p-3" data-style="background: #2d2d2d; color: #f8f8f2; border-radius: 0; max-height: 600px; overflow-y: auto;"><code><?= h($migrationCode) ?></code></pre>
 					</div>
 					<div class="card-footer">
 						<button type="button" class="btn btn-sm btn-outline-primary" data-action="copy-migration">

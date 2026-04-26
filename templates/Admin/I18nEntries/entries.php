@@ -150,7 +150,7 @@ $cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
 					<table class="table table-striped table-hover mb-0">
 						<thead class="table-light">
 							<tr>
-								<th style="width: 40px;">
+								<th data-style="width: 40px;">
 									<input type="checkbox" id="check-all" class="form-check-input">
 								</th>
 								<th><?= __d('translate', 'ID') ?></th>

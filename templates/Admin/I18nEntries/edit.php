@@ -67,7 +67,7 @@ $cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
 							<i class="fas fa-file-alt"></i> <?= __d('translate', 'Source Text') ?>
 							<small class="text-muted">(<?= __d('translate', 'original') ?>)</small>
 						</label>
-						<div class="form-control bg-light" style="min-height: 80px; white-space: pre-wrap;">
+						<div class="form-control bg-light" data-style="min-height: 80px; white-space: pre-wrap;">
 							<?= h($sourceText) ?>
 						</div>
 					</div>

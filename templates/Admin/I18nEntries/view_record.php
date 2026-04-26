@@ -133,7 +133,7 @@
 											<?php
 											$value = $translation->$field ?? '';
 											if ($value) {
-												echo '<div class="text-break" style="max-width: 400px;">' . h($value) . '</div>';
+												echo '<div class="text-break" data-style="max-width: 400px;">' . h($value) . '</div>';
 											} else {
 												echo '<span class="text-muted">(' . __d('translate', 'empty') . ')</span>';
 											}

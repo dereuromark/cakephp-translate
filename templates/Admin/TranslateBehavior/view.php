@@ -168,7 +168,7 @@
 			</div>
 			<div class="card-body p-0">
 				<div class="table-responsive">
-					<table class="table table-sm table-striped table-hover mb-0" style="font-size: 0.85rem;">
+					<table class="table table-sm table-striped table-hover mb-0" data-style="font-size: 0.85rem;">
 						<thead class="table-light">
 							<tr>
 								<?php foreach (array_keys($sampleData[0] ?? []) as $columnName) { ?>
@@ -235,7 +235,7 @@
 						<i class="fas fa-exclamation-triangle"></i>
 						<strong><?= __d('translate', 'Note') ?>:</strong>
 						<?= __d('translate', 'The model class exists but doesn\'t have the TranslateBehavior attached. Add it to your Table class:') ?>
-						<pre class="mt-2 mb-0" style="background: #f8f9fa; padding: 0.5rem;"><code><?php
+						<pre class="mt-2 mb-0" data-style="background: #f8f9fa; padding: 0.5rem;"><code><?php
 // Format fields array with proper indentation
 $fields = array_values($translatedFields);
 $fieldsFormatted = "[\n";

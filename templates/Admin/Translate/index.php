@@ -90,7 +90,7 @@ $totalColor = $this->Translation->getColor($totalCoverage);
 					</div>
 					<?php } ?>
 					<div class="col-md-2 text-end">
-						<span class="badge bg-success" style="font-size: 1.5rem; padding: 0.5rem 1rem;">
+						<span class="badge bg-success" data-style="font-size: 1.5rem; padding: 0.5rem 1rem;">
 							<i class="fas fa-chart-pie"></i> <?= $totalCoverage ?>%
 						</span>
 						<small class="text-muted d-block"><?= __d('translate', 'Overall Coverage') ?></small>
@@ -153,7 +153,7 @@ $totalColor = $this->Translation->getColor($totalCoverage);
 								<span class="badge bg-secondary"><?= number_format($stats['unconfirmed']) ?></span>
 							</td>
 							<td>
-								<div class="progress" style="height: 20px;">
+								<div class="progress" data-style="height: 20px;">
 									<div class="progress-bar <?= $stats['percentage'] >= 80 ? 'bg-success' : ($stats['percentage'] >= 50 ? 'bg-warning' : 'bg-danger') ?>"
 										role="progressbar"
 										data-progress-width="<?= $stats['percentage'] ?>"
@@ -373,13 +373,13 @@ $totalColor = $this->Translation->getColor($totalCoverage);
 											<small><strong><?= __d('translate', 'Unified Diff') ?></strong></small>
 										</div>
 										<div class="card-body p-0">
-											<pre class="mb-0" style="background: #f8f9fa; padding: 10px; border: none; font-size: 12px; line-height: 1.4;"><code><?php
+											<pre class="mb-0" data-style="background: #f8f9fa; padding: 10px; border: none; font-size: 12px; line-height: 1.4;"><code><?php
 											// Generate unified diff style output
 											$oldLines = explode("\n", $oldData['content']);
 											$newLines = explode("\n", $term->content);
 
 											// Show context header
-											echo '<span style="color: #999;">@@ Translation @@</span>' . "\n";
+											echo '<span data-style="color: #999;">@@ Translation @@</span>' . "\n";
 
 											// Simple line-by-line diff
 											$maxLines = max(count($oldLines), count($newLines));
@@ -389,10 +389,10 @@ $totalColor = $this->Translation->getColor($totalCoverage);
 
 												if ($oldLine !== $newLine) {
 													if ($oldLine !== '') {
-														echo '<span style="background: #ffdddd; color: #d00;">-' . h($oldLine) . '</span>' . "\n";
+														echo '<span data-style="background: #ffdddd; color: #d00;">-' . h($oldLine) . '</span>' . "\n";
 													}
 													if ($newLine !== '') {
-														echo '<span style="background: #ddffdd; color: #080;">+' . h($newLine) . '</span>' . "\n";
+														echo '<span data-style="background: #ddffdd; color: #080;">+' . h($newLine) . '</span>' . "\n";
 													}
 												} else {
 													echo ' ' . h($oldLine) . "\n";
@@ -609,7 +609,7 @@ $totalColor = $this->Translation->getColor($totalCoverage);
 						<div class="card-body p-2">
 							<table class="table table-sm table-bordered mb-0">
 								<tr>
-									<th style="width: 30%;"><?= __d('translate', 'Timestamp') ?></th>
+									<th data-style="width: 30%;"><?= __d('translate', 'Timestamp') ?></th>
 									<td><?= $this->Time->nice($log->created) ?></td>
 								</tr>
 								<tr>
@@ -639,7 +639,7 @@ $totalColor = $this->Translation->getColor($totalCoverage);
 							<small><strong><?= __d('translate', 'Unified Diff') ?></strong></small>
 						</div>
 						<div class="card-body p-0">
-							<pre class="mb-0" style="background: #f8f9fa; padding: 10px; border: none; font-size: 12px; line-height: 1.4;"><code><?php
+							<pre class="mb-0" data-style="background: #f8f9fa; padding: 10px; border: none; font-size: 12px; line-height: 1.4;"><code><?php
 							// Generate unified diff for each changed field
 							foreach ($newData as $field => $newValue) {
 								$oldValue = $oldData[$field] ?? null;
@@ -650,7 +650,7 @@ $totalColor = $this->Translation->getColor($totalCoverage);
 								}
 
 								// Show field header
-								echo '<span style="color: #999;">@@ ' . h($field) . ' @@</span>' . "\n";
+								echo '<span data-style="color: #999;">@@ ' . h($field) . ' @@</span>' . "\n";
 
 								// Convert to string for comparison
 								$oldStr = is_array($oldValue) ? json_encode($oldValue) : (string)$oldValue;
@@ -667,10 +667,10 @@ $totalColor = $this->Translation->getColor($totalCoverage);
 
 									if ($oldLine !== $newLine) {
 										if ($oldLine !== '') {
-											echo '<span style="background: #ffdddd; color: #d00;">-' . h($oldLine) . '</span>' . "\n";
+											echo '<span data-style="background: #ffdddd; color: #d00;">-' . h($oldLine) . '</span>' . "\n";
 										}
 										if ($newLine !== '') {
-											echo '<span style="background: #ddffdd; color: #080;">+' . h($newLine) . '</span>' . "\n";
+											echo '<span data-style="background: #ddffdd; color: #080;">+' . h($newLine) . '</span>' . "\n";
 										}
 									} else {
 										echo ' ' . h($oldLine) . "\n";
@@ -693,9 +693,9 @@ $totalColor = $this->Translation->getColor($totalCoverage);
 							<table class="table table-sm table-bordered mb-0">
 								<thead>
 									<tr>
-										<th style="width: 20%;"><?= __d('translate', 'Field') ?></th>
-										<th style="width: 40%;"><?= __d('translate', 'Before') ?></th>
-										<th style="width: 40%;"><?= __d('translate', 'After') ?></th>
+										<th data-style="width: 20%;"><?= __d('translate', 'Field') ?></th>
+										<th data-style="width: 40%;"><?= __d('translate', 'Before') ?></th>
+										<th data-style="width: 40%;"><?= __d('translate', 'After') ?></th>
 									</tr>
 								</thead>
 								<tbody>
@@ -742,8 +742,8 @@ $totalColor = $this->Translation->getColor($totalCoverage);
 							<table class="table table-sm table-bordered mb-0">
 								<thead>
 									<tr>
-										<th style="width: 30%;"><?= __d('translate', 'Field') ?></th>
-										<th style="width: 70%;"><?= __d('translate', 'Value') ?></th>
+										<th data-style="width: 30%;"><?= __d('translate', 'Field') ?></th>
+										<th data-style="width: 70%;"><?= __d('translate', 'Value') ?></th>
 									</tr>
 								</thead>
 								<tbody>

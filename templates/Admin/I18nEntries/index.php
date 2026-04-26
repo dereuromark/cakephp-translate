@@ -69,7 +69,7 @@
 					<div class="card-body">
 						<dl class="row mb-0">
 							<dt class="col-6"><?= __d('translate', 'Table') ?>:</dt>
-							<dd class="col-6"><code style="font-size: 0.75rem;"><?= h($tableName) ?></code></dd>
+							<dd class="col-6"><code data-style="font-size: 0.75rem;"><?= h($tableName) ?></code></dd>
 
 							<dt class="col-6"><?= __d('translate', 'Strategy') ?>:</dt>
 							<dd class="col-6">

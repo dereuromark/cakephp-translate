@@ -4,8 +4,14 @@
  * @var mixed $poFiles
  * @var mixed $potFiles
  * @var string $localePath
+ * @var array<string> $preselectedPot
+ * @var array<string> $preselectedPo
+ * @var string $preselectDomain
  */
 $cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
+$preselectedPot = $preselectedPot ?? [];
+$preselectedPo = $preselectedPo ?? [];
+$preselectDomain = $preselectDomain ?? '';
 ?>
 <div class="row">
 	<aside class="col-md-3 col-sm-4 col-12">
@@ -32,6 +38,12 @@ $cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
 					<strong><?= __d('translate', 'Locale Path:') ?></strong>
 					<code><?= h($localePath) ?></code>
 				</div>
+				<?php if ($preselectDomain !== '' && ($preselectedPot || $preselectedPo)) { ?>
+					<div class="alert alert-primary mb-3">
+						<i class="fas fa-info-circle"></i>
+						<?= __d('translate', 'Pre-selected the {0} domain (linked from Detected Domains analyzer).', '<code>' . h($preselectDomain) . '</code>') ?>
+					</div>
+				<?php } ?>
 				<?= $this->Form->create(null) ?>
 					<fieldset>
 						<legend><?= __d('translate', 'From POT File') ?></legend>
@@ -44,6 +56,7 @@ $cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
 								'multiple' => 'checkbox',
 								'label' => __d('translate', 'Selection'),
 								'options' => $potFiles,
+								'default' => $preselectedPot,
 							]) ?>
 						</div>
 					</fieldset>
@@ -59,6 +72,7 @@ $cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
 								'multiple' => 'checkbox',
 								'label' => __d('translate', 'Selection'),
 								'options' => $poFiles,
+								'default' => $preselectedPo,
 							]) ?>
 						</div>
 					</fieldset>

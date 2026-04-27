@@ -10,6 +10,9 @@
  *     coverage: array<string, string|null>,
  *     potFile: string|null,
  *     isDefaultDomain: bool,
+ *     hasImportedStrings: bool,
+ *     importedStringCount: int,
+ *     stage: string,
  * }> $domainsReport
  * @var array<string> $paths
  * @var array<string> $availableLocales
@@ -145,23 +148,68 @@ $shortenPath = function (string $abs) use ($projectPath): string {
 											</td>
 										<?php } ?>
 										<td>
-											<?php
-											$missingDefault = empty($info['coverage'][$normalizedDefault]) && !$info['isDefaultDomain'];
-											if ($info['isDefaultDomain']) {
-												echo '<span class="text-muted">' . __d('translate', 'Use the regular i18n extract for the default domain.') . '</span>';
-											} elseif ($missingDefault) {
-												echo '<span class="text-warning">' . __d('translate', 'Create an app-level {0}.po — strings would otherwise silently fall back to the default domain.', $domain) . '</span>';
-											} else {
-												echo '<span class="text-success">' . __d('translate', 'Covered.') . '</span>';
-											}
-											?>
-											<div class="mt-1">
-												<?= $this->Html->link(
-													'<i class="fas fa-flask"></i> ' . __d('translate', 'Run extract'),
-													['controller' => 'TranslateStrings', 'action' => 'extract', '?' => ['domain' => $domain]],
-													['escapeTitle' => false, 'class' => 'btn btn-sm btn-outline-primary'],
-												) ?>
-											</div>
+											<?php switch ($info['stage']) {
+												case 'default': ?>
+													<span class="text-muted small"><?= __d('translate', 'Use the regular i18n extract for the default domain.') ?></span>
+													<?php break;
+												case 'extract': ?>
+													<span class="badge bg-secondary"><?= __d('translate', 'Stage 1: Extract') ?></span>
+													<div class="small text-warning mt-1">
+														<?= __d('translate', 'No POT yet — run i18n extract to generate it.') ?>
+													</div>
+													<div class="mt-1">
+														<?= $this->Html->link(
+															'<i class="fas fa-flask"></i> ' . __d('translate', 'Run i18n Extract'),
+															['controller' => 'TranslateStrings', 'action' => 'runExtract'],
+															['escapeTitle' => false, 'class' => 'btn btn-sm btn-outline-primary'],
+														) ?>
+													</div>
+													<?php break;
+												case 'import': ?>
+													<span class="badge bg-info"><?= __d('translate', 'Stage 2: Import') ?></span>
+													<div class="small text-warning mt-1">
+														<?= __d('translate', 'POT exists but no strings imported — load it into the DB.') ?>
+													</div>
+													<div class="mt-1">
+														<?= $this->Html->link(
+															'<i class="fas fa-file-import"></i> ' . __d('translate', 'Import {0}.pot', $domain),
+															['controller' => 'TranslateStrings', 'action' => 'extract', '?' => ['domain' => $domain]],
+															['escapeTitle' => false, 'class' => 'btn btn-sm btn-outline-info'],
+														) ?>
+													</div>
+													<?php break;
+												case 'dump': ?>
+													<span class="badge bg-warning text-dark"><?= __d('translate', 'Stage 3: Dump') ?></span>
+													<div class="small text-warning mt-1">
+														<?= __d('translate', '{0} string(s) in DB but no app-level {1}.po — dump to filesystem so the app can load it.', $info['importedStringCount'], $domain) ?>
+													</div>
+													<div class="mt-1">
+														<?= $this->Html->link(
+															'<i class="fas fa-file-export"></i> ' . __d('translate', 'Dump translations'),
+															['controller' => 'TranslateStrings', 'action' => 'dump'],
+															['escapeTitle' => false, 'class' => 'btn btn-sm btn-outline-warning'],
+														) ?>
+													</div>
+													<?php break;
+												case 'covered':
+												default: ?>
+													<span class="badge bg-success"><?= __d('translate', 'Covered') ?></span>
+													<div class="small text-muted mt-1">
+														<?php if ($info['hasImportedStrings']) { ?>
+															<?= __d('translate', '{0} string(s) in DB, default-locale .po present.', $info['importedStringCount']) ?>
+														<?php } else { ?>
+															<?= __d('translate', 'Default-locale .po present (managed outside the DB workflow).') ?>
+														<?php } ?>
+													</div>
+													<div class="mt-1">
+														<?= $this->Html->link(
+															'<i class="fas fa-flask"></i> ' . __d('translate', 'Re-extract'),
+															['controller' => 'TranslateStrings', 'action' => 'runExtract'],
+															['escapeTitle' => false, 'class' => 'btn btn-sm btn-outline-secondary'],
+														) ?>
+													</div>
+													<?php break;
+											} ?>
 										</td>
 									</tr>
 									<tr class="table-light">

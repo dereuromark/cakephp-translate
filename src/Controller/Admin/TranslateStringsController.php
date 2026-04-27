@@ -289,12 +289,20 @@ class TranslateStringsController extends TranslateAppController {
 		$translateLocales = $this->TranslateStrings->TranslateTerms->TranslateLocales->getExtractableAsList($projectId);
 		$poFileLanguages = $extractService->getPoFileLanguages();
 
+		// Optional preselection from query string (e.g. linked from Detected Domains analyzer).
+		$preselectDomain = (string)$this->request->getQuery('domain');
+		$preselectedPot = [];
+		$preselectedPo = [];
+
 		// Filter to only include files that actually exist
 		$potFiles = [];
 		foreach ($extractService->getPotFiles() as $potFile) {
 			if (file_exists($localePath . $potFile . '.pot')) {
 				$potFiles[$potFile] = $potFile;
 			}
+		}
+		if ($preselectDomain !== '' && isset($potFiles[$preselectDomain])) {
+			$preselectedPot[] = $preselectDomain;
 		}
 
 		$poFiles = [];
@@ -303,6 +311,9 @@ class TranslateStringsController extends TranslateAppController {
 			foreach ($extractService->getPoFiles($poFileLanguage) as $key => $poFile) {
 				if (file_exists($localePath . $poFileLanguage . DS . $poFile . '.po')) {
 					$existingFiles[$key] = $poFile;
+					if ($preselectDomain !== '' && $poFile === $preselectDomain) {
+						$preselectedPo[] = $poFileLanguage . '-' . $poFile;
+					}
 				}
 			}
 			if ($existingFiles) {
@@ -424,7 +435,7 @@ class TranslateStringsController extends TranslateAppController {
 			$this->request = $this->request->withData('sel_po', $selPo);
 		}
 
-		$this->set(compact('potFiles', 'poFiles', 'localePath'));
+		$this->set(compact('potFiles', 'poFiles', 'localePath', 'preselectedPot', 'preselectedPo', 'preselectDomain'));
 	}
 
 	/**

@@ -663,6 +663,24 @@ class TranslateController extends TranslateAppController {
 		$paths = $scanner->discoverPaths($projectPath);
 		$detected = $scanner->scan($paths);
 
+		// Which detected domains already have a TranslateDomain row (and therefore
+		// strings imported into the DB) for the current project?
+		$importedDomainNames = [];
+		$importedStringCounts = [];
+		if ($projectId && $detected) {
+			$translateDomains = $this->TranslateDomains->find()
+				->where([
+					'TranslateDomains.translate_project_id' => $projectId,
+					'TranslateDomains.name IN' => array_keys($detected),
+				])
+				->contain(['TranslateStrings'])
+				->all();
+			foreach ($translateDomains as $td) {
+				$importedDomainNames[$td->name] = true;
+				$importedStringCounts[$td->name] = is_array($td->translate_strings) ? count($td->translate_strings) : 0;
+			}
+		}
+
 		// Determine app locale paths to check coverage against
 		$localePaths = (array)Configure::read('App.paths.locales', []);
 		if (!$localePaths) {
@@ -726,6 +744,43 @@ class TranslateController extends TranslateAppController {
 					break;
 				}
 			}
+			$hasImportedStrings = !empty($importedDomainNames[$domain]);
+			$importedCount = $importedStringCounts[$domain] ?? 0;
+			$hasDefaultPo = !empty($coverage[$normalizedDefault]);
+			$hasAnyPo = false;
+			foreach ($coverage as $po) {
+				if ($po) {
+					$hasAnyPo = true;
+					break;
+				}
+			}
+
+			// Pipeline stage. The load-bearing thing for the silent-fallback bug
+			// is whether a default-locale .po file exists at runtime — that's
+			// what CakePHP's I18n actually loads. The DB-strings check only
+			// matters for plugin's own translate-in-DB workflow.
+			//
+			//   default — special-case: the `default` domain is handled by the
+			//             app's own default.po; nothing this analyzer needs to do.
+			//   covered — default-locale .po exists. Silent fallback is broken;
+			//             user is safe regardless of DB pipeline state.
+			//   dump    — DB has translated strings but no app-level .po yet —
+			//             one click to write them to disk.
+			//   import  — .pot exists but no DB strings for this domain yet —
+			//             load the .pot into the DB and translate.
+			//   extract — nothing exists yet — start from scratch.
+			if ($domain === 'default') {
+				$stage = 'default';
+			} elseif ($hasDefaultPo) {
+				$stage = 'covered';
+			} elseif ($hasImportedStrings) {
+				$stage = 'dump';
+			} elseif ($potFile) {
+				$stage = 'import';
+			} else {
+				$stage = 'extract';
+			}
+
 			$domainsReport[$domain] = [
 				'msgidCount' => count($info['msgids']),
 				'callCount' => $info['callCount'],
@@ -735,6 +790,9 @@ class TranslateController extends TranslateAppController {
 				'coverage' => $coverage,
 				'potFile' => $potFile,
 				'isDefaultDomain' => $domain === 'default',
+				'hasImportedStrings' => $hasImportedStrings,
+				'importedStringCount' => $importedCount,
+				'stage' => $stage,
 			];
 		}
 

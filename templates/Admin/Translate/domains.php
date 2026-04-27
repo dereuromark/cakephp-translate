@@ -1,0 +1,195 @@
+<?php
+/**
+ * @var \App\View\AppView $this
+ * @var array<string, array{
+ *     msgidCount: int,
+ *     callCount: int,
+ *     fileCount: int,
+ *     sampleMsgids: array<string>,
+ *     firstFiles: array<string>,
+ *     coverage: array<string, string|null>,
+ *     potFile: string|null,
+ *     isDefaultDomain: bool,
+ * }> $domainsReport
+ * @var array<string> $paths
+ * @var array<string> $availableLocales
+ * @var array<string> $localePaths
+ * @var string $normalizedDefault
+ * @var string $projectPath
+ */
+
+$shortenPath = function (string $abs) use ($projectPath): string {
+	$root = rtrim($projectPath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+	if (str_starts_with($abs, $root)) {
+		return './' . substr($abs, strlen($root));
+	}
+
+	return $abs;
+};
+
+?>
+<div class="row">
+	<!-- Sidebar -->
+	<nav class="col-lg-3 col-md-4 mb-4">
+		<div class="card">
+			<div class="card-header">
+				<i class="fas fa-bars"></i> <?= __d('translate', 'Actions') ?>
+			</div>
+			<div class="list-group list-group-flush">
+				<?= $this->Html->link(
+					'<i class="fas fa-home"></i> ' . __d('translate', 'Overview'),
+					['controller' => 'Translate', 'action' => 'index'],
+					['escapeTitle' => false, 'class' => 'list-group-item list-group-item-action'],
+				) ?>
+				<?= $this->Html->link(
+					'<i class="fas fa-folder"></i> ' . __d('translate', 'Translate Domains'),
+					['controller' => 'TranslateDomains', 'action' => 'index'],
+					['escapeTitle' => false, 'class' => 'list-group-item list-group-item-action'],
+				) ?>
+				<?= $this->Html->link(
+					'<i class="fas fa-flask"></i> ' . __d('translate', 'Run i18n Extract'),
+					['controller' => 'TranslateStrings', 'action' => 'extract'],
+					['escapeTitle' => false, 'class' => 'list-group-item list-group-item-action'],
+				) ?>
+			</div>
+		</div>
+
+		<div class="card mt-3">
+			<div class="card-header">
+				<i class="fas fa-folder-open"></i> <?= __d('translate', 'Scanned Paths') ?>
+			</div>
+			<ul class="list-group list-group-flush small">
+				<?php foreach ($paths as $p) { ?>
+					<li class="list-group-item"><?= h($p) ?></li>
+				<?php } ?>
+			</ul>
+		</div>
+
+		<div class="card mt-3">
+			<div class="card-header">
+				<i class="fas fa-info-circle"></i> <?= __d('translate', 'Locale Paths') ?>
+			</div>
+			<ul class="list-group list-group-flush small">
+				<?php foreach ($localePaths as $lp) { ?>
+					<li class="list-group-item"><?= h($lp) ?></li>
+				<?php } ?>
+			</ul>
+		</div>
+	</nav>
+
+	<!-- Main Content -->
+	<div class="col-lg-9 col-md-8">
+		<div class="card">
+			<div class="card-header d-flex align-items-center justify-content-between">
+				<h2 class="mb-0">
+					<i class="fas fa-search"></i>
+					<?= __d('translate', 'Detected Domains') ?>
+				</h2>
+				<span class="badge bg-secondary">
+					<?= count($domainsReport) ?> <?= __d('translate', 'domains') ?>
+				</span>
+			</div>
+			<div class="card-body">
+				<p class="text-muted">
+					<?= __d('translate', 'Scanned the project source for `__d(domain, ...)` calls. Each row shows whether an app-level PO file exists for that domain in each available locale.') ?>
+				</p>
+
+				<?php if (!$domainsReport) { ?>
+					<div class="alert alert-info">
+						<?= __d('translate', 'No `__d()` calls found in the scanned paths.') ?>
+					</div>
+				<?php } else { ?>
+					<div class="table-responsive">
+						<table class="table table-hover align-middle">
+							<thead>
+								<tr>
+									<th><?= __d('translate', 'Domain') ?></th>
+									<th class="text-end"><?= __d('translate', 'msgids') ?></th>
+									<th class="text-end"><?= __d('translate', 'Calls') ?></th>
+									<th class="text-end"><?= __d('translate', 'Files') ?></th>
+									<th><?= __d('translate', 'POT') ?></th>
+									<?php foreach ($availableLocales as $locale) { ?>
+										<th class="text-center" style="font-family:monospace"><?= h($locale) ?></th>
+									<?php } ?>
+									<th><?= __d('translate', 'Suggestion') ?></th>
+								</tr>
+							</thead>
+							<tbody>
+								<?php foreach ($domainsReport as $domain => $info) { ?>
+									<tr>
+										<td>
+											<strong><?= h($domain) ?></strong>
+											<?php if ($info['isDefaultDomain']) { ?>
+												<span class="badge bg-secondary ms-1" title="<?= __d('translate', 'CakePHP default domain — typically translated via the app default.po') ?>">default</span>
+											<?php } ?>
+										</td>
+										<td class="text-end"><?= $info['msgidCount'] ?></td>
+										<td class="text-end"><?= $info['callCount'] ?></td>
+										<td class="text-end"><?= $info['fileCount'] ?></td>
+										<td>
+											<?php if ($info['potFile']) { ?>
+												<i class="fas fa-check text-success" title="<?= h($info['potFile']) ?>"></i>
+											<?php } else { ?>
+												<i class="fas fa-times text-muted" title="<?= __d('translate', 'No app-level POT file') ?>"></i>
+											<?php } ?>
+										</td>
+										<?php foreach ($availableLocales as $locale) {
+											$po = $info['coverage'][$locale] ?? null;
+										?>
+											<td class="text-center">
+												<?php if ($po) { ?>
+													<i class="fas fa-check text-success" title="<?= h($po) ?>"></i>
+												<?php } else { ?>
+													<i class="fas fa-times text-danger" title="<?= __d('translate', 'Missing app-level {0}.po — falls back to default domain', $domain) ?>"></i>
+												<?php } ?>
+											</td>
+										<?php } ?>
+										<td>
+											<?php
+											$missingDefault = empty($info['coverage'][$normalizedDefault]) && !$info['isDefaultDomain'];
+											if ($info['isDefaultDomain']) {
+												echo '<span class="text-muted">' . __d('translate', 'Use the regular i18n extract for the default domain.') . '</span>';
+											} elseif ($missingDefault) {
+												echo '<span class="text-warning">' . __d('translate', 'Create an app-level {0}.po — strings would otherwise silently fall back to the default domain.', $domain) . '</span>';
+											} else {
+												echo '<span class="text-success">' . __d('translate', 'Covered.') . '</span>';
+											}
+											?>
+											<div class="mt-1">
+												<?= $this->Html->link(
+													'<i class="fas fa-flask"></i> ' . __d('translate', 'Run extract'),
+													['controller' => 'TranslateStrings', 'action' => 'extract', '?' => ['domain' => $domain]],
+													['escapeTitle' => false, 'class' => 'btn btn-sm btn-outline-primary'],
+												) ?>
+											</div>
+										</td>
+									</tr>
+									<tr class="table-light">
+										<td colspan="<?= 6 + count($availableLocales) ?>" class="small text-muted">
+											<?php if ($info['firstFiles']) { ?>
+												<strong><?= __d('translate', 'Used in') ?>:</strong>
+												<?php foreach ($info['firstFiles'] as $i => $f) { ?>
+													<?= $i > 0 ? ', ' : '' ?><code><?= h($shortenPath($f)) ?></code>
+												<?php } ?>
+												<?php if ($info['fileCount'] > count($info['firstFiles'])) { ?>
+													<em>(+<?= $info['fileCount'] - count($info['firstFiles']) ?> <?= __d('translate', 'more') ?>)</em>
+												<?php } ?>
+												<br>
+											<?php } ?>
+											<?php if ($info['sampleMsgids']) { ?>
+												<strong><?= __d('translate', 'Sample msgids') ?>:</strong>
+												<?php foreach ($info['sampleMsgids'] as $i => $m) { ?>
+													<?= $i > 0 ? ' · ' : '' ?><code><?= h(mb_strimwidth((string)$m, 0, 60, '…')) ?></code>
+												<?php } ?>
+											<?php } ?>
+										</td>
+									</tr>
+								<?php } ?>
+							</tbody>
+						</table>
+					</div>
+				<?php } ?>
+			</div>
+		</div>
+	</div>
+</div>

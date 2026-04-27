@@ -156,7 +156,7 @@ class DomainScannerService {
 				continue;
 			}
 			$name = $tok[1];
-			if (!isset(self::DOMAIN_FUNCTIONS[$name])) {
+			if (!isset(static::DOMAIN_FUNCTIONS[$name])) {
 				continue;
 			}
 			// Skip method/static calls like $foo->__d() or Foo::__d()
@@ -176,7 +176,8 @@ class DomainScannerService {
 			// Read msgid: it's the next string after a comma
 			$msgidPos = $this->advancePastArg($compact, $i + 2);
 			if ($msgidPos === null || ($compact[$msgidPos] ?? null) !== ',') {
-				$result[$domain]['msgids'][''] [$path][] = $line;
+				$result[$domain]['msgids'][''][$path][] = $line;
+
 				continue;
 			}
 			$msgid = $this->readStringArg($compact, $msgidPos + 1);
@@ -188,7 +189,7 @@ class DomainScannerService {
 	/**
 	 * If $tokens[$pos] is a single-string literal, return its decoded value.
 	 *
-	 * @param array<array<int|string>|string> $tokens
+	 * @param array<array{0: int, 1: string, 2: int}|string> $tokens
 	 * @param int $pos
 	 * @return string|null
 	 */
@@ -198,13 +199,14 @@ class DomainScannerService {
 			return null;
 		}
 		$type = $tok[0];
-		$value = $tok[1];
+		$value = (string)$tok[1];
 		if ($type === T_CONSTANT_ENCAPSED_STRING) {
 			$first = $value[0] ?? '';
 			$inner = substr($value, 1, -1);
 			if ($first === '"') {
 				return stripcslashes($inner);
 			}
+
 			// Single-quoted: only \' and \\ are processed
 			return strtr($inner, ['\\\'' => "'", '\\\\' => '\\']);
 		}
@@ -217,7 +219,7 @@ class DomainScannerService {
 	 * concatenation, etc.) and return the position of the comma or `)` that
 	 * follows it. Returns null if not balanced.
 	 *
-	 * @param array<array<int|string>|string> $tokens
+	 * @param array<array{0: int, 1: string, 2: int}|string> $tokens
 	 * @param int $start
 	 * @return int|null
 	 */
@@ -228,6 +230,7 @@ class DomainScannerService {
 			$tok = $tokens[$i];
 			if ($tok === '(' || $tok === '[' || $tok === '{') {
 				$depth++;
+
 				continue;
 			}
 			if ($tok === ')' || $tok === ']' || $tok === '}') {
@@ -235,6 +238,7 @@ class DomainScannerService {
 					return $i;
 				}
 				$depth--;
+
 				continue;
 			}
 			if ($depth === 0 && $tok === ',') {

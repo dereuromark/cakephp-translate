@@ -668,16 +668,17 @@ class TranslateController extends TranslateAppController {
 		$importedDomainNames = [];
 		$importedStringCounts = [];
 		if ($projectId && $detected) {
+			/** @var array<\Translate\Model\Entity\TranslateDomain> $translateDomains */
 			$translateDomains = $this->TranslateDomains->find()
 				->where([
 					'TranslateDomains.translate_project_id' => $projectId,
 					'TranslateDomains.name IN' => array_keys($detected),
 				])
 				->contain(['TranslateStrings'])
-				->all();
+				->toArray();
 			foreach ($translateDomains as $td) {
 				$importedDomainNames[$td->name] = true;
-				$importedStringCounts[$td->name] = is_array($td->translate_strings) ? count($td->translate_strings) : 0;
+				$importedStringCounts[$td->name] = count($td->translate_strings);
 			}
 		}
 
@@ -719,6 +720,7 @@ class TranslateController extends TranslateAppController {
 		foreach ($detected as $domain => $info) {
 			$coverage = [];
 			foreach ($availableLocales as $locale) {
+				$locale = (string)$locale;
 				$found = null;
 				// Check the locale itself, then its parent language (e.g. de_DE → de)
 				$candidates = [$locale];
@@ -730,6 +732,7 @@ class TranslateController extends TranslateAppController {
 						$candidate = rtrim($lp, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $loc . DIRECTORY_SEPARATOR . $domain . '.po';
 						if (is_file($candidate)) {
 							$found = $candidate;
+
 							break 2;
 						}
 					}
@@ -741,6 +744,7 @@ class TranslateController extends TranslateAppController {
 				$candidate = rtrim($lp, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $domain . '.pot';
 				if (is_file($candidate)) {
 					$potFile = $candidate;
+
 					break;
 				}
 			}
@@ -751,6 +755,7 @@ class TranslateController extends TranslateAppController {
 			foreach ($coverage as $po) {
 				if ($po) {
 					$hasAnyPo = true;
+
 					break;
 				}
 			}

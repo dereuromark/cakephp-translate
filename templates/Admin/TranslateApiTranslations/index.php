@@ -16,7 +16,7 @@ use Cake\Core\Plugin;
 			<div class="card-body p-0">
 				<ul class="list-group list-group-flush">
 					<li class="list-group-item">
-						<?= $this->Html->link('<i class="fa fa-plus"></i> ' . __d('translate', 'New API Translation'), ['action' => 'add'], ['escape' => false, 'class' => '']) ?>
+						<?= $this->Html->link('<i class="fa fa-plus"></i> ' . __d('translate', 'New API Translation'), ['action' => 'add'], ['escapeTitle' => false, 'class' => '']) ?>
 					</li>
 				</ul>
 			</div>
@@ -51,8 +51,8 @@ use Cake\Core\Plugin;
 								<td><?= $this->Time->nice($translateApiTranslation->created) ?></td>
 								<td class="actions">
 									<div class="btn-group" role="group">
-										<?= $this->Html->link($this->Icon->render('view'), ['action' => 'view', $translateApiTranslation->id], ['escape' => false, 'class' => 'btn btn-sm btn-outline-primary', 'title' => __d('translate', 'View')]) ?>
-										<?= $this->Html->link($this->Icon->render('edit'), ['action' => 'edit', $translateApiTranslation->id], ['escape' => false, 'class' => 'btn btn-sm btn-outline-secondary', 'title' => __d('translate', 'Edit')]) ?>
+										<?= $this->Html->link($this->Icon->render('view'), ['action' => 'view', $translateApiTranslation->id], ['escapeTitle' => false, 'class' => 'btn btn-sm btn-outline-primary', 'title' => __d('translate', 'View')]) ?>
+										<?= $this->Html->link($this->Icon->render('edit'), ['action' => 'edit', $translateApiTranslation->id], ['escapeTitle' => false, 'class' => 'btn btn-sm btn-outline-secondary', 'title' => __d('translate', 'Edit')]) ?>
 										<?= $this->Form->postButton($this->Icon->render('delete'), ['action' => 'delete', $translateApiTranslation->id], [
 											'escapeTitle' => false,
 											'class' => 'btn btn-sm btn-outline-danger',

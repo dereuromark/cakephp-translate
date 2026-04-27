@@ -19,7 +19,7 @@ $cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
 			<?= $this->Html->link(
 				'<i class="fas fa-arrow-left"></i> ' . __d('translate', 'Overview'),
 				['controller' => 'Translate', 'action' => 'index'],
-				['class' => 'btn btn-sm btn-secondary', 'escape' => false]
+				['class' => 'btn btn-sm btn-secondary', 'escapeTitle' => false]
 			) ?>
 		</div>
 		<div class="card-body p-2">

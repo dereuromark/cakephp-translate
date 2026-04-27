@@ -125,7 +125,7 @@ $cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
 				<?= $this->Html->link(
 					'<i class="fas fa-times"></i> ' . __d('translate', 'Cancel'),
 					['action' => 'entries', $tableName],
-					['class' => 'btn btn-outline-secondary', 'escape' => false],
+					['class' => 'btn btn-outline-secondary', 'escapeTitle' => false],
 				) ?>
 			</div>
 			<?= $this->Form->end() ?>

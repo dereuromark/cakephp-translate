@@ -28,7 +28,7 @@ $cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
 			<div class="card-header">
 				<h3 class="card-title"><i class="fa-solid fa-language"></i> <?= __d('translate', 'Translate String') ?></h3>
 				<div class="card-tools">
-					<?= $this->Html->link($this->Icon->render('edit'), ['action' => 'edit', $translateString->id, '?' => ['translate_afterwards' => true]], ['escape' => false, 'class' => 'btn btn-tool']); ?>
+					<?= $this->Html->link($this->Icon->render('edit'), ['action' => 'edit', $translateString->id, '?' => ['translate_afterwards' => true]], ['escapeTitle' => false, 'class' => 'btn btn-tool']); ?>
 				</div>
 			</div>
 			<div class="card-body">

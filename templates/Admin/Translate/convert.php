@@ -13,7 +13,7 @@
 				<h3 class="card-title"><i class="fas fa-bars"></i> <?= __d('translate', 'Actions') ?></h3>
 			</div>
 			<div class="list-group list-group-flush">
-				<?= $this->Html->link('<i class="fas fa-tachometer-alt"></i> ' . __d('translate', 'Overview'), ['action' => 'index'], ['escape' => false, 'class' => 'list-group-item list-group-item-action']) ?>
+				<?= $this->Html->link('<i class="fas fa-tachometer-alt"></i> ' . __d('translate', 'Overview'), ['action' => 'index'], ['escapeTitle' => false, 'class' => 'list-group-item list-group-item-action']) ?>
 			</div>
 		</div>
 	</aside>

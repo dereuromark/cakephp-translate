@@ -147,7 +147,7 @@ $cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
 											$this->Icon->render('delete'),
 											['action' => 'delete', $translateString->id],
 											[
-												'escape' => false,
+												'escapeTitle' => false,
 												'class' => 'btn btn-outline-danger',
 												'title' => __d('translate', 'Delete'),
 												'data-bs-toggle' => 'tooltip',

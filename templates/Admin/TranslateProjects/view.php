@@ -21,7 +21,7 @@
 					'<i class="fas fa-trash"></i> ' . __d('translate', 'Delete Translate Project'),
 					['action' => 'delete', $translateProject->id],
 					[
-						'escape' => false,
+						'escapeTitle' => false,
 						'class' => 'list-group-item list-group-item-action text-danger text-start w-100',
 						'form' => [
 							'class' => 'd-inline',
@@ -148,7 +148,7 @@
 											$this->Icon->render('delete'),
 											['controller' => 'TranslateDomains', 'action' => 'delete', $translateDomain->id],
 											[
-												'escape' => false,
+												'escapeTitle' => false,
 												'class' => 'btn btn-outline-danger',
 												'title' => __d('translate', 'Delete'),
 												'form' => [

@@ -75,7 +75,7 @@
 					['action' => 'autoTranslateRecord', $tableName, $baseRecord->id],
 					[
 						'class' => 'btn btn-info btn-sm',
-						'escape' => false,
+						'escapeTitle' => false,
 						'form' => [
 							'class' => 'd-inline',
 							'data-confirm-message' => __d('translate', 'Auto-translate this record to all configured locales?'),
@@ -182,7 +182,7 @@
 											['action' => 'autoTranslateRecord', $tableName, $baseRecord->id, '?' => ['locales' => [$locale]]],
 											[
 												'class' => 'btn btn-sm btn-outline-info',
-												'escape' => false,
+												'escapeTitle' => false,
 												'title' => __d('translate', 'Auto-translate'),
 												'form' => [
 													'class' => 'd-inline',

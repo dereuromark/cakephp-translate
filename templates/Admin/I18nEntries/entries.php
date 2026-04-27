@@ -241,7 +241,7 @@ $cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
 											['action' => 'delete', $tableName, $entry->id],
 											[
 												'class' => 'btn btn-sm btn-outline-danger',
-												'escape' => false,
+												'escapeTitle' => false,
 												'title' => __d('translate', 'Delete'),
 												'form' => [
 													'class' => 'd-inline',

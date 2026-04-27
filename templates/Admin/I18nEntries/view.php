@@ -175,7 +175,7 @@
 							['action' => 'batchUpdateAuto', $tableName, '?' => ['entry_ids' => [$entry->id], 'auto' => !$entry->auto]],
 							[
 								'class' => 'btn btn-outline-' . ($entry->auto ? 'warning' : 'info'),
-								'escape' => false,
+								'escapeTitle' => false,
 								'form' => [
 									'class' => 'd-grid',
 								],
@@ -187,7 +187,7 @@
 						['action' => 'delete', $tableName, $entry->id],
 						[
 							'class' => 'btn btn-outline-danger',
-							'escape' => false,
+							'escapeTitle' => false,
 							'form' => [
 								'class' => 'd-grid',
 								'data-confirm-message' => __d('translate', 'Are you sure you want to delete this entry?'),

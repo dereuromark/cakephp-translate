@@ -54,7 +54,7 @@ use Cake\Core\Plugin;
 										<?= $this->Html->link($this->Icon->render('view'), ['action' => 'view', $translateApiTranslation->id], ['escape' => false, 'class' => 'btn btn-sm btn-outline-primary', 'title' => __d('translate', 'View')]) ?>
 										<?= $this->Html->link($this->Icon->render('edit'), ['action' => 'edit', $translateApiTranslation->id], ['escape' => false, 'class' => 'btn btn-sm btn-outline-secondary', 'title' => __d('translate', 'Edit')]) ?>
 										<?= $this->Form->postButton($this->Icon->render('delete'), ['action' => 'delete', $translateApiTranslation->id], [
-											'escape' => false,
+											'escapeTitle' => false,
 											'class' => 'btn btn-sm btn-outline-danger',
 											'title' => __d('translate', 'Delete'),
 											'form' => [

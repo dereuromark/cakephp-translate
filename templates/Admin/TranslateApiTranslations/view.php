@@ -17,7 +17,7 @@
 					</li>
 					<li class="list-group-item">
 						<?= $this->Form->postButton('<i class="fa fa-trash"></i> ' . __d('translate', 'Delete API Translation'), ['action' => 'delete', $translateApiTranslation->id], [
-							'escape' => false,
+							'escapeTitle' => false,
 							'class' => 'btn btn-link text-danger p-0 align-baseline',
 							'form' => [
 								'class' => 'd-inline',

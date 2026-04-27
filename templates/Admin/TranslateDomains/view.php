@@ -21,7 +21,7 @@
 					'<i class="fas fa-trash"></i> ' . __d('translate', 'Delete Translate Domain'),
 					['action' => 'delete', $translateDomain->id],
 					[
-						'escape' => false,
+						'escapeTitle' => false,
 						'class' => 'list-group-item list-group-item-action text-danger text-start w-100',
 						'form' => [
 							'class' => 'd-inline',

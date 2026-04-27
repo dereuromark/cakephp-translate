@@ -14,7 +14,7 @@
 				<ul class="list-group list-group-flush">
 					<li class="list-group-item">
 						<?= $this->Form->postButton('<i class="fa fa-trash"></i> ' . __d('translate', 'Delete'), ['action' => 'delete', $translateApiTranslation->id], [
-							'escape' => false,
+							'escapeTitle' => false,
 							'class' => 'btn btn-link text-danger p-0 align-baseline',
 							'form' => [
 								'class' => 'd-inline',
@@ -46,7 +46,7 @@
 				?>
 			</div>
 			<div class="card-footer">
-				<?= $this->Form->button('<i class="fa fa-save"></i> ' . __d('translate', 'Submit'), ['escape' => false, 'class' => 'btn btn-primary']) ?>
+				<?= $this->Form->button('<i class="fa fa-save"></i> ' . __d('translate', 'Submit'), ['escapeTitle' => false, 'class' => 'btn btn-primary']) ?>
 			</div>
 			<?= $this->Form->end() ?>
 		</div>

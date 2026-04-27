@@ -45,7 +45,7 @@
 					?>
 				</fieldset>
 				<div class="form-group">
-					<?= $this->Form->button('<i class="fas fa-save"></i> ' . __d('translate', 'Submit'), ['class' => 'btn btn-primary', 'escape' => false]) ?>
+					<?= $this->Form->button('<i class="fas fa-save"></i> ' . __d('translate', 'Submit'), ['class' => 'btn btn-primary', 'escapeTitle' => false]) ?>
 				</div>
 				<?= $this->Form->end() ?>
 			</div>

@@ -131,7 +131,7 @@
 								['action' => 'sync', $tableName],
 								[
 									'class' => 'btn btn-warning btn-sm',
-									'escape' => false,
+									'escapeTitle' => false,
 									'title' => __d('translate', 'Create missing translation entries'),
 									'form' => [
 										'class' => 'd-inline',

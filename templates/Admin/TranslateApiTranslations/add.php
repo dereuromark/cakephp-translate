@@ -36,7 +36,7 @@
 				?>
 			</div>
 			<div class="card-footer">
-				<?= $this->Form->button('<i class="fa fa-save"></i> ' . __d('translate', 'Submit'), ['escape' => false, 'class' => 'btn btn-primary']) ?>
+				<?= $this->Form->button('<i class="fa fa-save"></i> ' . __d('translate', 'Submit'), ['escapeTitle' => false, 'class' => 'btn btn-primary']) ?>
 			</div>
 			<?= $this->Form->end() ?>
 		</div>

@@ -2,6 +2,7 @@
 
 namespace Translate\Controller\Admin;
 
+use Cake\Core\Configure;
 use Cake\Core\Plugin;
 use Cake\Utility\Inflector;
 use Cake\View\JsonView;
@@ -10,6 +11,7 @@ use DirectoryIterator;
 use Exception;
 use Translate\Controller\TranslateAppController;
 use Translate\Lib\ConvertLib;
+use Translate\Service\DomainScannerService;
 use Translate\Translator\Translator;
 
 /**
@@ -634,6 +636,196 @@ class TranslateController extends TranslateAppController {
 		ksort($names);
 
 		return $names;
+	}
+
+	/**
+	 * Scan the project (app + plugins/) for `__d('domain', ...)` calls and
+	 * report which translation domains are in use, plus whether each domain
+	 * has an app-level locale file. Suggests next steps per domain.
+	 *
+	 * Read-only; never writes anything to disk or database.
+	 *
+	 * @return void
+	 */
+	public function domains(): void {
+		$projectId = $this->Translation->currentProjectId();
+		$projectPath = null;
+		if ($projectId) {
+			$project = $this->TranslateDomains->TranslateProjects->get($projectId);
+			$projectPath = $project->path ?? null;
+		}
+		if ($projectPath && !str_starts_with($projectPath, DIRECTORY_SEPARATOR)) {
+			$projectPath = ROOT . DIRECTORY_SEPARATOR . $projectPath;
+		}
+		$projectPath ??= ROOT;
+
+		$scanner = new DomainScannerService();
+		$paths = $scanner->discoverPaths($projectPath);
+		$detected = $scanner->scan($paths);
+
+		// Which detected domains already have a TranslateDomain row (and therefore
+		// strings imported into the DB) for the current project?
+		$importedDomainNames = [];
+		$importedStringCounts = [];
+		if ($projectId && $detected) {
+			/** @var array<\Translate\Model\Entity\TranslateDomain> $translateDomains */
+			$translateDomains = $this->TranslateDomains->find()
+				->where([
+					'TranslateDomains.translate_project_id' => $projectId,
+					'TranslateDomains.name IN' => array_keys($detected),
+				])
+				->contain(['TranslateStrings'])
+				->toArray();
+			foreach ($translateDomains as $td) {
+				$importedDomainNames[$td->name] = true;
+				$importedStringCounts[$td->name] = count($td->translate_strings);
+			}
+		}
+
+		// Determine app locale paths to check coverage against
+		$localePaths = (array)Configure::read('App.paths.locales', []);
+		if (!$localePaths) {
+			$localePaths = [ROOT . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . 'locales' . DIRECTORY_SEPARATOR];
+		}
+		$defaultLocale = (string)Configure::read('App.defaultLocale', 'en_US');
+		$normalizedDefault = str_replace('-', '_', $defaultLocale);
+
+		// Discover all locales present on disk under any locale path
+		$availableLocales = [];
+		foreach ($localePaths as $lp) {
+			if (!is_dir($lp)) {
+				continue;
+			}
+			foreach ((array)scandir($lp) as $entry) {
+				if ($entry === '.' || $entry === '..') {
+					continue;
+				}
+				if (is_dir($lp . $entry)) {
+					$availableLocales[$entry] = true;
+				}
+			}
+		}
+		// Always include the default locale even if no folder exists yet
+		$availableLocales[$normalizedDefault] = true;
+		// Also include the language-only fallback (e.g. de from de_DE), since
+		// CakePHP's translator falls back to the parent locale automatically.
+		if (str_contains($normalizedDefault, '_')) {
+			$availableLocales[explode('_', $normalizedDefault)[0]] = true;
+		}
+		$availableLocales = array_keys($availableLocales);
+		sort($availableLocales);
+
+		// Per-domain coverage summary
+		$domainsReport = [];
+		foreach ($detected as $domain => $info) {
+			$coverage = [];
+			foreach ($availableLocales as $locale) {
+				$locale = (string)$locale;
+				$found = null;
+				// Check the locale itself, then its parent language (e.g. de_DE → de)
+				$candidates = [$locale];
+				if (str_contains($locale, '_')) {
+					$candidates[] = explode('_', $locale)[0];
+				}
+				foreach ($candidates as $loc) {
+					foreach ($localePaths as $lp) {
+						$candidate = rtrim($lp, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $loc . DIRECTORY_SEPARATOR . $domain . '.po';
+						if (is_file($candidate)) {
+							$found = $candidate;
+
+							break 2;
+						}
+					}
+				}
+				$coverage[$locale] = $found;
+			}
+			$potFile = null;
+			foreach ($localePaths as $lp) {
+				$candidate = rtrim($lp, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $domain . '.pot';
+				if (is_file($candidate)) {
+					$potFile = $candidate;
+
+					break;
+				}
+			}
+			$hasImportedStrings = !empty($importedDomainNames[$domain]);
+			$importedCount = $importedStringCounts[$domain] ?? 0;
+			$hasDefaultPo = !empty($coverage[$normalizedDefault]);
+			$hasAnyPo = false;
+			foreach ($coverage as $po) {
+				if ($po) {
+					$hasAnyPo = true;
+
+					break;
+				}
+			}
+
+			// Pipeline stage. The load-bearing thing for the silent-fallback bug
+			// is whether a default-locale .po file exists at runtime — that's
+			// what CakePHP's I18n actually loads. The DB-strings check only
+			// matters for plugin's own translate-in-DB workflow.
+			//
+			//   default — special-case: the `default` domain is handled by the
+			//             app's own default.po; nothing this analyzer needs to do.
+			//   covered — default-locale .po exists. Silent fallback is broken;
+			//             user is safe regardless of DB pipeline state.
+			//   dump    — DB has translated strings but no app-level .po yet —
+			//             one click to write them to disk.
+			//   import  — .pot exists but no DB strings for this domain yet —
+			//             load the .pot into the DB and translate.
+			//   extract — nothing exists yet — start from scratch.
+			if ($domain === 'default') {
+				$stage = 'default';
+			} elseif ($hasDefaultPo) {
+				$stage = 'covered';
+			} elseif ($hasImportedStrings) {
+				$stage = 'dump';
+			} elseif ($potFile) {
+				$stage = 'import';
+			} else {
+				$stage = 'extract';
+			}
+
+			$domainsReport[$domain] = [
+				'msgidCount' => count($info['msgids']),
+				'callCount' => $info['callCount'],
+				'fileCount' => $info['fileCount'],
+				'sampleMsgids' => array_slice(array_keys($info['msgids']), 0, 5),
+				'firstFiles' => array_slice(array_keys($this->collectFiles($info['msgids'])), 0, 3),
+				'coverage' => $coverage,
+				'potFile' => $potFile,
+				'isDefaultDomain' => $domain === 'default',
+				'hasImportedStrings' => $hasImportedStrings,
+				'importedStringCount' => $importedCount,
+				'stage' => $stage,
+			];
+		}
+
+		$this->set(compact(
+			'domainsReport',
+			'paths',
+			'availableLocales',
+			'localePaths',
+			'normalizedDefault',
+			'projectPath',
+		));
+	}
+
+	/**
+	 * Flatten the msgid → file → lines map into a unique-files map.
+	 *
+	 * @param array<string, array<string, array<int>>> $msgids
+	 * @return array<string, true>
+	 */
+	protected function collectFiles(array $msgids): array {
+		$files = [];
+		foreach ($msgids as $msgid => $fileLines) {
+			foreach ($fileLines as $file => $lines) {
+				$files[$file] = true;
+			}
+		}
+
+		return $files;
 	}
 
 }

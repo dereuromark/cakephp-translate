@@ -910,6 +910,11 @@ $totalColor = $this->Translation->getColor($totalCoverage);
 							['escapeTitle' => false, 'class' => 'list-group-item list-group-item-action'],
 						) ?>
 						<?= $this->Html->link(
+							'<i class="fas fa-search"></i> ' . __d('translate', 'Detected Domains'),
+							['action' => 'domains'],
+							['escape' => false, 'class' => 'list-group-item list-group-item-action'],
+						) ?>
+						<?= $this->Html->link(
 							'<i class="fas fa-info-circle"></i> ' . __d('translate', 'Best Practices'),
 							['action' => 'bestPractice'],
 							['escapeTitle' => false, 'class' => 'list-group-item list-group-item-action'],

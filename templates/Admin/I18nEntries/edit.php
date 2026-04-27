@@ -20,7 +20,7 @@ $cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
 			<?= $this->Html->link(__d('translate', 'I18n Entries'), ['action' => 'index']) ?>
 		</li>
 		<li class="breadcrumb-item">
-			<?= $this->Html->link(h($baseTableName), ['action' => 'entries', $tableName]) ?>
+			<?= $this->Html->link($baseTableName, ['action' => 'entries', $tableName]) ?>
 		</li>
 		<li class="breadcrumb-item active"><?= __d('translate', 'Edit') ?> #<?= h($entry->id) ?></li>
 	</ol>

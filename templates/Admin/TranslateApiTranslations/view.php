@@ -13,7 +13,7 @@
 			<div class="card-body p-0">
 				<ul class="list-group list-group-flush">
 					<li class="list-group-item">
-						<?= $this->Html->link('<i class="fa fa-edit"></i> ' . __d('translate', 'Edit API Translation'), ['action' => 'edit', $translateApiTranslation->id], ['escape' => false, 'class' => '']) ?>
+						<?= $this->Html->link('<i class="fa fa-edit"></i> ' . __d('translate', 'Edit API Translation'), ['action' => 'edit', $translateApiTranslation->id], ['escapeTitle' => false, 'class' => '']) ?>
 					</li>
 					<li class="list-group-item">
 						<?= $this->Form->postButton('<i class="fa fa-trash"></i> ' . __d('translate', 'Delete API Translation'), ['action' => 'delete', $translateApiTranslation->id], [
@@ -26,10 +26,10 @@
 						]) ?>
 					</li>
 					<li class="list-group-item">
-						<?= $this->Html->link('<i class="fa fa-list"></i> ' . __d('translate', 'List API Translations'), ['action' => 'index'], ['escape' => false, 'class' => '']) ?>
+						<?= $this->Html->link('<i class="fa fa-list"></i> ' . __d('translate', 'List API Translations'), ['action' => 'index'], ['escapeTitle' => false, 'class' => '']) ?>
 					</li>
 					<li class="list-group-item">
-						<?= $this->Html->link('<i class="fa fa-plus"></i> ' . __d('translate', 'New API Translation'), ['action' => 'add'], ['escape' => false, 'class' => '']) ?>
+						<?= $this->Html->link('<i class="fa fa-plus"></i> ' . __d('translate', 'New API Translation'), ['action' => 'add'], ['escapeTitle' => false, 'class' => '']) ?>
 					</li>
 				</ul>
 			</div>

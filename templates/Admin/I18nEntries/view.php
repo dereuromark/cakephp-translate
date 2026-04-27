@@ -18,7 +18,7 @@
 			<?= $this->Html->link(__d('translate', 'I18n Entries'), ['action' => 'index']) ?>
 		</li>
 		<li class="breadcrumb-item">
-			<?= $this->Html->link(h($baseTableName), ['action' => 'entries', $tableName]) ?>
+			<?= $this->Html->link($baseTableName, ['action' => 'entries', $tableName]) ?>
 		</li>
 		<li class="breadcrumb-item active">#<?= h($entry->id) ?></li>
 	</ol>
@@ -92,12 +92,12 @@
 				<?= $this->Html->link(
 					'<i class="fas fa-edit"></i> ' . __d('translate', 'Edit'),
 					['action' => 'edit', $tableName, $entry->id],
-					['class' => 'btn btn-primary', 'escape' => false],
+					['class' => 'btn btn-primary', 'escapeTitle' => false],
 				) ?>
 				<?= $this->Html->link(
 					'<i class="fas fa-arrow-left"></i> ' . __d('translate', 'Back'),
 					['action' => 'entries', $tableName],
-					['class' => 'btn btn-outline-secondary', 'escape' => false],
+					['class' => 'btn btn-outline-secondary', 'escapeTitle' => false],
 				) ?>
 			</div>
 		</div>

@@ -64,7 +64,7 @@ $totalColor = $this->Translation->getColor($totalCoverage);
 										</div>
 									</div>',
 									['action' => 'terms'],
-									['escape' => false, 'class' => 'text-decoration-none'],
+									['escapeTitle' => false, 'class' => 'text-decoration-none'],
 								) ?>
 							</div>
 							<div class="col-3">
@@ -77,7 +77,7 @@ $totalColor = $this->Translation->getColor($totalCoverage);
 										</div>
 									</div>',
 									['action' => 'terms'],
-									['escape' => false, 'class' => 'text-decoration-none'],
+									['escapeTitle' => false, 'class' => 'text-decoration-none'],
 								) ?>
 							</div>
 							<div class="col-3">
@@ -90,7 +90,7 @@ $totalColor = $this->Translation->getColor($totalCoverage);
 										</div>
 									</div>',
 									['action' => 'terms'],
-									['escape' => false, 'class' => 'text-decoration-none'],
+									['escapeTitle' => false, 'class' => 'text-decoration-none'],
 								) ?>
 							</div>
 							<div class="col-3">
@@ -103,7 +103,7 @@ $totalColor = $this->Translation->getColor($totalCoverage);
 										</div>
 									</div>',
 									['action' => 'terms'],
-									['escape' => false, 'class' => 'text-decoration-none'],
+									['escapeTitle' => false, 'class' => 'text-decoration-none'],
 								) ?>
 							</div>
 						</div>
@@ -149,7 +149,7 @@ $totalColor = $this->Translation->getColor($totalCoverage);
 										</div>
 									</div>',
 									['action' => 'terms', '?' => ['domain' => $domainName]],
-									['class' => 'list-group-item list-group-item-action', 'escape' => false],
+									['class' => 'list-group-item list-group-item-action', 'escapeTitle' => false],
 								) ?>
 							<?php } ?>
 						</div>
@@ -159,12 +159,12 @@ $totalColor = $this->Translation->getColor($totalCoverage);
 						<?= $this->Html->link(
 							'<i class="fas fa-play"></i> ' . __d('translate', 'Start Translating Next'),
 							['action' => 'translate'],
-							['class' => 'btn btn-success btn-lg', 'escape' => false],
+							['class' => 'btn btn-success btn-lg', 'escapeTitle' => false],
 						); ?>
 						<?= $this->Html->link(
 							'<i class="fas fa-list"></i> ' . __d('translate', 'Browse All Terms'),
 							['action' => 'terms'],
-							['class' => 'btn btn-primary', 'escape' => false],
+							['class' => 'btn btn-primary', 'escapeTitle' => false],
 						); ?>
 					</div>
 				</div>

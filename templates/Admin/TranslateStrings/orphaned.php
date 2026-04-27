@@ -20,12 +20,12 @@ $cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
 				<?= $this->Html->link(
 					'<i class="fas fa-home"></i> ' . __d('translate', 'Overview'),
 					['controller' => 'Translate', 'action' => 'index'],
-					['escape' => false, 'class' => 'list-group-item list-group-item-action'],
+					['escapeTitle' => false, 'class' => 'list-group-item list-group-item-action'],
 				) ?>
 				<?= $this->Html->link(
 					'<i class="fas fa-list"></i> ' . __d('translate', 'All Strings'),
 					['action' => 'index'],
-					['escape' => false, 'class' => 'list-group-item list-group-item-action'],
+					['escapeTitle' => false, 'class' => 'list-group-item list-group-item-action'],
 				) ?>
 			</div>
 		</div>
@@ -136,12 +136,12 @@ $cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
 										<?= $this->Html->link(
 											$this->Icon->render('view'),
 											['action' => 'view', $translateString->id],
-											['escape' => false, 'class' => 'btn btn-outline-info', 'title' => __d('translate', 'View'), 'data-bs-toggle' => 'tooltip'],
+											['escapeTitle' => false, 'class' => 'btn btn-outline-info', 'title' => __d('translate', 'View'), 'data-bs-toggle' => 'tooltip'],
 										); ?>
 										<?= $this->Html->link(
 											$this->Icon->render('edit'),
 											['action' => 'edit', $translateString->id],
-											['escape' => false, 'class' => 'btn btn-outline-secondary', 'title' => __d('translate', 'Edit'), 'data-bs-toggle' => 'tooltip'],
+											['escapeTitle' => false, 'class' => 'btn btn-outline-secondary', 'title' => __d('translate', 'Edit'), 'data-bs-toggle' => 'tooltip'],
 										); ?>
 										<?= $this->Form->postButton(
 											$this->Icon->render('delete'),

@@ -15,7 +15,7 @@
 				<?= $this->Html->link(
 					'<i class="fas fa-edit"></i> ' . __d('translate', 'Edit Translate Domain'),
 					['action' => 'edit', $translateDomain->id],
-					['escape' => false, 'class' => 'list-group-item list-group-item-action'],
+					['escapeTitle' => false, 'class' => 'list-group-item list-group-item-action'],
 				) ?>
 				<?= $this->Form->postButton(
 					'<i class="fas fa-trash"></i> ' . __d('translate', 'Delete Translate Domain'),
@@ -32,12 +32,12 @@
 				<?= $this->Html->link(
 					'<i class="fas fa-list"></i> ' . __d('translate', 'List Translate Domains'),
 					['action' => 'index'],
-					['escape' => false, 'class' => 'list-group-item list-group-item-action'],
+					['escapeTitle' => false, 'class' => 'list-group-item list-group-item-action'],
 				) ?>
 				<?= $this->Html->link(
 					'<i class="fas fa-plus-circle"></i> ' . __d('translate', 'New Translate Domain'),
 					['action' => 'add'],
-					['escape' => false, 'class' => 'list-group-item list-group-item-action'],
+					['escapeTitle' => false, 'class' => 'list-group-item list-group-item-action'],
 				) ?>
 			</div>
 		</div>

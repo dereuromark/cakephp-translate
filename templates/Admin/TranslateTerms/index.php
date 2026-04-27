@@ -19,22 +19,22 @@ use Cake\Core\Plugin;
 				<?= $this->Html->link(
 					'<i class="fas fa-home"></i> ' . __d('translate', 'Overview'),
 					['controller' => 'Translate', 'action' => 'index'],
-					['escape' => false, 'class' => 'list-group-item list-group-item-action'],
+					['escapeTitle' => false, 'class' => 'list-group-item list-group-item-action'],
 				) ?>
 				<?= $this->Html->link(
 					'<i class="fas fa-language"></i> ' . __d('translate', 'List Translate Strings'),
 					['controller' => 'TranslateStrings', 'action' => 'index'],
-					['escape' => false, 'class' => 'list-group-item list-group-item-action'],
+					['escapeTitle' => false, 'class' => 'list-group-item list-group-item-action'],
 				) ?>
 				<?= $this->Html->link(
 					'<i class="fas fa-plus-circle"></i> ' . __d('translate', 'New Translate String'),
 					['controller' => 'TranslateStrings', 'action' => 'add'],
-					['escape' => false, 'class' => 'list-group-item list-group-item-action'],
+					['escapeTitle' => false, 'class' => 'list-group-item list-group-item-action'],
 				) ?>
 				<?= $this->Html->link(
 					'<i class="fas fa-globe"></i> ' . __d('translate', 'List Locales'),
 					['controller' => 'TranslateLocales', 'action' => 'index'],
-					['escape' => false, 'class' => 'list-group-item list-group-item-action'],
+					['escapeTitle' => false, 'class' => 'list-group-item list-group-item-action'],
 				) ?>
 			</div>
 		</div>
@@ -56,10 +56,10 @@ use Cake\Core\Plugin;
 				echo $this->Form->create(null, ['valueSources' => 'query', 'class' => 'row g-3']);
 				?>
 				<div class="col-md-6">
-					<?= $this->Form->control('translate_locale_id', ['empty' => ' - ' . __d('translate', 'noLimitation') . ' - ', 'label' => '<i class="fas fa-globe"></i> ' . __d('translate', 'Locale'), 'escape' => false]) ?>
+					<?= $this->Form->control('translate_locale_id', ['empty' => ' - ' . __d('translate', 'noLimitation') . ' - ', 'label' => ['text' => '<i class="fas fa-globe"></i> ' . __d('translate', 'Locale'), 'escape' => false]]) ?>
 				</div>
 				<div class="col-md-6">
-					<?= $this->Form->control('search', ['placeholder' => __d('translate', 'Search...'), 'label' => '<i class="fas fa-search"></i> ' . __d('translate', 'Search'), 'escape' => false]) ?>
+					<?= $this->Form->control('search', ['placeholder' => __d('translate', 'Search...'), 'label' => ['text' => '<i class="fas fa-search"></i> ' . __d('translate', 'Search'), 'escape' => false]]) ?>
 				</div>
 				<div class="col-12">
 					<div class="d-flex justify-content-end">
@@ -72,7 +72,7 @@ use Cake\Core\Plugin;
 								<?= $this->Html->link(
 									'<i class="fas fa-times"></i> ' . __d('translate', 'Reset'),
 									['action' => 'index'],
-									['class' => 'btn btn-outline-secondary', 'escape' => false],
+									['class' => 'btn btn-outline-secondary', 'escapeTitle' => false],
 								) ?>
 							<?php } ?>
 						</div>
@@ -145,12 +145,12 @@ use Cake\Core\Plugin;
 										<?= $this->Html->link(
 											$this->Icon->render('view'),
 											['action' => 'view', $translateTerm->id],
-											['escape' => false, 'class' => 'btn btn-outline-primary', 'title' => __d('translate', 'View')],
+											['escapeTitle' => false, 'class' => 'btn btn-outline-primary', 'title' => __d('translate', 'View')],
 										) ?>
 										<?= $this->Html->link(
 											$this->Icon->render('edit'),
 											['action' => 'edit', $translateTerm->id],
-											['escape' => false, 'class' => 'btn btn-outline-secondary', 'title' => __d('translate', 'Edit')],
+											['escapeTitle' => false, 'class' => 'btn btn-outline-secondary', 'title' => __d('translate', 'Edit')],
 										) ?>
 										<?= $this->Form->postButton(
 											$this->Icon->render('delete'),

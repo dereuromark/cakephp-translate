@@ -141,7 +141,7 @@
 							<?= $this->Html->link(
 								'<i class="fas fa-eye"></i>',
 								['action' => 'view', $term->id],
-								['escape' => false, 'class' => 'btn btn-sm btn-info', 'title' => __d('translate', 'View')]
+								['escapeTitle' => false, 'class' => 'btn btn-sm btn-info', 'title' => __d('translate', 'View')]
 							) ?>
 							<?= $this->Form->postButton(
 								'<i class="fas fa-check"></i>',

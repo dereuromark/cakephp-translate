@@ -55,8 +55,8 @@ use Cake\Core\Plugin;
 								<td><?= $this->element('Translate.yes_no', ['value' => $translateLocale->active]) ?></td>
 								<td class="actions">
 									<div class="btn-group" role="group">
-										<?= $this->Html->link($this->Icon->render('view'), ['action' => 'view', $translateLocale->id], ['escape' => false, 'class' => 'btn btn-sm btn-outline-primary', 'title' => __d('translate', 'View')]) ?>
-										<?= $this->Html->link($this->Icon->render('edit'), ['action' => 'edit', $translateLocale->id], ['escape' => false, 'class' => 'btn btn-sm btn-outline-secondary', 'title' => __d('translate', 'Edit')]) ?>
+										<?= $this->Html->link($this->Icon->render('view'), ['action' => 'view', $translateLocale->id], ['escapeTitle' => false, 'class' => 'btn btn-sm btn-outline-primary', 'title' => __d('translate', 'View')]) ?>
+										<?= $this->Html->link($this->Icon->render('edit'), ['action' => 'edit', $translateLocale->id], ['escapeTitle' => false, 'class' => 'btn btn-sm btn-outline-secondary', 'title' => __d('translate', 'Edit')]) ?>
 										<?= $this->Form->postButton($this->Icon->render('delete'), ['action' => 'delete', $translateLocale->id], [
 											'escapeTitle' => false,
 											'class' => 'btn btn-sm btn-outline-danger',

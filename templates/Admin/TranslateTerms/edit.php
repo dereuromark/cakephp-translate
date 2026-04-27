@@ -32,17 +32,17 @@ use Cake\Core\Plugin;
 				<?= $this->Html->link(
 					'<i class="fas fa-comments"></i> ' . __d('translate', 'List Translate Terms'),
 					['action' => 'index'],
-					['escape' => false, 'class' => 'list-group-item list-group-item-action'],
+					['escapeTitle' => false, 'class' => 'list-group-item list-group-item-action'],
 				) ?>
 				<?= $this->Html->link(
 					'<i class="fas fa-language"></i> ' . __d('translate', 'List Translate Strings'),
 					['controller' => 'TranslateStrings', 'action' => 'index'],
-					['escape' => false, 'class' => 'list-group-item list-group-item-action'],
+					['escapeTitle' => false, 'class' => 'list-group-item list-group-item-action'],
 				) ?>
 				<?= $this->Html->link(
 					'<i class="fas fa-plus-circle"></i> ' . __d('translate', 'New Translate String'),
 					['controller' => 'TranslateStrings', 'action' => 'add'],
-					['escape' => false, 'class' => 'list-group-item list-group-item-action'],
+					['escapeTitle' => false, 'class' => 'list-group-item list-group-item-action'],
 				) ?>
 			</div>
 		</div>
@@ -78,7 +78,7 @@ use Cake\Core\Plugin;
 						<?= $this->Html->link(
 							'<i class="fas fa-times"></i> ' . __d('translate', 'Cancel'),
 							['action' => 'view', $translateTerm->id],
-							['class' => 'btn btn-outline-secondary', 'escape' => false],
+							['class' => 'btn btn-outline-secondary', 'escapeTitle' => false],
 						) ?>
 					</div>
 				</div>

@@ -123,7 +123,7 @@
 						<?= $this->Html->link(
 							'<i class="fas fa-list"></i> ' . __d('translate', 'View Entries'),
 							['action' => 'entries', $tableName],
-							['class' => 'btn btn-primary btn-sm', 'escape' => false],
+							['class' => 'btn btn-primary btn-sm', 'escapeTitle' => false],
 						) ?>
 						<?php if ($info['base_exists'] && $info['row_count'] < $info['base_count']) { ?>
 							<?= $this->Form->postButton(
@@ -143,7 +143,7 @@
 						<?= $this->Html->link(
 							'<i class="fas fa-cog"></i>',
 							['controller' => 'TranslateBehavior', 'action' => 'view', $tableName],
-							['class' => 'btn btn-outline-secondary btn-sm', 'escape' => false, 'title' => __d('translate', 'Table Details')],
+							['class' => 'btn btn-outline-secondary btn-sm', 'escapeTitle' => false, 'title' => __d('translate', 'Table Details')],
 						) ?>
 					</div>
 				</div>

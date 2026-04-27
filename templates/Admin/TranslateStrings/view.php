@@ -18,12 +18,12 @@ use Cake\Core\Configure;
 				<?= $this->Html->link(
 					'<i class="fas fa-edit"></i> ' . __d('translate', 'Edit Translate String'),
 					['action' => 'edit', $translateString->id],
-					['escape' => false, 'class' => 'list-group-item list-group-item-action'],
+					['escapeTitle' => false, 'class' => 'list-group-item list-group-item-action'],
 				) ?>
 				<?= $this->Html->link(
 					'<i class="fas fa-language"></i> ' . __d('translate', 'Translate'),
 					['action' => 'translate', $translateString->id],
-					['escape' => false, 'class' => 'list-group-item list-group-item-action'],
+					['escapeTitle' => false, 'class' => 'list-group-item list-group-item-action'],
 				) ?>
 				<?= $this->Form->postButton(
 					'<i class="fas fa-trash"></i> ' . __d('translate', 'Delete'),
@@ -40,12 +40,12 @@ use Cake\Core\Configure;
 				<?= $this->Html->link(
 					'<i class="fas fa-list"></i> ' . __d('translate', 'List Translate Strings'),
 					['action' => 'index'],
-					['escape' => false, 'class' => 'list-group-item list-group-item-action'],
+					['escapeTitle' => false, 'class' => 'list-group-item list-group-item-action'],
 				) ?>
 				<?= $this->Html->link(
 					'<i class="fas fa-plus"></i> ' . __d('translate', 'New Translate String'),
 					['action' => 'add'],
-					['escape' => false, 'class' => 'list-group-item list-group-item-action'],
+					['escapeTitle' => false, 'class' => 'list-group-item list-group-item-action'],
 				) ?>
 			</div>
 		</div>
@@ -270,12 +270,12 @@ use Cake\Core\Configure;
 					<?= $this->Html->link(
 						'<i class="fas fa-eye"></i> ' . __d('translate', 'View Domain'),
 						['controller' => 'TranslateDomains', 'action' => 'view', $translateString->translate_domain->id],
-						['escape' => false, 'class' => 'btn btn-sm btn-outline-primary'],
+						['escapeTitle' => false, 'class' => 'btn btn-sm btn-outline-primary'],
 					) ?>
 					<?= $this->Html->link(
 						'<i class="fas fa-edit"></i> ' . __d('translate', 'Edit Domain'),
 						['controller' => 'TranslateDomains', 'action' => 'edit', $translateString->translate_domain->id],
-						['escape' => false, 'class' => 'btn btn-sm btn-outline-secondary'],
+						['escapeTitle' => false, 'class' => 'btn btn-sm btn-outline-secondary'],
 					) ?>
 				</div>
 			</div>

@@ -23,7 +23,7 @@
 						]) ?>
 					</li>
 					<li class="list-group-item">
-						<?= $this->Html->link('<i class="fa fa-list"></i> ' . __d('translate', 'List API Translations'), ['action' => 'index'], ['escape' => false, 'class' => '']) ?>
+						<?= $this->Html->link('<i class="fa fa-list"></i> ' . __d('translate', 'List API Translations'), ['action' => 'index'], ['escapeTitle' => false, 'class' => '']) ?>
 					</li>
 				</ul>
 			</div>

@@ -229,12 +229,12 @@ $cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
 										<?= $this->Html->link(
 											'<i class="fas fa-eye"></i>',
 											['action' => 'view', $tableName, $entry->id],
-											['class' => 'btn btn-sm btn-outline-primary', 'escape' => false, 'title' => __d('translate', 'View')],
+											['class' => 'btn btn-sm btn-outline-primary', 'escapeTitle' => false, 'title' => __d('translate', 'View')],
 										) ?>
 										<?= $this->Html->link(
 											'<i class="fas fa-edit"></i>',
 											['action' => 'edit', $tableName, $entry->id],
-											['class' => 'btn btn-sm btn-outline-secondary', 'escape' => false, 'title' => __d('translate', 'Edit')],
+											['class' => 'btn btn-sm btn-outline-secondary', 'escapeTitle' => false, 'title' => __d('translate', 'Edit')],
 										) ?>
 										<?= $this->Form->postButton(
 											'<i class="fas fa-trash"></i>',

@@ -27,7 +27,7 @@
 				<?= $this->Html->link(
 					'<i class="fas fa-list"></i> ' . __d('translate', 'List Translate Strings'),
 					['action' => 'index'],
-					['escape' => false, 'class' => 'list-group-item list-group-item-action'],
+					['escapeTitle' => false, 'class' => 'list-group-item list-group-item-action'],
 				) ?>
 			</div>
 		</div>
@@ -75,8 +75,7 @@
 					<div class="row g-3">
 						<div class="col-md-12">
 							<?= $this->Form->control('translate_domain_id', [
-								'label' => '<i class="fas fa-folder"></i> ' . __d('translate', 'Domain'),
-								'escape' => false,
+								'label' => ['text' => '<i class="fas fa-folder"></i> ' . __d('translate', 'Domain'), 'escape' => false],
 							]) ?>
 							<small class="form-text text-muted">
 								<?= __d('translate', 'The translation domain this string belongs to (e.g., "default", "validation")') ?>
@@ -85,8 +84,7 @@
 
 						<div class="col-md-12">
 							<?= $this->Form->control('name', [
-								'label' => '<i class="fas fa-tag"></i> ' . __d('translate', 'Name (Singular)'),
-								'escape' => false,
+								'label' => ['text' => '<i class="fas fa-tag"></i> ' . __d('translate', 'Name (Singular)'), 'escape' => false],
 								'rows' => 3,
 							]) ?>
 							<small class="form-text text-muted">
@@ -96,8 +94,7 @@
 
 						<div class="col-md-12">
 							<?= $this->Form->control('plural', [
-								'label' => '<i class="fas fa-list-ol"></i> ' . __d('translate', 'Plural'),
-								'escape' => false,
+								'label' => ['text' => '<i class="fas fa-list-ol"></i> ' . __d('translate', 'Plural'), 'escape' => false],
 								'rows' => 2,
 							]) ?>
 							<small class="form-text text-muted">
@@ -107,8 +104,7 @@
 
 						<div class="col-md-12">
 							<?= $this->Form->control('context', [
-								'label' => '<i class="fas fa-info-circle"></i> ' . __d('translate', 'Context'),
-								'escape' => false,
+								'label' => ['text' => '<i class="fas fa-info-circle"></i> ' . __d('translate', 'Context'), 'escape' => false],
 								'placeholder' => __d('translate', 'e.g., "navigation", "button", "error message"'),
 							]) ?>
 							<small class="form-text text-muted">
@@ -118,13 +114,13 @@
 
 						<div class="col-md-4">
 							<div class="form-check form-switch">
-								<?= $this->Form->control('is_html', ['type' => 'checkbox', 'label' => '<i class="fas fa-code"></i> ' . __d('translate', 'Is HTML'), 'escape' => false, 'class' => 'form-check-input']) ?>
+								<?= $this->Form->control('is_html', ['type' => 'checkbox', 'label' => ['text' => '<i class="fas fa-code"></i> ' . __d('translate', 'Is HTML'), 'escape' => false], 'class' => 'form-check-input']) ?>
 							</div>
 						</div>
 
 						<div class="col-md-4">
 							<div class="form-check form-switch">
-								<?= $this->Form->control('update_references', ['type' => 'checkbox', 'label' => '<i class="fas fa-sync"></i> ' . __d('translate', 'Update Code References'), 'escape' => false, 'class' => 'form-check-input']) ?>
+								<?= $this->Form->control('update_references', ['type' => 'checkbox', 'label' => ['text' => '<i class="fas fa-sync"></i> ' . __d('translate', 'Update Code References'), 'escape' => false], 'class' => 'form-check-input']) ?>
 							</div>
 							<small class="form-text text-muted">
 								<?= __d('translate', 'Update all occurrences in source files to match the new string') ?>
@@ -133,7 +129,7 @@
 
 						<div class="col-md-4">
 							<div class="form-check form-switch">
-								<?= $this->Form->control('translate_afterwards', ['type' => 'checkbox', 'label' => '<i class="fas fa-forward"></i> ' . __d('translate', 'Translate Afterwards'), 'escape' => false, 'class' => 'form-check-input']) ?>
+								<?= $this->Form->control('translate_afterwards', ['type' => 'checkbox', 'label' => ['text' => '<i class="fas fa-forward"></i> ' . __d('translate', 'Translate Afterwards'), 'escape' => false], 'class' => 'form-check-input']) ?>
 							</div>
 						</div>
 					</div>

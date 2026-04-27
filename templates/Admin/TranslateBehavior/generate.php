@@ -32,7 +32,7 @@ $cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
 							<?= $this->Html->link(
 								'<i class="fas fa-table"></i> ' . h($table),
 								['action' => 'generate', $table],
-								['escape' => false, 'class' => 'list-group-item list-group-item-action'],
+								['escapeTitle' => false, 'class' => 'list-group-item list-group-item-action'],
 							) ?>
 						<?php } ?>
 					</div>
@@ -251,7 +251,7 @@ $fieldsFormatted .= "        ]";
 						<?= $this->Html->link(
 							'<i class="fas fa-arrow-left"></i> ' . __d('translate', 'Back to Overview'),
 							['action' => 'index'],
-							['escape' => false, 'class' => 'btn btn-sm btn-outline-secondary'],
+							['escapeTitle' => false, 'class' => 'btn btn-sm btn-outline-secondary'],
 						) ?>
 					</div>
 				</div>

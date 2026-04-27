@@ -57,15 +57,15 @@ use Cake\Core\Plugin;
 				echo $this->Form->create(null, ['valueSources' => 'query', 'class' => 'row g-3']);
 				?>
 				<div class="col-md-4">
-					<?= $this->Form->control('translate_domain_id', ['empty' => ' - ' . __d('translate', 'noLimitation') . ' - ', 'label' => '<i class="fas fa-folder"></i> ' . __d('translate', 'Domain'), 'escape' => false]) ?>
+					<?= $this->Form->control('translate_domain_id', ['empty' => ' - ' . __d('translate', 'noLimitation') . ' - ', 'label' => ['text' => '<i class="fas fa-folder"></i> ' . __d('translate', 'Domain'), 'escape' => false]]) ?>
 				</div>
 				<div class="col-md-4">
-					<?= $this->Form->control('search', ['placeholder' => __d('translate', 'Search...'), 'label' => '<i class="fas fa-search"></i> ' . __d('translate', 'Search'), 'escape' => false]) ?>
+					<?= $this->Form->control('search', ['placeholder' => __d('translate', 'Search...'), 'label' => ['text' => '<i class="fas fa-search"></i> ' . __d('translate', 'Search'), 'escape' => false]]) ?>
 				</div>
 				<div class="col-md-4">
 					<label class="form-label">&nbsp;</label>
 					<div class="form-check">
-						<?= $this->Form->control('missing_translation', ['type' => 'checkbox', 'hiddenField' => '', 'label' => '<i class="fas fa-exclamation-triangle"></i> ' . __d('translate', 'Missing Translation'), 'escape' => false, 'class' => 'form-check-input']) ?>
+						<?= $this->Form->control('missing_translation', ['type' => 'checkbox', 'hiddenField' => '', 'label' => ['text' => '<i class="fas fa-exclamation-triangle"></i> ' . __d('translate', 'Missing Translation'), 'escape' => false], 'class' => 'form-check-input']) ?>
 					</div>
 				</div>
 				<div class="col-12">

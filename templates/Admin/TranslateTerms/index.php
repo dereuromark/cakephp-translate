@@ -56,10 +56,10 @@ use Cake\Core\Plugin;
 				echo $this->Form->create(null, ['valueSources' => 'query', 'class' => 'row g-3']);
 				?>
 				<div class="col-md-6">
-					<?= $this->Form->control('translate_locale_id', ['empty' => ' - ' . __d('translate', 'noLimitation') . ' - ', 'label' => '<i class="fas fa-globe"></i> ' . __d('translate', 'Locale'), 'escape' => false]) ?>
+					<?= $this->Form->control('translate_locale_id', ['empty' => ' - ' . __d('translate', 'noLimitation') . ' - ', 'label' => ['text' => '<i class="fas fa-globe"></i> ' . __d('translate', 'Locale'), 'escape' => false]]) ?>
 				</div>
 				<div class="col-md-6">
-					<?= $this->Form->control('search', ['placeholder' => __d('translate', 'Search...'), 'label' => '<i class="fas fa-search"></i> ' . __d('translate', 'Search'), 'escape' => false]) ?>
+					<?= $this->Form->control('search', ['placeholder' => __d('translate', 'Search...'), 'label' => ['text' => '<i class="fas fa-search"></i> ' . __d('translate', 'Search'), 'escape' => false]]) ?>
 				</div>
 				<div class="col-12">
 					<div class="d-flex justify-content-end">

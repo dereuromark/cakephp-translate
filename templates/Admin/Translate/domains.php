@@ -21,13 +21,27 @@
  * @var string $projectPath
  */
 
+/**
+ * Shorten an absolute path to `APP/...` (relative to the project root).
+ * Adds a trailing slash for directory paths.
+ */
 $shortenPath = function (string $abs) use ($projectPath): string {
-	$root = rtrim($projectPath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
-	if (str_starts_with($abs, $root)) {
-		return './' . substr($abs, strlen($root));
+	$root = rtrim($projectPath, DIRECTORY_SEPARATOR);
+	$normalizedAbs = rtrim($abs, DIRECTORY_SEPARATOR);
+	if ($normalizedAbs === $root) {
+		return 'APP/';
+	}
+	if (str_starts_with($normalizedAbs, $root . DIRECTORY_SEPARATOR)) {
+		$relative = substr($normalizedAbs, strlen($root) + 1);
+		$shortened = 'APP/' . $relative;
+	} else {
+		$shortened = $normalizedAbs;
+	}
+	if (is_dir($abs)) {
+		$shortened .= '/';
 	}
 
-	return $abs;
+	return $shortened;
 };
 
 ?>
@@ -63,7 +77,7 @@ $shortenPath = function (string $abs) use ($projectPath): string {
 			</div>
 			<ul class="list-group list-group-flush small">
 				<?php foreach ($paths as $p) { ?>
-					<li class="list-group-item"><?= h($p) ?></li>
+					<li class="list-group-item" title="<?= h($p) ?>"><code><?= h($shortenPath($p)) ?></code></li>
 				<?php } ?>
 			</ul>
 		</div>
@@ -74,7 +88,7 @@ $shortenPath = function (string $abs) use ($projectPath): string {
 			</div>
 			<ul class="list-group list-group-flush small">
 				<?php foreach ($localePaths as $lp) { ?>
-					<li class="list-group-item"><?= h($lp) ?></li>
+					<li class="list-group-item" title="<?= h($lp) ?>"><code><?= h($shortenPath($lp)) ?></code></li>
 				<?php } ?>
 			</ul>
 		</div>

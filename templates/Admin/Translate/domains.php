@@ -29,11 +29,10 @@ $shortenPath = function (string $abs) use ($projectPath): string {
 	$root = rtrim($projectPath, DIRECTORY_SEPARATOR);
 	$normalizedAbs = rtrim($abs, DIRECTORY_SEPARATOR);
 	if ($normalizedAbs === $root) {
-		return 'APP/';
+		return 'APP';
 	}
 	if (str_starts_with($normalizedAbs, $root . DIRECTORY_SEPARATOR)) {
-		$relative = substr($normalizedAbs, strlen($root) + 1);
-		$shortened = 'APP/' . $relative;
+		$shortened = 'APP/' . substr($normalizedAbs, strlen($root) + 1);
 	} else {
 		$shortened = $normalizedAbs;
 	}

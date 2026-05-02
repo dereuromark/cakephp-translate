@@ -6,6 +6,7 @@ use Cake\Core\Configure;
 use Cake\Core\InstanceConfigTrait;
 use Cake\ORM\TableRegistry;
 use RuntimeException;
+use Translate\Model\Table\TranslateApiTranslationsTable;
 use Translate\Translator\Engine\Google;
 
 class Translator {
@@ -13,16 +14,13 @@ class Translator {
 	use InstanceConfigTrait;
 
 	/**
-	 * @var array
+	 * @var array<string, mixed>
 	 */
-	protected $_defaultConfig = [
+	protected array $_defaultConfig = [
 		'engine' => Google::class,
 	];
 
-	/**
-	 * @var \Translate\Model\Table\TranslateApiTranslationsTable
-	 */
-	protected $_cache;
+	protected TranslateApiTranslationsTable $_cache;
 
 	/**
 	 * @param array $config

@@ -64,22 +64,29 @@ class ReferenceResolver {
 	 */
 	public static function resolveFilePath(string $referencePath, ?string $projectPath): string {
 		// Clean up reference path - remove leading ./
-		$referencePath = preg_replace('#^\./#', '', $referencePath);
+		$referencePath = preg_replace('#^\./#', '', (string)$referencePath);
 
-		// Resolve project base path
+		// Resolve project base path (already realpath'd, with trailing /).
 		$basePath = static::resolveProjectPath($projectPath);
+		$rootPath = rtrim((string)realpath(ROOT), '/') . '/';
 
-		// Try to find the file
-		$file = $basePath . $referencePath;
-		$resolvedFile = realpath($file);
+		// Try to find the file under the project path first.
+		$resolvedFile = realpath($basePath . $referencePath);
+		$matchedRoot = $basePath;
 
 		if ($resolvedFile === false) {
-			// Try from ROOT if project path didn't work (for app-relative paths like ./vendor/...)
-			$file = ROOT . DS . $referencePath;
-			$resolvedFile = realpath($file);
+			// Fall back to ROOT for app-relative paths like ./vendor/...
+			$resolvedFile = realpath($rootPath . $referencePath);
+			$matchedRoot = $rootPath;
 		}
 
 		if ($resolvedFile === false || !file_exists($resolvedFile)) {
+			throw new NotFoundException('File not found: ' . $basePath . $referencePath);
+		}
+
+		// Containment check: realpath() on a `..`-laden input happily resolves to anywhere on
+		// disk; require the resolved path to live under the matched base (Issue #2).
+		if (!str_starts_with($resolvedFile, $matchedRoot)) {
 			throw new NotFoundException('File not found: ' . $basePath . $referencePath);
 		}
 

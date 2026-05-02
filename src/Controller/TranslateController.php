@@ -100,7 +100,7 @@ class TranslateController extends TranslateAppController {
 						'TranslateTerms.content !=' => '',
 					]);
 				})
-				->group(['TranslateStrings.id'])
+				->groupBy(['TranslateStrings.id'])
 				->count();
 
 			$domainStats[$domainEntity->name] = [
@@ -203,7 +203,7 @@ class TranslateController extends TranslateAppController {
 						'TranslateTerms.content !=' => '',
 					]);
 				})
-				->group(['TranslateStrings.id'])
+				->groupBy(['TranslateStrings.id'])
 				->count();
 
 			$domainStats[$domainEntity->id] = [
@@ -381,10 +381,14 @@ class TranslateController extends TranslateAppController {
 
 		$this->Flash->success(__d('translate', 'Language switched to {0}', $language->name));
 
-		// Redirect back to previous page or index
-		$redirect = $this->request->getQuery('redirect') ?: ['action' => 'index'];
+		// Redirect back to previous page or index. Reject any externally-pointed `?redirect=`
+		// — accept only same-origin relative URLs (Issue #5: open redirect).
+		$redirect = $this->request->getQuery('redirect');
+		if (is_string($redirect) && $redirect !== '' && str_starts_with($redirect, '/') && !str_starts_with($redirect, '//')) {
+			return $this->redirect($redirect);
+		}
 
-		return $this->redirect($redirect);
+		return $this->redirect(['action' => 'index']);
 	}
 
 	/**

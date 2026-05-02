@@ -44,7 +44,7 @@ class TranslateStringsCollection extends FilterCollection {
 								'TranslateTerms.content !=' => '',
 							]);
 						})
-						->group(['TranslateStrings.id']);
+						->groupBy(['TranslateStrings.id']);
 					}
 
 					return true;

@@ -60,8 +60,10 @@ $target = 'content-' . $key;
 <?php $this->append('script'); ?>
 <script<?= $cspNonce !== '' ? ' nonce="' . h($cspNonce) . '"' : '' ?>>
 	$(function() {
-		$('.suggest[rel="<?php echo $key; ?>"]').click(function() {
-			var input = $('#<?php echo $target; ?>');
+		var key = <?= json_encode($key, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>;
+		var targetSelector = <?= json_encode('#' . $target, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>;
+		$('.suggest[rel="' + key + '"]').click(function() {
+			var input = $(targetSelector);
 			var value = $(this).text();
 			input.val(value);
 			return false;

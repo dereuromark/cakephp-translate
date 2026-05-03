@@ -3,6 +3,7 @@
 namespace Translate\Translator\Engine;
 
 use Cake\Core\Configure;
+use Cake\Log\Log;
 use Translate\Translator\EngineInterface;
 use Yandex\Translate\Exception;
 use Yandex\Translate\Translator;
@@ -24,7 +25,13 @@ class Yandex implements EngineInterface {
 
 			$result = (string)$translation;
 		} catch (Exception $e) {
-			trigger_error($e->getMessage());
+			// Upstream API messages may include the API key or other diagnostics; surface details
+			// only in debug mode and log a generic warning otherwise (Issue #9).
+			if (Configure::read('debug')) {
+				trigger_error($e->getMessage());
+			} else {
+				Log::warning('Yandex translation failed', ['exception' => $e]);
+			}
 
 			return null;
 		}

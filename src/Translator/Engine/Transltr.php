@@ -2,6 +2,8 @@
 
 namespace Translate\Translator\Engine;
 
+use Cake\Core\Configure;
+use Cake\Log\Log;
 use Translate\Translator\EngineInterface;
 use Yandex\Translate\Exception;
 
@@ -41,7 +43,13 @@ class Transltr implements EngineInterface {
 
 			$result = $response['translationText'];
 		} catch (Exception $e) {
-			trigger_error($e->getMessage());
+			// Upstream API messages may leak diagnostics; surface details only in debug mode and
+			// log a generic warning otherwise (Issue #9).
+			if (Configure::read('debug')) {
+				trigger_error($e->getMessage());
+			} else {
+				Log::warning('Transltr translation failed', ['exception' => $e]);
+			}
 
 			return null;
 		}

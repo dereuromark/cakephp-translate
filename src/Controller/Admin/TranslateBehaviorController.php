@@ -6,6 +6,7 @@ use Cake\Core\Configure;
 use Cake\Database\Schema\CollectionInterface;
 use Cake\Database\Schema\TableSchemaInterface;
 use Cake\Datasource\ConnectionManager;
+use Cake\Http\Exception\NotFoundException;
 use Cake\ORM\Locator\LocatorAwareTrait;
 use Cake\Utility\Inflector;
 use Exception;
@@ -204,19 +205,24 @@ class TranslateBehaviorController extends TranslateAppController {
 		$shadowTables = [];
 		$orphanedShadowTables = [];
 
+		$driver = $connection->getDriver();
 		foreach ($allTables as $tableName) {
 			$suffix = $this->getShadowTableSuffixForTable($tableName);
 			if ($suffix !== null) {
 				$baseTableName = substr($tableName, 0, -strlen($suffix));
 				$baseTableExists = in_array($baseTableName, $allTables, true);
 
+				// Defence-in-depth: even though $tableName comes from the schema collection,
+				// route every identifier through the driver's quoter so future refactors
+				// that pass untrusted input here cannot reintroduce SQL injection (Issue #10).
+				$quotedTable = $driver->quoteIdentifier($tableName);
 				$shadowTables[$baseTableName] = [
 					'shadow_table' => $tableName,
 					'base_table' => $baseTableName,
 					'suffix' => $suffix,
 					'exists' => $baseTableExists,
 					'schema' => $schemaCollection->describe($tableName),
-					'row_count' => $connection->execute("SELECT COUNT(*) as count FROM `{$tableName}`")->fetch('assoc')['count'] ?? 0,
+					'row_count' => $connection->execute("SELECT COUNT(*) as count FROM {$quotedTable}")->fetch('assoc')['count'] ?? 0,
 				];
 
 				if (!$baseTableExists) {
@@ -302,7 +308,14 @@ class TranslateBehaviorController extends TranslateAppController {
 	 * @return bool
 	 */
 	protected function validateShadowTableName(?string $tableName): bool {
-		return $tableName !== null && $this->getShadowTableSuffixForTable($tableName) !== null;
+		// Identifier-shape regex first; mirrors I18nEntriesController::validateTranslationTableName().
+		// Without this guard, suffix-only validation would let backticks / quotes / semicolons
+		// through to raw SQL string interpolation downstream (Issue #3).
+		if ($tableName === null || $tableName === '' || preg_match('/[^a-z0-9_]/i', $tableName)) {
+			return false;
+		}
+
+		return $this->getShadowTableSuffixForTable($tableName) !== null;
 	}
 
 	/**
@@ -804,42 +817,123 @@ PHP;
 	}
 
 	/**
-	 * Save migration file directly
+	 * Save migration file directly.
+	 *
+	 * Debug-only: this writes a PHP file under config/Migrations and is therefore a code-execution
+	 * primitive. Disabled outside debug mode regardless of admin auth state.
+	 *
+	 * The migration code is regenerated server-side from validated inputs; the request body's
+	 * `migration_code` is never trusted.
 	 *
 	 * @return \Cake\Http\Response|null
 	 */
 	public function saveMigration() {
+		if (!Configure::read('debug')) {
+			throw new NotFoundException();
+		}
+
 		$this->request->allowMethod(['post']);
 
-		$tableName = $this->request->getData('table_name');
-		$migrationCode = $this->request->getData('migration_code');
-		$migrationName = $this->request->getData('migration_name');
+		$tableName = (string)$this->request->getData('table_name', '');
+		$selectedFields = (array)$this->request->getData('fields', []);
+		$strategy = (string)$this->request->getData('strategy', 'shadow_table');
+		$includeAutoField = (bool)$this->request->getData('include_auto_field', true);
 
-		if (!$tableName || !$migrationCode || !$migrationName) {
+		if (!$tableName || !$selectedFields) {
 			$this->Flash->error(__d('translate', 'Missing required data'));
+
+			return $this->redirect(['action' => 'generate', $tableName ?: null]);
+		}
+
+		// Authoritatively whitelist the table name against the live schema — never trust the POST
+		// value to be safe just because it looks like an identifier.
+		/** @var \Cake\Database\Connection $connection */
+		$connection = ConnectionManager::get('default');
+		$schemaCollection = $connection->getSchemaCollection();
+		if (!in_array($tableName, $schemaCollection->listTables(), true)) {
+			$this->Flash->error(__d('translate', 'Table {0} not found', $tableName));
+
+			return $this->redirect(['action' => 'generate']);
+		}
+
+		if (!in_array($strategy, ['shadow_table', 'eav'], true)) {
+			$this->Flash->error(__d('translate', 'Invalid strategy'));
 
 			return $this->redirect(['action' => 'generate', $tableName]);
 		}
 
-		// Determine migration directory
+		// Re-derive translatable fields from the schema so attacker-controlled POST values cannot
+		// inject extra columns. Mirrors the logic in generate().
+		/** @var \Cake\Database\Schema\TableSchema $schema */
+		$schema = $schemaCollection->describe($tableName);
+		$translatableFields = [];
+		$validFieldNames = [];
+		foreach ($schema->columns() as $columnName) {
+			$columnType = $schema->getColumnType($columnName);
+			$columnData = $schema->getColumn($columnName);
+			if (!in_array($columnType, ['string', 'text'], true)) {
+				continue;
+			}
+			if (in_array($columnName, ['id', 'uuid', 'email', 'password', 'token', 'slug', 'created', 'modified', 'updated'], true)) {
+				continue;
+			}
+			$translatableFields[] = [
+				'name' => $columnName,
+				'type' => $columnType,
+				'length' => $columnData['length'] ?? null,
+				'null' => $columnData['null'] ?? true,
+			];
+			$validFieldNames[] = $columnName;
+		}
+
+		// Drop any posted field that isn't an actual translatable column.
+		$selectedFields = array_values(array_intersect($selectedFields, $validFieldNames));
+		if (!$selectedFields) {
+			$this->Flash->error(__d('translate', 'No valid fields selected'));
+
+			return $this->redirect(['action' => 'generate', $tableName]);
+		}
+
+		// Re-derive migration class/file name from tableName; never use the POSTed migration_name.
+		$migrationName = 'AddTranslationsFor' . Inflector::camelize($tableName);
+		if (!preg_match('/^[A-Z][A-Za-z0-9]+$/', $migrationName)) {
+			$this->Flash->error(__d('translate', 'Invalid migration name'));
+
+			return $this->redirect(['action' => 'generate', $tableName]);
+		}
+
+		// Regenerate the migration code server-side. The POSTed migration_code is ignored.
+		$migrationCode = $this->generateMigrationCode($tableName, $selectedFields, $translatableFields, $strategy, $includeAutoField);
+
+		// Determine migration directory and confine writes to it.
 		$migrationPath = ROOT . DS . 'config' . DS . 'Migrations';
 		if (!is_dir($migrationPath)) {
 			mkdir($migrationPath, 0755, true);
 		}
+		$migrationPathReal = realpath($migrationPath);
+		if ($migrationPathReal === false) {
+			$this->Flash->error(__d('translate', 'Failed to resolve migration path'));
 
-		// Generate timestamped filename
+			return $this->redirect(['action' => 'generate', $tableName]);
+		}
+
 		$timestamp = date('YmdHis');
 		$filename = $timestamp . '_' . $migrationName . '.php';
-		$filePath = $migrationPath . DS . $filename;
+		$filePath = $migrationPathReal . DS . $filename;
 
-		// Check if file already exists
+		// Defence-in-depth: ensure the resolved parent directory still equals the expected path.
+		if (realpath(dirname($filePath)) !== $migrationPathReal) {
+			$this->Flash->error(__d('translate', 'Resolved path escapes migrations directory'));
+
+			return $this->redirect(['action' => 'generate', $tableName]);
+		}
+
 		if (file_exists($filePath)) {
 			$this->Flash->error(__d('translate', 'Migration file already exists: {0}', $filename));
 
 			return $this->redirect(['action' => 'generate', $tableName]);
 		}
 
-		// Save the file
 		if (file_put_contents($filePath, $migrationCode) === false) {
 			$this->Flash->error(__d('translate', 'Failed to write migration file'));
 

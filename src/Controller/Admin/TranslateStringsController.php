@@ -690,19 +690,20 @@ class TranslateStringsController extends TranslateAppController {
 		$projectPath = $translateString->translate_domain->translate_project->path ?? null;
 		$file = ReferenceResolver::resolveFilePath($referencePath, $projectPath);
 
-		// Handle POST request to edit source file (debug mode only)
-		if ($this->request->is('post') && Configure::read('debug')) {
+		// Handle POST request to edit source file. Debug-mode-only AND requires explicit
+		// `Translate.editor` opt-in (Issue #12) — a misconfigured production install with
+		// debug=true must not silently expose this. Also restrict to PHP/template extensions.
+		$editAllowed = Configure::read('debug') && Configure::read('Translate.editor');
+		$editableExtensions = ['php', 'ctp', 'twig'];
+		$ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+		if ($this->request->is('post') && $editAllowed && in_array($ext, $editableExtensions, true)) {
 			$newContent = $this->request->getData('file_content');
 			if ($newContent !== null) {
-				if (!is_writable($file)) {
-					$this->Flash->error(__d('translate', 'File is not writable: {0}', $file));
+				$success = @file_put_contents($file, $newContent);
+				if ($success !== false) {
+					$this->Flash->success(__d('translate', 'File updated successfully. Please commit your changes!'));
 				} else {
-					$success = file_put_contents($file, $newContent);
-					if ($success !== false) {
-						$this->Flash->success(__d('translate', 'File updated successfully. Please commit your changes!'));
-					} else {
-						$this->Flash->error(__d('translate', 'Failed to write file'));
-					}
+					$this->Flash->error(__d('translate', 'Failed to write file'));
 				}
 			}
 		}
@@ -725,6 +726,34 @@ class TranslateStringsController extends TranslateAppController {
 	 */
 	public function import() {
 		return $this->redirect(['action' => 'extract']);
+	}
+
+	/**
+	 * Collapse `.` and `..` segments without touching the filesystem.
+	 *
+	 * Used for prefix-containment checks against directories that don't exist yet (where
+	 * realpath() would return false). Returns the path with a normalized absolute layout.
+	 *
+	 * @param string $path Absolute path (may contain `..`)
+	 * @return string Normalized path
+	 */
+	protected function normalizePathForContainment(string $path): string {
+		$path = str_replace(['\\', '//'], ['/', '/'], $path);
+		$isAbsolute = str_starts_with($path, '/');
+		$segments = [];
+		foreach (explode('/', $path) as $segment) {
+			if ($segment === '' || $segment === '.') {
+				continue;
+			}
+			if ($segment === '..') {
+				array_pop($segments);
+
+				continue;
+			}
+			$segments[] = $segment;
+		}
+
+		return ($isAbsolute ? '/' : '') . implode('/', $segments);
 	}
 
 	/**
@@ -764,7 +793,13 @@ class TranslateStringsController extends TranslateAppController {
 			}
 
 			[$referencePath] = explode(':', $reference);
-			$file = $path . $referencePath;
+			$file = (string)realpath($path . $referencePath);
+
+			// Containment check: skip anything that resolves outside the project path
+			// (Issue #2 / #14 family).
+			if ($file === '' || !str_starts_with($file, $path)) {
+				continue;
+			}
 
 			if (!file_exists($file)) {
 				continue;
@@ -785,23 +820,26 @@ class TranslateStringsController extends TranslateAppController {
 
 			// Build patterns to match different translation function calls
 			// Matches: __('text'), __d('domain', 'text'), __x('context', 'text'), __dx('domain', 'context', 'text')
+			//
+			// Use preg_replace_callback so the new name is treated as a literal string. preg_replace's
+			// $1/$2/\1 backref expansion would otherwise let a translation key containing those tokens
+			// corrupt the source file (Issue #14).
 			$escapedOriginal = preg_quote($originalName, '/');
-			$escapedNew = addcslashes($translateString->name, '\\$');
+			$newName = $translateString->name;
 
-			// Pattern for single-quoted strings
-			$pattern1 = "/(__d?x?)\s*\(\s*(?:'[^']*'\s*,\s*)?(?:'[^']*'\s*,\s*)?'{$escapedOriginal}'/";
-			$replacement1 = "$1('{$escapedNew}'";
+			// Capture group 2 preserves any leading domain/context args so we can rebuild the call.
+			$pattern1 = "/(__d?x?)(\s*\(\s*(?:'[^']*'\s*,\s*)?(?:'[^']*'\s*,\s*)?)'{$escapedOriginal}'/";
+			$pattern2 = "/(__d?x?)(\s*\(\s*(?:\"[^\"]*\"\s*,\s*)?(?:\"[^\"]*\"\s*,\s*)?)\"{$escapedOriginal}\"/";
 
-			// Pattern for double-quoted strings
-			$pattern2 = "/(__d?x?)\s*\(\s*(?:\"[^\"]*\"\s*,\s*)?(?:\"[^\"]*\"\s*,\s*)?\"{$escapedOriginal}\"/";
-			$replacement2 = "$1(\"{$escapedNew}\"";
-
-			// Apply replacements
-			$newContent = preg_replace($pattern1, $replacement1, $content);
+			$newContent = preg_replace_callback($pattern1, function (array $matches) use ($newName): string {
+				return $matches[1] . $matches[2] . "'" . addcslashes($newName, "'\\") . "'";
+			}, $content);
 			if ($newContent !== null) {
 				$content = $newContent;
 			}
-			$newContent = preg_replace($pattern2, $replacement2, $content);
+			$newContent = preg_replace_callback($pattern2, function (array $matches) use ($newName): string {
+				return $matches[1] . $matches[2] . '"' . addcslashes($newName, '"\\$') . '"';
+			}, $content);
 			if ($newContent !== null) {
 				$content = $newContent;
 			}
@@ -925,21 +963,31 @@ class TranslateStringsController extends TranslateAppController {
 		}
 		$localePath = rtrim($path, DS) . DS . 'resources' . DS . 'locales' . DS;
 
-		if ($type === 'pot' && isset($parts[1])) {
-			$filePath = $localePath . $parts[1] . '.pot';
-		} elseif ($type === 'po' && isset($parts[1], $parts[2])) {
-			$filePath = $localePath . $parts[1] . DS . $parts[2] . '.po';
+		// Strict locale + domain validation; the parts come from the URL/POST body and would
+		// otherwise let `..` traversal at the filesystem layer (Issue #11).
+		$locale = $parts[1] ?? null;
+		$domain = $parts[2] ?? null;
+		$nameRe = '/^[A-Za-z][A-Za-z0-9_\-]*$/';
+		$localeRe = '/^[a-z]{2,3}(_[A-Z]{2})?$/';
+
+		if ($type === 'pot' && $locale !== null && preg_match($nameRe, $locale)) {
+			$filePath = $localePath . $locale . '.pot';
+		} elseif ($type === 'po' && $locale !== null && $domain !== null && preg_match($localeRe, $locale) && preg_match($nameRe, $domain)) {
+			$filePath = $localePath . $locale . DS . $domain . '.po';
 		} else {
 			return null;
 		}
 
-		if (!file_exists($filePath)) {
+		// Containment: the resolved path must live under $localePath.
+		$resolved = realpath($filePath);
+		$localePathReal = (string)realpath($localePath);
+		if ($resolved === false || $localePathReal === '' || !str_starts_with($resolved, $localePathReal)) {
 			$this->Flash->error(__d('translate', 'File not found: {0}', $filePath));
 
 			return null;
 		}
 
-		return file_get_contents($filePath) ?: null;
+		return file_get_contents($resolved) ?: null;
 	}
 
 	/**
@@ -992,15 +1040,24 @@ class TranslateStringsController extends TranslateAppController {
 			if (!$paths) {
 				$paths = [$appPath . DS . 'src', $appPath . DS . 'templates'];
 			}
-			// Convert relative paths to absolute and validate they exist
+
+			// Confine every input path to the project's appPath (Issue #13). Without realpath
+			// containment, an admin who can post to runExtract can scan/copy POT into any
+			// directory writable by the web server.
+			$appPathReal = (string)realpath($appPath);
 			$validPaths = [];
 			foreach ($paths as $path) {
 				if (!str_starts_with($path, '/')) {
 					$path = $appPath . DS . $path;
 				}
-				if (is_dir($path)) {
-					$validPaths[] = $path;
+				$resolved = realpath($path);
+				if ($resolved === false || !is_dir($resolved)) {
+					continue;
 				}
+				if ($appPathReal !== '' && !str_starts_with($resolved, $appPathReal)) {
+					continue;
+				}
+				$validPaths[] = $resolved;
 			}
 			$paths = $validPaths;
 
@@ -1019,6 +1076,17 @@ class TranslateStringsController extends TranslateAppController {
 			if (!str_starts_with($outputPath, '/')) {
 				$outputPath = $appPath . DS . $outputPath;
 			}
+
+			// Containment: outputPath must live under appPath even after `..` collapsing.
+			// We can't realpath() it yet (the directory may not exist), so collapse manually
+			// then verify the prefix (Issue #13).
+			$normalizedOutput = $this->normalizePathForContainment($outputPath);
+			if ($appPathReal === '' || !str_starts_with($normalizedOutput, $appPathReal)) {
+				$this->Flash->error(__d('translate', 'Output path must be inside the project: {0}', $outputPath));
+
+				return;
+			}
+			$outputPath = $normalizedOutput;
 			$merge = $this->request->getData('merge') ? 'yes' : 'no';
 			$overwrite = $this->request->getData('overwrite') ? 'yes' : 'no';
 			$extractCore = $this->request->getData('extract_core') ? 'yes' : 'no';

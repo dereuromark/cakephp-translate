@@ -2,8 +2,10 @@
 
 namespace Translate\Test\TestCase\Controller\Admin;
 
+use Cake\Core\Configure;
 use Cake\Database\Driver\Sqlite;
 use Cake\Datasource\ConnectionManager;
+use Cake\Http\Exception\NotFoundException;
 use Translate\Test\TestCase\IntegrationTestCase;
 
 /**
@@ -388,52 +390,119 @@ class TranslateBehaviorControllerTest extends IntegrationTestCase {
 	/**
 	 * Test save migration action
 	 *
+	 * Posts the validated form inputs (table_name, fields[], strategy, include_auto_field).
+	 * The controller regenerates the migration code server-side from the live schema; the
+	 * request body's migration_code is intentionally not accepted.
+	 *
 	 * @return void
 	 */
 	public function testSaveMigration() {
-		$migrationCode = '<?php
-declare(strict_types=1);
+		$connection = ConnectionManager::get('test');
+		$connection->execute('DROP TABLE IF EXISTS test_articles');
 
-use Migrations\BaseMigration;
-
-class AddI18nForTestTable extends BaseMigration
-{
-    public function change(): void
-    {
-        // Migration code here
-    }
-}';
+		$driver = $connection->getDriver();
+		$isSqlite = $driver instanceof Sqlite;
+		if ($isSqlite) {
+			$connection->execute('
+				CREATE TABLE test_articles (
+					id INTEGER PRIMARY KEY AUTOINCREMENT,
+					title VARCHAR(255) NOT NULL,
+					body TEXT
+				)
+			');
+		} else {
+			$connection->execute('
+				CREATE TABLE test_articles (
+					id INT AUTO_INCREMENT PRIMARY KEY,
+					title VARCHAR(255) NOT NULL,
+					body TEXT
+				)
+			');
+		}
 
 		$migrationPath = ROOT . DS . 'config' . DS . 'Migrations';
 		if (!is_dir($migrationPath)) {
 			mkdir($migrationPath, 0755, true);
 		}
 
+		try {
+			$this->post(
+				['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateBehavior', 'action' => 'saveMigration'],
+				[
+					'table_name' => 'test_articles',
+					'fields' => ['title', 'body'],
+					'strategy' => 'shadow_table',
+					'include_auto_field' => 1,
+				],
+			);
+
+			$this->assertResponseCode(302);
+			$this->assertRedirect(['action' => 'generate', 'test_articles']);
+			$this->assertFlashElement('flash/success');
+
+			$session = $this->_requestSession;
+			$flash = $session->read('Flash.flash');
+			$this->assertNotEmpty($flash);
+			$this->assertStringContainsString('Migration file created successfully', $flash[0]['message']);
+
+			// Migration class name is derived server-side from the table name; the POST body cannot influence it.
+			$files = glob($migrationPath . DS . '*_AddTranslationsForTestArticles.php');
+			$this->assertNotEmpty($files, 'Expected migration file to be written');
+		} finally {
+			foreach ((array)glob($migrationPath . DS . '*_AddTranslationsForTestArticles.php') as $file) {
+				if (file_exists($file)) {
+					unlink($file);
+				}
+			}
+			$connection->execute('DROP TABLE IF EXISTS test_articles');
+		}
+	}
+
+	/**
+	 * Test save migration rejects unknown table names.
+	 *
+	 * @return void
+	 */
+	public function testSaveMigrationUnknownTable() {
 		$this->post(
 			['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateBehavior', 'action' => 'saveMigration'],
 			[
-				'table_name' => 'test_table',
-				'migration_name' => 'AddI18nForTestTable',
-				'migration_code' => $migrationCode,
+				'table_name' => 'definitely_not_a_real_table',
+				'fields' => ['title'],
+				'strategy' => 'shadow_table',
+				'include_auto_field' => 1,
 			],
 		);
 
 		$this->assertResponseCode(302);
-		$this->assertRedirect(['action' => 'generate', 'test_table']);
-		$this->assertFlashElement('flash/success');
+		$this->assertRedirect(['action' => 'generate']);
+		$this->assertFlashMessage('Table definitely_not_a_real_table not found');
+	}
 
-		// Check that the flash message contains the expected text
-		$session = $this->_requestSession;
-		$flash = $session->read('Flash.flash');
-		$this->assertNotEmpty($flash);
-		$this->assertStringContainsString('Migration file created successfully', $flash[0]['message']);
-
-		// Cleanup - find and delete the created migration file
-		$files = glob($migrationPath . DS . '*_AddI18nForTestTable.php');
-		foreach ($files as $file) {
-			if (file_exists($file)) {
-				unlink($file);
-			}
+	/**
+	 * Test save migration is gated to debug mode (production must not expose it).
+	 *
+	 * @return void
+	 */
+	public function testSaveMigrationProductionGate() {
+		$debug = Configure::read('debug');
+		Configure::write('debug', false);
+		// Bypass the error renderer (the test app has no Admin/layout/error.php) so we can
+		// observe the NotFoundException directly.
+		$this->disableErrorHandlerMiddleware();
+		try {
+			$this->expectException(NotFoundException::class);
+			$this->post(
+				['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateBehavior', 'action' => 'saveMigration'],
+				[
+					'table_name' => 'translate_projects',
+					'fields' => ['name'],
+					'strategy' => 'shadow_table',
+					'include_auto_field' => 1,
+				],
+			);
+		} finally {
+			Configure::write('debug', $debug);
 		}
 	}
 

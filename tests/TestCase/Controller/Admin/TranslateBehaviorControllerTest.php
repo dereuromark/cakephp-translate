@@ -5,6 +5,7 @@ namespace Translate\Test\TestCase\Controller\Admin;
 use Cake\Core\Configure;
 use Cake\Database\Driver\Sqlite;
 use Cake\Datasource\ConnectionManager;
+use Cake\Http\Exception\NotFoundException;
 use Translate\Test\TestCase\IntegrationTestCase;
 
 /**
@@ -490,7 +491,7 @@ class TranslateBehaviorControllerTest extends IntegrationTestCase {
 		// observe the NotFoundException directly.
 		$this->disableErrorHandlerMiddleware();
 		try {
-			$this->expectException(\Cake\Http\Exception\NotFoundException::class);
+			$this->expectException(NotFoundException::class);
 			$this->post(
 				['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateBehavior', 'action' => 'saveMigration'],
 				[

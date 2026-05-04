@@ -252,8 +252,17 @@ $cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
 				<span class="navbar-toggler-icon"></span>
 			</button>
 			<div class="collapse navbar-collapse" id="navbarContent">
-				<div class="ms-auto">
+				<div class="ms-auto d-flex align-items-center gap-2">
 					<?= $this->element('Translate.project_switch') ?>
+					<?php
+					$adminBackUrl = \Cake\Core\Configure::read('Translate.adminBackUrl');
+					$adminBackLabel = (string)\Cake\Core\Configure::read('Translate.adminBackLabel', __d('translate', 'Back to App'));
+					?>
+					<?php if ($adminBackUrl !== null && $adminBackUrl !== '') { ?>
+						<a class="btn btn-outline-light btn-sm" href="<?= $this->Url->build($adminBackUrl) ?>">
+							<i class="fas fa-arrow-left me-1"></i><?= h($adminBackLabel) ?>
+						</a>
+					<?php } ?>
 				</div>
 			</div>
 		</div>

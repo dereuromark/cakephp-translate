@@ -7,9 +7,9 @@ use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
 /**
+ * @extends \Cake\ORM\Table<array{Nullable: \Translate\Model\Behavior\NullableBehavior}>
  * @property \Translate\Model\Table\TranslateProjectsTable&\Cake\ORM\Association\BelongsTo $TranslateProjects
  * @property \Translate\Model\Table\TranslateStringsTable&\Cake\ORM\Association\HasMany $TranslateStrings
- *
  * @method \Translate\Model\Entity\TranslateDomain get(mixed $primaryKey, array|string $finder = 'all', \Psr\SimpleCache\CacheInterface|string|null $cache = null, \Closure|string|null $cacheKey = null, mixed ...$args)
  * @method \Translate\Model\Entity\TranslateDomain newEntity(array $data, array $options = [])
  * @method array<\Translate\Model\Entity\TranslateDomain> newEntities(array $data, array $options = [])
@@ -17,14 +17,13 @@ use Cake\Validation\Validator;
  * @method \Translate\Model\Entity\TranslateDomain patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method array<\Translate\Model\Entity\TranslateDomain> patchEntities(iterable $entities, array $data, array $options = [])
  * @method \Translate\Model\Entity\TranslateDomain findOrCreate(\Cake\ORM\Query\SelectQuery|callable|array $search, ?callable $callback = null, array $options = [])
- * @mixin \Translate\Model\Behavior\NullableBehavior
  * @method \Translate\Model\Entity\TranslateDomain saveOrFail(\Cake\Datasource\EntityInterface $entity, array $options = [])
  * @method \Translate\Model\Entity\TranslateDomain newEmptyEntity()
  * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateDomain>|false saveMany(iterable $entities, array $options = [])
  * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateDomain> saveManyOrFail(iterable $entities, array $options = [])
  * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateDomain>|false deleteMany(iterable $entities, array $options = [])
  * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateDomain> deleteManyOrFail(iterable $entities, array $options = [])
- * @extends \Cake\ORM\Table<array{Nullable: \Translate\Model\Behavior\NullableBehavior}>
+ * @mixin \Translate\Model\Behavior\NullableBehavior
  */
 class TranslateDomainsTable extends Table {
 

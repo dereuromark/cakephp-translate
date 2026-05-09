@@ -10,6 +10,9 @@ use Exception;
 use Translate\Model\Entity\TranslateProject;
 
 /**
+ * @extends \Cake\ORM\Table<array{Nullable: \Translate\Model\Behavior\NullableBehavior}>
+ * @property \Translate\Model\Table\TranslateDomainsTable&\Cake\ORM\Association\HasMany $TranslateDomains
+ * @property \Translate\Model\Table\TranslateTermsTable|\Cake\ORM\Association\HasMany $TranslateTerms
  * @method \Translate\Model\Entity\TranslateProject get(mixed $primaryKey, array|string $finder = 'all', \Psr\SimpleCache\CacheInterface|string|null $cache = null, \Closure|string|null $cacheKey = null, mixed ...$args)
  * @method \Translate\Model\Entity\TranslateProject newEntity(array $data, array $options = [])
  * @method array<\Translate\Model\Entity\TranslateProject> newEntities(array $data, array $options = [])
@@ -17,16 +20,13 @@ use Translate\Model\Entity\TranslateProject;
  * @method \Translate\Model\Entity\TranslateProject patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method array<\Translate\Model\Entity\TranslateProject> patchEntities(iterable $entities, array $data, array $options = [])
  * @method \Translate\Model\Entity\TranslateProject findOrCreate(\Cake\ORM\Query\SelectQuery|callable|array $search, ?callable $callback = null, array $options = [])
- * @mixin \Translate\Model\Behavior\NullableBehavior
- * @property \Translate\Model\Table\TranslateDomainsTable&\Cake\ORM\Association\HasMany $TranslateDomains
- * @property \Translate\Model\Table\TranslateTermsTable|\Cake\ORM\Association\HasMany $TranslateTerms
  * @method \Translate\Model\Entity\TranslateProject saveOrFail(\Cake\Datasource\EntityInterface $entity, array $options = [])
  * @method \Translate\Model\Entity\TranslateProject newEmptyEntity()
  * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateProject>|false saveMany(iterable $entities, array $options = [])
  * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateProject> saveManyOrFail(iterable $entities, array $options = [])
  * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateProject>|false deleteMany(iterable $entities, array $options = [])
  * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateProject> deleteManyOrFail(iterable $entities, array $options = [])
- * @extends \Cake\ORM\Table<array{Nullable: \Translate\Model\Behavior\NullableBehavior}>
+ * @mixin \Translate\Model\Behavior\NullableBehavior
  */
 class TranslateProjectsTable extends Table {
 

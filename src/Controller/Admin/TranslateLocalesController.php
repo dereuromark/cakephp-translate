@@ -10,8 +10,8 @@ use Translate\Filesystem\Creator;
  * TranslateLocales Controller
  *
  * @property \Translate\Model\Table\TranslateLocalesTable $TranslateLocales
- * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateLocale> paginate(\Cake\Datasource\RepositoryInterface|\Cake\Datasource\QueryInterface|string|null $object = null, array $settings = [])
  * @property \Translate\Controller\Component\TranslationComponent $Translation
+ * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateLocale> paginate(\Cake\Datasource\RepositoryInterface|\Cake\Datasource\QueryInterface|string|null $object = null, array $settings = [])
  */
 class TranslateLocalesController extends TranslateAppController {
 

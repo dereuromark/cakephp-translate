@@ -14,9 +14,9 @@ use Exception;
 use Translate\Model\Filter\TranslateTermsCollection;
 
 /**
+ * @extends \Cake\ORM\Table<array{AuditLog: \AuditStash\Model\Behavior\AuditLogBehavior, Nullable: \Translate\Model\Behavior\NullableBehavior, Search: \Search\Model\Behavior\SearchBehavior}>
  * @property \Translate\Model\Table\TranslateStringsTable&\Cake\ORM\Association\BelongsTo $TranslateStrings
  * @property \Translate\Model\Table\TranslateLocalesTable&\Cake\ORM\Association\BelongsTo $TranslateLocales
- *
  * @method \Translate\Model\Entity\TranslateTerm get(mixed $primaryKey, array|string $finder = 'all', \Psr\SimpleCache\CacheInterface|string|null $cache = null, \Closure|string|null $cacheKey = null, mixed ...$args)
  * @method \Translate\Model\Entity\TranslateTerm newEntity(array $data, array $options = [])
  * @method array<\Translate\Model\Entity\TranslateTerm> newEntities(array $data, array $options = [])
@@ -24,15 +24,14 @@ use Translate\Model\Filter\TranslateTermsCollection;
  * @method \Translate\Model\Entity\TranslateTerm patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method array<\Translate\Model\Entity\TranslateTerm> patchEntities(iterable $entities, array $data, array $options = [])
  * @method \Translate\Model\Entity\TranslateTerm findOrCreate(\Cake\ORM\Query\SelectQuery|callable|array $search, ?callable $callback = null, array $options = [])
- * @mixin \Translate\Model\Behavior\NullableBehavior
  * @method \Translate\Model\Entity\TranslateTerm saveOrFail(\Cake\Datasource\EntityInterface $entity, array $options = [])
- * @mixin \Search\Model\Behavior\SearchBehavior
  * @method \Translate\Model\Entity\TranslateTerm newEmptyEntity()
  * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateTerm>|false saveMany(iterable $entities, array $options = [])
  * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateTerm> saveManyOrFail(iterable $entities, array $options = [])
  * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateTerm>|false deleteMany(iterable $entities, array $options = [])
  * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateTerm> deleteManyOrFail(iterable $entities, array $options = [])
- * @extends \Cake\ORM\Table<array{AuditLog: \AuditStash\Model\Behavior\AuditLogBehavior, Nullable: \Translate\Model\Behavior\NullableBehavior, Search: \Search\Model\Behavior\SearchBehavior}>
+ * @mixin \Translate\Model\Behavior\NullableBehavior
+ * @mixin \Search\Model\Behavior\SearchBehavior
  * @mixin \AuditStash\Model\Behavior\AuditLogBehavior
  */
 class TranslateTermsTable extends Table {

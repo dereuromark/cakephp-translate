@@ -10,8 +10,8 @@ use Translate\Model\Entity\TranslateProject;
  *
  * @property \Translate\Model\Table\TranslateProjectsTable $TranslateProjects
  * @property \Translate\Model\Table\TranslateLocalesTable $TranslateLocales
- * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateProject> paginate(\Cake\Datasource\RepositoryInterface|\Cake\Datasource\QueryInterface|string|null $object = null, array $settings = [])
  * @property \Translate\Controller\Component\TranslationComponent $Translation
+ * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateProject> paginate(\Cake\Datasource\RepositoryInterface|\Cake\Datasource\QueryInterface|string|null $object = null, array $settings = [])
  */
 class TranslateProjectsController extends TranslateAppController {
 

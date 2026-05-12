@@ -12,7 +12,7 @@ class Transltr implements EngineInterface {
 	/**
 	 * @var string
 	 */
-	public const URL = 'http://transltr.org/api/translate?text=%s&to=%s&from=%s';
+	public const URL = 'https://transltr.org/api/translate?text=%s&to=%s&from=%s';
 
 	/**
 	 * @param string $text Text
@@ -31,7 +31,6 @@ class Transltr implements EngineInterface {
 			curl_setopt($handler, CURLOPT_RETURNTRANSFER, true);
 
 			curl_setopt($handler, CURLOPT_URL, $url);
-			curl_setopt($handler, CURLOPT_SSL_VERIFYPEER, false);
 
 			/** @var string|false $remoteResult */
 			$remoteResult = curl_exec($handler);

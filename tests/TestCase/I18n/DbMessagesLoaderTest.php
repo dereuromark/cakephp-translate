@@ -145,6 +145,73 @@ class DbMessagesLoaderTest extends TestCase {
 	}
 
 	/**
+	 * Regression for the locale-fallback chain: when a request for the
+	 * regional locale `de_AT` finds no entry, the loader must fall back
+	 * to the parent locale `de`. Mirrors the way Cake's
+	 * `MessagesFileLoader` walks `de_AT.po` -> `de.po` -> default.
+	 *
+	 * @return void
+	 */
+	public function testFallsBackToParentLocale(): void {
+		/** @var \Translate\Model\Table\TranslateStringsTable $TranslateStrings */
+		$TranslateStrings = $this->fetchTable('Translate.TranslateStrings');
+
+		// `de` is already set up by _setUpData() with Sing -> SingTrans.
+		// `de_AT` exists but has no translations for the test keys, so
+		// the lookup MUST fall back to `de`.
+		$TranslateStrings->TranslateTerms->TranslateLocales->init('DE-AT', 'de_AT', 'at', 1);
+
+		$loader = new DbMessagesLoader('default', 'de_AT');
+		$messages = $loader()->getMessages();
+
+		$this->assertArrayHasKey('Sing', $messages);
+		$this->assertSame('SingTrans', $messages['Sing']['_context'][''], 'de_AT must fall back to de.');
+	}
+
+	/**
+	 * The more-specific locale must win when both have an entry — the
+	 * fallback is for gaps, not for shadowing local overrides.
+	 *
+	 * @return void
+	 */
+	public function testRegionalLocaleOverridesParentWhenPresent(): void {
+		/** @var \Translate\Model\Table\TranslateStringsTable $TranslateStrings */
+		$TranslateStrings = $this->fetchTable('Translate.TranslateStrings');
+		$deAt = $TranslateStrings->TranslateTerms->TranslateLocales->init('DE-AT', 'de_AT', 'at', 1);
+		$default = $TranslateStrings->TranslateDomains->getDomain(1);
+
+		// `Sing` is already `SingTrans` in `de` per _setUpData().
+		// Add an Austrian override.
+		$existing = $TranslateStrings->find()
+			->where(['name' => 'Sing', 'translate_domain_id' => $default->id])
+			->firstOrFail();
+		$TranslateStrings->TranslateTerms->import(
+			['name' => 'Sing', 'content' => 'SingAustrian'],
+			$existing->id,
+			$deAt->id,
+		);
+
+		$loader = new DbMessagesLoader('default', 'de_AT');
+		$messages = $loader()->getMessages();
+
+		$this->assertSame('SingAustrian', $messages['Sing']['_context'][''], 'Regional locale must shadow its parent.');
+	}
+
+	/**
+	 * Non-regional locales (no underscore) chain to themselves only —
+	 * verify nothing weird happens like a query against an empty parent.
+	 *
+	 * @return void
+	 */
+	public function testNonRegionalLocaleChainsToSelfOnly(): void {
+		$loader = new DbMessagesLoader('default', 'de');
+		$messages = $loader()->getMessages();
+
+		$this->assertArrayHasKey('Sing', $messages);
+		$this->assertSame('SingTrans', $messages['Sing']['_context']['']);
+	}
+
+	/**
 	 * @return void
 	 */
 	public function testDomain() {

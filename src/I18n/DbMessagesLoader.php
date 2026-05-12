@@ -94,6 +94,11 @@ class DbMessagesLoader {
 			return new Package($this->formatter);
 		}
 
+		$localeChain = $this->_resolveLocaleFallbackChain($this->locale);
+		if ($localeChain === []) {
+			return new Package($this->formatter);
+		}
+
 		$query = $model->find();
 
 		// Get list of fields without primaryKey, domain, locale.
@@ -107,31 +112,72 @@ class DbMessagesLoader {
 		$query->select(array_flip($fields));
 
 		$query->contain(['TranslateStrings' => 'TranslateDomains', 'TranslateLocales']);
-		$query->select(['TranslateStrings.name', 'TranslateStrings.plural', 'TranslateStrings.context']);
+		$query->select([
+			'TranslateStrings.name',
+			'TranslateStrings.plural',
+			'TranslateStrings.context',
+			'TranslateLocales.locale',
+		]);
 
 		$results = $query
 			->where(['TranslateDomains.translate_project_id' => $translateProjectId])
 			->where(['TranslateLocales.translate_project_id' => $translateProjectId])
-			->where(['TranslateDomains.name' => $this->domain, 'TranslateLocales.locale' => $this->locale])
+			->where(['TranslateDomains.name' => $this->domain])
+			->where(['TranslateLocales.locale IN' => $localeChain])
 			->where(['TranslateStrings.active' => true])
 			->enableHydration(false)
 			->all();
 
-		return new Package($this->formatter, null, $this->_messages($results));
+		return new Package($this->formatter, null, $this->_messages($results, $localeChain));
 	}
 
 	/**
-	 * Converts DB resultset to messages array.
+	 * Build the locale lookup chain. A request for `de_AT` falls back to
+	 * `de` (and finally to the source string via Cake's translator)
+	 * exactly the way `MessagesFileLoader` walks `.po` files. Locales
+	 * without a region (`de`, `en`) chain to themselves only.
+	 *
+	 * @param string $locale Requested locale (e.g. `de_AT`, `fr_CA`, `en`).
+	 *
+	 * @return list<string> Locales in priority order — most specific first.
+	 */
+	protected function _resolveLocaleFallbackChain(string $locale): array {
+		if ($locale === '') {
+			return [];
+		}
+
+		$chain = [$locale];
+		$sepPos = strpos($locale, '_');
+		if ($sepPos !== false) {
+			$parent = substr($locale, 0, $sepPos);
+			if ($parent !== '' && $parent !== $locale) {
+				$chain[] = $parent;
+			}
+		}
+
+		return $chain;
+	}
+
+	/**
+	 * Converts the DB resultset to a messages array, honoring the
+	 * locale fallback chain (most-specific locale wins).
+	 *
+	 * The query may return rows from multiple locales (`de_AT` + `de`
+	 * when the caller asked for `de_AT`). Rows are partitioned by
+	 * locale and the chain is walked in priority order: the first
+	 * locale to provide an entry for a given (singular, context) pair
+	 * wins, subsequent locales fill remaining gaps.
 	 *
 	 * @param \Cake\Datasource\ResultSetInterface $results ResultSet instance.
+	 * @param list<string> $localeChain Locales in priority order.
+	 *
 	 * @return array
 	 */
-	protected function _messages(ResultSetInterface $results): array {
+	protected function _messages(ResultSetInterface $results, array $localeChain): array {
 		if (!$results->count()) {
 			return [];
 		}
 
-		$messages = [];
 		$pluralForms = 0;
 		$item = $results->first();
 		// There are max 6 plural forms possible but most people won't need
@@ -144,32 +190,45 @@ class DbMessagesLoader {
 			}
 		}
 
-		foreach ($results as $item) {
-			$singular = $item['translate_string']['name'];
-			$context = $item['translate_string']['context'];
-			$translation = $item['content'];
-			if ($context) {
-				$messages[$singular]['_context'][$context] = $translation;
-			} else {
-				$messages[$singular]['_context'][''] = $translation;
-			}
-
-			if ($item['translate_string']['plural'] === null) {
+		/** @var array<string, list<array<string, mixed>>> $byLocale */
+		$byLocale = [];
+		foreach ($results as $row) {
+			$locale = $row['translate_locale']['locale'] ?? '';
+			if (!is_string($locale) || $locale === '') {
 				continue;
 			}
+			$byLocale[$locale][] = $row;
+		}
 
-			$key = $item['translate_string']['plural'];
-			$plurals = [
-				$translation,
-			];
-			for ($i = 1; $i <= $pluralForms; $i++) {
-				$plurals[] = $item['plural_' . ($i + 1)];
+		$messages = [];
+		foreach ($localeChain as $locale) {
+			if (!isset($byLocale[$locale])) {
+				continue;
 			}
+			foreach ($byLocale[$locale] as $row) {
+				$singular = $row['translate_string']['name'];
+				$context = (string)($row['translate_string']['context'] ?? '');
+				$translation = $row['content'];
 
-			if ($context) {
-				$messages[$key]['_context'][$context] = $plurals;
-			} else {
-				$messages[$key]['_context'][''] = $plurals;
+				// First (most-specific) locale to provide this key wins.
+				if (!isset($messages[$singular]['_context'][$context])) {
+					$messages[$singular]['_context'][$context] = $translation;
+				}
+
+				if ($row['translate_string']['plural'] === null) {
+					continue;
+				}
+
+				$pluralKey = $row['translate_string']['plural'];
+				if (isset($messages[$pluralKey]['_context'][$context])) {
+					continue;
+				}
+
+				$plurals = [$translation];
+				for ($i = 1; $i <= $pluralForms; $i++) {
+					$plurals[] = $row['plural_' . ($i + 1)];
+				}
+				$messages[$pluralKey]['_context'][$context] = $plurals;
 			}
 		}
 

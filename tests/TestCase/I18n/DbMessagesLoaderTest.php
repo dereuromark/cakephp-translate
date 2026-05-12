@@ -7,6 +7,7 @@ use Cake\I18n\I18n;
 use Cake\TestSuite\TestCase;
 use Translate\Filesystem\Folder;
 use Translate\I18n\DbMessagesLoader;
+use Translate\Model\Entity\TranslateProject;
 
 class DbMessagesLoaderTest extends TestCase {
 
@@ -74,6 +75,73 @@ class DbMessagesLoaderTest extends TestCase {
 
 		$translated = __xn('MyContext', 'Sing', 'Plur', 2);
 		$this->assertSame('MyPlurTrans', $translated);
+	}
+
+	/**
+	 * Regression: multi-project setups can target a non-default project by
+	 * passing the project id to the constructor. Before this change the
+	 * loader hard-coded "default TYPE_APP project" via internal lookup, so
+	 * translations on non-default projects were unreachable.
+	 *
+	 * @return void
+	 */
+	public function testHonorsExplicitProjectId() {
+		// I18n caches materialized translators across config() reconfigurations
+		// unless the cache is explicitly cleared between tests.
+		I18n::clear();
+
+		$projects = $this->fetchTable('Translate.TranslateProjects');
+		$secondProject = $projects->newEntity([
+			'name' => 'Second',
+			'type' => TranslateProject::TYPE_APP,
+			'default' => false,
+			'active' => true,
+		]);
+		$projects->saveOrFail($secondProject);
+
+		/** @var \Translate\Model\Table\TranslateStringsTable $TranslateStrings */
+		$TranslateStrings = $this->fetchTable('Translate.TranslateStrings');
+		$secondDomain = $TranslateStrings->TranslateDomains->newEntity([
+			'translate_project_id' => $secondProject->id,
+			'name' => 'default',
+			'active' => true,
+		]);
+		$TranslateStrings->TranslateDomains->saveOrFail($secondDomain);
+
+		$secondLocale = $TranslateStrings->TranslateTerms->TranslateLocales->init(
+			'DE',
+			'de',
+			'de',
+			(int)$secondProject->id,
+		);
+
+		$secondString = $TranslateStrings->import(
+			['name' => 'Sing', 'content' => 'SecondProjectTrans'],
+			$secondDomain->id,
+		);
+		$TranslateStrings->TranslateTerms->import(
+			['name' => 'Sing', 'content' => 'SecondProjectTrans'],
+			$secondString->id,
+			$secondLocale->id,
+		);
+
+		$secondProjectId = (int)$secondProject->id;
+
+		// Sanity check the fixture/setup actually produced a second-project term.
+		$terms = $this->fetchTable('Translate.TranslateTerms');
+		$secondTerm = $terms->find()
+			->contain(['TranslateStrings' => 'TranslateDomains', 'TranslateLocales'])
+			->where(['TranslateLocales.translate_project_id' => $secondProjectId])
+			->first();
+		$this->assertNotNull($secondTerm, 'setup precondition: second-project term must exist');
+		$this->assertSame('SecondProjectTrans', $secondTerm->content);
+
+		// Invoke the loader directly to confirm project-id filtering works.
+		$loader = new DbMessagesLoader('default', 'de', null, 'default', $secondProjectId);
+		$package = $loader();
+		$messages = $package->getMessages();
+		$this->assertArrayHasKey('Sing', $messages);
+		$this->assertSame('SecondProjectTrans', $messages['Sing']['_context']['']);
 	}
 
 	/**

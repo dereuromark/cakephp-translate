@@ -46,24 +46,37 @@ class DbMessagesLoader {
 	protected string $formatter;
 
 	/**
+	 * Optional project id to load translations from. When null, the loader
+	 * resolves to the default TYPE_APP project (backwards-compatible default).
+	 *
+	 * @var int|null
+	 */
+	protected ?int $projectId;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param string $domain Domain name.
 	 * @param string $locale Locale string.
 	 * @param \Cake\Datasource\RepositoryInterface|string|null $model Model name or instance.
-	 *   Defaults to 'I18nMessages'.
+	 *   Defaults to 'Translate.TranslateTerms'.
 	 * @param string $formatter Formatter name. Defaults to 'default' (ICU formatter).
+	 * @param int|null $projectId Optional project id. When null, the default
+	 *   TYPE_APP project is used. Use this in multi-project setups to load
+	 *   translations from a non-default project.
 	 */
 	public function __construct(
 		string $domain,
 		string $locale,
 		string|RepositoryInterface|null $model = null,
 		string $formatter = 'default',
+		?int $projectId = null,
 	) {
 		$this->domain = $domain;
 		$this->locale = $locale;
 		$this->model = $model ?: 'Translate.TranslateTerms';
 		$this->formatter = $formatter;
+		$this->projectId = $projectId;
 	}
 
 	/**
@@ -73,21 +86,17 @@ class DbMessagesLoader {
 	 * @return \Cake\I18n\Package
 	 */
 	public function __invoke(): Package {
-		$model = $this->fetchTable('Translate.TranslateTerms');
+		/** @var \Cake\ORM\Table $model */
+		$model = $this->_getModel();
 
-		$translateProject = $this->fetchTable('Translate.TranslateProjects')
-			->find()
-			->where(['type' => TranslateProject::TYPE_APP, 'default' => true])
-			->first();
-		if (!$translateProject) {
+		$translateProjectId = $this->projectId ?? $this->_resolveDefaultProjectId();
+		if ($translateProjectId === null) {
 			return new Package($this->formatter);
 		}
 
-		$translateProjectId = $translateProject->id;
 		$query = $model->find();
 
 		// Get list of fields without primaryKey, domain, locale.
-		/** @var \Cake\Database\Schema\TableSchema $schema */
 		$schema = $model->getSchema();
 		$fields = $schema->columns();
 		$fields = array_flip(array_diff(
@@ -181,6 +190,21 @@ class DbMessagesLoader {
 
 		/** @var \Translate\Model\Table\TranslateTermsTable */
 		return $this->model;
+	}
+
+	/**
+	 * Resolve the default TYPE_APP project id when no explicit project was
+	 * passed to the constructor. Mirrors the pre-multi-project behavior.
+	 *
+	 * @return int|null
+	 */
+	protected function _resolveDefaultProjectId(): ?int {
+		$translateProject = $this->fetchTable('Translate.TranslateProjects')
+			->find()
+			->where(['type' => TranslateProject::TYPE_APP, 'default' => true])
+			->first();
+
+		return $translateProject ? (int)$translateProject->id : null;
 	}
 
 }

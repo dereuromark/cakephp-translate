@@ -1,0 +1,111 @@
+// cakephp-translate — database schema snapshot (DBML)
+//
+// A merged snapshot of all plugin migrations under config/Migrations/.
+// Hand-maintained: update it when you add a migration that changes these tables.
+// Paste into https://dbdiagram.io (or any DBML tool) to view/diagram.
+// DBML reference: https://dbml.dbdiagram.io/docs
+
+Project cakephp_translate {
+  database_type: 'Generic'
+  Note: 'Translate plugin tables only.'
+}
+
+Table translate_projects {
+  id integer [pk, increment]
+  name varchar(60) [not null]
+  type int [not null, default: 0]
+  default boolean [not null, default: false]
+  status int [not null, default: 0]
+  path varchar(255) [null, note: 'Base filesystem path for this project (moved from translate_domains)']
+  created datetime [null]
+  modified datetime [null]
+
+  indexes {
+    name [unique]
+  }
+}
+
+Table translate_locales {
+  id integer [pk, increment]
+  translate_project_id int [not null]
+  language_id int [null]
+  name varchar(12) [not null]
+  locale varchar(10) [not null]
+  iso2 varchar(2) [null]
+  active boolean [not null, default: true]
+  base boolean [not null, default: false]
+  primary boolean [not null, default: false]
+
+  indexes {
+    (translate_project_id, locale) [unique]
+    translate_project_id
+    iso2
+  }
+}
+
+Table translate_domains {
+  id integer [pk, increment]
+  name varchar(60) [not null]
+  translate_project_id int [not null]
+  active boolean [not null, default: false]
+  prio int [not null, default: 0]
+  created datetime [null]
+  modified datetime [null]
+
+  indexes {
+    (translate_project_id, name) [unique]
+    translate_project_id
+  }
+}
+
+Table translate_strings {
+  id integer [pk, increment]
+  context varchar(250) [null, note: 'Case-sensitive (utf8mb4_bin collation on MySQL)']
+  name text [not null, note: 'Case-sensitive (utf8mb4_bin collation on MySQL)']
+  plural text [null]
+  comment text [null]
+  flags varchar(250) [null]
+  references text [null, note: 'Source file references with line numbers']
+  translate_domain_id int [not null]
+  user_id int [null]
+  active boolean [not null, default: false]
+  is_html boolean [not null, default: false]
+  skipped boolean [not null, default: false]
+  unused boolean [not null, default: false]
+  manual boolean [not null, default: false]
+  last_import date [null]
+  created datetime [null]
+  modified datetime [null]
+
+  indexes {
+    translate_domain_id
+  }
+}
+
+Table translate_terms {
+  id integer [pk, increment]
+  translate_string_id int [not null]
+  content text [not null]
+  plural_2 varchar(250) [null]
+  comment varchar(255) [null]
+  translate_locale_id int [not null, note: 'Renamed from translate_language_id']
+  user_id int [null]
+  confirmed boolean [not null, default: false]
+  confirmed_by int [null]
+  created datetime [null]
+  modified datetime [null]
+
+  indexes {
+    (translate_string_id, translate_locale_id) [unique]
+  }
+}
+
+Table translate_api_translations {
+  id integer [pk, increment]
+  key text [not null]
+  value text [null]
+  from varchar(6) [not null]
+  to varchar(6) [not null]
+  engine varchar(60) [not null]
+  created datetime [null]
+}

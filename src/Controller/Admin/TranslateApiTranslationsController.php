@@ -20,7 +20,7 @@ class TranslateApiTranslationsController extends AppController {
 	public function index() {
 		$translateApiTranslations = $this->paginate();
 
-		$this->set(compact('translateApiTranslations'));
+		$this->set(['translateApiTranslations' => $translateApiTranslations]);
 		//$this->set('_serialize', ['translateApiTranslations']);
 	}
 
@@ -36,7 +36,7 @@ class TranslateApiTranslationsController extends AppController {
 			'contain' => [],
 		]);
 
-		$this->set(compact('translateApiTranslation'));
+		$this->set(['translateApiTranslation' => $translateApiTranslation]);
 		//$this->set('_serialize', ['translateApiTranslation']);
 	}
 
@@ -58,7 +58,7 @@ class TranslateApiTranslationsController extends AppController {
 			$this->Flash->error(__d('translate', 'The translate api translation could not be saved. Please, try again.'));
 		}
 
-		$this->set(compact('translateApiTranslation'));
+		$this->set(['translateApiTranslation' => $translateApiTranslation]);
 		//$this->set('_serialize', ['translateApiTranslation']);
 	}
 
@@ -84,7 +84,7 @@ class TranslateApiTranslationsController extends AppController {
 			$this->Flash->error(__d('translate', 'The translate api translation could not be saved. Please, try again.'));
 		}
 
-		$this->set(compact('translateApiTranslation'));
+		$this->set(['translateApiTranslation' => $translateApiTranslation]);
 		//$this->set('_serialize', ['translateApiTranslation']);
 	}
 

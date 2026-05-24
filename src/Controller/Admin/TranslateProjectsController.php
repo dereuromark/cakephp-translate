@@ -27,7 +27,7 @@ class TranslateProjectsController extends TranslateAppController {
 			return $this->redirect(['action' => 'add', '?' => ['name' => 'Default', 'default' => true, 'status' => TranslateProject::STATUS_HIDDEN]]);
 		}
 
-		$this->set(compact('translateProjects'));
+		$this->set(['translateProjects' => $translateProjects]);
 	}
 
 	/**
@@ -42,7 +42,7 @@ class TranslateProjectsController extends TranslateAppController {
 			'contain' => ['TranslateDomains'],
 		]);
 
-		$this->set(compact('translateProject'));
+		$this->set(['translateProject' => $translateProject]);
 	}
 
 	/**
@@ -67,7 +67,7 @@ class TranslateProjectsController extends TranslateAppController {
 			}
 		}
 
-		$this->set(compact('translateProject'));
+		$this->set(['translateProject' => $translateProject]);
 		//$this->set('_serialize', ['translateProject']);
 	}
 
@@ -91,7 +91,7 @@ class TranslateProjectsController extends TranslateAppController {
 			$this->Flash->error(__d('translate', 'The translate project could not be saved. Please, try again.'));
 		}
 
-		$this->set(compact('translateProject'));
+		$this->set(['translateProject' => $translateProject]);
 		//$this->set('_serialize', ['translateProject']);
 	}
 
@@ -142,7 +142,7 @@ class TranslateProjectsController extends TranslateAppController {
 			$this->request = $this->request->withData('Form', $formArray);
 		}
 
-		$this->set(compact('removeOptions', 'languages'));
+		$this->set(['removeOptions' => $removeOptions, 'languages' => $languages]);
 	}
 
 }

@@ -127,7 +127,7 @@ class Entry {
 	 * @return string
 	 */
 	public function getTranslation($index = 0): string {
-		return (isset($this->translations[$index])) ? $this->translations[$index] : '';
+		return $this->translations[$index] ?? '';
 	}
 
 	/**

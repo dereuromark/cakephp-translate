@@ -176,7 +176,7 @@ class TranslateStringsTableTest extends TestCase {
 		$errors = $entity->getError('plural');
 		$this->assertNotEmpty($errors);
 		$errorMessage = is_array($errors) ? reset($errors) : $errors;
-		$this->assertStringContainsString('placeholder', strtolower($errorMessage));
+		$this->assertStringContainsString('placeholder', strtolower((string)$errorMessage));
 	}
 
 	/**

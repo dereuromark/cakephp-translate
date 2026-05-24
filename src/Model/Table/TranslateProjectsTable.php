@@ -113,11 +113,7 @@ class TranslateProjectsTable extends Table {
 				}
 
 				// Check if path exists and is a directory
-				if (!is_dir($path)) {
-					return false;
-				}
-
-				return true;
+				return is_dir($path);
 			},
 			'pathExists',
 			[

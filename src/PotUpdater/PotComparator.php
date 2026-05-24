@@ -89,11 +89,7 @@ class PotComparator {
 			return true;
 		}
 
-		if (!$ignoreReferences && !empty($diff['changed'])) {
-			return true;
-		}
-
-		return false;
+		return !$ignoreReferences && !empty($diff['changed']);
 	}
 
 	/**

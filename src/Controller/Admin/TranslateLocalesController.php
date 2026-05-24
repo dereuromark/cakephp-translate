@@ -31,7 +31,7 @@ class TranslateLocalesController extends TranslateAppController {
 		$path = $project->path ?? null;
 		if (!$path) {
 			$path = ROOT;
-		} elseif (!str_starts_with($path, '/')) {
+		} elseif (!str_starts_with((string)$path, '/')) {
 			$path = ROOT . DS . $path;
 		}
 		$path = rtrim($path, DS) . DS . 'resources' . DS . 'locales';
@@ -66,7 +66,7 @@ class TranslateLocalesController extends TranslateAppController {
 			$this->request = $this->request->withData('locale', $localeArray);
 		}
 
-		$this->set(compact('path', 'languages', 'existingFolders'));
+		$this->set(['path' => $path, 'languages' => $languages, 'existingFolders' => $existingFolders]);
 	}
 
 	/**
@@ -80,7 +80,7 @@ class TranslateLocalesController extends TranslateAppController {
 		$path = $project->path ?? null;
 		if (!$path) {
 			$path = ROOT;
-		} elseif (!str_starts_with($path, '/')) {
+		} elseif (!str_starts_with((string)$path, '/')) {
 			$path = ROOT . DS . $path;
 		}
 		$path = rtrim($path, DS) . DS . 'resources' . DS . 'locales';
@@ -101,14 +101,14 @@ class TranslateLocalesController extends TranslateAppController {
 
 				$localeData = [
 					'locale' => $key,
-					'name' => !empty($data['name']) ? $data['name'] : $key,
+					'name' => empty($data['name']) ? $key : $data['name'],
 					//'active' => true,
 					'translate_project_id IS' => $this->Translation->currentProjectId(),
 				];
-				if (strlen($localeData['locale']) === 2) {
+				if (strlen((string)$localeData['locale']) === 2) {
 					$localeData['iso2'] = $localeData['locale'];
-				} elseif (preg_match('/[a-z]{2}_[a-z]{2}/i', $localeData['locale'])) {
-					$localeData['iso2'] = substr($localeData['locale'], 0, 2);
+				} elseif (preg_match('/[a-z]{2}_[a-z]{2}/i', (string)$localeData['locale'])) {
+					$localeData['iso2'] = substr((string)$localeData['locale'], 0, 2);
 				}
 
 				$translateLocales[] = $this->TranslateLocales->newEntity($localeData);
@@ -141,7 +141,7 @@ class TranslateLocalesController extends TranslateAppController {
 			}
 
 		}
-		$this->set(compact('path', 'existingLanguages', 'folders'));
+		$this->set(['path' => $path, 'existingLanguages' => $existingLanguages, 'folders' => $folders]);
 	}
 
 	/**
@@ -154,7 +154,7 @@ class TranslateLocalesController extends TranslateAppController {
 			->where(['TranslateLocales.translate_project_id IS' => $this->Translation->currentProjectId()]);
 		$translateLocales = $this->paginate($query);
 
-		$this->set(compact('translateLocales'));
+		$this->set(['translateLocales' => $translateLocales]);
 		//$this->set('_serialize', ['translateLocales']);
 	}
 
@@ -174,7 +174,7 @@ class TranslateLocalesController extends TranslateAppController {
 			throw new NotFoundException(__d('translate', 'Locale not found.'));
 		}
 
-		$this->set(compact('translateLocale'));
+		$this->set(['translateLocale' => $translateLocale]);
 		//$this->set('_serialize', ['translateLocale']);
 	}
 
@@ -199,7 +199,7 @@ class TranslateLocalesController extends TranslateAppController {
 			$this->Flash->error(__d('translate', 'The translate language could not be saved. Please, try again.'));
 		}
 
-		$this->set(compact('translateLocale'));
+		$this->set(['translateLocale' => $translateLocale]);
 		//$this->set('_serialize', ['translateLocale']);
 	}
 
@@ -230,7 +230,7 @@ class TranslateLocalesController extends TranslateAppController {
 			$this->Flash->error(__d('translate', 'The translate language could not be saved. Please, try again.'));
 		}
 
-		$this->set(compact('translateLocale'));
+		$this->set(['translateLocale' => $translateLocale]);
 		//$this->set('_serialize', ['translateLocale']);
 	}
 

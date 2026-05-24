@@ -62,7 +62,7 @@ class TranslateTermsTable extends Table {
 		$originalString = $context['data']['string'];
 
 		// Check {0}, {1}, etc. style placeholders
-		preg_match_all('/\{\d+\}/', $originalString, $expectedBraceMatches);
+		preg_match_all('/\{\d+\}/', (string)$originalString, $expectedBraceMatches);
 		preg_match_all('/\{\d+\}/', $text, $braceMatches);
 
 		if (!$this->validatePlaceholderSet($expectedBraceMatches[0], $braceMatches[0])) {
@@ -71,14 +71,10 @@ class TranslateTermsTable extends Table {
 
 		// Check %s, %d, %f, etc. style placeholders (sprintf format)
 		// Matches: %s, %d, %f, %1$s, %2$d, etc.
-		preg_match_all('/%(?:\d+\$)?[sdfboxXeEgGcup]/', $originalString, $expectedSprintfMatches);
+		preg_match_all('/%(?:\d+\$)?[sdfboxXeEgGcup]/', (string)$originalString, $expectedSprintfMatches);
 		preg_match_all('/%(?:\d+\$)?[sdfboxXeEgGcup]/', $text, $sprintfMatches);
 
-		if (!$this->validatePlaceholderSet($expectedSprintfMatches[0], $sprintfMatches[0])) {
-			return false;
-		}
-
-		return true;
+		return $this->validatePlaceholderSet($expectedSprintfMatches[0], $sprintfMatches[0]);
 	}
 
 	/**
@@ -247,11 +243,7 @@ class TranslateTermsTable extends Table {
 			'translate_string_id' => $translateStringId,
 			'translate_locale_id' => $translateLocaleId,
 		])->first();
-		if (!$translateTerm) {
-			$translateTerm = $this->newEntity($translation);
-		} else {
-			$translateTerm = $this->patchEntity($translateTerm, $translation);
-		}
+		$translateTerm = $translateTerm ? $this->patchEntity($translateTerm, $translation) : $this->newEntity($translation);
 
 		try {
 			if (!$this->save($translateTerm)) {

@@ -136,7 +136,7 @@ class TranslateController extends TranslateAppController {
 						}
 						$auditData[$key][] = $log;
 					}
-				} catch (Exception $e) {
+				} catch (Exception) {
 					// Table doesn't exist or error loading, skip audit logs
 					$auditLogs = [];
 				}
@@ -200,7 +200,7 @@ class TranslateController extends TranslateAppController {
 				->toArray();
 		}
 
-		$this->set(compact('coverage', 'languages', 'count', 'projectSwitchArray', 'localeStats', 'recentStrings', 'recentTerms', 'auditLogs', 'confirmationStats', 'recentImports', 'auditData'));
+		$this->set(['coverage' => $coverage, 'languages' => $languages, 'count' => $count, 'projectSwitchArray' => $projectSwitchArray, 'localeStats' => $localeStats, 'recentStrings' => $recentStrings, 'recentTerms' => $recentTerms, 'auditLogs' => $auditLogs, 'confirmationStats' => $confirmationStats, 'recentImports' => $recentImports, 'auditData' => $auditData]);
 	}
 
 	/**
@@ -290,7 +290,7 @@ class TranslateController extends TranslateAppController {
 		$translator = new Translator();
 		$translation = $translator->translate($text, $to, $from);
 
-		$this->set(compact('translation'));
+		$this->set(['translation' => $translation]);
 		$this->viewBuilder()->setOption('serialize', ['translation']);
 	}
 
@@ -306,7 +306,7 @@ class TranslateController extends TranslateAppController {
 
 			$ConvertLib = new ConvertLib();
 			$text = $ConvertLib->convert($text, $settings);
-			$this->set(compact('text'));
+			$this->set(['text' => $text]);
 		}
 	}
 
@@ -521,7 +521,7 @@ class TranslateController extends TranslateAppController {
 			? (int)(($grandTotal['confirmed'] / $grandTotal['translated']) * 100)
 			: 0;
 
-		$this->set(compact('locales', 'domains', 'stats', 'localeTotals', 'domainTotals', 'grandTotal'));
+		$this->set(['locales' => $locales, 'domains' => $domains, 'stats' => $stats, 'localeTotals' => $localeTotals, 'domainTotals' => $domainTotals, 'grandTotal' => $grandTotal]);
 	}
 
 	/**
@@ -582,14 +582,14 @@ class TranslateController extends TranslateAppController {
 							$controllerNames[$plugin] = $names;
 						}
 					}
-				} catch (Exception $e) {
+				} catch (Exception) {
 					// Skip plugins that can't be scanned
 					continue;
 				}
 			}
 		}
 
-		$this->set(compact('controllerNames', 'projectPath'));
+		$this->set(['controllerNames' => $controllerNames, 'projectPath' => $projectPath]);
 	}
 
 	/**
@@ -654,7 +654,7 @@ class TranslateController extends TranslateAppController {
 			$project = $this->TranslateDomains->TranslateProjects->get($projectId);
 			$projectPath = $project->path ?? null;
 		}
-		if ($projectPath && !str_starts_with($projectPath, DIRECTORY_SEPARATOR)) {
+		if ($projectPath && !str_starts_with((string)$projectPath, DIRECTORY_SEPARATOR)) {
 			$projectPath = ROOT . DIRECTORY_SEPARATOR . $projectPath;
 		}
 		$projectPath ??= ROOT;
@@ -729,7 +729,7 @@ class TranslateController extends TranslateAppController {
 				}
 				foreach ($candidates as $loc) {
 					foreach ($localePaths as $lp) {
-						$candidate = rtrim($lp, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $loc . DIRECTORY_SEPARATOR . $domain . '.po';
+						$candidate = rtrim((string)$lp, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $loc . DIRECTORY_SEPARATOR . $domain . '.po';
 						if (is_file($candidate)) {
 							$found = $candidate;
 
@@ -741,7 +741,7 @@ class TranslateController extends TranslateAppController {
 			}
 			$potFile = null;
 			foreach ($localePaths as $lp) {
-				$candidate = rtrim($lp, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $domain . '.pot';
+				$candidate = rtrim((string)$lp, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $domain . '.pot';
 				if (is_file($candidate)) {
 					$potFile = $candidate;
 
@@ -801,14 +801,7 @@ class TranslateController extends TranslateAppController {
 			];
 		}
 
-		$this->set(compact(
-			'domainsReport',
-			'paths',
-			'availableLocales',
-			'localePaths',
-			'normalizedDefault',
-			'projectPath',
-		));
+		$this->set(['domainsReport' => $domainsReport, 'paths' => $paths, 'availableLocales' => $availableLocales, 'localePaths' => $localePaths, 'normalizedDefault' => $normalizedDefault, 'projectPath' => $projectPath]);
 	}
 
 	/**
@@ -819,7 +812,7 @@ class TranslateController extends TranslateAppController {
 	 */
 	protected function collectFiles(array $msgids): array {
 		$files = [];
-		foreach ($msgids as $msgid => $fileLines) {
+		foreach ($msgids as $fileLines) {
 			foreach ($fileLines as $file => $lines) {
 				$files[$file] = true;
 			}

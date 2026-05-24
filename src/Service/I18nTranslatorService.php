@@ -125,9 +125,8 @@ class I18nTranslatorService {
 
 		try {
 			$translator = $this->getTranslator();
-			$result = $translator->translate($text, $targetLang, $sourceLang);
 
-			return $result;
+			return $translator->translate($text, $targetLang, $sourceLang);
 		} catch (Exception $e) {
 			Log::warning('I18nTranslatorService: Translation failed - ' . $e->getMessage());
 
@@ -277,7 +276,7 @@ class I18nTranslatorService {
 	 * @return \Translate\Translator\Translator
 	 */
 	protected function getTranslator(): Translator {
-		if ($this->translator === null) {
+		if (!$this->translator instanceof Translator) {
 			$this->translator = new Translator();
 		}
 

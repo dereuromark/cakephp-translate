@@ -161,7 +161,7 @@ class Writer {
 	 * @return string
 	 */
 	protected function writeObsolete(array $entry) {
-		return (!empty($entry['obsolete'])) ? '#~ ' : '';
+		return (empty($entry['obsolete'])) ? '' : '#~ ';
 	}
 
 	/**
@@ -210,10 +210,8 @@ class Writer {
 
 			if ($isPlural) {
 				$result .= "msgstr[$i] ";
-			} else {
-				if ($i == 0) {
-					$result .= 'msgstr ';
-				}
+			} elseif ($i == 0) {
+				$result .= 'msgstr ';
 			}
 
 			$result .= $this->cleanExport($value) . "\n";

@@ -201,8 +201,8 @@ class PoAnalyzerService {
 		$msgidPlural = is_array($entry['msgid_plural']) ? implode('', $entry['msgid_plural']) : $entry['msgid_plural'];
 
 		// Check {0} style placeholders
-		preg_match_all('/\{\d+\}/', $msgid, $singularBrace);
-		preg_match_all('/\{\d+\}/', $msgidPlural, $pluralBrace);
+		preg_match_all('/\{\d+\}/', (string)$msgid, $singularBrace);
+		preg_match_all('/\{\d+\}/', (string)$msgidPlural, $pluralBrace);
 
 		if ($this->placeholdersDiffer($singularBrace[0], $pluralBrace[0])) {
 			$this->addIssue($msgid, 'plural_placeholder_mismatch', [
@@ -218,8 +218,8 @@ class PoAnalyzerService {
 		}
 
 		// Check %d/%s style - different style in plural is common issue
-		preg_match_all('/%(?:\d+\$)?[sdfboxXeEgGcup]/', $msgid, $singularSprintf);
-		preg_match_all('/%(?:\d+\$)?[sdfboxXeEgGcup]/', $msgidPlural, $pluralSprintf);
+		preg_match_all('/%(?:\d+\$)?[sdfboxXeEgGcup]/', (string)$msgid, $singularSprintf);
+		preg_match_all('/%(?:\d+\$)?[sdfboxXeEgGcup]/', (string)$msgidPlural, $pluralSprintf);
 
 		// Check if singular uses {0} but plural uses %d (mixed styles)
 		if (!empty($singularBrace[0]) && empty($pluralBrace[0]) && !empty($pluralSprintf[0])) {
@@ -253,11 +253,7 @@ class PoAnalyzerService {
 		}
 
 		// Common key patterns: foo.bar.baz, foo_bar_baz, fooBarBaz, FOO_BAR
-		if (preg_match('/^[a-zA-Z][a-zA-Z0-9._-]*$/', $msgid)) {
-			return true;
-		}
-
-		return false;
+		return (bool)preg_match('/^[a-zA-Z][a-zA-Z0-9._-]*$/', $msgid);
 	}
 
 	/**

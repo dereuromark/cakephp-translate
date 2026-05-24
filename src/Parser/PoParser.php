@@ -183,7 +183,7 @@ class PoParser {
 	protected function handleComment(array $data) {
 		switch ($data['key']) {
 			case '#:':
-				$this->currentEntry['references'][] = addslashes($data['value']);
+				$this->currentEntry['references'][] = addslashes((string)$data['value']);
 
 				break;
 			case '#,':
@@ -236,7 +236,7 @@ class PoParser {
 
 				break;
 			default:
-				if (str_contains($data['key'], 'msgstr[')) {
+				if (str_contains((string)$data['key'], 'msgstr[')) {
 					// translated plurals
 					$this->state = 'msgstr';
 					$this->addEntryData($data['value']);
@@ -442,7 +442,7 @@ class PoParser {
 		}
 
 		foreach ($entry['msgstr'] as $headerRaw) {
-			$parts = explode(':', $headerRaw);
+			$parts = explode(':', (string)$headerRaw);
 			if (count($parts) < 2) {
 				continue;
 			}

@@ -30,7 +30,7 @@ class TranslateDomainsController extends TranslateAppController {
 			->contain(['TranslateProjects']);
 		$translateDomains = $this->paginate($query);
 
-		$this->set(compact('translateDomains'));
+		$this->set(['translateDomains' => $translateDomains]);
 		//$this->set('_serialize', ['translateDomains']);
 	}
 
@@ -50,7 +50,7 @@ class TranslateDomainsController extends TranslateAppController {
 			throw new NotFoundException(__d('translate', 'Domain not found.'));
 		}
 
-		$this->set(compact('translateDomain'));
+		$this->set(['translateDomain' => $translateDomain]);
 		//$this->set('_serialize', ['translateDomain']);
 	}
 
@@ -77,7 +77,7 @@ class TranslateDomainsController extends TranslateAppController {
 			$this->request = $this->request->withData('active', true);
 		}
 
-		$this->set(compact('translateDomain'));
+		$this->set(['translateDomain' => $translateDomain]);
 	}
 
 	/**
@@ -109,7 +109,7 @@ class TranslateDomainsController extends TranslateAppController {
 		$translateProjects = $this->TranslateDomains->TranslateProjects->find('list');
 		$translateStrings = $this->TranslateDomains->TranslateStrings->find('list');
 
-		$this->set(compact('translateDomain', 'translateProjects', 'translateStrings'));
+		$this->set(['translateDomain' => $translateDomain, 'translateProjects' => $translateProjects, 'translateStrings' => $translateStrings]);
 		//$this->set('_serialize', ['translateDomain']);
 	}
 

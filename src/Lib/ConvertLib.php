@@ -51,9 +51,7 @@ class ConvertLib {
 	 * @return string
 	 */
 	public function reverse($text) {
-		$text = str_replace('\n', static::EOL, $text);
-
-		return $text;
+		return str_replace('\n', static::EOL, $text);
 	}
 
 	/**
@@ -62,7 +60,7 @@ class ConvertLib {
 	 * @return string
 	 */
 	protected function _autoParagraph($text) {
-		if (!isset($this->Text)) {
+		if ($this->Text === null) {
 			$this->Text = new TextHelper(new View());
 		}
 

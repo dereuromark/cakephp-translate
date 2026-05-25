@@ -278,7 +278,7 @@ class TranslateStringsController extends TranslateAppController {
 		$projectPath = $project->path ?? null;
 		if (!$projectPath) {
 			$projectPath = ROOT;
-		} elseif (!str_starts_with($projectPath, '/')) {
+		} elseif (!str_starts_with((string)$projectPath, '/')) {
 			$projectPath = ROOT . DS . $projectPath;
 		}
 		$localePath = rtrim($projectPath, DS) . DS . 'resources' . DS . 'locales' . DS;
@@ -349,8 +349,8 @@ class TranslateStringsController extends TranslateAppController {
 				}
 			}
 
-			foreach ((array)$this->request->getData('sel_po') as $key => $name) {
-				$parts = explode('-', $name, 2);
+			foreach ((array)$this->request->getData('sel_po') as $name) {
+				$parts = explode('-', (string)$name, 2);
 				if (count($parts) < 2) {
 					continue;
 				}
@@ -414,7 +414,7 @@ class TranslateStringsController extends TranslateAppController {
 			$excludeFromDefault = $isPlugin ? ['default', 'cake'] : [];
 
 			$selPot = [];
-			foreach ($potFiles as $key => $val) {
+			foreach ($potFiles as $val) {
 				if (!in_array($val, $excludeFromDefault, true)) {
 					$selPot[] = $val;
 				}
@@ -454,7 +454,7 @@ class TranslateStringsController extends TranslateAppController {
 		$path = $project->path ?? null;
 		if (!$path) {
 			$path = ROOT;
-		} elseif (!str_starts_with($path, '/')) {
+		} elseif (!str_starts_with((string)$path, '/')) {
 			$path = ROOT . DS . $path;
 		}
 		$path = rtrim($path, DS) . DS . 'resources' . DS . 'locales' . DS;
@@ -475,7 +475,7 @@ class TranslateStringsController extends TranslateAppController {
 			$errors = [];
 			/** @var array<string> $postedDomains */
 			$postedDomains = (array)$this->request->getData('domains');
-			foreach ($postedDomains as $key => $domain) {
+			foreach ($postedDomains as $domain) {
 				[$lang, $domain] = explode('_', $domain, 2);
 
 				$langId = $this->TranslateStrings->TranslateTerms->TranslateLocales->find()->where(['iso2' => $lang])->firstOrFail()->id;
@@ -580,6 +580,7 @@ class TranslateStringsController extends TranslateAppController {
 						->first();
 				}
 
+				/** @var \Translate\Model\Entity\TranslateString|null $next */
 				if ($next) {
 					return $this->redirect(['action' => 'translate', $next->id]);
 				}
@@ -638,6 +639,7 @@ class TranslateStringsController extends TranslateAppController {
 							->first();
 					}
 
+					/** @var \Translate\Model\Entity\TranslateString|null $next */
 					if ($next) {
 						return $this->redirect(['action' => 'translate', $next->id]);
 					}
@@ -845,10 +847,8 @@ class TranslateStringsController extends TranslateAppController {
 			}
 
 			// Only write if content changed
-			if ($content !== $originalContent) {
-				if (file_put_contents($file, $content) !== false) {
-					$updatedCount++;
-				}
+			if ($content !== $originalContent && file_put_contents($file, $content) !== false) {
+				$updatedCount++;
 			}
 		}
 
@@ -872,7 +872,7 @@ class TranslateStringsController extends TranslateAppController {
 		$projectPath = $project->path ?? null;
 		if (!$projectPath) {
 			$projectPath = ROOT;
-		} elseif (!str_starts_with($projectPath, '/')) {
+		} elseif (!str_starts_with((string)$projectPath, '/')) {
 			$projectPath = ROOT . DS . $projectPath;
 		}
 		$localePath = rtrim($projectPath, DS) . DS . 'resources' . DS . 'locales' . DS;
@@ -895,7 +895,7 @@ class TranslateStringsController extends TranslateAppController {
 			}
 		}
 		foreach ($poFiles as $locale => $files) {
-			foreach ($files as $key => $file) {
+			foreach ($files as $file) {
 				$filePath = $localePath . $locale . DS . $file . '.po';
 				if (file_exists($filePath)) {
 					$availableFiles['po:' . $locale . ':' . $file] = $locale . '/' . $file . '.po';
@@ -958,7 +958,7 @@ class TranslateStringsController extends TranslateAppController {
 		$path = $project->path ?? null;
 		if (!$path) {
 			$path = ROOT;
-		} elseif (!str_starts_with($path, '/')) {
+		} elseif (!str_starts_with((string)$path, '/')) {
 			$path = ROOT . DS . $path;
 		}
 		$localePath = rtrim($path, DS) . DS . 'resources' . DS . 'locales' . DS;
@@ -1019,11 +1019,7 @@ class TranslateStringsController extends TranslateAppController {
 		$legacyPath = $appPath . DS . 'Locale' . DS;
 		$modernPath = $appPath . DS . 'resources' . DS . 'locales' . DS;
 		// Prefer modern path, only use legacy if it exists and modern doesn't
-		if (is_dir($legacyPath) && !is_dir($modernPath)) {
-			$localePath = $legacyPath;
-		} else {
-			$localePath = $modernPath;
-		}
+		$localePath = is_dir($legacyPath) && !is_dir($modernPath) ? $legacyPath : $modernPath;
 
 		$output = null;
 		$command = null;
@@ -1073,7 +1069,7 @@ class TranslateStringsController extends TranslateAppController {
 
 			$outputPath = $this->request->getData('output_path') ?: $localePath;
 			// Convert relative output path to absolute
-			if (!str_starts_with($outputPath, '/')) {
+			if (!str_starts_with((string)$outputPath, '/')) {
 				$outputPath = $appPath . DS . $outputPath;
 			}
 
@@ -1104,17 +1100,14 @@ class TranslateStringsController extends TranslateAppController {
 
 			// Ensure final output directory exists for non-dry run
 			if (!$dryRun) {
-				if (!is_dir($outputPath)) {
-					if (!mkdir($outputPath, 0755, true)) {
-						$this->Flash->error(__d('translate', 'Failed to create output directory: {0}', $outputPath));
+				if (!is_dir($outputPath) && !mkdir($outputPath, 0755, true)) {
+					$this->Flash->error(__d('translate', 'Failed to create output directory: {0}', $outputPath));
+					$defaultPaths = ['src', 'templates'];
+					$isPlugin = $project->type === TranslateProject::TYPE_PLUGIN;
+					$pluginDomain = $isPlugin ? Inflector::underscore($project->name) : null;
+					$this->set(compact('appPath', 'localePath', 'defaultPaths', 'output', 'command', 'returnCode', 'isPlugin', 'dryRunResults', 'pluginDomain'));
 
-						$defaultPaths = ['src', 'templates'];
-						$isPlugin = $project->type === TranslateProject::TYPE_PLUGIN;
-						$pluginDomain = $isPlugin ? Inflector::underscore($project->name) : null;
-						$this->set(compact('appPath', 'localePath', 'defaultPaths', 'output', 'command', 'returnCode', 'isPlugin', 'dryRunResults', 'pluginDomain'));
-
-						return;
-					}
+					return;
 				}
 				if (!is_writable($outputPath)) {
 					$this->Flash->error(__d('translate', 'Output directory is not writable: {0}', $outputPath));

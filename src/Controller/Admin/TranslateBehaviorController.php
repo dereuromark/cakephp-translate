@@ -126,13 +126,7 @@ class TranslateBehaviorController extends TranslateAppController {
 		// Get translation strategies for existing shadow tables
 		$translationStrategies = $this->getTranslationStrategies($shadowTables);
 
-		$this->set(compact(
-			'shadowTables',
-			'orphanedShadowTables',
-			'modelsWithBehavior',
-			'candidateTables',
-			'translationStrategies',
-		));
+		$this->set(compact('shadowTables', 'orphanedShadowTables', 'modelsWithBehavior', 'candidateTables', 'translationStrategies'));
 	}
 
 	/**
@@ -209,7 +203,7 @@ class TranslateBehaviorController extends TranslateAppController {
 		foreach ($allTables as $tableName) {
 			$suffix = $this->getShadowTableSuffixForTable($tableName);
 			if ($suffix !== null) {
-				$baseTableName = substr($tableName, 0, -strlen($suffix));
+				$baseTableName = substr((string)$tableName, 0, -strlen($suffix));
 				$baseTableExists = in_array($baseTableName, $allTables, true);
 
 				// Defence-in-depth: even though $tableName comes from the schema collection,
@@ -272,7 +266,7 @@ class TranslateBehaviorController extends TranslateAppController {
 
 		try {
 			$schema = $schemaCollection->describe($tableName);
-		} catch (Exception $e) {
+		} catch (Exception) {
 			$this->Flash->error('Shadow table not found');
 
 			return $this->redirect(['action' => 'index']);
@@ -286,17 +280,7 @@ class TranslateBehaviorController extends TranslateAppController {
 		$baseTableExists = $baseTableName !== null && in_array($baseTableName, $schemaCollection->listTables(), true);
 		$modelInfo = $baseTableExists ? $this->getModelInfo($baseTableName) : null;
 
-		$this->set(compact(
-			'tableName',
-			'baseTableName',
-			'schema',
-			'strategy',
-			'sampleData',
-			'translatedFields',
-			'locales',
-			'baseTableExists',
-			'modelInfo',
-		));
+		$this->set(compact('tableName', 'baseTableName', 'schema', 'strategy', 'sampleData', 'translatedFields', 'locales', 'baseTableExists', 'modelInfo'));
 
 		return null;
 	}
@@ -394,7 +378,7 @@ class TranslateBehaviorController extends TranslateAppController {
 						'shadow_table' => $shadowTableName,
 					];
 				}
-			} catch (Exception $e) {
+			} catch (Exception) {
 				// Table class doesn't exist or can't be loaded, skip
 				continue;
 			}
@@ -430,14 +414,12 @@ class TranslateBehaviorController extends TranslateAppController {
 
 				foreach ($schema->columns() as $columnName) {
 					$columnType = $schema->getColumnType($columnName);
-					if (in_array($columnType, ['string', 'text'])) {
-						// Skip common non-translatable fields
-						if (!in_array($columnName, ['id', 'uuid', 'email', 'password', 'token', 'slug', 'created', 'modified', 'updated'])) {
-							$textFields[] = [
-								'name' => $columnName,
-								'type' => $columnType,
-							];
-						}
+					// Skip common non-translatable fields
+					if (in_array($columnType, ['string', 'text']) && !in_array($columnName, ['id', 'uuid', 'email', 'password', 'token', 'slug', 'created', 'modified', 'updated'])) {
+						$textFields[] = [
+							'name' => $columnName,
+							'type' => $columnType,
+						];
 					}
 				}
 
@@ -448,7 +430,7 @@ class TranslateBehaviorController extends TranslateAppController {
 						'field_count' => count($textFields),
 					];
 				}
-			} catch (Exception $e) {
+			} catch (Exception) {
 				continue;
 			}
 		}
@@ -515,7 +497,7 @@ class TranslateBehaviorController extends TranslateAppController {
 				'alias' => $table->getAlias(),
 				'has_behavior' => $table->hasBehavior('Translate'),
 			];
-		} catch (Exception $e) {
+		} catch (Exception) {
 			return null;
 		}
 	}
@@ -559,15 +541,13 @@ class TranslateBehaviorController extends TranslateAppController {
 			$columnType = $schema->getColumnType($columnName);
 			$columnData = $schema->getColumn($columnName);
 
-			if (in_array($columnType, ['string', 'text'])) {
-				if (!in_array($columnName, ['id', 'uuid', 'email', 'password', 'token', 'slug', 'created', 'modified', 'updated'])) {
-					$translatableFields[] = [
-						'name' => $columnName,
-						'type' => $columnType,
-						'length' => $columnData['length'] ?? null,
-						'null' => $columnData['null'] ?? true,
-					];
-				}
+			if (in_array($columnType, ['string', 'text']) && !in_array($columnName, ['id', 'uuid', 'email', 'password', 'token', 'slug', 'created', 'modified', 'updated'])) {
+				$translatableFields[] = [
+					'name' => $columnName,
+					'type' => $columnType,
+					'length' => $columnData['length'] ?? null,
+					'null' => $columnData['null'] ?? true,
+				];
 			}
 		}
 

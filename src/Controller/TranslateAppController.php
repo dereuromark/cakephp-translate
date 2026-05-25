@@ -153,7 +153,7 @@ class TranslateAppController extends AppController {
 		} catch (Throwable $e) {
 			Log::warning(sprintf('Translate.adminAccess threw %s: %s', $e::class, $e->getMessage()));
 
-			throw new ForbiddenException(__d('translate', 'Translate admin access denied.'));
+			throw new ForbiddenException(__d('translate', 'Translate admin access denied.'), null, $e);
 		}
 
 		if (!$allowed) {

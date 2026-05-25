@@ -138,7 +138,7 @@ SQL;
 	 */
 	protected function trimDeep(mixed $value): mixed {
 		if (is_array($value)) {
-			return array_map([$this, 'trimDeep'], $value);
+			return array_map($this->trimDeep(...), $value);
 		}
 		if (is_string($value)) {
 			return trim($value);

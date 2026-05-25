@@ -31,7 +31,7 @@ class TranslateLocalesController extends TranslateAppController {
 		$path = $project->path ?? null;
 		if (!$path) {
 			$path = ROOT;
-		} elseif (!str_starts_with($path, '/')) {
+		} elseif (!str_starts_with((string)$path, '/')) {
 			$path = ROOT . DS . $path;
 		}
 		$path = rtrim($path, DS) . DS . 'resources' . DS . 'locales';
@@ -80,7 +80,7 @@ class TranslateLocalesController extends TranslateAppController {
 		$path = $project->path ?? null;
 		if (!$path) {
 			$path = ROOT;
-		} elseif (!str_starts_with($path, '/')) {
+		} elseif (!str_starts_with((string)$path, '/')) {
 			$path = ROOT . DS . $path;
 		}
 		$path = rtrim($path, DS) . DS . 'resources' . DS . 'locales';
@@ -101,14 +101,14 @@ class TranslateLocalesController extends TranslateAppController {
 
 				$localeData = [
 					'locale' => $key,
-					'name' => !empty($data['name']) ? $data['name'] : $key,
+					'name' => empty($data['name']) ? $key : $data['name'],
 					//'active' => true,
 					'translate_project_id IS' => $this->Translation->currentProjectId(),
 				];
-				if (strlen($localeData['locale']) === 2) {
+				if (strlen((string)$localeData['locale']) === 2) {
 					$localeData['iso2'] = $localeData['locale'];
-				} elseif (preg_match('/[a-z]{2}_[a-z]{2}/i', $localeData['locale'])) {
-					$localeData['iso2'] = substr($localeData['locale'], 0, 2);
+				} elseif (preg_match('/[a-z]{2}_[a-z]{2}/i', (string)$localeData['locale'])) {
+					$localeData['iso2'] = substr((string)$localeData['locale'], 0, 2);
 				}
 
 				$translateLocales[] = $this->TranslateLocales->newEntity($localeData);

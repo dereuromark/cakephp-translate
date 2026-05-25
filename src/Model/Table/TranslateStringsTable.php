@@ -82,7 +82,7 @@ class TranslateStringsTable extends Table {
 						return true;
 					}
 					// Ensure plural has same placeholders as name
-					preg_match_all('/\{\d\}/', $context['data']['name'], $nameMatches);
+					preg_match_all('/\{\d\}/', (string)$context['data']['name'], $nameMatches);
 					preg_match_all('/\{\d\}/', $value, $pluralMatches);
 
 					return count($nameMatches[0]) === count($pluralMatches[0]);
@@ -318,6 +318,7 @@ class TranslateStringsTable extends Table {
 			'translate_domain_id' => $domainId,
 		];
 
+		/** @var \Translate\Model\Entity\TranslateString|null $translateString */
 		$translateString = $this->find()->where([
 			'name' => $translation['name'],
 			//'plural' => isset($translation['plural']) ? $translation['plural'] : null,
@@ -337,6 +338,7 @@ class TranslateStringsTable extends Table {
 			return null;
 		}
 
+		/** @var \Translate\Model\Entity\TranslateString $translateString */
 		return $translateString;
 	}
 
@@ -346,17 +348,14 @@ class TranslateStringsTable extends Table {
 	 * @return bool
 	 */
 	protected function containsHtml(array $translation) {
-		if (str_contains($translation['name'], '<') || str_contains($translation['name'], '>')) {
+		if (str_contains((string)$translation['name'], '<') || str_contains((string)$translation['name'], '>')) {
 			return true;
 		}
 		if (empty($translation['plural'])) {
 			return false;
 		}
-		if (str_contains($translation['plural'], '<') || str_contains($translation['plural'], '>')) {
-			return true;
-		}
 
-		return false;
+		return str_contains((string)$translation['plural'], '<') || str_contains((string)$translation['plural'], '>');
 	}
 
 	/**

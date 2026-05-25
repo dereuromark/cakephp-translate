@@ -132,10 +132,8 @@ class I18nEntriesController extends TranslateAppController {
 		}
 
 		$autoFilter = $this->request->getQuery('auto');
-		if ($autoFilter !== null && $autoFilter !== '') {
-			if ($schema->hasColumn('auto')) {
-				$query->where(['auto' => (bool)$autoFilter]);
-			}
+		if ($autoFilter !== null && $autoFilter !== '' && $schema->hasColumn('auto')) {
+			$query->where(['auto' => (bool)$autoFilter]);
 		}
 
 		$search = $this->request->getQuery('search');
@@ -156,16 +154,7 @@ class I18nEntriesController extends TranslateAppController {
 		$query->orderBy(['id' => 'DESC']);
 		$entries = $this->paginate($query);
 
-		$this->set(compact(
-			'tableName',
-			'baseTableName',
-			'entries',
-			'strategy',
-			'translatedFields',
-			'locales',
-			'hasAutoField',
-			'foreignKeyColumn',
-		));
+		$this->set(compact('tableName', 'baseTableName', 'entries', 'strategy', 'translatedFields', 'locales', 'hasAutoField', 'foreignKeyColumn'));
 		$this->set('showBaseRecords', false);
 
 		return null;
@@ -257,19 +246,7 @@ class I18nEntriesController extends TranslateAppController {
 		$sourceLocale = Configure::read('App.defaultLocale') ?? Configure::read('I18n.defaultLocale') ?? 'en_US';
 		$locales = array_values(array_filter($locales, fn ($l) => $l !== $sourceLocale));
 
-		$this->set(compact(
-			'tableName',
-			'baseTableName',
-			'baseRecords',
-			'translationStatus',
-			'baseFieldStatus',
-			'locales',
-			'translatedFields',
-			'hasAutoField',
-			'strategy',
-			'foreignKeyColumn',
-			'displayField',
-		));
+		$this->set(compact('tableName', 'baseTableName', 'baseRecords', 'translationStatus', 'baseFieldStatus', 'locales', 'translatedFields', 'hasAutoField', 'strategy', 'foreignKeyColumn', 'displayField'));
 		$this->set('showBaseRecords', true);
 
 		return $this->render('entries_base');
@@ -324,17 +301,7 @@ class I18nEntriesController extends TranslateAppController {
 		$sourceLocale = Configure::read('App.defaultLocale') ?? Configure::read('I18n.defaultLocale') ?? 'en_US';
 		$locales = array_values(array_filter($locales, fn ($l) => $l !== $sourceLocale));
 
-		$this->set(compact(
-			'tableName',
-			'baseTableName',
-			'baseRecord',
-			'translations',
-			'translationsByLocale',
-			'locales',
-			'translatedFields',
-			'hasAutoField',
-			'displayField',
-		));
+		$this->set(compact('tableName', 'baseTableName', 'baseRecord', 'translations', 'translationsByLocale', 'locales', 'translatedFields', 'hasAutoField', 'displayField'));
 
 		return null;
 	}
@@ -403,16 +370,7 @@ class I18nEntriesController extends TranslateAppController {
 			$this->Flash->error(__d('translate', 'Could not save translation. Please try again.'));
 		}
 
-		$this->set(compact(
-			'tableName',
-			'baseTableName',
-			'baseRecord',
-			'translation',
-			'locale',
-			'translatedFields',
-			'hasAutoField',
-			'displayField',
-		));
+		$this->set(compact('tableName', 'baseTableName', 'baseRecord', 'translation', 'locale', 'translatedFields', 'hasAutoField', 'displayField'));
 
 		return $this->render('translation_form');
 	}
@@ -491,16 +449,7 @@ class I18nEntriesController extends TranslateAppController {
 			$this->Flash->error(__d('translate', 'Could not save translation. Please try again.'));
 		}
 
-		$this->set(compact(
-			'tableName',
-			'baseTableName',
-			'baseRecord',
-			'translation',
-			'locale',
-			'translatedFields',
-			'hasAutoField',
-			'displayField',
-		));
+		$this->set(compact('tableName', 'baseTableName', 'baseRecord', 'translation', 'locale', 'translatedFields', 'hasAutoField', 'displayField'));
 
 		return $this->render('translation_form');
 	}
@@ -665,7 +614,7 @@ class I18nEntriesController extends TranslateAppController {
 		foreach ($recordIds as $recordId) {
 			try {
 				$baseRecord = $baseTable->get($recordId);
-			} catch (Exception $e) {
+			} catch (Exception) {
 				$failed++;
 
 				continue;
@@ -759,7 +708,7 @@ class I18nEntriesController extends TranslateAppController {
 			try {
 				$baseTable = $this->fetchTable(Inflector::camelize($baseTableName));
 				$baseRecord = $baseTable->get($foreignKey);
-			} catch (Exception $e) {
+			} catch (Exception) {
 				// Base record not found or table doesn't exist
 			}
 		}
@@ -774,17 +723,7 @@ class I18nEntriesController extends TranslateAppController {
 			$glossarySuggestions = $this->getGlossarySuggestions($content, $locale);
 		}
 
-		$this->set(compact(
-			'tableName',
-			'baseTableName',
-			'entry',
-			'strategy',
-			'translatedFields',
-			'hasAutoField',
-			'baseRecord',
-			'glossarySuggestions',
-			'foreignKeyColumn',
-		));
+		$this->set(compact('tableName', 'baseTableName', 'entry', 'strategy', 'translatedFields', 'hasAutoField', 'baseRecord', 'glossarySuggestions', 'foreignKeyColumn'));
 
 		return null;
 	}
@@ -863,18 +802,7 @@ class I18nEntriesController extends TranslateAppController {
 
 		$locales = $this->getLocalesForTable($connection, $tableName);
 
-		$this->set(compact(
-			'tableName',
-			'baseTableName',
-			'entry',
-			'strategy',
-			'translatedFields',
-			'hasAutoField',
-			'locales',
-			'sourceText',
-			'glossarySuggestions',
-			'foreignKeyColumn',
-		));
+		$this->set(compact('tableName', 'baseTableName', 'entry', 'strategy', 'translatedFields', 'hasAutoField', 'locales', 'sourceText', 'glossarySuggestions', 'foreignKeyColumn'));
 
 		return null;
 	}
@@ -963,16 +891,14 @@ class I18nEntriesController extends TranslateAppController {
 			$query->where(['id IN' => $entryIds]);
 		} elseif ($this->request->getData('translate_all')) {
 			// Only translate entries that are marked as auto or have empty content
-			if ($hasAutoField) {
-				if ($strategy === 'eav') {
-					$query->where([
-						'OR' => [
-							['auto' => true],
-							['content IS' => null],
-							['content' => ''],
-						],
-					]);
-				}
+			if ($hasAutoField && $strategy === 'eav') {
+				$query->where([
+					'OR' => [
+						['auto' => true],
+						['content IS' => null],
+						['content' => ''],
+					],
+				]);
 			}
 			$targetLocale = $this->request->getData('target_locale');
 			if ($targetLocale) {
@@ -1346,11 +1272,7 @@ class I18nEntriesController extends TranslateAppController {
 		}
 
 		// Basic SQL injection prevention
-		if (preg_match('/[^a-z0-9_]/i', $tableName)) {
-			return false;
-		}
-
-		return true;
+		return !preg_match('/[^a-z0-9_]/i', $tableName);
 	}
 
 	/**
@@ -1466,7 +1388,7 @@ class I18nEntriesController extends TranslateAppController {
 			$record = $baseTable->get($foreignKey);
 
 			return $record->get($field);
-		} catch (Exception $e) {
+		} catch (Exception) {
 			return null;
 		}
 	}
@@ -1511,9 +1433,6 @@ class I18nEntriesController extends TranslateAppController {
 			}
 
 			foreach ($query as $term) {
-				if (!$term instanceof EntityInterface) {
-					continue;
-				}
 				/** @var \Cake\Datasource\EntityInterface|null $translateString */
 				$translateString = $term->get('translate_string');
 				if (!$translateString instanceof EntityInterface) {
@@ -1524,7 +1443,7 @@ class I18nEntriesController extends TranslateAppController {
 					'translation' => (string)$term->get('content'),
 				];
 			}
-		} catch (Exception $e) {
+		} catch (Exception) {
 			// Translate tables might not exist
 		}
 

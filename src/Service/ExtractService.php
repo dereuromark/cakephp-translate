@@ -63,15 +63,13 @@ class ExtractService {
 		$folder = new Folder($this->localePath);
 		$files = $folder->read(true, true);
 		$potFiles = [];
-		if (!empty($files[1])) {
-			foreach ($files[1] as $file) {
-				if (pathinfo($file, PATHINFO_EXTENSION) !== 'pot') {
-					continue;
-				}
-
-				$filename = pathinfo($file, PATHINFO_FILENAME);
-				$potFiles[$filename] = $filename;
+		foreach ($files[1] as $file) {
+			if (pathinfo($file, PATHINFO_EXTENSION) !== 'pot') {
+				continue;
 			}
+
+			$filename = pathinfo($file, PATHINFO_FILENAME);
+			$potFiles[$filename] = $filename;
 		}
 
 		return $potFiles;
@@ -102,13 +100,11 @@ class ExtractService {
 		$files = $folder->read(true, true);
 
 		$poFiles = [];
-		if (!empty($files[1])) {
-			foreach ($files[1] as $file) {
-				if (pathinfo($file, PATHINFO_EXTENSION) !== 'po') {
-					continue;
-				}
-				$poFiles[$locale . '-' . pathinfo($file, PATHINFO_FILENAME)] = pathinfo($file, PATHINFO_FILENAME);
+		foreach ($files[1] as $file) {
+			if (pathinfo($file, PATHINFO_EXTENSION) !== 'po') {
+				continue;
 			}
+			$poFiles[$locale . '-' . pathinfo($file, PATHINFO_FILENAME)] = pathinfo($file, PATHINFO_FILENAME);
 		}
 
 		return $poFiles;
@@ -121,7 +117,7 @@ class ExtractService {
 	 * @return array
 	 */
 	public function extractPotFile(string $domain, ?string $dir = null): array {
-		$dir = $dir ?? $this->localePath;
+		$dir ??= $this->localePath;
 
 		$file = $dir . $domain . '.pot';
 		$content = [];
@@ -145,7 +141,7 @@ class ExtractService {
 	 * @return array
 	 */
 	public function extractPoFile(string $domain, string $lang, ?string $dir = null): array {
-		$dir = $dir ?? $this->localePath;
+		$dir ??= $this->localePath;
 
 		$file = $dir . $lang . DS . $domain . '.po';
 		$content = [];
@@ -258,9 +254,8 @@ class ExtractService {
 		}
 
 		$poParser = new PoFileParser();
-		$content = $poParser->parse($file);
 
-		return $content;
+		return $poParser->parse($file);
 	}
 
 	/**

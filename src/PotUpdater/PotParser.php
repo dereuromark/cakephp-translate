@@ -217,30 +217,14 @@ class PotParser {
 			if ($char === '\\' && $i + 1 < $len) {
 				// Escape sequence
 				$next = $line[$i + 1];
-				switch ($next) {
-					case 'n':
-						$result .= "\n";
-
-						break;
-					case 'r':
-						$result .= "\r";
-
-						break;
-					case 't':
-						$result .= "\t";
-
-						break;
-					case '"':
-						$result .= '"';
-
-						break;
-					case '\\':
-						$result .= '\\';
-
-						break;
-					default:
-						$result .= $next;
-				}
+				match ($next) {
+					'n' => $result .= "\n",
+					'r' => $result .= "\r",
+					't' => $result .= "\t",
+					'"' => $result .= '"',
+					'\\' => $result .= '\\',
+					default => $result .= $next,
+				};
 				$i += 2;
 
 				continue;

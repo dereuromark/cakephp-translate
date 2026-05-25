@@ -241,6 +241,7 @@ class TranslateController extends TranslateAppController {
 						->first();
 				}
 
+				/** @var \Translate\Model\Entity\TranslateString|null $next */
 				if ($next) {
 					return $this->redirect(['action' => 'translate', $next->translate_domain->name, $next->id]);
 				}
@@ -299,6 +300,7 @@ class TranslateController extends TranslateAppController {
 							->first();
 					}
 
+					/** @var \Translate\Model\Entity\TranslateString|null $next */
 					if ($next) {
 						return $this->redirect(['action' => 'translate', $next->translate_domain->name, $next->id]);
 					}
@@ -379,6 +381,7 @@ class TranslateController extends TranslateAppController {
 		// Store locale in session or cookie
 		$this->request->getSession()->write('Config.language', $locale);
 
+		/** @var \Translate\Model\Entity\TranslateLocale $language */
 		$this->Flash->success(__d('translate', 'Language switched to {0}', $language->name));
 
 		// Redirect back to previous page or index. Reject any externally-pointed `?redirect=`

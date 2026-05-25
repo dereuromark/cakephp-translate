@@ -99,13 +99,13 @@ class TranslateLocalesTable extends Table {
 	 */
 	public function beforeMarshal(EventInterface $event, ArrayObject $data, ArrayObject $options): void {
 		if (isset($data['iso2'])) {
-			$data['iso2'] = strtolower($data['iso2']);
+			$data['iso2'] = strtolower((string)$data['iso2']);
 		}
 		if (isset($data['name'])) {
-			$data['name'] = ucfirst($data['name']);
+			$data['name'] = ucfirst((string)$data['name']);
 		}
 		if (isset($data['locale'])) {
-			$data['locale'] = strtolower($data['locale']);
+			$data['locale'] = strtolower((string)$data['locale']);
 			if (str_contains($data['locale'], '_')) {
 				[$lang, $region] = explode('_', $data['locale'], 2);
 				$data['locale'] = $lang . '_' . strtoupper($region);
@@ -119,11 +119,7 @@ class TranslateLocalesTable extends Table {
 	 * @return bool
 	 */
 	public function validateIsoCode($value) {
-		if (strlen($value) !== 2) {
-			return false;
-		}
-
-		return true;
+		return strlen($value) === 2;
 	}
 
 	/**

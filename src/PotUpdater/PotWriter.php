@@ -53,9 +53,8 @@ class PotWriter {
 		$header .= "\"Content-Type: text/plain; charset=UTF-8\\n\"\n";
 		$header .= "\"Content-Transfer-Encoding: 8bit\\n\"\n";
 		$header .= "\"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\\n\"\n";
-		$header .= "\n";
 
-		return $header;
+		return $header . "\n";
 	}
 
 	/**
@@ -94,9 +93,7 @@ class PotWriter {
 			$output .= "msgstr \"\"\n";
 		}
 
-		$output .= "\n";
-
-		return $output;
+		return $output . "\n";
 	}
 
 	/**

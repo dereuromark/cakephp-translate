@@ -61,10 +61,10 @@ class DomainScannerService {
 		}
 
 		// Compute per-domain summary stats
-		foreach ($result as $domain => &$entry) {
+		foreach ($result as &$entry) {
 			$files = [];
 			$calls = 0;
-			foreach ($entry['msgids'] as $msgid => $fileLines) {
+			foreach ($entry['msgids'] as $fileLines) {
 				foreach ($fileLines as $file => $lines) {
 					$files[$file] = true;
 					$calls += count($lines);
@@ -114,7 +114,7 @@ class DomainScannerService {
 		$it = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($dir, RecursiveDirectoryIterator::SKIP_DOTS));
 		foreach ($it as $file) {
 			$path = (string)$file;
-			if (substr($path, -4) !== '.php') {
+			if (!str_ends_with($path, '.php')) {
 				continue;
 			}
 			// Skip nested vendor/ and node_modules/ inside plugins
@@ -161,7 +161,7 @@ class DomainScannerService {
 			}
 			// Skip method/static calls like $foo->__d() or Foo::__d()
 			$prev = $i > 0 ? $compact[$i - 1] : null;
-			if (is_array($prev) && ($prev[0] === T_OBJECT_OPERATOR || $prev[0] === T_DOUBLE_COLON || $prev[0] === T_NULLSAFE_OBJECT_OPERATOR)) {
+			if (is_array($prev) && (in_array($prev[0], [T_OBJECT_OPERATOR, T_DOUBLE_COLON, T_NULLSAFE_OBJECT_OPERATOR], true))) {
 				continue;
 			}
 			if ($compact[$i + 1] !== '(') {
@@ -228,12 +228,12 @@ class DomainScannerService {
 		$count = count($tokens);
 		for ($i = $start; $i < $count; $i++) {
 			$tok = $tokens[$i];
-			if ($tok === '(' || $tok === '[' || $tok === '{') {
+			if (in_array($tok, ['(', '[', '{'], true)) {
 				$depth++;
 
 				continue;
 			}
-			if ($tok === ')' || $tok === ']' || $tok === '}') {
+			if (in_array($tok, [')', ']', '}'], true)) {
 				if ($depth === 0) {
 					return $i;
 				}

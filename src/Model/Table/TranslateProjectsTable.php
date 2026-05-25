@@ -113,11 +113,7 @@ class TranslateProjectsTable extends Table {
 				}
 
 				// Check if path exists and is a directory
-				if (!is_dir($path)) {
-					return false;
-				}
-
-				return true;
+				return is_dir($path);
 			},
 			'pathExists',
 			[
@@ -154,6 +150,7 @@ class TranslateProjectsTable extends Table {
 			'conditions' => [$this->getAlias() . '.status >' => TranslateProject::STATUS_INACTIVE],
 			'order' => [$this->getAlias() . '.default' => 'DESC'],
 		];
+		/** @var \Translate\Model\Entity\TranslateProject|null $res */
 		$res = $this->find('all', $options)->first();
 		if (!$res) {
 			return null;

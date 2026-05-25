@@ -324,6 +324,7 @@ class TranslateController extends TranslateAppController {
 		}
 
 		// Validate locale exists, is active, and belongs to current project
+		/** @var \Translate\Model\Entity\TranslateLocale|null $language */
 		$language = $this->fetchTable('Translate.TranslateLocales')
 			->find()
 			->where([

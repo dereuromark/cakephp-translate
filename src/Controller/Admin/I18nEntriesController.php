@@ -1433,9 +1433,6 @@ class I18nEntriesController extends TranslateAppController {
 			}
 
 			foreach ($query as $term) {
-				if (!$term instanceof EntityInterface) {
-					continue;
-				}
 				/** @var \Cake\Datasource\EntityInterface|null $translateString */
 				$translateString = $term->get('translate_string');
 				if (!$translateString instanceof EntityInterface) {

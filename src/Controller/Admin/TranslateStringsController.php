@@ -580,6 +580,7 @@ class TranslateStringsController extends TranslateAppController {
 						->first();
 				}
 
+				/** @var \Translate\Model\Entity\TranslateString|null $next */
 				if ($next) {
 					return $this->redirect(['action' => 'translate', $next->id]);
 				}
@@ -638,6 +639,7 @@ class TranslateStringsController extends TranslateAppController {
 							->first();
 					}
 
+					/** @var \Translate\Model\Entity\TranslateString|null $next */
 					if ($next) {
 						return $this->redirect(['action' => 'translate', $next->id]);
 					}

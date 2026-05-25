@@ -241,6 +241,7 @@ class TranslateController extends TranslateAppController {
 						->first();
 				}
 
+				/** @var \Translate\Model\Entity\TranslateString|null $next */
 				if ($next) {
 					return $this->redirect(['action' => 'translate', $next->translate_domain->name, $next->id]);
 				}
@@ -299,6 +300,7 @@ class TranslateController extends TranslateAppController {
 							->first();
 					}
 
+					/** @var \Translate\Model\Entity\TranslateString|null $next */
 					if ($next) {
 						return $this->redirect(['action' => 'translate', $next->translate_domain->name, $next->id]);
 					}

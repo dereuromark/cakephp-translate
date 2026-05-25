@@ -290,7 +290,7 @@ class TranslateController extends TranslateAppController {
 		$translator = new Translator();
 		$translation = $translator->translate($text, $to, $from);
 
-		$this->set(['translation' => $translation]);
+		$this->set(compact('translation'));
 		$this->viewBuilder()->setOption('serialize', ['translation']);
 	}
 
@@ -306,7 +306,7 @@ class TranslateController extends TranslateAppController {
 
 			$ConvertLib = new ConvertLib();
 			$text = $ConvertLib->convert($text, $settings);
-			$this->set(['text' => $text]);
+			$this->set(compact('text'));
 		}
 	}
 

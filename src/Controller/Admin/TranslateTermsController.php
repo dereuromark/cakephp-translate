@@ -68,7 +68,7 @@ class TranslateTermsController extends TranslateAppController {
 			throw new NotFoundException(__d('translate', 'Term not found.'));
 		}
 
-		$this->set(['translateTerm' => $translateTerm]);
+		$this->set(compact('translateTerm'));
 		//$this->set('_serialize', ['translateTerm']);
 	}
 

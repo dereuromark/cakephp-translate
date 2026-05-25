@@ -137,7 +137,7 @@ class TranslateStringsController extends TranslateAppController {
 			throw new NotFoundException(__d('translate', 'String not found.'));
 		}
 
-		$this->set(['translateString' => $translateString]);
+		$this->set(compact('translateString'));
 		//$this->set('_serialize', ['translateString']);
 	}
 
@@ -258,7 +258,7 @@ class TranslateStringsController extends TranslateAppController {
 		//$sourceContent = $this->Translation->showSource(__FILE__, true);
 		//$sourceContent = show_source(__FILE__, true);
 		$sourceFile = __FILE__;
-		$this->set(['sourceFile' => $sourceFile]);
+		$this->set(compact('sourceFile'));
 	}
 
 	/**

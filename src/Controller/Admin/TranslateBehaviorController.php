@@ -518,7 +518,7 @@ class TranslateBehaviorController extends TranslateAppController {
 			$allTables = $schemaCollection->listTables();
 			$availableTables = $this->filterApplicationTables($allTables, true);
 
-			$this->set(['availableTables' => $availableTables]);
+			$this->set(compact('availableTables'));
 
 			return null;
 		}

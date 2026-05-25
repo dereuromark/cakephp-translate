@@ -154,7 +154,7 @@ class TranslateLocalesController extends TranslateAppController {
 			->where(['TranslateLocales.translate_project_id IS' => $this->Translation->currentProjectId()]);
 		$translateLocales = $this->paginate($query);
 
-		$this->set(['translateLocales' => $translateLocales]);
+		$this->set(compact('translateLocales'));
 		//$this->set('_serialize', ['translateLocales']);
 	}
 
@@ -174,7 +174,7 @@ class TranslateLocalesController extends TranslateAppController {
 			throw new NotFoundException(__d('translate', 'Locale not found.'));
 		}
 
-		$this->set(['translateLocale' => $translateLocale]);
+		$this->set(compact('translateLocale'));
 		//$this->set('_serialize', ['translateLocale']);
 	}
 
@@ -199,7 +199,7 @@ class TranslateLocalesController extends TranslateAppController {
 			$this->Flash->error(__d('translate', 'The translate language could not be saved. Please, try again.'));
 		}
 
-		$this->set(['translateLocale' => $translateLocale]);
+		$this->set(compact('translateLocale'));
 		//$this->set('_serialize', ['translateLocale']);
 	}
 
@@ -230,7 +230,7 @@ class TranslateLocalesController extends TranslateAppController {
 			$this->Flash->error(__d('translate', 'The translate language could not be saved. Please, try again.'));
 		}
 
-		$this->set(['translateLocale' => $translateLocale]);
+		$this->set(compact('translateLocale'));
 		//$this->set('_serialize', ['translateLocale']);
 	}
 

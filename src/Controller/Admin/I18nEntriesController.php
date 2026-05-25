@@ -63,7 +63,7 @@ class I18nEntriesController extends TranslateAppController {
 		$translationTables = $this->getTranslationTablesInfo($allTables, $connection);
 		$locales = $this->getAvailableLocales($translationTables, $connection);
 
-		$this->set(['translationTables' => $translationTables, 'locales' => $locales]);
+		$this->set(compact('translationTables', 'locales'));
 	}
 
 	/**
@@ -154,7 +154,7 @@ class I18nEntriesController extends TranslateAppController {
 		$query->orderBy(['id' => 'DESC']);
 		$entries = $this->paginate($query);
 
-		$this->set(['tableName' => $tableName, 'baseTableName' => $baseTableName, 'entries' => $entries, 'strategy' => $strategy, 'translatedFields' => $translatedFields, 'locales' => $locales, 'hasAutoField' => $hasAutoField, 'foreignKeyColumn' => $foreignKeyColumn]);
+		$this->set(compact('tableName', 'baseTableName', 'entries', 'strategy', 'translatedFields', 'locales', 'hasAutoField', 'foreignKeyColumn'));
 		$this->set('showBaseRecords', false);
 
 		return null;
@@ -246,7 +246,7 @@ class I18nEntriesController extends TranslateAppController {
 		$sourceLocale = Configure::read('App.defaultLocale') ?? Configure::read('I18n.defaultLocale') ?? 'en_US';
 		$locales = array_values(array_filter($locales, fn ($l) => $l !== $sourceLocale));
 
-		$this->set(['tableName' => $tableName, 'baseTableName' => $baseTableName, 'baseRecords' => $baseRecords, 'translationStatus' => $translationStatus, 'baseFieldStatus' => $baseFieldStatus, 'locales' => $locales, 'translatedFields' => $translatedFields, 'hasAutoField' => $hasAutoField, 'strategy' => $strategy, 'foreignKeyColumn' => $foreignKeyColumn, 'displayField' => $displayField]);
+		$this->set(compact('tableName', 'baseTableName', 'baseRecords', 'translationStatus', 'baseFieldStatus', 'locales', 'translatedFields', 'hasAutoField', 'strategy', 'foreignKeyColumn', 'displayField'));
 		$this->set('showBaseRecords', true);
 
 		return $this->render('entries_base');
@@ -301,7 +301,7 @@ class I18nEntriesController extends TranslateAppController {
 		$sourceLocale = Configure::read('App.defaultLocale') ?? Configure::read('I18n.defaultLocale') ?? 'en_US';
 		$locales = array_values(array_filter($locales, fn ($l) => $l !== $sourceLocale));
 
-		$this->set(['tableName' => $tableName, 'baseTableName' => $baseTableName, 'baseRecord' => $baseRecord, 'translations' => $translations, 'translationsByLocale' => $translationsByLocale, 'locales' => $locales, 'translatedFields' => $translatedFields, 'hasAutoField' => $hasAutoField, 'displayField' => $displayField]);
+		$this->set(compact('tableName', 'baseTableName', 'baseRecord', 'translations', 'translationsByLocale', 'locales', 'translatedFields', 'hasAutoField', 'displayField'));
 
 		return null;
 	}
@@ -370,7 +370,7 @@ class I18nEntriesController extends TranslateAppController {
 			$this->Flash->error(__d('translate', 'Could not save translation. Please try again.'));
 		}
 
-		$this->set(['tableName' => $tableName, 'baseTableName' => $baseTableName, 'baseRecord' => $baseRecord, 'translation' => $translation, 'locale' => $locale, 'translatedFields' => $translatedFields, 'hasAutoField' => $hasAutoField, 'displayField' => $displayField]);
+		$this->set(compact('tableName', 'baseTableName', 'baseRecord', 'translation', 'locale', 'translatedFields', 'hasAutoField', 'displayField'));
 
 		return $this->render('translation_form');
 	}
@@ -449,7 +449,7 @@ class I18nEntriesController extends TranslateAppController {
 			$this->Flash->error(__d('translate', 'Could not save translation. Please try again.'));
 		}
 
-		$this->set(['tableName' => $tableName, 'baseTableName' => $baseTableName, 'baseRecord' => $baseRecord, 'translation' => $translation, 'locale' => $locale, 'translatedFields' => $translatedFields, 'hasAutoField' => $hasAutoField, 'displayField' => $displayField]);
+		$this->set(compact('tableName', 'baseTableName', 'baseRecord', 'translation', 'locale', 'translatedFields', 'hasAutoField', 'displayField'));
 
 		return $this->render('translation_form');
 	}
@@ -723,7 +723,7 @@ class I18nEntriesController extends TranslateAppController {
 			$glossarySuggestions = $this->getGlossarySuggestions($content, $locale);
 		}
 
-		$this->set(['tableName' => $tableName, 'baseTableName' => $baseTableName, 'entry' => $entry, 'strategy' => $strategy, 'translatedFields' => $translatedFields, 'hasAutoField' => $hasAutoField, 'baseRecord' => $baseRecord, 'glossarySuggestions' => $glossarySuggestions, 'foreignKeyColumn' => $foreignKeyColumn]);
+		$this->set(compact('tableName', 'baseTableName', 'entry', 'strategy', 'translatedFields', 'hasAutoField', 'baseRecord', 'glossarySuggestions', 'foreignKeyColumn'));
 
 		return null;
 	}
@@ -802,7 +802,7 @@ class I18nEntriesController extends TranslateAppController {
 
 		$locales = $this->getLocalesForTable($connection, $tableName);
 
-		$this->set(['tableName' => $tableName, 'baseTableName' => $baseTableName, 'entry' => $entry, 'strategy' => $strategy, 'translatedFields' => $translatedFields, 'hasAutoField' => $hasAutoField, 'locales' => $locales, 'sourceText' => $sourceText, 'glossarySuggestions' => $glossarySuggestions, 'foreignKeyColumn' => $foreignKeyColumn]);
+		$this->set(compact('tableName', 'baseTableName', 'entry', 'strategy', 'translatedFields', 'hasAutoField', 'locales', 'sourceText', 'glossarySuggestions', 'foreignKeyColumn'));
 
 		return null;
 	}

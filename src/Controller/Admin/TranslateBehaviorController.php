@@ -126,7 +126,7 @@ class TranslateBehaviorController extends TranslateAppController {
 		// Get translation strategies for existing shadow tables
 		$translationStrategies = $this->getTranslationStrategies($shadowTables);
 
-		$this->set(['shadowTables' => $shadowTables, 'orphanedShadowTables' => $orphanedShadowTables, 'modelsWithBehavior' => $modelsWithBehavior, 'candidateTables' => $candidateTables, 'translationStrategies' => $translationStrategies]);
+		$this->set(compact('shadowTables', 'orphanedShadowTables', 'modelsWithBehavior', 'candidateTables', 'translationStrategies'));
 	}
 
 	/**
@@ -280,7 +280,7 @@ class TranslateBehaviorController extends TranslateAppController {
 		$baseTableExists = $baseTableName !== null && in_array($baseTableName, $schemaCollection->listTables(), true);
 		$modelInfo = $baseTableExists ? $this->getModelInfo($baseTableName) : null;
 
-		$this->set(['tableName' => $tableName, 'baseTableName' => $baseTableName, 'schema' => $schema, 'strategy' => $strategy, 'sampleData' => $sampleData, 'translatedFields' => $translatedFields, 'locales' => $locales, 'baseTableExists' => $baseTableExists, 'modelInfo' => $modelInfo]);
+		$this->set(compact('tableName', 'baseTableName', 'schema', 'strategy', 'sampleData', 'translatedFields', 'locales', 'baseTableExists', 'modelInfo'));
 
 		return null;
 	}
@@ -574,7 +574,7 @@ class TranslateBehaviorController extends TranslateAppController {
 
 		$shadowTableSuffix = $this->getShadowTableSuffix();
 
-		$this->set(['tableName' => $tableName, 'translatableFields' => $translatableFields, 'migrationCode' => $migrationCode, 'migrationName' => $migrationName, 'selectedFields' => $selectedFields, 'strategy' => $strategy, 'includeAutoField' => $includeAutoField, 'shadowTableSuffix' => $shadowTableSuffix]);
+		$this->set(compact('tableName', 'translatableFields', 'migrationCode', 'migrationName', 'selectedFields', 'strategy', 'includeAutoField', 'shadowTableSuffix'));
 
 		return null;
 	}

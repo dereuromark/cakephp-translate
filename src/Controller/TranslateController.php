@@ -110,7 +110,7 @@ class TranslateController extends TranslateAppController {
 			];
 		}
 
-		$this->set(['coverage' => $coverage, 'languages' => $languages, 'count' => $count, 'projectSwitchArray' => $projectSwitchArray, 'domainStats' => $domainStats, 'localeStats' => $localeStats]);
+		$this->set(compact('coverage', 'languages', 'count', 'projectSwitchArray', 'domainStats', 'localeStats'));
 	}
 
 	/**
@@ -148,7 +148,7 @@ class TranslateController extends TranslateAppController {
 			->orderBy(['name' => 'ASC'])
 			->toArray();
 
-		$this->set(['translateStrings' => $translateStrings, 'translateDomains' => $translateDomains, 'translateLocales' => $translateLocales]);
+		$this->set(compact('translateStrings', 'translateDomains', 'translateLocales'));
 	}
 
 	/**
@@ -322,7 +322,7 @@ class TranslateController extends TranslateAppController {
 
 		$suggestions = $translateStringsTable->getSuggestions($translateString, $translateLocales, $translateTerms);
 
-		$this->set(['translateString' => $translateString, 'suggestions' => $suggestions, 'translateLocales' => $translateLocales, 'domainStats' => $domainStats]);
+		$this->set(compact('translateString', 'suggestions', 'translateLocales', 'domainStats'));
 	}
 
 	/**
@@ -345,7 +345,7 @@ class TranslateController extends TranslateAppController {
 
 		$fileArray = file($file);
 
-		$this->set(['fileArray' => $fileArray, 'lines' => $lines, 'referencePath' => $referencePath]);
+		$this->set(compact('fileArray', 'lines', 'referencePath'));
 	}
 
 	/**

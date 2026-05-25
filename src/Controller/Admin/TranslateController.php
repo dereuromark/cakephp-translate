@@ -200,7 +200,7 @@ class TranslateController extends TranslateAppController {
 				->toArray();
 		}
 
-		$this->set(['coverage' => $coverage, 'languages' => $languages, 'count' => $count, 'projectSwitchArray' => $projectSwitchArray, 'localeStats' => $localeStats, 'recentStrings' => $recentStrings, 'recentTerms' => $recentTerms, 'auditLogs' => $auditLogs, 'confirmationStats' => $confirmationStats, 'recentImports' => $recentImports, 'auditData' => $auditData]);
+		$this->set(compact('coverage', 'languages', 'count', 'projectSwitchArray', 'localeStats', 'recentStrings', 'recentTerms', 'auditLogs', 'confirmationStats', 'recentImports', 'auditData'));
 	}
 
 	/**
@@ -521,7 +521,7 @@ class TranslateController extends TranslateAppController {
 			? (int)(($grandTotal['confirmed'] / $grandTotal['translated']) * 100)
 			: 0;
 
-		$this->set(['locales' => $locales, 'domains' => $domains, 'stats' => $stats, 'localeTotals' => $localeTotals, 'domainTotals' => $domainTotals, 'grandTotal' => $grandTotal]);
+		$this->set(compact('locales', 'domains', 'stats', 'localeTotals', 'domainTotals', 'grandTotal'));
 	}
 
 	/**
@@ -589,7 +589,7 @@ class TranslateController extends TranslateAppController {
 			}
 		}
 
-		$this->set(['controllerNames' => $controllerNames, 'projectPath' => $projectPath]);
+		$this->set(compact('controllerNames', 'projectPath'));
 	}
 
 	/**
@@ -801,7 +801,7 @@ class TranslateController extends TranslateAppController {
 			];
 		}
 
-		$this->set(['domainsReport' => $domainsReport, 'paths' => $paths, 'availableLocales' => $availableLocales, 'localePaths' => $localePaths, 'normalizedDefault' => $normalizedDefault, 'projectPath' => $projectPath]);
+		$this->set(compact('domainsReport', 'paths', 'availableLocales', 'localePaths', 'normalizedDefault', 'projectPath'));
 	}
 
 	/**

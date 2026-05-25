@@ -78,7 +78,7 @@ class TranslateStringsController extends TranslateAppController {
 			->all()
 			->toArray();
 
-		$this->set(['translateStrings' => $translateStrings, 'translateDomains' => $translateDomains, 'translateLocales' => $translateLocales]);
+		$this->set(compact('translateStrings', 'translateDomains', 'translateLocales'));
 	}
 
 	/**
@@ -118,7 +118,7 @@ class TranslateStringsController extends TranslateAppController {
 
 		$translateStrings = $this->paginate($query);
 
-		$this->set(['translateStrings' => $translateStrings, 'count' => $count]);
+		$this->set(compact('translateStrings', 'count'));
 	}
 
 	/**
@@ -166,7 +166,7 @@ class TranslateStringsController extends TranslateAppController {
 			->find('list')
 			->where(['translate_project_id IS' => $this->Translation->currentProjectId()]);
 
-		$this->set(['translateString' => $translateString, 'translateDomains' => $translateDomains]);
+		$this->set(compact('translateString', 'translateDomains'));
 		//$this->set('_serialize', ['translateString']);
 	}
 
@@ -221,7 +221,7 @@ class TranslateStringsController extends TranslateAppController {
 			->find('list')
 			->where(['translate_project_id IS' => $this->Translation->currentProjectId()]);
 
-		$this->set(['translateString' => $translateString, 'translateDomains' => $translateDomains]);
+		$this->set(compact('translateString', 'translateDomains'));
 		//$this->set('_serialize', ['translateString']);
 	}
 
@@ -435,7 +435,7 @@ class TranslateStringsController extends TranslateAppController {
 			$this->request = $this->request->withData('sel_po', $selPo);
 		}
 
-		$this->set(['potFiles' => $potFiles, 'poFiles' => $poFiles, 'localePath' => $localePath, 'preselectedPot' => $preselectedPot, 'preselectedPo' => $preselectedPo, 'preselectDomain' => $preselectDomain]);
+		$this->set(compact('potFiles', 'poFiles', 'localePath', 'preselectedPot', 'preselectedPo', 'preselectDomain'));
 	}
 
 	/**
@@ -517,7 +517,7 @@ class TranslateStringsController extends TranslateAppController {
 			$this->request = $this->request->withData('domains', $domainArray);
 		}
 
-		$this->set(['map' => $map, 'path' => $path]);
+		$this->set(compact('map', 'path'));
 	}
 
 	/**
@@ -662,7 +662,7 @@ class TranslateStringsController extends TranslateAppController {
 		$suggestions = $this->TranslateStrings->getSuggestions($translateString, $translateLocales, $translateTerms);
 		//$pluralSuggestions =
 
-		$this->set(['translateString' => $translateString, 'translateLocales' => $translateLocales, 'suggestions' => $suggestions]);
+		$this->set(compact('translateString', 'translateLocales', 'suggestions'));
 	}
 
 	/**
@@ -716,7 +716,7 @@ class TranslateStringsController extends TranslateAppController {
 		$fileContent = file_get_contents($file);
 		$canEdit = Configure::read('debug') && Configure::read('Translate.editor') && is_writable($file);
 
-		$this->set(['fileArray' => $fileArray, 'fileContent' => $fileContent, 'lines' => $lines, 'referencePath' => $referencePath, 'canEdit' => $canEdit, 'translateString' => $translateString, 'reference' => $reference, 'id' => $id]);
+		$this->set(compact('fileArray', 'fileContent', 'lines', 'referencePath', 'canEdit', 'translateString', 'reference', 'id'));
 	}
 
 	/**
@@ -936,7 +936,7 @@ class TranslateStringsController extends TranslateAppController {
 			}
 		}
 
-		$this->set(['result' => $result, 'content' => $content, 'availableFiles' => $availableFiles, 'selectedFile' => $selectedFile]);
+		$this->set(compact('result', 'content', 'availableFiles', 'selectedFile'));
 	}
 
 	/**
@@ -1060,7 +1060,7 @@ class TranslateStringsController extends TranslateAppController {
 
 				$defaultPaths = ['src', 'templates'];
 				$isPlugin = $project->type === TranslateProject::TYPE_PLUGIN;
-				$this->set(['appPath' => $appPath, 'localePath' => $localePath, 'defaultPaths' => $defaultPaths, 'output' => $output, 'command' => $command, 'returnCode' => $returnCode, 'isPlugin' => $isPlugin, 'dryRunResults' => $dryRunResults]);
+				$this->set(compact('appPath', 'localePath', 'defaultPaths', 'output', 'command', 'returnCode', 'isPlugin', 'dryRunResults'));
 
 				return;
 			}
@@ -1103,7 +1103,7 @@ class TranslateStringsController extends TranslateAppController {
 					$defaultPaths = ['src', 'templates'];
 					$isPlugin = $project->type === TranslateProject::TYPE_PLUGIN;
 					$pluginDomain = $isPlugin ? Inflector::underscore($project->name) : null;
-					$this->set(['appPath' => $appPath, 'localePath' => $localePath, 'defaultPaths' => $defaultPaths, 'output' => $output, 'command' => $command, 'returnCode' => $returnCode, 'isPlugin' => $isPlugin, 'dryRunResults' => $dryRunResults, 'pluginDomain' => $pluginDomain]);
+					$this->set(compact('appPath', 'localePath', 'defaultPaths', 'output', 'command', 'returnCode', 'isPlugin', 'dryRunResults', 'pluginDomain'));
 
 					return;
 				}
@@ -1113,7 +1113,7 @@ class TranslateStringsController extends TranslateAppController {
 					$defaultPaths = ['src', 'templates'];
 					$isPlugin = $project->type === TranslateProject::TYPE_PLUGIN;
 					$pluginDomain = $isPlugin ? Inflector::underscore($project->name) : null;
-					$this->set(['appPath' => $appPath, 'localePath' => $localePath, 'defaultPaths' => $defaultPaths, 'output' => $output, 'command' => $command, 'returnCode' => $returnCode, 'isPlugin' => $isPlugin, 'dryRunResults' => $dryRunResults, 'pluginDomain' => $pluginDomain]);
+					$this->set(compact('appPath', 'localePath', 'defaultPaths', 'output', 'command', 'returnCode', 'isPlugin', 'dryRunResults', 'pluginDomain'));
 
 					return;
 				}
@@ -1312,7 +1312,7 @@ class TranslateStringsController extends TranslateAppController {
 		$isPlugin = $project->type === TranslateProject::TYPE_PLUGIN;
 		$pluginDomain = $isPlugin ? Inflector::underscore($project->name) : null;
 
-		$this->set(['appPath' => $appPath, 'localePath' => $localePath, 'defaultPaths' => $defaultPaths, 'output' => $output, 'command' => $command, 'returnCode' => $returnCode, 'isPlugin' => $isPlugin, 'dryRunResults' => $dryRunResults, 'pluginDomain' => $pluginDomain]);
+		$this->set(compact('appPath', 'localePath', 'defaultPaths', 'output', 'command', 'returnCode', 'isPlugin', 'dryRunResults', 'pluginDomain'));
 	}
 
 }

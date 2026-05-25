@@ -66,7 +66,7 @@ class TranslateLocalesController extends TranslateAppController {
 			$this->request = $this->request->withData('locale', $localeArray);
 		}
 
-		$this->set(['path' => $path, 'languages' => $languages, 'existingFolders' => $existingFolders]);
+		$this->set(compact('path', 'languages', 'existingFolders'));
 	}
 
 	/**
@@ -141,7 +141,7 @@ class TranslateLocalesController extends TranslateAppController {
 			}
 
 		}
-		$this->set(['path' => $path, 'existingLanguages' => $existingLanguages, 'folders' => $folders]);
+		$this->set(compact('path', 'existingLanguages', 'folders'));
 	}
 
 	/**

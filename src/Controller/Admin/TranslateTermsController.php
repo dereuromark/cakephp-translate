@@ -48,7 +48,7 @@ class TranslateTermsController extends TranslateAppController {
 			->where(['translate_project_id IS' => $this->Translation->currentProjectId()])
 			->orderBy(['TranslateLocales.name' => 'ASC']);
 
-		$this->set(['translateTerms' => $translateTerms, 'translateLocales' => $translateLocales]);
+		$this->set(compact('translateTerms', 'translateLocales'));
 		//$this->set('_serialize', ['translateTerms']);
 	}
 
@@ -107,7 +107,7 @@ class TranslateTermsController extends TranslateAppController {
 			->find('list')
 			->where(['translate_project_id IS' => $this->Translation->currentProjectId()]);
 
-		$this->set(['translateTerm' => $translateTerm, 'translateStrings' => $translateStrings, 'translateLocales' => $translateLocales]);
+		$this->set(compact('translateTerm', 'translateStrings', 'translateLocales'));
 		//$this->set('_serialize', ['translateTerm']);
 	}
 
@@ -193,7 +193,7 @@ class TranslateTermsController extends TranslateAppController {
 			];
 		}
 
-		$this->set(['pendingTerms' => $pendingTerms, 'localeStats' => $localeStats]);
+		$this->set(compact('pendingTerms', 'localeStats'));
 	}
 
 	/**

@@ -142,7 +142,7 @@ class TranslateProjectsController extends TranslateAppController {
 			$this->request = $this->request->withData('Form', $formArray);
 		}
 
-		$this->set(['removeOptions' => $removeOptions, 'languages' => $languages]);
+		$this->set(compact('removeOptions', 'languages'));
 	}
 
 }

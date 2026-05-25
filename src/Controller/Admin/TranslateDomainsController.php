@@ -109,7 +109,7 @@ class TranslateDomainsController extends TranslateAppController {
 		$translateProjects = $this->TranslateDomains->TranslateProjects->find('list');
 		$translateStrings = $this->TranslateDomains->TranslateStrings->find('list');
 
-		$this->set(['translateDomain' => $translateDomain, 'translateProjects' => $translateProjects, 'translateStrings' => $translateStrings]);
+		$this->set(compact('translateDomain', 'translateProjects', 'translateStrings'));
 		//$this->set('_serialize', ['translateDomain']);
 	}
 

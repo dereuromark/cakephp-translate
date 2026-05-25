@@ -318,6 +318,7 @@ class TranslateStringsTable extends Table {
 			'translate_domain_id' => $domainId,
 		];
 
+		/** @var \Translate\Model\Entity\TranslateString|null $translateString */
 		$translateString = $this->find()->where([
 			'name' => $translation['name'],
 			//'plural' => isset($translation['plural']) ? $translation['plural'] : null,

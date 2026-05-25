@@ -73,6 +73,7 @@ class I18nTranslatorService {
 			$stringsTable = $this->fetchTable('Translate.TranslateStrings');
 
 			// Find exact string match
+			/** @var \Translate\Model\Entity\TranslateString|null $exactMatch */
 			$exactMatch = $stringsTable->find()
 				->where(['name' => $text])
 				->first();
@@ -197,6 +198,7 @@ class I18nTranslatorService {
 			$stringsTable = $this->fetchTable('Translate.TranslateStrings');
 
 			// Find exact matches first
+			/** @var \Translate\Model\Entity\TranslateString|null $exactMatch */
 			$exactMatch = $stringsTable->find()
 				->where(['name' => $text])
 				->first();
@@ -232,6 +234,7 @@ class I18nTranslatorService {
 					->toArray();
 
 				foreach ($stringMatches as $string) {
+					/** @var \Translate\Model\Entity\TranslateTerm|null $term */
 					$term = $termsTable->find()
 						->contain(['TranslateLocales'])
 						->where([
@@ -257,6 +260,7 @@ class I18nTranslatorService {
 		}
 
 		// Remove duplicates and sort by confidence
+		/** @var array<string, array{type: string, source: string, translation: string, confidence: float}> $unique */
 		$unique = [];
 		foreach ($matches as $match) {
 			$key = $match['source'] . '|' . $match['translation'];

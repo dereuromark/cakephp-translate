@@ -239,6 +239,7 @@ class TranslateTermsTable extends Table {
 		];
 
 		// Find existing term by string_id and locale_id (not content) to handle updates
+		/** @var \Translate\Model\Entity\TranslateTerm|null $translateTerm */
 		$translateTerm = $this->find()->where([
 			'translate_string_id' => $translateStringId,
 			'translate_locale_id' => $translateLocaleId,
@@ -257,6 +258,7 @@ class TranslateTermsTable extends Table {
 			return null;
 		}
 
+		/** @var \Translate\Model\Entity\TranslateTerm $translateTerm */
 		return $translateTerm;
 	}
 

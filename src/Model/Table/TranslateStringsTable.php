@@ -337,6 +337,7 @@ class TranslateStringsTable extends Table {
 			return null;
 		}
 
+		/** @var \Translate\Model\Entity\TranslateString $translateString */
 		return $translateString;
 	}
 

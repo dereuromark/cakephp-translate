@@ -82,6 +82,7 @@ class I18nTranslatorService {
 			}
 
 			// Find translation for this string in the target locale
+			/** @var \Translate\Model\Entity\TranslateTerm|null $term */
 			$term = $termsTable->find()
 				->contain(['TranslateLocales'])
 				->where([
@@ -201,6 +202,7 @@ class I18nTranslatorService {
 				->first();
 
 			if ($exactMatch) {
+				/** @var \Translate\Model\Entity\TranslateTerm|null $term */
 				$term = $termsTable->find()
 					->contain(['TranslateLocales'])
 					->where([

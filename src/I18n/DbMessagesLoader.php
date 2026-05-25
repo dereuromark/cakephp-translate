@@ -258,6 +258,7 @@ class DbMessagesLoader {
 	 * @return int|null
 	 */
 	protected function _resolveDefaultProjectId(): ?int {
+		/** @var \Translate\Model\Entity\TranslateProject|null $translateProject */
 		$translateProject = $this->fetchTable('Translate.TranslateProjects')
 			->find()
 			->where(['type' => TranslateProject::TYPE_APP, 'default' => true])

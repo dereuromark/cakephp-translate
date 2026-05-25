@@ -612,7 +612,7 @@ class Folder {
 					$this->_messages[] = sprintf('%s created', $pathname);
 					umask($old);
 
-					return true;
+				return true;
 			}
 			$this->_errors[] = sprintf('%s NOT created', $pathname);
 			umask($old);

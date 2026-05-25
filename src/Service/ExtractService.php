@@ -68,8 +68,8 @@ class ExtractService {
 				continue;
 			}
 
-				$filename = pathinfo($file, PATHINFO_FILENAME);
-				$potFiles[$filename] = $filename;
+			$filename = pathinfo($file, PATHINFO_FILENAME);
+			$potFiles[$filename] = $filename;
 		}
 
 		return $potFiles;
@@ -104,7 +104,7 @@ class ExtractService {
 			if (pathinfo($file, PATHINFO_EXTENSION) !== 'po') {
 				continue;
 			}
-				$poFiles[$locale . '-' . pathinfo($file, PATHINFO_FILENAME)] = pathinfo($file, PATHINFO_FILENAME);
+			$poFiles[$locale . '-' . pathinfo($file, PATHINFO_FILENAME)] = pathinfo($file, PATHINFO_FILENAME);
 		}
 
 		return $poFiles;

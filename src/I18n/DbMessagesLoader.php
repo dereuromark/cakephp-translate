@@ -68,7 +68,7 @@ class DbMessagesLoader {
 	public function __construct(
 		string $domain,
 		string $locale,
-		string|RepositoryInterface|null $model = null,
+		RepositoryInterface|string|null $model = null,
 		string $formatter = 'default',
 		?int $projectId = null,
 	) {

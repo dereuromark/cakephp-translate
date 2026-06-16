@@ -180,12 +180,8 @@ class DbMessagesLoader {
 
 		$pluralForms = 0;
 		$item = $results->first();
-		// There are max 6 plural forms possible but most people won't need
-		// that so will only have the required number of plural_{n} fields in db.
-		// Detect the number of forms from the selected columns, not from the
-		// values: a singular-only first row has NULL plural_{n} values, so
-		// isset() would report 0 forms and collapse every plural to its
-		// singular value.
+		// Count plural forms from the selected columns, not the values: a
+		// singular-only first row has NULL values and would report 0 forms.
 		for ($i = 7; $i >= 2; $i--) {
 			if (array_key_exists('plural_' . $i, $item)) {
 				$pluralForms = $i - 1;

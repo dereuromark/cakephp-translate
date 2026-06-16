@@ -245,6 +245,54 @@ class DbMessagesLoaderTest extends TestCase {
 	}
 
 	/**
+	 * Regression: the plural-form count must not be derived from the values of
+	 * the first result row. When a singular-only term is returned before a
+	 * plural term, its NULL plural_{n} columns made the old isset() detection
+	 * report zero forms, collapsing every plural to its singular value.
+	 *
+	 * @return void
+	 */
+	public function testPluralWithSingularOnlyTermFirst(): void {
+		/** @var \Translate\Model\Table\TranslateStringsTable $TranslateStrings */
+		$TranslateStrings = $this->fetchTable('Translate.TranslateStrings');
+
+		// `de` (project 1) is already created by _setUpData().
+		$de = $TranslateStrings->TranslateTerms->TranslateLocales->find()
+			->where(['locale' => 'de', 'translate_project_id' => 1])
+			->firstOrFail();
+
+		$domainEntity = $TranslateStrings->TranslateDomains->newEntity([
+			'translate_project_id' => 1,
+			'name' => 'pluraldom',
+			'active' => true,
+		]);
+		$domain = $TranslateStrings->TranslateDomains->save($domainEntity, ['strict' => true]);
+
+		// Singular-only term first (lower id, returned before the plural term).
+		$singularOnly = ['name' => 'JustSingular', 'content' => 'NurSingular'];
+		$string = $TranslateStrings->import($singularOnly, $domain->id);
+		$TranslateStrings->TranslateTerms->import($singularOnly, $string->id, $de->id);
+
+		// Plural term afterwards.
+		$plural = [
+			'name' => 'Sing',
+			'plural' => 'Plur',
+			'content' => 'SingTrans',
+			'plural_2' => 'PlurTrans',
+		];
+		$string = $TranslateStrings->import($plural, $domain->id);
+		$TranslateStrings->TranslateTerms->import($plural, $string->id, $de->id);
+
+		$messages = (new DbMessagesLoader('pluraldom', 'de'))()->getMessages();
+
+		$this->assertSame(
+			['SingTrans', 'PlurTrans'],
+			$messages['Plur']['_context'][''],
+			'Plural must keep its plural form even when a singular-only term is loaded first.',
+		);
+	}
+
+	/**
 	 * @return void
 	 */
 	protected function _setUpData() {

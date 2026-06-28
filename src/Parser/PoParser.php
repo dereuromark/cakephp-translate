@@ -255,6 +255,11 @@ class PoParser {
 	 * @return void
 	 */
 	protected function processContinuedLineInSameState($line) {
+		if ($this->state === null) {
+			// Skip lines that appear before any state is established.
+			return;
+		}
+
 		switch ($this->state) {
 			case 'msgctxt':
 			case 'msgid':
@@ -269,10 +274,6 @@ class PoParser {
 			case 'msgstr':
 				$this->currentEntry['msgstr'][] = trim($line, '"');
 
-				break;
-			case null:
-				// Skip lines that appear before any state is established
-				// This can happen with malformed PO files or unexpected content
 				break;
 			default:
 				throw new Exception('Parse error! Unexpected state "' . $this->state . '" for line: ' . $line);
@@ -309,6 +310,10 @@ class PoParser {
 	 * @return void
 	 */
 	protected function addEntryData($value) {
+		if ($this->state === null) {
+			return;
+		}
+
 		if ($this->state === 'msgstr') {
 			$this->currentEntry[$this->state][] = $value;
 		} else {
@@ -343,6 +348,9 @@ class PoParser {
 			}
 
 			$id = $this->getMsgId($entry);
+			if ($id === null) {
+				continue;
+			}
 
 			$this->entriesAsArrays[$id] = $entry;
 			$this->entries[$id] = new Entry($entry);

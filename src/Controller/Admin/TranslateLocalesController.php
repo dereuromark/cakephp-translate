@@ -103,7 +103,7 @@ class TranslateLocalesController extends TranslateAppController {
 					'locale' => $key,
 					'name' => empty($data['name']) ? $key : $data['name'],
 					//'active' => true,
-					'translate_project_id IS' => $this->Translation->currentProjectId(),
+					'translate_project_id' => $this->Translation->currentProjectId(),
 				];
 				if (strlen((string)$localeData['locale']) === 2) {
 					$localeData['iso2'] = $localeData['locale'];

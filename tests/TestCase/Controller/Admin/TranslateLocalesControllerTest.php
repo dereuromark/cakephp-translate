@@ -60,6 +60,35 @@ class TranslateLocalesControllerTest extends IntegrationTestCase {
 	/**
 	 * @return void
 	 */
+	public function testFromLocalePost() {
+		$this->enableRetainFlashMessages();
+
+		$data = [
+			'language' => [
+				'de' => [
+					'confirm' => '1',
+					'name' => 'Deutsch',
+				],
+			],
+		];
+		$this->post(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateLocales', 'action' => 'fromLocale'], $data);
+
+		$this->assertResponseCode(302);
+		$this->assertRedirect(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateLocales', 'action' => 'index']);
+		$this->assertFlashMessage(__d('translate', '{0} new language(s) added', 1));
+
+		/** @var \Translate\Model\Table\TranslateLocalesTable $translateLocalesTable */
+		$translateLocalesTable = $this->fetchTable('Translate.TranslateLocales');
+		/** @var \Translate\Model\Entity\TranslateLocale $translateLocale */
+		$translateLocale = $translateLocalesTable->find()->where(['locale' => 'de'])->firstOrFail();
+		$this->assertSame('Deutsch', $translateLocale->name);
+		$this->assertSame('de', $translateLocale->iso2);
+		$this->assertSame(1, $translateLocale->translate_project_id);
+	}
+
+	/**
+	 * @return void
+	 */
 	public function testToLocale() {
 		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateLocales', 'action' => 'toLocale']);
 

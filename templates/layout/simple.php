@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @var \App\View\AppView $this
  * @var string|null $title
@@ -9,6 +10,7 @@ $cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -53,7 +55,7 @@ $cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
 
 		.navbar {
 			background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-			box-shadow: 0 2px 4px rgba(0,0,0,.1);
+			box-shadow: 0 2px 4px rgba(0, 0, 0, .1);
 		}
 
 		.navbar-brand {
@@ -75,7 +77,7 @@ $cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
 		.content-wrapper {
 			background-color: #fff;
 			border-radius: 0.5rem;
-			box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,.075);
+			box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, .075);
 			padding: 2rem;
 			min-height: 400px;
 		}
@@ -101,7 +103,7 @@ $cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
 		.alert {
 			border-radius: 0.375rem;
 			border: none;
-			box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,.075);
+			box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, .075);
 			margin-bottom: 1rem;
 		}
 
@@ -142,7 +144,7 @@ $cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
 		.btn:hover,
 		input[type="submit"].btn:hover {
 			transform: translateY(-1px);
-			box-shadow: 0 0.25rem 0.5rem rgba(0,0,0,.15);
+			box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, .15);
 		}
 
 		input[type="submit"].btn:active {
@@ -166,7 +168,7 @@ $cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
 		.card {
 			border: none;
 			border-radius: 0.5rem;
-			box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,.075);
+			box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, .075);
 			margin-bottom: 1.5rem;
 		}
 
@@ -239,6 +241,7 @@ $cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
 		}
 	</style>
 </head>
+
 <body>
 
 	<!-- Navbar -->
@@ -291,7 +294,7 @@ $cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
 					<?= $this->element('Translate.footer_copyright') ?>
 				</div>
 				<div class="flex-shrink-0">
-					<?= $this->element('Translate.language_switcher') ?>
+					<?= $this->cell('Translate.LanguageSwitcher', [$this->getRequest()->getSession()->read('TranslateProject.id')]) ?>
 				</div>
 			</div>
 		</div>
@@ -305,56 +308,57 @@ $cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
 
 	<script<?= $cspNonce !== '' ? ' nonce="' . h($cspNonce) . '"' : '' ?>>
 		$(document).ready(function() {
-			// Add loading state to buttons on form submit
-			$('form').on('submit', function() {
-				var $btn = $(this).find('button[type="submit"]');
-				$btn.prop('disabled', true);
-				if ($btn.find('.spinner-border').length === 0) {
-					$btn.prepend('<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>');
-				}
-			});
-
-			// Confirmation dialogs for postButton forms (CSP-safe replacement for postLink + confirm)
-			document.querySelectorAll('form[data-confirm-message]').forEach(function(form) {
-				form.addEventListener('submit', function(e) {
-					if (!confirm(form.dataset.confirmMessage)) {
-						e.preventDefault();
-						e.stopImmediatePropagation();
-					}
-				});
-			});
-
-			// Initialize Bootstrap tooltips
-			var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-			tooltipTriggerList.map(function (tooltipTriggerEl) {
-				return new bootstrap.Tooltip(tooltipTriggerEl);
-			});
-
-			// Initialize Bootstrap popovers
-			var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
-			popoverTriggerList.map(function (popoverTriggerEl) {
-				return new bootstrap.Popover(popoverTriggerEl);
-			});
-
-			// CSP-safe replacement for inline style="width:N%": apply data-progress-width to .style.width
-			document.querySelectorAll('[data-progress-width]').forEach(function (el) {
-				el.style.width = el.dataset.progressWidth + '%';
-			});
-
-			// CSP-safe replacement for inline style="color:#XYZ": apply data-text-color to .style.color
-			document.querySelectorAll('[data-text-color]').forEach(function (el) {
-				el.style.color = el.dataset.textColor;
-			});
-
-			// CSP-safe replacement for inline style="...": apply data-style to .style.cssText.
-			// JS-driven style mutation is not subject to style-src 'unsafe-inline'.
-			document.querySelectorAll('[data-style]').forEach(function (el) {
-				el.style.cssText = el.dataset.style;
-			});
+		// Add loading state to buttons on form submit
+		$('form').on('submit', function() {
+		var $btn = $(this).find('button[type="submit"]');
+		$btn.prop('disabled', true);
+		if ($btn.find('.spinner-border').length === 0) {
+		$btn.prepend('<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>');
+		}
 		});
-	</script>
 
-	<?= $this->fetch('script') ?>
+		// Confirmation dialogs for postButton forms (CSP-safe replacement for postLink + confirm)
+		document.querySelectorAll('form[data-confirm-message]').forEach(function(form) {
+		form.addEventListener('submit', function(e) {
+		if (!confirm(form.dataset.confirmMessage)) {
+		e.preventDefault();
+		e.stopImmediatePropagation();
+		}
+		});
+		});
+
+		// Initialize Bootstrap tooltips
+		var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+		tooltipTriggerList.map(function (tooltipTriggerEl) {
+		return new bootstrap.Tooltip(tooltipTriggerEl);
+		});
+
+		// Initialize Bootstrap popovers
+		var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
+		popoverTriggerList.map(function (popoverTriggerEl) {
+		return new bootstrap.Popover(popoverTriggerEl);
+		});
+
+		// CSP-safe replacement for inline style="width:N%": apply data-progress-width to .style.width
+		document.querySelectorAll('[data-progress-width]').forEach(function (el) {
+		el.style.width = el.dataset.progressWidth + '%';
+		});
+
+		// CSP-safe replacement for inline style="color:#XYZ": apply data-text-color to .style.color
+		document.querySelectorAll('[data-text-color]').forEach(function (el) {
+		el.style.color = el.dataset.textColor;
+		});
+
+		// CSP-safe replacement for inline style="...": apply data-style to .style.cssText.
+		// JS-driven style mutation is not subject to style-src 'unsafe-inline'.
+		document.querySelectorAll('[data-style]').forEach(function (el) {
+		el.style.cssText = el.dataset.style;
+		});
+		});
+		</script>
+
+		<?= $this->fetch('script') ?>
 
 </body>
+
 </html>

@@ -1,24 +1,11 @@
 <?php
+
 /**
- * @var \App\View\AppView $this
+ * @var \Cake\View\Cell $this;
+ * @var array $activeLanguages Locale entries from ORM;
  */
 
 use Cake\Core\Configure;
-
-$projectId = $this->request->getSession()->read('TranslateProject.id');
-if (!$projectId) {
-	return;
-}
-
-$TranslateLocales = \Cake\ORM\TableRegistry::getTableLocator()->get('Translate.TranslateLocales');
-$activeLanguages = $TranslateLocales->find()
-	->where([
-		'active' => true,
-		'translate_project_id' => $projectId,
-	])
-	->orderBy(['name' => 'ASC'])
-	->all()
-	->toArray();
 
 if (!$activeLanguages) {
 	return;
@@ -49,8 +36,7 @@ $currentLocale = $this->request->getSession()->read('Config.language') ?: Config
 			href="<?= $this->Url->build(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'Translate', 'action' => 'switchLanguage', '?' => ['locale' => $language->locale, 'redirect' => $this->request->getRequestTarget()]]) ?>"
 			class="language-link <?= $isActive ? 'active' : '' ?>"
 			title="<?= h($language->locale) ?>"
-			data-bs-toggle="tooltip"
-		>
+			data-bs-toggle="tooltip">
 			<span class="fi fi-<?= h($flagCode) ?>"></span>
 			<span class="language-code"><?= h($language->iso2) ?></span>
 		</a>

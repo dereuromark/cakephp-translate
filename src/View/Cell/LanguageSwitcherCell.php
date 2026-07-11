@@ -2,18 +2,17 @@
 
 namespace Translate\View\Cell;
 
+use Cake\ORM\TableRegistry;
 use Cake\View\Cell;
 
-class LanguageSwitcherCell extends Cell
-{
-	public function initialize(): void
-	{
+class LanguageSwitcherCell extends Cell {
+
+	public function initialize(): void {
 		$this->viewBuilder()->addHelper('Url');
 	}
 
-	public function display(int $projectId): void
-	{
-		$TranslateLocales = \Cake\ORM\TableRegistry::getTableLocator()->get('Translate.TranslateLocales');
+	public function display(int $projectId): void {
+		$TranslateLocales = TableRegistry::getTableLocator()->get('Translate.TranslateLocales');
 		$activeLanguages = $TranslateLocales->find()
 			->where([
 				'active' => true,
@@ -24,4 +23,5 @@ class LanguageSwitcherCell extends Cell
 			->toArray();
 		$this->set(compact('activeLanguages'));
 	}
+
 }

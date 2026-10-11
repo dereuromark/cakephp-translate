@@ -15,6 +15,7 @@ use Translate\Controller\TranslateAppController;
 use Translate\Filesystem\Dumper;
 use Translate\Model\Entity\TranslateLocale;
 use Translate\Model\Entity\TranslateProject;
+use Translate\Model\Table\TranslateProjectsTable;
 use Translate\Service\ExtractService;
 use Translate\Service\PoAnalyzerService;
 use Translate\Utility\ReferenceResolver;
@@ -275,7 +276,7 @@ class TranslateStringsController extends TranslateAppController {
 		}
 
 		// Get locale path for display
-		$TranslateProjects = $this->fetchTable('Translate.TranslateProjects');
+		$TranslateProjects = $this->fetchTranslateTable('Translate.TranslateProjects', TranslateProjectsTable::class);
 		$project = $TranslateProjects->get($projectId);
 		$projectPath = $project->path ?? null;
 		if (!$projectPath) {
@@ -450,7 +451,7 @@ class TranslateStringsController extends TranslateAppController {
 		}
 
 		// Get path from current project
-		$TranslateProjects = $this->fetchTable('Translate.TranslateProjects');
+		$TranslateProjects = $this->fetchTranslateTable('Translate.TranslateProjects', TranslateProjectsTable::class);
 		$project = $TranslateProjects->get($projectId);
 
 		$path = $project->path ?? null;
@@ -484,10 +485,10 @@ class TranslateStringsController extends TranslateAppController {
 				[$lang, $domain] = explode('_', $domain, 2);
 
 				$localeFilter = ctype_digit($lang) ? ['id' => (int)$lang] : ['iso2' => $lang];
-				$locale = $this->TranslateStrings->TranslateTerms->TranslateLocales->find()->where($localeFilter + ['translate_project_id' => $projectId])->firstOrFail();
+				$locale = $this->TranslateStrings->TranslateTerms->TranslateLocales->getTarget()->find()->where($localeFilter + ['translate_project_id' => $projectId])->firstOrFail();
 				$langId = $locale->id;
 				$lang = $locale->locale;
-				$domainId = $this->TranslateStrings->TranslateDomains->find()->where(['name' => $domain, 'translate_project_id IS' => $projectId])->firstOrFail()->id;
+				$domainId = $this->TranslateStrings->TranslateDomains->getTarget()->find()->where(['name' => $domain, 'translate_project_id IS' => $projectId])->firstOrFail()->id;
 				/** @var array<\Translate\Model\Entity\TranslateTerm> $translations */
 				$translations = $this->TranslateStrings->TranslateTerms->getTranslations($langId, $domainId)->toArray();
 
@@ -882,7 +883,7 @@ class TranslateStringsController extends TranslateAppController {
 		$selectedFile = null;
 
 		// Get locale path for file existence checks
-		$TranslateProjects = $this->fetchTable('Translate.TranslateProjects');
+		$TranslateProjects = $this->fetchTranslateTable('Translate.TranslateProjects', TranslateProjectsTable::class);
 		$project = $TranslateProjects->get($this->Translation->currentProjectId());
 		$projectPath = $project->path ?? null;
 		if (!$projectPath) {
@@ -968,7 +969,7 @@ class TranslateStringsController extends TranslateAppController {
 		$type = $parts[0];
 
 		// Get path from current project
-		$TranslateProjects = $this->fetchTable('Translate.TranslateProjects');
+		$TranslateProjects = $this->fetchTranslateTable('Translate.TranslateProjects', TranslateProjectsTable::class);
 		$project = $TranslateProjects->get($this->Translation->currentProjectId());
 		$path = $project->path ?? null;
 		if (!$path) {
@@ -1018,7 +1019,7 @@ class TranslateStringsController extends TranslateAppController {
 			throw new NotFoundException(__d('translate', 'No project selected.'));
 		}
 
-		$TranslateProjects = $this->fetchTable('Translate.TranslateProjects');
+		$TranslateProjects = $this->fetchTranslateTable('Translate.TranslateProjects', TranslateProjectsTable::class);
 		/** @var \Translate\Model\Entity\TranslateProject $project */
 		$project = $TranslateProjects->get($projectId);
 

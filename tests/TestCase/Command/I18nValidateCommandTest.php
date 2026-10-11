@@ -69,7 +69,7 @@ class I18nValidateCommandTest extends TestCase {
 		$this->exec('i18n validate --paths=' . $path . ' --json');
 		$this->assertExitSuccess();
 
-		$output = $this->_out->output();
+		$output = $this->out->output();
 		$decoded = json_decode($output, true);
 		$this->assertIsArray($decoded);
 		$this->assertArrayHasKey('summary', $decoded);

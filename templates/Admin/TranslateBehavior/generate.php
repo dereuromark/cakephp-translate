@@ -32,7 +32,7 @@ $cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
 							<?= $this->Html->link(
 								'<i class="fas fa-table"></i> ' . h($table),
 								['action' => 'generate', $table],
-								['escapeTitle' => false, 'class' => 'list-group-item list-group-item-action'],
+								['escape' => false, 'escapeAttributes' => true, 'class' => 'list-group-item list-group-item-action'],
 							) ?>
 						<?php } ?>
 					</div>
@@ -169,7 +169,7 @@ $cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
 						<hr>
 						<?= $this->Form->button(
 							'<i class="fas fa-magic"></i> ' . __d('translate', 'Generate Migration'),
-							['type' => 'submit', 'class' => 'btn btn-primary w-100', 'escapeTitle' => false],
+							['type' => 'submit', 'class' => 'btn btn-primary w-100', 'escape' => false, 'escapeAttributes' => true],
 						) ?>
 					<?php } ?>
 
@@ -248,13 +248,13 @@ $fieldsFormatted .= "        ]";
 							<?php } ?>
 							<?= $this->Form->button(
 								'<i class="fas fa-save"></i> ' . __d('translate', 'Save Migration File'),
-								['type' => 'submit', 'class' => 'btn btn-sm btn-success', 'escapeTitle' => false],
+								['type' => 'submit', 'class' => 'btn btn-sm btn-success', 'escape' => false, 'escapeAttributes' => true],
 							) ?>
 						<?= $this->Form->end() ?>
 						<?= $this->Html->link(
 							'<i class="fas fa-arrow-left"></i> ' . __d('translate', 'Back to Overview'),
 							['action' => 'index'],
-							['escapeTitle' => false, 'class' => 'btn btn-sm btn-outline-secondary'],
+							['escape' => false, 'escapeAttributes' => true, 'class' => 'btn btn-sm btn-outline-secondary'],
 						) ?>
 					</div>
 				</div>

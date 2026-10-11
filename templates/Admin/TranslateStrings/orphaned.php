@@ -20,12 +20,12 @@ $cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
 				<?= $this->Html->link(
 					'<i class="fas fa-home"></i> ' . __d('translate', 'Overview'),
 					['controller' => 'Translate', 'action' => 'index'],
-					['escapeTitle' => false, 'class' => 'list-group-item list-group-item-action'],
+					['escape' => false, 'escapeAttributes' => true, 'class' => 'list-group-item list-group-item-action'],
 				) ?>
 				<?= $this->Html->link(
 					'<i class="fas fa-list"></i> ' . __d('translate', 'All Strings'),
 					['action' => 'index'],
-					['escapeTitle' => false, 'class' => 'list-group-item list-group-item-action'],
+					['escape' => false, 'escapeAttributes' => true, 'class' => 'list-group-item list-group-item-action'],
 				) ?>
 			</div>
 		</div>
@@ -72,7 +72,7 @@ $cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
 							[
 								'type' => 'button',
 								'class' => 'btn btn-warning btn-sm bulk-action-btn',
-								'escapeTitle' => false,
+								'escape' => false, 'escapeAttributes' => true,
 								'data-action' => 'deactivate',
 								'data-confirm' => __d('translate', 'Mark all {0} orphaned strings as inactive?', $count),
 							],
@@ -82,7 +82,7 @@ $cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
 							[
 								'type' => 'button',
 								'class' => 'btn btn-danger btn-sm bulk-action-btn',
-								'escapeTitle' => false,
+								'escape' => false, 'escapeAttributes' => true,
 								'data-action' => 'delete',
 								'data-confirm' => __d('translate', 'Are you sure you want to delete all {0} orphaned strings? This cannot be undone.', $count),
 							],
@@ -136,18 +136,18 @@ $cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
 										<?= $this->Html->link(
 											$this->Icon->render('view'),
 											['action' => 'view', $translateString->id],
-											['escapeTitle' => false, 'class' => 'btn btn-outline-info', 'title' => __d('translate', 'View'), 'data-bs-toggle' => 'tooltip'],
+											['escape' => false, 'escapeAttributes' => true, 'class' => 'btn btn-outline-info', 'title' => __d('translate', 'View'), 'data-bs-toggle' => 'tooltip'],
 										); ?>
 										<?= $this->Html->link(
 											$this->Icon->render('edit'),
 											['action' => 'edit', $translateString->id],
-											['escapeTitle' => false, 'class' => 'btn btn-outline-secondary', 'title' => __d('translate', 'Edit'), 'data-bs-toggle' => 'tooltip'],
+											['escape' => false, 'escapeAttributes' => true, 'class' => 'btn btn-outline-secondary', 'title' => __d('translate', 'Edit'), 'data-bs-toggle' => 'tooltip'],
 										); ?>
 										<?= $this->Form->postButton(
 											$this->Icon->render('delete'),
 											['action' => 'delete', $translateString->id],
 											[
-												'escapeTitle' => false,
+												'escape' => false, 'escapeAttributes' => true,
 												'class' => 'btn btn-outline-danger',
 												'title' => __d('translate', 'Delete'),
 												'data-bs-toggle' => 'tooltip',

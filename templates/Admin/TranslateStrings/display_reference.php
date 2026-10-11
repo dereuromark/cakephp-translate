@@ -45,7 +45,7 @@ use Cake\Core\Configure;
 				<div class="card-footer">
 					<?= $this->Form->button(
 						'<i class="fas fa-save"></i> ' . __d('translate', 'Save Changes'),
-						['class' => 'btn btn-danger', 'escapeTitle' => false],
+						['class' => 'btn btn-danger', 'escape' => false, 'escapeAttributes' => true],
 					) ?>
 					<span class="text-muted ms-2">
 						<i class="fas fa-code-branch"></i> <?= __d('translate', 'Remember to commit your changes!') ?>

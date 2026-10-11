@@ -4,7 +4,7 @@ namespace Translate\Command;
 
 use Cake\Command\I18nExtractCommand as CoreI18nExtractCommand;
 use Cake\Console\Arguments;
-use Cake\Console\ConsoleIo;
+use Cake\Console\ConsoleIoInterface;
 use Cake\Core\App;
 use Cake\Core\Plugin;
 use Cake\Utility\Inflector;
@@ -36,59 +36,59 @@ class I18nExtractCommand extends CoreI18nExtractCommand {
 	 * @return void
 	 */
 	public function setPath(string $path): void {
-		$this->_paths[] = $path;
+		$this->paths[] = $path;
 	}
 
 	/**
 	 * Execute the command
 	 *
-	 * @param \Cake\Console\Arguments $args The command arguments.
-	 * @param \Cake\Console\ConsoleIo $io The console io
 	 * @return int|null The exit code or null for success
 	 */
-	public function execute(Arguments $args, ConsoleIo $io): ?int {
+	public function execute(): ?int {
+		$args = $this->args;
+		$io = $this->io;
 		$plugin = '';
 		if ($args->getOption('exclude')) {
-			$this->_exclude = explode(',', (string)$args->getOption('exclude'));
+			$this->exclude = explode(',', (string)$args->getOption('exclude'));
 		}
 		if ($args->getOption('files')) {
-			$this->_files = explode(',', (string)$args->getOption('files'));
+			$this->files = explode(',', (string)$args->getOption('files'));
 		}
 		if ($args->getOption('paths')) {
-			$this->_paths = explode(',', (string)$args->getOption('paths'));
+			$this->paths = explode(',', (string)$args->getOption('paths'));
 		}
 		if ($args->getOption('plugin')) {
 			$plugin = Inflector::camelize((string)$args->getOption('plugin'));
-			if ($this->_paths === []) {
-				$this->_paths = [Plugin::classPath($plugin), Plugin::templatePath($plugin)];
+			if ($this->paths === []) {
+				$this->paths = [Plugin::classPath($plugin), Plugin::templatePath($plugin)];
 			}
 		} elseif (!$args->getOption('paths')) {
-			$this->_getPaths($io);
+			$this->getPaths();
 		}
 
 		$this->_projectId ??= $this->findProjectId($plugin);
 
 		if ($plugin || $args->hasOption('extract-core')) {
-			$this->_extractCore = strtolower((string)$args->getOption('extract-core')) !== 'no';
+			$this->extractCore = strtolower((string)$args->getOption('extract-core')) !== 'no';
 		} else {
 			$response = $io->askChoice(
 				'Would you like to extract the messages from the CakePHP core?',
 				['y', 'n'],
 				'n',
 			);
-			$this->_extractCore = strtolower($response) === 'y';
+			$this->extractCore = strtolower($response) === 'y';
 		}
 
-		if ($args->hasOption('exclude-plugins') && $this->_isExtractingApp()) {
-			$this->_exclude = array_merge($this->_exclude, array_values(App::path('plugins')));
+		if ($args->hasOption('exclude-plugins') && $this->isExtractingApp()) {
+			$this->exclude = array_merge($this->exclude, array_values(App::path('plugins')));
 		}
 
-		if ($this->_extractCore) {
-			$this->_paths[] = CAKE;
+		if ($this->extractCore) {
+			$this->paths[] = CAKE;
 		}
 
 		if ($args->hasOption('merge')) {
-			$this->_merge = strtolower((string)$args->getOption('merge')) !== 'no';
+			$this->merge = strtolower((string)$args->getOption('merge')) !== 'no';
 		} else {
 			$io->out();
 			$response = $io->askChoice(
@@ -96,13 +96,13 @@ class I18nExtractCommand extends CoreI18nExtractCommand {
 				['y', 'n'],
 				'n',
 			);
-			$this->_merge = strtolower($response) === 'y';
+			$this->merge = strtolower($response) === 'y';
 		}
 
-		$this->_markerError = (bool)$args->getOption('marker-error');
+		$this->markerError = (bool)$args->getOption('marker-error');
 
-		if (!$this->_files) {
-			$this->_searchFiles();
+		if (!$this->files) {
+			$this->searchFiles();
 		}
 
 		$this->_extract($args, $io);
@@ -114,28 +114,28 @@ class I18nExtractCommand extends CoreI18nExtractCommand {
 	 * Extract text
 	 *
 	 * @param \Cake\Console\Arguments $args The Arguments instance
-	 * @param \Cake\Console\ConsoleIo $io The io instance
+	 * @param \Cake\Console\ConsoleIoInterface $io The io instance
 	 * @return void
 	 */
-	protected function _extract(Arguments $args, ConsoleIo $io): void {
+	protected function _extract(Arguments $args, ConsoleIoInterface $io): void {
 		$io->out();
 		$io->out();
 		$io->out('Extracting...');
 		$io->hr();
 		$io->out('Paths:');
-		foreach ($this->_paths as $path) {
+		foreach ($this->paths as $path) {
 			$io->out('   ' . $path);
 		}
-		$this->_extractTokens($args, $io);
+		$this->extractTokens();
 		$this->_saveMessages($args, $io);
-		$this->_paths = [];
-		$this->_files = [];
-		$this->_storage = [];
-		$this->_translations = [];
-		$this->_tokens = [];
+		$this->paths = [];
+		$this->files = [];
+		$this->storage = [];
+		$this->translations = [];
+		$this->tokens = [];
 		$io->out();
-		if ($this->_countMarkerError) {
-			$io->err("{$this->_countMarkerError} marker error(s) detected.");
+		if ($this->countMarkerError) {
+			$io->err("{$this->countMarkerError} marker error(s) detected.");
 			$io->err(' => Use the --marker-error option to display errors.');
 		}
 
@@ -144,10 +144,10 @@ class I18nExtractCommand extends CoreI18nExtractCommand {
 
 	/**
 	 * @param \Cake\Console\Arguments $args
-	 * @param \Cake\Console\ConsoleIo $io
+	 * @param \Cake\Console\ConsoleIoInterface $io
 	 * @return void
 	 */
-	protected function _saveMessages(Arguments $args, ConsoleIo $io): void {
+	protected function _saveMessages(Arguments $args, ConsoleIoInterface $io): void {
 		$io->out();
 		$overwriteAll = false;
 		if ($args->getOption('overwrite')) {
@@ -161,7 +161,7 @@ class I18nExtractCommand extends CoreI18nExtractCommand {
 		}
 		$projectRoot = rtrim(realpath($projectRoot) ?: $projectRoot, DS) . DS;
 
-		foreach ($this->_translations as $domain => $translations) {
+		foreach ($this->translations as $domain => $translations) {
 			foreach ($translations as $msgid => $contexts) {
 				foreach ($contexts as $context => $details) {
 					$files = $details['references'];

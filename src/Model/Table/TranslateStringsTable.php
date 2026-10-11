@@ -19,11 +19,11 @@ use Translate\Model\Filter\TranslateStringsCollection;
 use Translate\Translator\Translator;
 
 /**
- * @extends \Cake\ORM\Table<array{AuditLog: \AuditStash\Model\Behavior\AuditLogBehavior, Nullable: \Translate\Model\Behavior\NullableBehavior, Search: \Search\Model\Behavior\SearchBehavior}>
- * @property \App\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Users
- * @property \Translate\Model\Table\TranslateTermsTable&\Cake\ORM\Association\HasMany $TranslateTerms
- * @property \Translate\Model\Table\TranslateDomainsTable&\Cake\ORM\Association\BelongsTo $TranslateDomains
- * @method \Translate\Model\Entity\TranslateString get(mixed $primaryKey, array|string $finder = 'all', \Psr\SimpleCache\CacheInterface|string|null $cache = null, \Closure|string|null $cacheKey = null, mixed ...$args)
+ * @extends \Cake\ORM\Table<array{AuditLog: \AuditStash\Model\Behavior\AuditLogBehavior, Nullable: \Translate\Model\Behavior\NullableBehavior, Search: \Search\Model\Behavior\SearchBehavior}, \Translate\Model\Entity\TranslateString>
+ * @property \Cake\ORM\Association\BelongsTo<\App\Model\Table\UsersTable> $Users
+ * @property \Cake\ORM\Association\HasMany<\Translate\Model\Table\TranslateTermsTable> $TranslateTerms
+ * @property \Cake\ORM\Association\BelongsTo<\Translate\Model\Table\TranslateDomainsTable> $TranslateDomains
+ * @method \Translate\Model\Entity\TranslateString get(mixed $primaryKey, string $finder = 'all', \Psr\SimpleCache\CacheInterface|string|null $cache = null, \Closure|string|null $cacheKey = null, mixed ...$args)
  * @method \Translate\Model\Entity\TranslateString newEntity(array $data, array $options = [])
  * @method array<\Translate\Model\Entity\TranslateString> newEntities(array $data, array $options = [])
  * @method \Translate\Model\Entity\TranslateString|false save(\Cake\Datasource\EntityInterface $entity, array $options = [])

@@ -75,7 +75,7 @@
 					['action' => 'autoTranslateRecord', $tableName, $baseRecord->id],
 					[
 						'class' => 'btn btn-info btn-sm',
-						'escapeTitle' => false,
+						'escape' => false, 'escapeAttributes' => true,
 						'form' => [
 							'class' => 'd-inline',
 							'data-confirm-message' => __d('translate', 'Auto-translate this record to all configured locales?'),
@@ -167,13 +167,13 @@
 										<?= $this->Html->link(
 											'<i class="fas fa-edit"></i>',
 											['action' => 'editTranslation', $tableName, $baseRecord->id, $locale],
-											['class' => 'btn btn-sm btn-outline-primary', 'escapeTitle' => false, 'title' => __d('translate', 'Edit')],
+											['class' => 'btn btn-sm btn-outline-primary', 'escape' => false, 'escapeAttributes' => true, 'title' => __d('translate', 'Edit')],
 										) ?>
 									<?php } else { ?>
 										<?= $this->Html->link(
 											'<i class="fas fa-plus"></i>',
 											['action' => 'addTranslation', $tableName, $baseRecord->id, $locale],
-											['class' => 'btn btn-sm btn-success', 'escapeTitle' => false, 'title' => __d('translate', 'Add')],
+											['class' => 'btn btn-sm btn-success', 'escape' => false, 'escapeAttributes' => true, 'title' => __d('translate', 'Add')],
 										) ?>
 									<?php } ?>
 									<?php if (!$isFullyTranslated) { ?>
@@ -182,7 +182,7 @@
 											['action' => 'autoTranslateRecord', $tableName, $baseRecord->id, '?' => ['locales' => [$locale]]],
 											[
 												'class' => 'btn btn-sm btn-outline-info',
-												'escapeTitle' => false,
+												'escape' => false, 'escapeAttributes' => true,
 												'title' => __d('translate', 'Auto-translate'),
 												'form' => [
 													'class' => 'd-inline',
@@ -206,7 +206,7 @@
 		<?= $this->Html->link(
 			'<i class="fas fa-arrow-left"></i> ' . __d('translate', 'Back to List'),
 			['action' => 'entries', $tableName],
-			['class' => 'btn btn-secondary', 'escapeTitle' => false],
+			['class' => 'btn btn-secondary', 'escape' => false, 'escapeAttributes' => true],
 		) ?>
 	</div>
 </div>

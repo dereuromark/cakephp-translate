@@ -96,7 +96,7 @@ $cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
 						<?= $this->Form->button('<i class="fas fa-filter"></i>', [
 							'type' => 'submit',
 							'class' => 'btn btn-primary',
-							'escapeTitle' => false,
+							'escape' => false, 'escapeAttributes' => true,
 							'title' => __d('translate', 'Filter'),
 						]) ?>
 					</div>
@@ -232,19 +232,19 @@ $cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
 										<?= $this->Html->link(
 											'<i class="fas fa-eye"></i>',
 											['action' => 'view', $tableName, $entry->id, $hasCompositeKey ? $entry->locale : null],
-											['class' => 'btn btn-sm btn-outline-primary', 'escapeTitle' => false, 'title' => __d('translate', 'View')],
+											['class' => 'btn btn-sm btn-outline-primary', 'escape' => false, 'escapeAttributes' => true, 'title' => __d('translate', 'View')],
 										) ?>
 										<?= $this->Html->link(
 											'<i class="fas fa-edit"></i>',
 											['action' => 'edit', $tableName, $entry->id, $hasCompositeKey ? $entry->locale : null],
-											['class' => 'btn btn-sm btn-outline-secondary', 'escapeTitle' => false, 'title' => __d('translate', 'Edit')],
+											['class' => 'btn btn-sm btn-outline-secondary', 'escape' => false, 'escapeAttributes' => true, 'title' => __d('translate', 'Edit')],
 										) ?>
 										<?= $this->Form->postButton(
 											'<i class="fas fa-trash"></i>',
 											['action' => 'delete', $tableName, $entry->id, $hasCompositeKey ? $entry->locale : null],
 											[
 												'class' => 'btn btn-sm btn-outline-danger',
-												'escapeTitle' => false,
+												'escape' => false, 'escapeAttributes' => true,
 												'title' => __d('translate', 'Delete'),
 												'form' => [
 													'class' => 'd-inline',

@@ -18,7 +18,7 @@ class Translator {
 	/**
 	 * @var array<string, mixed>
 	 */
-	protected array $_defaultConfig = [
+	protected array $defaultConfig = [
 		'engine' => Google::class,
 	];
 
@@ -33,7 +33,11 @@ class Translator {
 
 		$engine = $this->getConfig('engine');
 
-		$this->_cache = TableRegistry::getTableLocator()->get('Translate.TranslateApiTranslations');
+		$table = TableRegistry::getTableLocator()->get('Translate.TranslateApiTranslations');
+		if (!$table instanceof TranslateApiTranslationsTable) {
+			throw new RuntimeException('TranslateApiTranslations must use its translation cache table class.');
+		}
+		$this->_cache = $table;
 	}
 
 	/**

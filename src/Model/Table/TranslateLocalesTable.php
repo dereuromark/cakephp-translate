@@ -14,11 +14,11 @@ use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
 /**
- * @extends \Cake\ORM\Table<array{Nullable: \Translate\Model\Behavior\NullableBehavior}>
- * @property \Translate\Model\Table\TranslateTermsTable&\Cake\ORM\Association\HasMany $TranslateTerms
- * @property \Translate\Model\Table\TranslateProjectsTable&\Cake\ORM\Association\BelongsTo $TranslateProjects
- * @property \Data\Model\Table\LanguagesTable&\Cake\ORM\Association\BelongsTo $Languages
- * @method \Translate\Model\Entity\TranslateLocale get(mixed $primaryKey, array|string $finder = 'all', \Psr\SimpleCache\CacheInterface|string|null $cache = null, \Closure|string|null $cacheKey = null, mixed ...$args)
+ * @extends \Cake\ORM\Table<array{Nullable: \Translate\Model\Behavior\NullableBehavior}, \Translate\Model\Entity\TranslateLocale>
+ * @property \Cake\ORM\Association\HasMany<\Translate\Model\Table\TranslateTermsTable> $TranslateTerms
+ * @property \Cake\ORM\Association\BelongsTo<\Translate\Model\Table\TranslateProjectsTable> $TranslateProjects
+ * @property \Cake\ORM\Association\BelongsTo<\Data\Model\Table\LanguagesTable> $Languages
+ * @method \Translate\Model\Entity\TranslateLocale get(mixed $primaryKey, string $finder = 'all', \Psr\SimpleCache\CacheInterface|string|null $cache = null, \Closure|string|null $cacheKey = null, mixed ...$args)
  * @method \Translate\Model\Entity\TranslateLocale newEntity(array $data, array $options = [])
  * @method array<\Translate\Model\Entity\TranslateLocale> newEntities(array $data, array $options = [])
  * @method \Translate\Model\Entity\TranslateLocale|false save(\Cake\Datasource\EntityInterface $entity, array $options = [])
@@ -46,6 +46,7 @@ class TranslateLocalesTable extends Table {
 	 * @return \Cake\Validation\Validator
 	 */
 	public function validationDefault(Validator $validator): Validator {
+		$validator->setProvider('table', $this);
 		$validator
 			->scalar('name')
 			->requirePresence('name', 'create')

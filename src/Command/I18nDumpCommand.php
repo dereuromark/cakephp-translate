@@ -3,18 +3,23 @@
 namespace Translate\Command;
 
 use Cake\Command\Command;
-use Cake\Console\Arguments;
-use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
 use Cake\Core\Plugin;
 use Cake\Utility\Inflector;
 use Translate\Filesystem\Dumper;
 use Translate\Model\Entity\TranslateProject;
+use Translate\Model\Table\TranslateDomainsTable;
+use Translate\Model\Table\TranslateLocalesTable;
+use Translate\Model\Table\TranslateProjectsTable;
+use Translate\Model\Table\TranslateTermsTable;
+use Translate\Model\TypedTableLocatorTrait;
 
 /**
  * @property \Translate\Model\Table\TranslateStringsTable $TranslateStrings
  */
 class I18nDumpCommand extends Command {
+
+	use TypedTableLocatorTrait;
 
 	protected ?string $defaultTable = 'Translate.TranslateStrings';
 
@@ -51,11 +56,11 @@ class I18nDumpCommand extends Command {
 	/**
 	 * Execute the command
 	 *
-	 * @param \Cake\Console\Arguments $args The command arguments.
-	 * @param \Cake\Console\ConsoleIo $io The console io
 	 * @return int|null The exit code or null for success
 	 */
-	public function execute(Arguments $args, ConsoleIo $io): ?int {
+	public function execute(): ?int {
+		$args = $this->args;
+		$io = $this->io;
 		$plugin = '';
 		if ($args->getOption('paths')) {
 			$this->_paths = explode(',', (string)$args->getOption('paths'));
@@ -72,9 +77,9 @@ class I18nDumpCommand extends Command {
 		}
 
 		/** @var \Translate\Model\Entity\TranslateLocale[] $languages */
-		$languages = $this->fetchTable('Translate.TranslateLocales')->getExtractable($this->_projectId)->all()->toArray();
+		$languages = $this->fetchTranslateTable('Translate.TranslateLocales', TranslateLocalesTable::class)->getExtractable($this->_projectId)->all()->toArray();
 		/** @var \Translate\Model\Entity\TranslateDomain[] $domains */
-		$domains = $this->fetchTable('Translate.TranslateDomains')->getActive()->where(['TranslateDomains.translate_project_id' => $this->_projectId])->all()->toArray();
+		$domains = $this->fetchTranslateTable('Translate.TranslateDomains', TranslateDomainsTable::class)->getActive()->where(['TranslateDomains.translate_project_id' => $this->_projectId])->all()->toArray();
 		if (!$domains) {
 			$io->abort('No active domains found to dump.');
 		}
@@ -85,7 +90,7 @@ class I18nDumpCommand extends Command {
 		foreach ($domains as $domain) {
 			foreach ($languages as $language) {
 				/** @var array<\Translate\Model\Entity\TranslateTerm> $translations */
-				$translations = $this->fetchTable('Translate.TranslateTerms')->getTranslations($language->id, $domain->id)->toArray();
+				$translations = $this->fetchTranslateTable('Translate.TranslateTerms', TranslateTermsTable::class)->getTranslations($language->id, $domain->id)->toArray();
 
 				if (!$translations) {
 					continue;
@@ -138,7 +143,7 @@ class I18nDumpCommand extends Command {
 	 */
 	protected function findProjectId(string $plugin): ?int {
 		/** @var \Translate\Model\Entity\TranslateProject|null $project */
-		$project = $this->fetchTable('Translate.TranslateProjects')
+		$project = $this->fetchTranslateTable('Translate.TranslateProjects', TranslateProjectsTable::class)
 			->find()
 			->where($plugin !== ''
 				? ['type' => TranslateProject::TYPE_PLUGIN, 'name' => $plugin]
@@ -146,14 +151,14 @@ class I18nDumpCommand extends Command {
 			->first();
 		if (!$project) {
 			/** @var \Translate\Model\Entity\TranslateProject $project */
-			$project = $this->fetchTable('Translate.TranslateProjects')
+			$project = $this->fetchTranslateTable('Translate.TranslateProjects', TranslateProjectsTable::class)
 				->newEntity([
 					'name' => $plugin ?: 'App',
 					'type' => $plugin !== '' ? TranslateProject::TYPE_PLUGIN : TranslateProject::TYPE_APP,
 					'default' => $plugin === '',
 					'status' => TranslateProject::STATUS_HIDDEN,
 				]);
-			$this->fetchTable('Translate.TranslateProjects')
+			$this->fetchTranslateTable('Translate.TranslateProjects', TranslateProjectsTable::class)
 				->saveOrFail($project);
 		}
 

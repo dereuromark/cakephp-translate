@@ -15,13 +15,13 @@
 				<?= $this->Html->link(
 					'<i class="fas fa-edit"></i> ' . __d('translate', 'Edit Translate Project'),
 					['action' => 'edit', $translateProject->id],
-					['escapeTitle' => false, 'class' => 'list-group-item list-group-item-action'],
+					['escape' => false, 'escapeAttributes' => true, 'class' => 'list-group-item list-group-item-action'],
 				) ?>
 				<?= $this->Form->postButton(
 					'<i class="fas fa-trash"></i> ' . __d('translate', 'Delete Translate Project'),
 					['action' => 'delete', $translateProject->id],
 					[
-						'escapeTitle' => false,
+						'escape' => false, 'escapeAttributes' => true,
 						'class' => 'list-group-item list-group-item-action text-danger text-start w-100',
 						'form' => [
 							'class' => 'd-inline',
@@ -32,7 +32,7 @@
 				<?= $this->Html->link(
 					'<i class="fas fa-list"></i> ' . __d('translate', 'List Translate Projects'),
 					['action' => 'index'],
-					['escapeTitle' => false, 'class' => 'list-group-item list-group-item-action'],
+					['escape' => false, 'escapeAttributes' => true, 'class' => 'list-group-item list-group-item-action'],
 				) ?>
 			</div>
 		</div>
@@ -137,18 +137,18 @@
 										<?= $this->Html->link(
 											$this->Icon->render('view'),
 											['controller' => 'TranslateDomains', 'action' => 'view', $translateDomain->id],
-											['escapeTitle' => false, 'class' => 'btn btn-outline-primary', 'title' => __d('translate', 'View')],
+											['escape' => false, 'escapeAttributes' => true, 'class' => 'btn btn-outline-primary', 'title' => __d('translate', 'View')],
 										) ?>
 										<?= $this->Html->link(
 											$this->Icon->render('edit'),
 											['controller' => 'TranslateDomains', 'action' => 'edit', $translateDomain->id],
-											['escapeTitle' => false, 'class' => 'btn btn-outline-secondary', 'title' => __d('translate', 'Edit')],
+											['escape' => false, 'escapeAttributes' => true, 'class' => 'btn btn-outline-secondary', 'title' => __d('translate', 'Edit')],
 										) ?>
 										<?= $this->Form->postButton(
 											$this->Icon->render('delete'),
 											['controller' => 'TranslateDomains', 'action' => 'delete', $translateDomain->id],
 											[
-												'escapeTitle' => false,
+												'escape' => false, 'escapeAttributes' => true,
 												'class' => 'btn btn-outline-danger',
 												'title' => __d('translate', 'Delete'),
 												'form' => [

@@ -23,6 +23,7 @@ export default defineConfig({
       ] },
       { text: 'Reference', items: [
         { text: 'Configuration', link: '/reference/configuration' },
+        { text: 'Upgrading to CakePHP 6', link: '/reference/upgrading' },
         { text: 'CLI commands', link: '/reference/cli' },
         { text: 'Translator engines', link: '/TranslatorEngines' },
         { text: 'Layout', link: '/contribute/layout' },
@@ -31,7 +32,7 @@ export default defineConfig({
     ],
     search: { provider: 'local' },
     socialLinks: [{ icon: 'github', link: 'https://github.com/dereuromark/cakephp-translate' }],
-    editLink: { pattern: 'https://github.com/dereuromark/cakephp-translate/edit/master/docs/:path' },
+    editLink: { pattern: 'https://github.com/dereuromark/cakephp-translate/edit/cake6/docs/:path' },
     footer: { message: 'Released under the MIT License.', copyright: 'Copyright Mark Scherer' },
   },
 })

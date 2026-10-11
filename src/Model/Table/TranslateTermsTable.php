@@ -14,10 +14,10 @@ use Exception;
 use Translate\Model\Filter\TranslateTermsCollection;
 
 /**
- * @extends \Cake\ORM\Table<array{AuditLog: \AuditStash\Model\Behavior\AuditLogBehavior, Nullable: \Translate\Model\Behavior\NullableBehavior, Search: \Search\Model\Behavior\SearchBehavior}>
- * @property \Translate\Model\Table\TranslateStringsTable&\Cake\ORM\Association\BelongsTo $TranslateStrings
- * @property \Translate\Model\Table\TranslateLocalesTable&\Cake\ORM\Association\BelongsTo $TranslateLocales
- * @method \Translate\Model\Entity\TranslateTerm get(mixed $primaryKey, array|string $finder = 'all', \Psr\SimpleCache\CacheInterface|string|null $cache = null, \Closure|string|null $cacheKey = null, mixed ...$args)
+ * @extends \Cake\ORM\Table<array{AuditLog: \AuditStash\Model\Behavior\AuditLogBehavior, Nullable: \Translate\Model\Behavior\NullableBehavior, Search: \Search\Model\Behavior\SearchBehavior}, \Translate\Model\Entity\TranslateTerm>
+ * @property \Cake\ORM\Association\BelongsTo<\Translate\Model\Table\TranslateStringsTable> $TranslateStrings
+ * @property \Cake\ORM\Association\BelongsTo<\Translate\Model\Table\TranslateLocalesTable> $TranslateLocales
+ * @method \Translate\Model\Entity\TranslateTerm get(mixed $primaryKey, string $finder = 'all', \Psr\SimpleCache\CacheInterface|string|null $cache = null, \Closure|string|null $cacheKey = null, mixed ...$args)
  * @method \Translate\Model\Entity\TranslateTerm newEntity(array $data, array $options = [])
  * @method array<\Translate\Model\Entity\TranslateTerm> newEntities(array $data, array $options = [])
  * @method \Translate\Model\Entity\TranslateTerm|false save(\Cake\Datasource\EntityInterface $entity, array $options = [])
@@ -42,9 +42,9 @@ class TranslateTermsTable extends Table {
 	public array $order = ['modified' => 'DESC'];
 
 	/**
-	 * @var string
+	 * @var array<string>|string|null
 	 */
-	public string $displayField = 'content';
+	public array|string|null $displayField = 'content';
 
 	/**
 	 * Custom validation rule to check if placeholders match between original and translation
@@ -112,6 +112,7 @@ class TranslateTermsTable extends Table {
 	 * @return \Cake\Validation\Validator
 	 */
 	public function validationDefault(Validator $validator): Validator {
+		$validator->setProvider('table', $this);
 		$validator
 			->numeric('translate_string_id')
 			->allowEmptyString('translate_string_id');

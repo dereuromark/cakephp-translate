@@ -55,6 +55,8 @@ class TranslateControllerTest extends IntegrationTestCase {
 
 		$this->assertResponseCode(200);
 		$this->assertNoRedirect();
+		$this->assertResponseContains('<i class="fas fa-edit"></i>');
+		$this->assertResponseNotContains('&lt;i class=');
 
 		// Verify all required view variables are set
 		$this->assertNotNull($this->viewVariable('coverage'));
@@ -181,7 +183,7 @@ class TranslateControllerTest extends IntegrationTestCase {
 		$this->assertResponseCode(200);
 		$this->assertNoRedirect();
 
-		$result = json_decode($this->_response->getBody(), true);
+		$result = json_decode($this->response->getBody(), true);
 		$expected = [
 			'translation' => 'rehtaF',
 		];
@@ -244,7 +246,7 @@ class TranslateControllerTest extends IntegrationTestCase {
 
 		$this->assertResponseCode(302);
 		$this->assertRedirect(['plugin' => 'Translate', 'controller' => 'Translate', 'action' => 'index']);
-		$flash = $this->_requestSession->read('Flash.flash');
+		$flash = $this->requestSession->read('Flash.flash');
 		$this->assertNotEmpty($flash);
 		$this->assertStringContainsString('Project switched to', $flash[0]['message']);
 		$this->assertSession(1, 'TranslateProject.id');

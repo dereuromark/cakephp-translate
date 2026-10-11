@@ -4,6 +4,7 @@ namespace Translate\Controller\Admin;
 
 use Translate\Controller\TranslateAppController;
 use Translate\Model\Entity\TranslateProject;
+use Translate\Model\Table\TranslateLocalesTable;
 
 /**
  * TranslateProjects Controller
@@ -123,7 +124,7 @@ class TranslateProjectsController extends TranslateAppController {
 			'strings' => __d('translate', 'Translate Strings'),
 			'groups' => __d('translate', 'Translate Domains'),
 		];
-		$translateLocalesTable = $this->fetchTable('Translate.TranslateLocales');
+		$translateLocalesTable = $this->fetchTranslateTable('Translate.TranslateLocales', TranslateLocalesTable::class);
 		$languages = $translateLocalesTable->find('list');
 		$id = $this->request->getSession()->read('TranslateProject.id');
 

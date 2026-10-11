@@ -3,14 +3,14 @@
 namespace TestApp;
 
 use Cake\Console\CommandCollection;
+use Cake\Container\ContainerInterface;
+use Cake\Container\ReflectionContainer;
 use Cake\Core\Configure;
-use Cake\Core\ContainerInterface;
 use Cake\Core\PluginCollection;
 use Cake\Http\BaseApplication;
 use Cake\Http\MiddlewareQueue;
 use Cake\Routing\Middleware\RoutingMiddleware;
 use Cake\Routing\RouteBuilder;
-use League\Container\ReflectionContainer;
 use Translate\TranslatePlugin;
 
 class Application extends BaseApplication {
@@ -30,10 +30,11 @@ class Application extends BaseApplication {
 	}
 
 	/**
-	 * @param \Cake\Core\ContainerInterface $container The container to add services to.
+	 * @param \Cake\Container\ContainerInterface $container The container to add services to.
 	 * @return void
 	 */
 	public function services(ContainerInterface $container): void {
+		(new TranslatePlugin())->services($container);
 		$container->delegate(
 			new ReflectionContainer(Configure::read('debug')),
 		);

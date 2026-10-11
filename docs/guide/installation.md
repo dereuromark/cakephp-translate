@@ -1,9 +1,13 @@
 # Installation
 
+This development branch requires PHP 8.5 and CakePHP 6. The application must allow development stability for unreleased framework and companion packages. Keep stable packages preferred.
+
 Install the plugin and migrations from your application directory:
 
 ```sh
-composer require dereuromark/cakephp-translate cakephp/migrations
+composer config minimum-stability dev
+composer config prefer-stable true
+composer require dereuromark/cakephp-translate:dev-cake6 cakephp/migrations:dev-fix/6.x-cakephp-compatibility
 ```
 
 Composer declares the supported PHP and CakePHP versions. For older applications, see the [version map](https://github.com/dereuromark/cakephp-translate/wiki#cakephp-version-map).

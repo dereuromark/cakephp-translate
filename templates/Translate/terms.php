@@ -182,7 +182,7 @@
 							<?= $this->Html->link(
 								'<i class="fas fa-language"></i>',
 								['action' => 'translate', $translateString->translate_domain->name, $translateString->id],
-								['escapeTitle' => false, 'class' => 'btn btn-sm btn-primary', 'title' => __d('translate', 'Translate')]
+								['escape' => false, 'escapeAttributes' => true, 'class' => 'btn btn-sm btn-primary', 'title' => __d('translate', 'Translate')]
 							) ?>
 						</td>
 					</tr>

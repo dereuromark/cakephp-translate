@@ -7,10 +7,10 @@ use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
 /**
- * @extends \Cake\ORM\Table<array{Nullable: \Translate\Model\Behavior\NullableBehavior}>
- * @property \Translate\Model\Table\TranslateProjectsTable&\Cake\ORM\Association\BelongsTo $TranslateProjects
- * @property \Translate\Model\Table\TranslateStringsTable&\Cake\ORM\Association\HasMany $TranslateStrings
- * @method \Translate\Model\Entity\TranslateDomain get(mixed $primaryKey, array|string $finder = 'all', \Psr\SimpleCache\CacheInterface|string|null $cache = null, \Closure|string|null $cacheKey = null, mixed ...$args)
+ * @extends \Cake\ORM\Table<array{Nullable: \Translate\Model\Behavior\NullableBehavior}, \Translate\Model\Entity\TranslateDomain>
+ * @property \Cake\ORM\Association\BelongsTo<\Translate\Model\Table\TranslateProjectsTable> $TranslateProjects
+ * @property \Cake\ORM\Association\HasMany<\Translate\Model\Table\TranslateStringsTable> $TranslateStrings
+ * @method \Translate\Model\Entity\TranslateDomain get(mixed $primaryKey, string $finder = 'all', \Psr\SimpleCache\CacheInterface|string|null $cache = null, \Closure|string|null $cacheKey = null, mixed ...$args)
  * @method \Translate\Model\Entity\TranslateDomain newEntity(array $data, array $options = [])
  * @method array<\Translate\Model\Entity\TranslateDomain> newEntities(array $data, array $options = [])
  * @method \Translate\Model\Entity\TranslateDomain|false save(\Cake\Datasource\EntityInterface $entity, array $options = [])

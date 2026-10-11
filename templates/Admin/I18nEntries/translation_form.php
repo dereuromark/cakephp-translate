@@ -100,7 +100,7 @@ $isNew = $translation->isNew();
 				<div class="mb-3">
 					<?= $this->Form->button(
 						'<i class="fas fa-save"></i> ' . __d('translate', 'Save Translation'),
-						['class' => 'btn btn-primary', 'escapeTitle' => false],
+						['class' => 'btn btn-primary', 'escape' => false, 'escapeAttributes' => true],
 					) ?>
 					<?= $this->Html->link(
 						__d('translate', 'Cancel'),

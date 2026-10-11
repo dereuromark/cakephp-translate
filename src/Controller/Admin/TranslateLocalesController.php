@@ -5,6 +5,7 @@ namespace Translate\Controller\Admin;
 use Cake\Http\Exception\NotFoundException;
 use Translate\Controller\TranslateAppController;
 use Translate\Filesystem\Creator;
+use Translate\Model\Table\TranslateProjectsTable;
 
 /**
  * TranslateLocales Controller
@@ -25,7 +26,7 @@ class TranslateLocalesController extends TranslateAppController {
 	 */
 	public function toLocale() {
 		// Get path from current project
-		$TranslateProjects = $this->fetchTable('Translate.TranslateProjects');
+		$TranslateProjects = $this->fetchTranslateTable('Translate.TranslateProjects', TranslateProjectsTable::class);
 		$project = $TranslateProjects->get($this->Translation->currentProjectId());
 
 		$path = $project->path ?? null;
@@ -74,7 +75,7 @@ class TranslateLocalesController extends TranslateAppController {
 	 */
 	public function fromLocale() {
 		// Get path from current project
-		$TranslateProjects = $this->fetchTable('Translate.TranslateProjects');
+		$TranslateProjects = $this->fetchTranslateTable('Translate.TranslateProjects', TranslateProjectsTable::class);
 		$project = $TranslateProjects->get($this->Translation->currentProjectId());
 
 		$path = $project->path ?? null;

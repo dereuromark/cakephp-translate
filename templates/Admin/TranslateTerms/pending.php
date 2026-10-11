@@ -31,7 +31,7 @@
 						<?= $this->Form->hidden('locale_id', ['value' => $localeId]) ?>
 						<?= $this->Form->button(
 							'<i class="fas fa-check"></i> ' . __d('translate', 'Confirm All'),
-							['type' => 'submit', 'class' => 'btn btn-sm btn-success w-100', 'escapeTitle' => false]
+							['type' => 'submit', 'class' => 'btn btn-sm btn-success w-100', 'escape' => false, 'escapeAttributes' => true]
 						) ?>
 						<?= $this->Form->end() ?>
 					</div>
@@ -57,7 +57,7 @@
 						[
 							'type' => 'submit',
 							'class' => 'btn btn-sm btn-primary w-100',
-							'escapeTitle' => false,
+							'escape' => false, 'escapeAttributes' => true,
 							'confirm' => __d('translate', 'Are you sure you want to confirm all pending translations?'),
 						]
 					) ?>
@@ -141,13 +141,13 @@
 							<?= $this->Html->link(
 								'<i class="fas fa-eye"></i>',
 								['action' => 'view', $term->id],
-								['escapeTitle' => false, 'class' => 'btn btn-sm btn-info', 'title' => __d('translate', 'View')]
+								['escape' => false, 'escapeAttributes' => true, 'class' => 'btn btn-sm btn-info', 'title' => __d('translate', 'View')]
 							) ?>
 							<?= $this->Form->postButton(
 								'<i class="fas fa-check"></i>',
 								['action' => 'confirm', $term->id],
 								[
-									'escapeTitle' => false,
+									'escape' => false, 'escapeAttributes' => true,
 									'class' => 'btn btn-sm btn-success',
 									'title' => __d('translate', 'Confirm'),
 									'form' => [

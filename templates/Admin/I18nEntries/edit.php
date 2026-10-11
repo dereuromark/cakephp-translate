@@ -121,12 +121,12 @@ $cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
 			<div class="card-footer">
 				<?= $this->Form->button(
 					'<i class="fas fa-save"></i> ' . __d('translate', 'Save'),
-					['class' => 'btn btn-primary', 'escapeTitle' => false],
+					['class' => 'btn btn-primary', 'escape' => false, 'escapeAttributes' => true],
 				) ?>
 				<?= $this->Html->link(
 					'<i class="fas fa-times"></i> ' . __d('translate', 'Cancel'),
 					['action' => 'entries', $tableName],
-					['class' => 'btn btn-outline-secondary', 'escapeTitle' => false],
+					['class' => 'btn btn-outline-secondary', 'escape' => false, 'escapeAttributes' => true],
 				) ?>
 			</div>
 			<?= $this->Form->end() ?>
@@ -158,7 +158,7 @@ $cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
 				</div>
 				<?= $this->Form->button(
 					'<i class="fas fa-language"></i> ' . __d('translate', 'Translate Now'),
-					['class' => 'btn btn-info w-100', 'escapeTitle' => false],
+					['class' => 'btn btn-info w-100', 'escape' => false, 'escapeAttributes' => true],
 				) ?>
 				<?= $this->Form->end() ?>
 			</div>

@@ -50,13 +50,13 @@ class CakeStringExtractor extends I18nExtractCommand {
 		$this->basePath = $basePath ?? dirname($firstPath);
 		$this->ensureConstants($this->basePath);
 		// Reset state
-		$this->_paths = $paths;
-		$this->_files = [];
-		$this->_translations = [];
+		$this->paths = $paths;
+		$this->files = [];
+		$this->translations = [];
 		$this->extractedTranslations = [];
 
 		// Search for files
-		$this->_searchFiles();
+		$this->searchFiles();
 
 		// Create stub IO to suppress output
 		$out = new StubConsoleOutput();
@@ -67,8 +67,10 @@ class CakeStringExtractor extends I18nExtractCommand {
 		// Create stub arguments
 		$args = new Arguments([], [], []);
 
-		// Extract tokens (this populates $this->_translations)
-		$this->_extractTokens($args, $io);
+		// Extract tokens (this populates $this->translations)
+		$this->args = $args;
+		$this->io = $io;
+		$this->extractTokens();
 
 		// Convert to our format
 		return $this->convertTranslations();
@@ -88,7 +90,7 @@ class CakeStringExtractor extends I18nExtractCommand {
 	protected function convertTranslations(): array {
 		$result = [];
 
-		foreach ($this->_translations as $domain => $messages) {
+		foreach ($this->translations as $domain => $messages) {
 			$result[$domain] = [];
 
 			foreach ($messages as $msgid => $contexts) {

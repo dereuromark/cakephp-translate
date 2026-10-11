@@ -3,15 +3,16 @@
 namespace Translate;
 
 use Cake\Console\CommandCollection;
+use Cake\Container\ContainerInterface;
+use Cake\Container\ReflectionContainer;
 use Cake\Core\BasePlugin;
 use Cake\Core\Configure;
-use Cake\Core\ContainerInterface;
 use Cake\Routing\Route\DashedRoute;
 use Cake\Routing\RouteBuilder;
-use League\Container\ReflectionContainer;
 use Translate\Command\I18nDumpCommand;
 use Translate\Command\I18nExtractCommand;
 use Translate\Command\I18nValidateCommand;
+use Translate\Service\ExtractService;
 
 /**
  * Plugin for Translate
@@ -24,14 +25,14 @@ class TranslatePlugin extends BasePlugin {
 	 * @return void
 	 */
 	public function routes(RouteBuilder $routes): void {
-		$routes->plugin('Translate', ['path' => '/translate'], function (RouteBuilder $routes) {
+		$routes->plugin('Translate', params: ['path' => '/translate'], callback: function (RouteBuilder $routes) {
 			$routes->connect('/', ['controller' => 'Translate', 'action' => 'index'], ['routeClass' => DashedRoute::class]);
 
 			$routes->fallbacks(DashedRoute::class);
 		});
 
 		$routes->prefix('Admin', function (RouteBuilder $routes) {
-			$routes->plugin('Translate', ['path' => '/translate'], function (RouteBuilder $routes) {
+			$routes->plugin('Translate', params: ['path' => '/translate'], callback: function (RouteBuilder $routes) {
 				$routes->connect('/', ['controller' => 'Translate', 'action' => 'index'], ['routeClass' => DashedRoute::class]);
 
 				$routes->fallbacks(DashedRoute::class);
@@ -54,10 +55,11 @@ class TranslatePlugin extends BasePlugin {
 	}
 
 	/**
-	 * @param \Cake\Core\ContainerInterface $container The container to add services to.
+	 * @param \Cake\Container\ContainerInterface $container The container to add services to.
 	 * @return void
 	 */
 	public function services(ContainerInterface $container): void {
+		$container->add(ExtractService::class);
 		$container->delegate(
 			new ReflectionContainer(Configure::read('debug')),
 		);

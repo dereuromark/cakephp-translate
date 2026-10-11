@@ -10,10 +10,10 @@ use Exception;
 use Translate\Model\Entity\TranslateProject;
 
 /**
- * @extends \Cake\ORM\Table<array{Nullable: \Translate\Model\Behavior\NullableBehavior}>
- * @property \Translate\Model\Table\TranslateDomainsTable&\Cake\ORM\Association\HasMany $TranslateDomains
+ * @extends \Cake\ORM\Table<array{Nullable: \Translate\Model\Behavior\NullableBehavior}, \Translate\Model\Entity\TranslateProject>
+ * @property \Cake\ORM\Association\HasMany<\Translate\Model\Table\TranslateDomainsTable> $TranslateDomains
  * @property \Translate\Model\Table\TranslateTermsTable|\Cake\ORM\Association\HasMany $TranslateTerms
- * @method \Translate\Model\Entity\TranslateProject get(mixed $primaryKey, array|string $finder = 'all', \Psr\SimpleCache\CacheInterface|string|null $cache = null, \Closure|string|null $cacheKey = null, mixed ...$args)
+ * @method \Translate\Model\Entity\TranslateProject get(mixed $primaryKey, string $finder = 'all', \Psr\SimpleCache\CacheInterface|string|null $cache = null, \Closure|string|null $cacheKey = null, mixed ...$args)
  * @method \Translate\Model\Entity\TranslateProject newEntity(array $data, array $options = [])
  * @method array<\Translate\Model\Entity\TranslateProject> newEntities(array $data, array $options = [])
  * @method \Translate\Model\Entity\TranslateProject|false save(\Cake\Datasource\EntityInterface $entity, array $options = [])

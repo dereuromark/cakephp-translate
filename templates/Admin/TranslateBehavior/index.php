@@ -20,12 +20,12 @@
 					<?= $this->Html->link(
 						'<i class="fas fa-list"></i> ' . __d('translate', 'Manage Entries'),
 						['controller' => 'I18nEntries', 'action' => 'index'],
-						['escapeTitle' => false, 'class' => 'btn btn-light btn-sm'],
+						['escape' => false, 'escapeAttributes' => true, 'class' => 'btn btn-light btn-sm'],
 					) ?>
 					<?= $this->Html->link(
 						'<i class="fas fa-plus"></i> ' . __d('translate', 'Generate Migration'),
 						['action' => 'generate'],
-						['escapeTitle' => false, 'class' => 'btn btn-success btn-sm'],
+						['escape' => false, 'escapeAttributes' => true, 'class' => 'btn btn-success btn-sm'],
 					) ?>
 				</div>
 			</div>
@@ -134,13 +134,13 @@
 										<?= $this->Html->link(
 											'<i class="fas fa-eye"></i>',
 											['action' => 'view', $info['shadow_table']],
-											['escapeTitle' => false, 'class' => 'btn btn-sm btn-outline-primary', 'title' => __d('translate', 'View Shadow Table')],
+											['escape' => false, 'escapeAttributes' => true, 'class' => 'btn btn-sm btn-outline-primary', 'title' => __d('translate', 'View Shadow Table')],
 										) ?>
 									<?php } else { ?>
 										<?= $this->Html->link(
 											'<i class="fas fa-plus"></i>',
 											['action' => 'generate', $info['table']],
-											['escapeTitle' => false, 'class' => 'btn btn-sm btn-outline-success', 'title' => __d('translate', 'Generate Migration')],
+											['escape' => false, 'escapeAttributes' => true, 'class' => 'btn btn-sm btn-outline-success', 'title' => __d('translate', 'Generate Migration')],
 										) ?>
 									<?php } ?>
 								</td>
@@ -208,7 +208,7 @@
 									<?= $this->Html->link(
 										'<i class="fas fa-eye"></i>',
 										['action' => 'view', $info['shadow_table']],
-										['escapeTitle' => false, 'class' => 'btn btn-sm btn-outline-primary', 'title' => __d('translate', 'View Details')],
+										['escape' => false, 'escapeAttributes' => true, 'class' => 'btn btn-sm btn-outline-primary', 'title' => __d('translate', 'View Details')],
 									) ?>
 								</td>
 							</tr>
@@ -261,7 +261,7 @@
 									<?= $this->Html->link(
 										'<i class="fas fa-magic"></i> ' . __d('translate', 'Generate Migration'),
 										['action' => 'generate', $info['table']],
-										['escapeTitle' => false, 'class' => 'btn btn-sm btn-success'],
+										['escape' => false, 'escapeAttributes' => true, 'class' => 'btn btn-sm btn-success'],
 									) ?>
 								</td>
 							</tr>

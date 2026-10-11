@@ -15,13 +15,13 @@
 				<?= $this->Html->link(
 					'<i class="fas fa-edit"></i> ' . __d('translate', 'Edit Translate Domain'),
 					['action' => 'edit', $translateDomain->id],
-					['escapeTitle' => false, 'class' => 'list-group-item list-group-item-action'],
+					['escape' => false, 'escapeAttributes' => true, 'class' => 'list-group-item list-group-item-action'],
 				) ?>
 				<?= $this->Form->postButton(
 					'<i class="fas fa-trash"></i> ' . __d('translate', 'Delete Translate Domain'),
 					['action' => 'delete', $translateDomain->id],
 					[
-						'escapeTitle' => false,
+						'escape' => false, 'escapeAttributes' => true,
 						'class' => 'list-group-item list-group-item-action text-danger text-start w-100',
 						'form' => [
 							'class' => 'd-inline',
@@ -32,12 +32,12 @@
 				<?= $this->Html->link(
 					'<i class="fas fa-list"></i> ' . __d('translate', 'List Translate Domains'),
 					['action' => 'index'],
-					['escapeTitle' => false, 'class' => 'list-group-item list-group-item-action'],
+					['escape' => false, 'escapeAttributes' => true, 'class' => 'list-group-item list-group-item-action'],
 				) ?>
 				<?= $this->Html->link(
 					'<i class="fas fa-plus-circle"></i> ' . __d('translate', 'New Translate Domain'),
 					['action' => 'add'],
-					['escapeTitle' => false, 'class' => 'list-group-item list-group-item-action'],
+					['escape' => false, 'escapeAttributes' => true, 'class' => 'list-group-item list-group-item-action'],
 				) ?>
 			</div>
 		</div>

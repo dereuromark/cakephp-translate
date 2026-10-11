@@ -3,8 +3,6 @@
 namespace Translate\Command;
 
 use Cake\Command\Command;
-use Cake\Console\Arguments;
-use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
 use Cake\Core\App;
 use Cake\Core\Plugin;
@@ -39,11 +37,11 @@ class I18nValidateCommand extends Command {
 	/**
 	 * Execute the command
 	 *
-	 * @param \Cake\Console\Arguments $args The command arguments.
-	 * @param \Cake\Console\ConsoleIo $io The console io
 	 * @return int|null The exit code or null for success
 	 */
-	public function execute(Arguments $args, ConsoleIo $io): ?int {
+	public function execute(): ?int {
+		$args = $this->args;
+		$io = $this->io;
 		$keyBased = (bool)$args->getOption('key-based');
 		$jsonOutput = (bool)$args->getOption('json');
 		$summaryOnly = (bool)$args->getOption('summary');

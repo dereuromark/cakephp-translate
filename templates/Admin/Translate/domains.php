@@ -156,7 +156,7 @@ $shortenPath = function (string $abs) use ($projectPath): string {
 												<?php if ($po) { ?>
 													<i class="fas fa-check text-success" title="<?= h($po) ?>"></i>
 												<?php } else { ?>
-													<i class="fas fa-times text-danger" title="<?= __d('translate', 'Missing app-level {0}.po — falls back to default domain', $domain) ?>"></i>
+													<i class="fas fa-times text-danger" title="<?= h(__d('translate', 'Missing app-level {0}.po — falls back to default domain', $domain)) ?>"></i>
 												<?php } ?>
 											</td>
 										<?php } ?>
@@ -185,7 +185,7 @@ $shortenPath = function (string $abs) use ($projectPath): string {
 													</div>
 													<div class="mt-1">
 														<?= $this->Html->link(
-															'<i class="fas fa-file-import"></i> ' . __d('translate', 'Import {0}.pot', $domain),
+															'<i class="fas fa-file-import"></i> ' . h(__d('translate', 'Import {0}.pot', $domain)),
 															['controller' => 'TranslateStrings', 'action' => 'extract', '?' => ['domain' => $domain]],
 															['escape' => false, 'escapeAttributes' => true, 'class' => 'btn btn-sm btn-outline-info'],
 														) ?>
@@ -194,7 +194,7 @@ $shortenPath = function (string $abs) use ($projectPath): string {
 												case 'dump': ?>
 													<span class="badge bg-warning text-dark"><?= __d('translate', 'Stage 3: Dump') ?></span>
 													<div class="small text-warning mt-1">
-														<?= __d('translate', '{0} string(s) in DB but no app-level {1}.po — dump to filesystem so the app can load it.', $info['importedStringCount'], $domain) ?>
+														<?= h(__d('translate', '{0} string(s) in DB but no app-level {1}.po — dump to filesystem so the app can load it.', $info['importedStringCount'], $domain)) ?>
 													</div>
 													<div class="mt-1">
 														<?= $this->Html->link(

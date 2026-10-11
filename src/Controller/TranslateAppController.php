@@ -191,7 +191,7 @@ class TranslateAppController extends AppController {
 		}
 
 		if (class_exists(FormHelper::class)) {
-			$this->viewBuilder()->addHelper('BootstrapUi.Form');
+			$this->viewBuilder()->addHelper('BootstrapUI.Form');
 		}
 
 		// Make current project available to all views

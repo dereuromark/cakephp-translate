@@ -30,3 +30,5 @@ Translate does not require the Tools plugin. If your application loads Tools, th
 Use `quoteIdentifiers => true` in the application datasource configuration: the schema contains names such as `default` and `primary`. Keep translation strings and contexts case-sensitive so messages that differ only in case remain distinct.
 
 Continue with [Getting started](./getting-started.md). Loading the routes also exposes the public `/translate` interface. That interface permits public projects and requires the admin gate for private projects. The admin interface denies access until you configure its gate. To supply only custom routes, load the plugin with `routes => false` in application bootstrap and define the routes you need.
+
+The temporary Migrations constraint tracks the upstream [CakePHP 6 compatibility PR 1121](https://github.com/cakephp/migrations/pull/1121). Replace the branch constraint with the compatible release when it becomes available.

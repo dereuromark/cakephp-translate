@@ -89,6 +89,14 @@ class CakeStringExtractor extends I18nExtractCommand {
 	 */
 	protected function convertTranslations(): array {
 		$result = [];
+		$relativeFiles = [];
+		$basePath = rtrim($this->basePath, '/\\') . DIRECTORY_SEPARATOR;
+		foreach ($this->files as $file) {
+			$coreReference = '.' . str_replace(ROOT, '', $file);
+			$relativeFiles[$coreReference] = str_starts_with($file, $basePath)
+				? './' . str_replace(DIRECTORY_SEPARATOR, '/', substr($file, strlen($basePath)))
+				: $file;
+		}
 
 		foreach ($this->translations as $domain => $messages) {
 			$result[$domain] = [];
@@ -103,7 +111,7 @@ class CakeStringExtractor extends I18nExtractCommand {
 					if (!empty($details['references'])) {
 						foreach ($details['references'] as $file => $lines) {
 							foreach (array_unique($lines) as $line) {
-								$references[] = $file . ':' . $line;
+								$references[] = ($relativeFiles[$file] ?? $file) . ':' . $line;
 							}
 						}
 					}

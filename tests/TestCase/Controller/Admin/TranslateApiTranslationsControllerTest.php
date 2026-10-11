@@ -2,6 +2,7 @@
 
 namespace Translate\Test\TestCase\Controller\Admin;
 
+use Cake\Core\Configure;
 use Translate\Test\TestCase\IntegrationTestCase;
 
 /**
@@ -18,6 +19,7 @@ class TranslateApiTranslationsControllerTest extends IntegrationTestCase {
 	 */
 	protected array $fixtures = [
 		'plugin.Translate.TranslateApiTranslations',
+		'plugin.Translate.TranslateProjects',
 	];
 
 	/**
@@ -122,6 +124,12 @@ class TranslateApiTranslationsControllerTest extends IntegrationTestCase {
 		$this->assertResponseCode(302);
 		$this->assertRedirect(['action' => 'index']);
 		$this->assertFlashMessage('The translate api translation has been deleted.');
+	}
+
+	public function testAdminGateProtectsSuggestionCache(): void {
+		Configure::delete('Translate.adminAccess');
+		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateApiTranslations', 'action' => 'index']);
+		$this->assertResponseCode(403);
 	}
 
 }

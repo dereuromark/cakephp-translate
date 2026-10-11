@@ -37,8 +37,11 @@ By clicking any reference in your translate view it will open a modal with the h
 
 ![code-excerpt](code-excerpt.jpg)
 
-### TODO
-In the future we plan on allowing to jump right into code in development mode (from your browser to the IDE).
+### Editing source references
+The admin interface can display references and offers source editing in development. Enable the relevant reference settings only for users who may inspect and edit application source.
 
-We also think about allowing to auto-fix any translating string in the source files, e.g. in case of a typo (also dev only).
-A simple`preg_replace()` into the referenced files and the source string is corrected via one click.
+## Public translation interface
+
+The `/translate` interface is separate from the admin backend. Public projects can expose a collaborative translation form through your application’s authentication and authorization rules. Hidden or inactive projects require the configured admin gate. Only strings from the selected project may be edited. Set `Translate.showCodeReferences` to literal `true` to expose source excerpts through this interface.
+
+The admin **Clear all translation data** operation affects all projects. The normal Reset selection applies to the selected project. Clearing catalog data does not reset database identity sequences.

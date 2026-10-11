@@ -151,7 +151,7 @@ class TranslateProjectsTable extends Table {
 			'order' => [$this->getAlias() . '.default' => 'DESC'],
 		];
 		/** @var \Translate\Model\Entity\TranslateProject|null $res */
-		$res = $this->find('all', $options)->first();
+		$res = $this->find('all', ...$options)->first();
 		if (!$res) {
 			return null;
 		}

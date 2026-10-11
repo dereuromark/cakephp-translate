@@ -3,9 +3,11 @@
 namespace Translate\Controller\Admin;
 
 use Cake\Core\Configure;
+use Cake\Database\Connection;
 use Cake\Database\Schema\CollectionInterface;
 use Cake\Database\Schema\TableSchemaInterface;
 use Cake\Datasource\ConnectionManager;
+use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\NotFoundException;
 use Cake\ORM\Locator\LocatorAwareTrait;
 use Cake\Utility\Inflector;
@@ -312,7 +314,7 @@ class TranslateBehaviorController extends TranslateAppController {
 	 */
 	protected function getSampleData($connection, string $tableName, int $limit = 20): array {
 		return $connection
-			->execute("SELECT * FROM `{$tableName}` LIMIT {$limit}")
+			->execute('SELECT * FROM ' . $connection->getDriver()->quoteIdentifier($tableName) . " LIMIT {$limit}")
 			->fetchAll('assoc');
 	}
 
@@ -330,7 +332,7 @@ class TranslateBehaviorController extends TranslateAppController {
 		}
 
 		$localesResult = $connection
-			->execute("SELECT DISTINCT locale FROM `{$tableName}` ORDER BY locale")
+			->execute('SELECT DISTINCT locale FROM ' . $connection->getDriver()->quoteIdentifier($tableName) . ' ORDER BY locale')
 			->fetchAll('assoc');
 
 		return array_column($localesResult, 'locale');
@@ -743,6 +745,29 @@ PHP;
 AUTOFIELD;
 		}
 
+		$connection = ConnectionManager::get('default');
+		if (!$connection instanceof Connection) {
+			throw new BadRequestException('Generating migrations requires a database connection.');
+		}
+		$schema = $connection->getSchemaCollection()->describe($baseTableName);
+		$primaryKey = $schema->getPrimaryKey();
+		if ($primaryKey !== ['id']) {
+			throw new BadRequestException('The translation editor requires a single id primary key.');
+		}
+		$idColumn = $schema->getColumn('id');
+		if ($idColumn === null || !is_string($idColumn['type'] ?? null)) {
+			throw new BadRequestException('The id column must have a database type.');
+		}
+		$idType = $idColumn['type'];
+		$idOptions = ['null' => false];
+		if (!empty($idColumn['length'])) {
+			$idOptions['limit'] = $idColumn['length'];
+		}
+		if (isset($idColumn['unsigned'])) {
+			$idOptions['signed'] = !$idColumn['unsigned'];
+		}
+		$idOptionsCode = var_export($idOptions, true);
+
 		return <<<PHP
 <?php
 declare(strict_types=1);
@@ -761,17 +786,13 @@ class {$className} extends BaseMigration
      */
     public function change(): void
     {
-        \$table = \$this->table('{$shadowTableName}');
+        \$table = \$this->table('{$shadowTableName}', ['id' => false, 'primary_key' => ['id', 'locale']]);
 
         \$table
+            ->addColumn('id', '{$idType}', {$idOptionsCode})
             ->addColumn('locale', 'string', [
                 'default' => null,
                 'limit' => 6,
-                'null' => false,
-            ])
-            ->addColumn('foreign_key', 'integer', [
-                'default' => null,
-                'limit' => 10,
                 'null' => false,
             ])
 {$columnsCode}{$autoFieldCode}
@@ -782,11 +803,11 @@ class {$className} extends BaseMigration
             )
             ->addIndex(
                 [
-                    'foreign_key',
+                    'id',
                     'locale',
                 ],
                 [
-                    'name' => 'foreign_key_locale',
+                    'name' => 'id_locale',
                     'unique' => true,
                 ]
             )

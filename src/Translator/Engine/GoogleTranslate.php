@@ -87,7 +87,6 @@ class GoogleTranslate {
 		// Execute post
 		$result = curl_exec($ch);
 		// Close connection
-		curl_close($ch);
 
 		return (string)$result;
 	}
@@ -103,8 +102,10 @@ class GoogleTranslate {
 	protected static function getSentencesFromJSON($json) {
 		$sentencesArray = json_decode($json, true);
 		$sentences = '';
-		foreach ($sentencesArray['sentences'] as $s) {
-			$sentences .= $s['trans'] ?? '';
+		foreach ((array)($sentencesArray['sentences'] ?? []) as $s) {
+			if (is_array($s) && is_string($s['trans'] ?? null)) {
+				$sentences .= $s['trans'];
+			}
 		}
 
 		return $sentences;

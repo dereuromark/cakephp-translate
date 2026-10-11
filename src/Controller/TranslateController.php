@@ -2,6 +2,8 @@
 
 namespace Translate\Controller;
 
+use Cake\Core\Configure;
+use Cake\Event\EventInterface;
 use Cake\Http\Exception\NotFoundException;
 use Translate\Model\Entity\TranslateProject;
 use Translate\Utility\ReferenceResolver;
@@ -27,6 +29,24 @@ class TranslateController extends TranslateAppController {
 		$this->loadComponent('Search.Search', [
 			'actions' => ['terms'],
 		]);
+	}
+
+	public function beforeFilter(EventInterface $event): void {
+		parent::beforeFilter($event);
+		if ($event->isStopped()) {
+			return;
+		}
+		$projectId = $this->Translation->currentProjectId();
+		if ($projectId && $this->request->getParam('action') !== 'switchProject') {
+			$this->assertProjectAccess($projectId);
+		}
+	}
+
+	protected function assertProjectAccess(int $projectId): void {
+		$project = $this->fetchTable('Translate.TranslateProjects')->get($projectId);
+		if ($project->status !== TranslateProject::STATUS_PUBLIC) {
+			$this->enforceAdminAccess();
+		}
 	}
 
 	/**
@@ -134,7 +154,7 @@ class TranslateController extends TranslateAppController {
 
 		// Get filter options
 		$translateDomains = $translateStringsTable->TranslateDomains
-			->find('list', [
+			->find('list', ...[
 				'keyField' => 'name',
 				'valueField' => 'name',
 			])
@@ -143,7 +163,7 @@ class TranslateController extends TranslateAppController {
 			->toArray();
 
 		$translateLocales = $translateStringsTable->TranslateTerms->TranslateLocales
-			->find('list', ['keyField' => 'id', 'valueField' => 'name'])
+			->find('list', ...['keyField' => 'id', 'valueField' => 'name'])
 			->where(['translate_project_id IS' => $projectId, 'active' => true])
 			->orderBy(['name' => 'ASC'])
 			->toArray();
@@ -162,7 +182,7 @@ class TranslateController extends TranslateAppController {
 
 		if (!$domain || !$id) {
 			/** @var \Translate\Model\Entity\TranslateString|null $next */
-			$next = $translateStringsTable->getNext(null, null)->contain(['TranslateDomains'])->first();
+			$next = $translateStringsTable->getNext(null, null)->innerJoinWith('TranslateDomains', fn ($query) => $query->where(['TranslateDomains.translate_project_id' => $projectId]))->contain(['TranslateDomains'])->first();
 			if ($next) {
 				return $this->redirect([$next->translate_domain->name, $next->id]);
 			}
@@ -172,7 +192,10 @@ class TranslateController extends TranslateAppController {
 			return $this->redirect(['action' => 'index']);
 		}
 
-		$translateString = $translateStringsTable->get($id, ['contain' => ['TranslateDomains' => 'TranslateProjects']]);
+		$translateString = $translateStringsTable->get($id, ...['contain' => ['TranslateDomains' => 'TranslateProjects']]);
+		if ($translateString->translate_domain->translate_project_id !== $projectId) {
+			throw new NotFoundException('String does not belong to the selected project.');
+		}
 
 		/** @var \Translate\Model\Entity\TranslateLocale[] $translateLocales */
 		$translateLocales = $translateStringsTable->TranslateTerms->TranslateLocales->find()
@@ -333,9 +356,17 @@ class TranslateController extends TranslateAppController {
 	 * @return void
 	 */
 	public function displayReference(int $id, int $reference) {
+		if (Configure::read('Translate.showCodeReferences') !== true) {
+			throw new NotFoundException('Code references are disabled.');
+		}
 		$this->viewBuilder()->setLayout('ajax');
 
-		$translateString = $this->fetchTable('Translate.TranslateStrings')->get($id, ['contain' => ['TranslateDomains' => 'TranslateProjects']]);
+		$translateString = $this->fetchTable('Translate.TranslateStrings')->get($id, ...['contain' => ['TranslateDomains' => 'TranslateProjects']]);
+
+		$projectId = $this->Translation->currentProjectId();
+		if ($translateString->translate_domain->translate_project_id !== $projectId) {
+			throw new NotFoundException('String does not belong to the selected project.');
+		}
 
 		$referenceString = ReferenceResolver::getReferenceByIndex($translateString->references, $reference);
 		$parsed = ReferenceResolver::parseReference($referenceString);
@@ -387,7 +418,7 @@ class TranslateController extends TranslateAppController {
 		// Redirect back to previous page or index. Reject any externally-pointed `?redirect=`
 		// — accept only same-origin relative URLs (Issue #5: open redirect).
 		$redirect = $this->request->getQuery('redirect');
-		if (is_string($redirect) && $redirect !== '' && str_starts_with($redirect, '/') && !str_starts_with($redirect, '//')) {
+		if (is_string($redirect) && $redirect !== '' && str_starts_with($redirect, '/') && !str_starts_with($redirect, '//') && !str_contains($redirect, '\\') && !preg_match('/[\x00-\x20\x7f]/', $redirect)) {
 			return $this->redirect($redirect);
 		}
 
@@ -400,8 +431,10 @@ class TranslateController extends TranslateAppController {
 	 * @return \Cake\Http\Response|null
 	 */
 	public function switchProject() {
+		$this->request->allowMethod(['post']);
 		$projectId = (int)$this->request->getData('project_switch');
 		$translateProjectsTable = $this->fetchTable('Translate.TranslateProjects');
+		$this->assertProjectAccess($projectId);
 		$translateProject = $translateProjectsTable->get($projectId);
 
 		$this->request->getSession()->write('TranslateProject.id', $translateProject->id);

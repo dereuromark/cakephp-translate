@@ -60,7 +60,7 @@ class TranslateTermsController extends TranslateAppController {
 	 * @return \Cake\Http\Response|null|void
 	 */
 	public function view($id = null) {
-		$translateTerm = $this->TranslateTerms->get($id, [
+		$translateTerm = $this->TranslateTerms->get($id, ...[
 			'contain' => ['TranslateStrings' => 'TranslateDomains', 'TranslateLocales'],
 		]);
 
@@ -80,7 +80,7 @@ class TranslateTermsController extends TranslateAppController {
 	 * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
 	 */
 	public function edit($id = null) {
-		$translateTerm = $this->TranslateTerms->get($id, [
+		$translateTerm = $this->TranslateTerms->get($id, ...[
 			'contain' => ['TranslateStrings' => 'TranslateDomains', 'TranslateLocales'],
 		]);
 
@@ -120,7 +120,7 @@ class TranslateTermsController extends TranslateAppController {
 	 */
 	public function delete($id = null) {
 		$this->request->allowMethod(['post', 'delete']);
-		$translateTerm = $this->TranslateTerms->get($id, [
+		$translateTerm = $this->TranslateTerms->get($id, ...[
 			'contain' => ['TranslateStrings' => 'TranslateDomains'],
 		]);
 
@@ -255,7 +255,7 @@ class TranslateTermsController extends TranslateAppController {
 	public function confirm(int $id) {
 		$this->request->allowMethod(['post', 'delete']);
 
-		$term = $this->TranslateTerms->get($id, [
+		$term = $this->TranslateTerms->get($id, ...[
 			'contain' => ['TranslateStrings' => 'TranslateDomains'],
 		]);
 

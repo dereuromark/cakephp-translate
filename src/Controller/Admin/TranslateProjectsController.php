@@ -38,7 +38,7 @@ class TranslateProjectsController extends TranslateAppController {
 	 * @return \Cake\Http\Response|null|void
 	 */
 	public function view($id = null) {
-		$translateProject = $this->TranslateProjects->get($id, [
+		$translateProject = $this->TranslateProjects->get($id, ...[
 			'contain' => ['TranslateDomains'],
 		]);
 

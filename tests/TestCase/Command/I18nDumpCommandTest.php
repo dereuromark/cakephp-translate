@@ -75,4 +75,29 @@ class I18nDumpCommandTest extends TestCase {
 		$this->assertErrorContains('No active domains found');
 	}
 
+	public function testDumpWritesEveryLocaleToEveryOutputDirectory(): void {
+		$locales = $this->fetchTable('Translate.TranslateLocales');
+		$locale = $locales->saveOrFail($locales->newEntity([
+			'translate_project_id' => 1,
+			'name' => 'German',
+			'iso2' => 'de',
+			'locale' => 'de_DE',
+			'active' => true,
+		]));
+		$terms = $this->fetchTable('Translate.TranslateTerms');
+		$terms->saveOrFail($terms->newEntity([
+			'translate_string_id' => 1,
+			'translate_locale_id' => $locale->id,
+			'content' => 'Willkommen',
+		]));
+		$paths = [TMP . 'dump_first', TMP . 'dump_second'];
+		$this->exec('i18n dump_from_db --paths=' . implode(',', $paths));
+		$this->assertExitSuccess();
+		foreach ($paths as $path) {
+			$this->assertFileExists($path . '/de_DE/Lorem ipsum dolor sit amet.po');
+			$this->assertFileExists($path . '/en_US/Lorem ipsum dolor sit amet.po');
+		}
+		$this->assertOutputContains('Done: 4 files');
+	}
+
 }

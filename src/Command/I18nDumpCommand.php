@@ -19,7 +19,7 @@ class I18nDumpCommand extends Command {
 	protected ?string $defaultTable = 'Translate.TranslateStrings';
 
 	/**
-	 * Paths to use when writing. Only takes first one for now.
+	 * Output directories for every generated catalog.
 	 *
 	 * @var array<string>
 	 */
@@ -66,7 +66,7 @@ class I18nDumpCommand extends Command {
 				$this->_paths = [Plugin::path($plugin) . 'resources/locales/'];
 			}
 		}
-		$this->_projectId = $this->findProjectId($plugin);
+		$this->_projectId ??= $this->findProjectId($plugin);
 		if ($this->_projectId === null) {
 			$io->abort('No project found.');
 		}
@@ -74,12 +74,14 @@ class I18nDumpCommand extends Command {
 		/** @var \Translate\Model\Entity\TranslateLocale[] $languages */
 		$languages = $this->fetchTable('Translate.TranslateLocales')->getExtractable($this->_projectId)->all()->toArray();
 		/** @var \Translate\Model\Entity\TranslateDomain[] $domains */
-		$domains = $this->fetchTable('Translate.TranslateDomains')->getActive()->all()->toArray();
+		$domains = $this->fetchTable('Translate.TranslateDomains')->getActive()->where(['TranslateDomains.translate_project_id' => $this->_projectId])->all()->toArray();
 		if (!$domains) {
 			$io->abort('No active domains found to dump.');
 		}
 
 		$count = 0;
+		$failed = false;
+		$folders = $this->_paths ?: [null];
 		foreach ($domains as $domain) {
 			foreach ($languages as $language) {
 				/** @var array<\Translate\Model\Entity\TranslateTerm> $translations */
@@ -90,15 +92,22 @@ class I18nDumpCommand extends Command {
 				}
 
 				$dumper = new Dumper();
-				$folder = array_shift($this->_paths) ?: null;
-				if (!$dumper->dump($translations, $domain->name, $language->locale, $folder)) {
-					$io->err('Error: ' . $language->locale . '/' . $domain->name);
+				foreach ($folders as $folder) {
+					if (!$dumper->dump($translations, $domain->name, $language->locale, $folder)) {
+						$failed = true;
+						$io->err('Error: ' . $language->locale . '/' . $domain->name);
+
+						continue;
+					}
+					$count++;
 				}
 			}
 
-			$count++;
 		}
 
+		if ($failed) {
+			return static::CODE_ERROR;
+		}
 		$io->success('Done: ' . $count . ' files');
 
 		return static::CODE_SUCCESS;
@@ -131,17 +140,21 @@ class I18nDumpCommand extends Command {
 		/** @var \Translate\Model\Entity\TranslateProject|null $project */
 		$project = $this->fetchTable('Translate.TranslateProjects')
 			->find()
-			->where(['type' => TranslateProject::TYPE_APP, 'default' => true])
+			->where($plugin !== ''
+				? ['type' => TranslateProject::TYPE_PLUGIN, 'name' => $plugin]
+				: ['type' => TranslateProject::TYPE_APP, 'default' => true])
 			->first();
 		if (!$project) {
 			/** @var \Translate\Model\Entity\TranslateProject $project */
 			$project = $this->fetchTable('Translate.TranslateProjects')
 				->newEntity([
 					'name' => $plugin ?: 'App',
+					'type' => $plugin !== '' ? TranslateProject::TYPE_PLUGIN : TranslateProject::TYPE_APP,
+					'default' => $plugin === '',
 					'status' => TranslateProject::STATUS_HIDDEN,
 				]);
 			$this->fetchTable('Translate.TranslateProjects')
-				->save($project);
+				->saveOrFail($project);
 		}
 
 		return $project->id;

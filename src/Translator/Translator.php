@@ -51,17 +51,20 @@ class Translator {
 		foreach ($engines as $engine) {
 			$engineName = get_class($engine);
 			$cacheResult = $this->_cache->retrieve($text, $to, $from, $engineName);
+			if ($cacheResult && $cacheResult->value === null) {
+				$this->_cache->delete($cacheResult);
+				$cacheResult = null;
+			}
 			if ($cacheResult) {
-				if ($cacheResult->value === null) {
-					continue;
-				}
 				$results[$engineName] = $cacheResult->value;
 
 				continue;
 			}
 
 			$result = $engine->translate($text, $to, $from);
-			$this->_cache->store($text, $result, $to, $from, $engineName);
+			if ($result !== null) {
+				$this->_cache->store($text, $result, $to, $from, $engineName);
+			}
 			if ($result === null) {
 				continue;
 			}
@@ -88,16 +91,18 @@ class Translator {
 		foreach ($engines as $engine) {
 			$engineName = get_class($engine);
 			$cacheResult = $this->_cache->retrieve($text, $to, $from, $engineName);
+			if ($cacheResult && $cacheResult->value === null) {
+				$this->_cache->delete($cacheResult);
+				$cacheResult = null;
+			}
 			if ($cacheResult) {
-				if ($cacheResult->value === null) {
-					continue;
-				}
-
 				return $cacheResult->value;
 			}
 
 			$result = $engine->translate($text, $to, $from);
-			$this->_cache->store($text, $result, $to, $from, $engineName);
+			if ($result !== null) {
+				$this->_cache->store($text, $result, $to, $from, $engineName);
+			}
 			if ($result !== null) {
 				return $result;
 			}

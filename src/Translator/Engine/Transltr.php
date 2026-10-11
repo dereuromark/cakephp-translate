@@ -4,8 +4,8 @@ namespace Translate\Translator\Engine;
 
 use Cake\Core\Configure;
 use Cake\Log\Log;
+use RuntimeException;
 use Translate\Translator\EngineInterface;
-use Yandex\Translate\Exception;
 
 class Transltr implements EngineInterface {
 
@@ -35,13 +35,13 @@ class Transltr implements EngineInterface {
 			/** @var string|false $remoteResult */
 			$remoteResult = curl_exec($handler);
 			if ($remoteResult === false) {
-				throw new Exception(curl_error($handler), curl_errno($handler));
+				throw new RuntimeException(curl_error($handler), curl_errno($handler));
 			}
 
 			$response = json_decode($remoteResult, true);
 
-			$result = $response['translationText'];
-		} catch (Exception $e) {
+			$result = $response['translationText'] ?? null;
+		} catch (RuntimeException $e) {
 			// Upstream API messages may leak diagnostics; surface details only in debug mode and
 			// log a generic warning otherwise (Issue #9).
 			if (Configure::read('debug')) {
@@ -53,7 +53,7 @@ class Transltr implements EngineInterface {
 			return null;
 		}
 
-		if ($result === '') {
+		if (!is_string($result) || $result === '') {
 			return null;
 		}
 

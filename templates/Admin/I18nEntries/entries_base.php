@@ -13,6 +13,8 @@
  * @var string $foreignKeyColumn
  * @var string|null $displayField
  */
+
+use Cake\Core\Plugin;
 $cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
 ?>
 <nav aria-label="breadcrumb">
@@ -221,7 +223,13 @@ $cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
 				</div>
 			</div>
 			<div class="card-footer">
-				<?= $this->element('Tools.pagination') ?>
+				<?php
+				if (Plugin::isLoaded('Tools')) {
+					echo $this->element('Tools.pagination');
+				} else {
+					echo $this->element('pagination');
+				}
+				?>
 			</div>
 		</div>
 		<?= $this->Form->end() ?>

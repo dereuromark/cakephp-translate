@@ -90,7 +90,7 @@ class CakeStringExtractor extends I18nExtractCommand {
 	protected function convertTranslations(): array {
 		$result = [];
 		$relativeFiles = [];
-		$basePath = rtrim($this->basePath, '/\\') . DIRECTORY_SEPARATOR;
+		$basePath = rtrim(realpath($this->basePath) ?: $this->basePath, '/\\') . DIRECTORY_SEPARATOR;
 		foreach ($this->files as $file) {
 			$coreReference = '.' . str_replace(ROOT, '', $file);
 			$relativeFiles[$coreReference] = str_starts_with($file, $basePath)

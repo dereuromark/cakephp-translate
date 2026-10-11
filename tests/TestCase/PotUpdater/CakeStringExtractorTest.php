@@ -14,6 +14,25 @@ use Translate\PotUpdater\PotUpdater;
 
 class CakeStringExtractorTest extends TestCase {
 
+	public function testSymlinkedProjectRootUsesRelativeReferences(): void {
+		$root = TMP . 'translate-pot-' . uniqid();
+		$link = $root . '-link';
+		mkdir($root . '/src', 0770, true);
+		file_put_contents($root . '/src/Messages.php', "<?php\n__d('messages', 'Hello');\n");
+		try {
+			if (!symlink($root, $link)) {
+				$this->markTestSkipped('Symbolic links are unavailable');
+			}
+			$strings = (new CakeStringExtractor())->extractStrings([$link . '/src'], 'messages', $link);
+			$this->assertSame(['./src/Messages.php:2'], $strings['messages']['Hello']['references']);
+		} finally {
+			if (is_link($link)) {
+				unlink($link);
+			}
+			(new Filesystem())->deleteDir($root);
+		}
+	}
+
 	public function testExtractionPotUpdateAndPoSync(): void {
 		$root = TMP . 'translate-pot-' . uniqid();
 		mkdir($root . '/src', 0770, true);

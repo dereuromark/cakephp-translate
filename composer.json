@@ -31,6 +31,7 @@
 		"friendsofcake/search": "^7.0"
 	},
 	"require-dev": {
+		"dereuromark/cakephp-i18n-lint": "^0.1.1",
 		"ext-json": "*",
 		"cakephp/migrations": "^5.0.0",
 		"friendsofcake/bootstrap-ui": "^5.1.1",
@@ -77,6 +78,9 @@
 		"lowest": "validate-prefer-lowest",
 		"lowest-setup": "composer update --prefer-lowest --prefer-stable --prefer-dist --no-interaction && cp composer.json composer.backup && composer require --dev dereuromark/composer-prefer-lowest && mv composer.backup composer.json",
 		"test": "vendor/bin/phpunit",
-		"test-coverage": "vendor/bin/phpunit --log-junit tmp/coverage/unitreport.xml --coverage-html tmp/coverage --coverage-clover tmp/coverage/coverage.xml"
+		"test-coverage": "vendor/bin/phpunit --log-junit tmp/coverage/unitreport.xml --coverage-html tmp/coverage --coverage-clover tmp/coverage/coverage.xml",
+		"i18n-check": "i18n-lint check",
+		"i18n-extract": "i18n-lint extract",
+		"i18n-lint": "i18n-lint lint"
 	}
 }

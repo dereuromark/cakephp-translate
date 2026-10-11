@@ -5,9 +5,6 @@ namespace Translate\Test\TestCase\PotUpdater;
 use PHPUnit\Framework\TestCase;
 use Translate\PotUpdater\PotComparator;
 
-/**
- * @uses \Translate\Utility\PotComparator
- */
 class PotComparatorTest extends TestCase {
 
 	/**

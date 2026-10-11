@@ -193,6 +193,7 @@ class TranslateStringsTable extends Table {
 			$options = [
 				'TranslateTerms.translate_locale_id' => $key,
 				'TranslateTerms.content IS NOT' => null,
+				'TranslateTerms.content !=' => '',
 				//'TranslateTerms.flags' => en-not-needed
 			];
 			$translated = $this->TranslateTerms->find()->where($options)->count();
@@ -240,7 +241,7 @@ class TranslateStringsTable extends Table {
 		$options = ['conditions' => $conditions] + $options;
 		$query = $this->find('all', ...$options);
 		$query->leftJoinWith('TranslateTerms');
-		$query->andWhere(['TranslateTerms.content IS' => null]);
+		$query->andWhere(['OR' => ['TranslateTerms.content IS' => null, 'TranslateTerms.content' => '']]);
 
 		return $query;
 	}

@@ -2,16 +2,18 @@
 
 namespace Translate\Test\TestCase\Controller\Admin;
 
+use AddTranslationsForTestPosts;
 use Cake\Core\Configure;
+use Cake\Database\Driver\Postgres;
 use Cake\Database\Driver\Sqlite;
 use Cake\Datasource\ConnectionManager;
 use Cake\Http\Exception\NotFoundException;
+use Cake\ORM\Table;
+use Migrations\Db\Adapter\AdapterFactory;
 use Translate\Test\TestCase\IntegrationTestCase;
 
 /**
  * Translate\Controller\Admin\TranslateBehaviorController Test Case
- *
- * @uses \Translate\Controller\Admin\TranslateBehaviorController
  */
 class TranslateBehaviorControllerTest extends IntegrationTestCase {
 
@@ -264,7 +266,28 @@ class TranslateBehaviorControllerTest extends IntegrationTestCase {
 
 		$this->assertEquals('AddTranslationsForTestPosts', $this->viewVariable('migrationName'));
 
-		// Cleanup
+		$connection->execute('DROP TABLE IF EXISTS test_posts_translations');
+		$adapterName = $isSqlite ? 'sqlite' : ($connection->getDriver() instanceof Postgres ? 'pgsql' : 'mysql');
+		$adapter = AdapterFactory::instance()->getAdapter($adapterName, ['connection' => $connection, 'database' => $connection->config()['database'] ?? null]);
+		eval(substr($migrationCode, strlen('<?php')));
+		$migration = new AddTranslationsForTestPosts();
+		$migration->setAdapter($adapter);
+		$migration->change();
+		$schema = $connection->getSchemaCollection()->describe('test_posts_translations');
+		$this->assertSame(['id', 'locale'], $schema->getPrimaryKey());
+		$this->assertFalse($schema->hasColumn('foreign_key'));
+		$this->assertTrue($schema->getColumn('title')['null']);
+		$connection->insert('test_posts', ['id' => 1, 'title' => 'Hello', 'content' => 'Original']);
+		$connection->insert('test_posts_translations', ['id' => 1, 'locale' => 'de', 'title' => 'Hallo']);
+		$connection->insert('test_posts_translations', ['id' => 1, 'locale' => 'fr', 'title' => 'Bonjour']);
+		$table = new Table(['table' => 'test_posts', 'alias' => 'TestPosts', 'connection' => $connection]);
+		$table->addBehavior('Translate', ['fields' => ['title', 'content']]);
+		$behavior = $table->getBehavior('Translate');
+		$behavior->setLocale('de');
+		$this->assertSame('Hallo', $table->get(1)->title);
+		$behavior->setLocale('fr');
+		$this->assertSame('Bonjour', $table->get(1)->title);
+		$connection->execute('DROP TABLE IF EXISTS test_posts_translations');
 		$connection->execute('DROP TABLE IF EXISTS test_posts');
 	}
 
@@ -521,6 +544,30 @@ class TranslateBehaviorControllerTest extends IntegrationTestCase {
 
 		$this->assertResponseCode(302);
 		$this->assertFlashMessage('Missing required data');
+	}
+
+	public function testEavMigrationPreservesStringForeignKeys(): void {
+		$connection = ConnectionManager::get('test');
+		$connection->execute('CREATE TABLE review_uuid_articles (id VARCHAR(36) PRIMARY KEY, title VARCHAR(255))');
+		try {
+			$this->post('/admin/translate/translate-behavior/generate/review_uuid_articles', ['fields' => ['title'], 'strategy' => 'eav']);
+			$this->assertResponseCode(200);
+			$code = $this->viewVariable('migrationCode');
+			$this->assertIsString($code);
+			eval(substr($code, strlen('<?php')));
+			$class = $this->viewVariable('migrationName');
+			$migration = new $class();
+			$adapterName = $connection->getDriver() instanceof Sqlite ? 'sqlite' : ($connection->getDriver() instanceof Postgres ? 'pgsql' : 'mysql');
+			$migration->setAdapter(AdapterFactory::instance()->getAdapter($adapterName, ['connection' => $connection, 'database' => $connection->config()['database'] ?? null]));
+			$migration->change();
+			$id = 'e1f812be-7598-49c2-8fd0-eef67d9a1421';
+			$connection->insert('review_uuid_articles_translations', ['foreign_key' => $id, 'locale' => 'de', 'model' => 'ReviewUuidArticles', 'field' => 'title', 'content' => 'Hallo']);
+			$row = $connection->execute('SELECT foreign_key FROM review_uuid_articles_translations')->fetch('assoc');
+			$this->assertSame($id, $row['foreign_key']);
+		} finally {
+			$connection->execute('DROP TABLE IF EXISTS review_uuid_articles_translations');
+			$connection->execute('DROP TABLE IF EXISTS review_uuid_articles');
+		}
 	}
 
 }

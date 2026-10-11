@@ -9,12 +9,9 @@ use Cake\Core\PluginCollection;
 use Cake\Http\BaseApplication;
 use Cake\Http\MiddlewareQueue;
 use Cake\Routing\Middleware\RoutingMiddleware;
-use Cake\Routing\Route\DashedRoute;
 use Cake\Routing\RouteBuilder;
 use League\Container\ReflectionContainer;
-use Translate\Command\I18nDumpCommand;
-use Translate\Command\I18nExtractCommand;
-use Translate\Command\I18nValidateCommand;
+use Translate\TranslatePlugin;
 
 class Application extends BaseApplication {
 
@@ -29,10 +26,7 @@ class Application extends BaseApplication {
 	 * @return \Cake\Console\CommandCollection
 	 */
 	public function console(CommandCollection $commands): CommandCollection {
-		return $commands
-			->add('i18n extract_to_db', new I18nExtractCommand())
-			->add('i18n dump_from_db', new I18nDumpCommand())
-			->add('i18n validate', new I18nValidateCommand());
+		return (new TranslatePlugin())->console($commands);
 	}
 
 	/**
@@ -51,13 +45,7 @@ class Application extends BaseApplication {
 	 * @return void
 	 */
 	public function routes(RouteBuilder $routes): void {
-		$routes->prefix('Admin', function (RouteBuilder $routes) {
-			$routes->plugin('Translate', ['path' => '/translate'], function (RouteBuilder $routes) {
-				$routes->connect('/', ['controller' => 'Translate', 'action' => 'index'], ['routeClass' => DashedRoute::class]);
-
-				$routes->fallbacks(DashedRoute::class);
-			});
-		});
+		(new TranslatePlugin())->routes($routes);
 	}
 
 	/**

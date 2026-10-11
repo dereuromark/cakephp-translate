@@ -3,6 +3,7 @@
 namespace Translate\Filesystem;
 
 use Cake\Core\Configure;
+use Exception;
 use Translate\Parser\PoParser;
 
 class Dumper {
@@ -16,17 +17,19 @@ class Dumper {
 	 * @return bool
 	 */
 	public function dump(array $translations, string $domain, string $lang, ?string $folder = null) {
+		foreach ([$lang, $domain] as $segment) {
+			if ($segment === '' || $segment === '.' || $segment === '..' || preg_match('/[\\\\\/\x00-\x1f\x7f]/', $segment)) {
+				return false;
+			}
+		}
 		if ($folder === null) {
 			$folder = LOCALE;
 		}
 		$folder = rtrim($folder, '/\\') . DS . $lang . DS;
-		if (!is_dir($folder)) {
-			mkdir($folder, 0770, true);
+		if (!is_dir($folder) && !@mkdir($folder, 0770, true) && !is_dir($folder)) {
+			return false;
 		}
 		$file = $folder . $domain . '.po';
-		if (!file_exists($file)) {
-			touch($file);
-		}
 
 		return $this->_dump($translations, $file);
 	}
@@ -97,7 +100,11 @@ class Dumper {
 		}
 		$po->setEntries($entries);
 
-		$po->write($file);
+		try {
+			$po->write($file);
+		} catch (Exception $e) {
+			return false;
+		}
 
 		return true;
 	}

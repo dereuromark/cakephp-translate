@@ -60,7 +60,7 @@ class TranslationHelper extends Helper {
 	public function flag(?string $iso2Code = null, array $attr = [], bool $checkExistence = false) {
 		if ($iso2Code) {
 			if (Configure::read('Translate.flags') !== 'gif') {
-				return '<i class="fi fi-' . strtolower($iso2Code) . '" title="' . strtolower($iso2Code) . '"></i>';
+				return '<i class="fi fi-' . h(strtolower($iso2Code)) . '" title="' . h(strtolower($iso2Code)) . '"></i>';
 			}
 
 			$icon = 'language_flags' . DS . $iso2Code . '.gif';

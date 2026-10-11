@@ -27,11 +27,9 @@ We are trying to provide a "autoParagraph" option that would treat the text as n
 
 ## Enabling code excerpts
 
-For displaying the referenced code pieces you need to set a relative path per TranslateDomain.
-That is usually:
-- default (app): `src/`
-- cake (core): `vendor/cakephp/cakephp/src/`
-- tools (plugin): `vendor/dereuromark/cakephp-tools/src/`
+Code references resolve relative to the selected project's path. An empty project path uses the application directory. Keep references relative to that root, such as `src/Controller/PagesController.php:42`.
+
+The path now belongs to the project. When upgrading from per-domain paths, set the project path explicitly; the released migration removes the old domain column without copying its values.
 
 By clicking any reference in your translate view it will open a modal with the highlighted code piece:
 
@@ -42,6 +40,10 @@ The admin interface can display references and offers source editing in developm
 
 ## Public translation interface
 
-The `/translate` interface is separate from the admin backend. Public projects can expose a collaborative translation form through your application’s authentication and authorization rules. Hidden or inactive projects require the configured admin gate. Only strings from the selected project may be edited. Set `Translate.showCodeReferences` to literal `true` to expose source excerpts through this interface.
+The `/translate` interface is separate from the admin backend. Public projects expose a collaborative translation form. Your AppController's authentication and callbacks still apply; the plugin skips an additional Authorization policy check for public projects. Contributors can replace or clear translations, including their plural forms. The public and admin interfaces keep separate project selections. Hidden or inactive projects require the configured admin gate. Only strings from the selected project may be edited. Set `Translate.showCodeReferences` to a truthy value to expose source excerpts through this interface.
 
 The admin **Clear all translation data** operation affects all projects. The normal Reset selection applies to the selected project. Clearing catalog data does not reset database identity sequences.
+
+## Export directory names
+
+Both the backend and CLI dump catalogs into the stored locale directory, such as `resources/locales/de_DE/default.po`. Earlier backend exports used the ISO code (`de`). Review existing catalogs when adopting the corrected backend export: keep the directory that matches your application's selected locale, and remove obsolete exports deliberately.

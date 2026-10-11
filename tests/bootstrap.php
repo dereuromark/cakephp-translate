@@ -55,7 +55,7 @@ Configure::write('App', [
 	],
 ]);
 
-Configure::write('TestSuite.errorLevel', E_ALL & ~E_USER_DEPRECATED);
+Configure::write('TestSuite.errorLevel', E_ALL);
 
 Configure::write('debug', true);
 
@@ -68,6 +68,12 @@ Configure::write('Transltr.live', env('TRANSLTR_LIVE'));
 $cache = [
 	'default' => [
 		'className' => 'File',
+	],
+	'_cake_translations_' => [
+		'className' => 'File',
+		'prefix' => 'translate_i18n_',
+		'path' => CACHE . 'persistent/',
+		'duration' => '+10 seconds',
 	],
 	'_cake_core_' => [
 		'className' => 'File',
@@ -116,7 +122,7 @@ ConnectionManager::setConfig('test', [
 	'url' => getenv('DB_URL') ?: null,
 	'timezone' => 'UTC',
 	'quoteIdentifiers' => true,
-	'cacheMetadata' => true,
+	'cacheMetadata' => false,
 ]);
 
 if (env('FIXTURE_SCHEMA_METADATA')) {

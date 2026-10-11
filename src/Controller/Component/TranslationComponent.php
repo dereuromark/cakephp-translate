@@ -65,13 +65,14 @@ class TranslationComponent extends Component {
 	 * @return int|null
 	 */
 	public function currentProjectId() {
-		$id = $this->getController()->getRequest()->getSession()->read('TranslateProject.id');
+		$sessionKey = $this->getConfig('projectSessionKey', 'TranslateProject.id');
+		$id = $this->getController()->getRequest()->getSession()->read($sessionKey);
 		if ($id === null) {
 			/** @var \Translate\Model\Table\TranslateProjectsTable $TranslationProjects */
 			$TranslationProjects = TableRegistry::getTableLocator()->get('Translate.TranslateProjects');
 			$id = $TranslationProjects->getDefaultProjectId();
 
-			$this->getController()->getRequest()->getSession()->write('TranslateProject.id', $id);
+			$this->getController()->getRequest()->getSession()->write($sessionKey, $id);
 		}
 
 		return $id;

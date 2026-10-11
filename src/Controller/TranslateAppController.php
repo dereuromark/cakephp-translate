@@ -119,11 +119,12 @@ class TranslateAppController extends AppController {
 		$isHomepage = ($controller === 'Translate' && $action === 'index');
 		$isProjectsController = ($controller === 'TranslateProjects');
 
-		if (!$isHomepage && !$isProjectsController && !$this->request->getSession()->check('TranslateProject.id')) {
+		$projectSessionKey = $this->Translation->getConfig('projectSessionKey', 'TranslateProject.id');
+		if (!$isHomepage && !$isProjectsController && !$this->request->getSession()->check($projectSessionKey)) {
 			$translateProjects = $this->fetchTable('Translate.TranslateProjects');
 			$id = $translateProjects->getDefaultProjectId();
 			if ($id) {
-				$this->request->getSession()->write('TranslateProject.id', $id);
+				$this->request->getSession()->write($projectSessionKey, $id);
 			}
 		}
 	}
@@ -190,7 +191,7 @@ class TranslateAppController extends AppController {
 		}
 
 		// Make current project available to all views
-		$projectId = $this->request->getSession()->read('TranslateProject.id');
+		$projectId = $this->request->getSession()->read($this->Translation->getConfig('projectSessionKey', 'TranslateProject.id'));
 		if ($projectId) {
 			$translateProjects = $this->fetchTable('Translate.TranslateProjects');
 			$currentProject = $translateProjects->find()

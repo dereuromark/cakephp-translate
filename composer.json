@@ -48,7 +48,7 @@
 	},
 	"suggest": {
 		"dereuromark/cakephp-audit-stash": "For comprehensive audit logging of translation changes (strings and terms)",
-		"dereuromark/cakephp-queue": "To use background processing for e.g. PO file import",
+		"dereuromark/cakephp-queue": "For application-defined background processing; no Queue import job ships with Translate",
 		"yandex/translate-api": "Free Translation API Alternative"
 	},
 	"minimum-stability": "stable",

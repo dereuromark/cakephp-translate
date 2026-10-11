@@ -6,8 +6,6 @@ use Translate\Test\TestCase\IntegrationTestCase;
 
 /**
  * Translate\Controller\Admin\TranslateDomainsController Test Case
- *
- * @uses \Translate\Controller\Admin\TranslateDomainsController
  */
 class TranslateDomainsControllerTest extends IntegrationTestCase {
 

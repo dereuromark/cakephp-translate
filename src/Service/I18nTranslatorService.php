@@ -35,7 +35,7 @@ class I18nTranslatorService {
 	 * @return array{translation: string|null, source: string} Translation result with source indicator
 	 */
 	public function translateWithMemory(string $text, string $targetLocale, string $sourceLocale = 'en'): array {
-		if (empty($text)) {
+		if ($text === '') {
 			return ['translation' => null, 'source' => 'empty'];
 		}
 
@@ -94,7 +94,7 @@ class I18nTranslatorService {
 				])
 				->first();
 
-			if ($term && !empty($term->content)) {
+			if ($term && $term->content !== '') {
 				return $term->content;
 			}
 		} catch (Exception $e) {
@@ -113,7 +113,7 @@ class I18nTranslatorService {
 	 * @return string|null Translated text or null on failure
 	 */
 	public function translate(string $text, string $targetLocale, string $sourceLocale = 'en'): ?string {
-		if (empty($text)) {
+		if ($text === '') {
 			return null;
 		}
 
@@ -163,7 +163,7 @@ class I18nTranslatorService {
 	 * @return array<string, string> Engine => Translation
 	 */
 	public function suggest(string $text, string $targetLocale, string $sourceLocale = 'en'): array {
-		if (empty($text)) {
+		if ($text === '') {
 			return [];
 		}
 

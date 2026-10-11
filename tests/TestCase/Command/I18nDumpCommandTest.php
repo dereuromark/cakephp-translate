@@ -5,9 +5,6 @@ namespace Translate\Test\TestCase\Command;
 use Cake\Console\TestSuite\ConsoleIntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 
-/**
- * @uses \Translate\Command\I18nDumpCommand
- */
 class I18nDumpCommandTest extends TestCase {
 
 	use ConsoleIntegrationTestTrait;

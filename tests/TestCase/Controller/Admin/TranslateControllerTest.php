@@ -2,15 +2,14 @@
 
 namespace Translate\Test\TestCase\Controller\Admin;
 
+use Cake\Core\BasePlugin;
 use Cake\Core\Configure;
+use Cake\Core\Plugin;
 use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
 use TestApp\Translator\Engine\Test;
 use Translate\Test\TestCase\IntegrationTestCase;
 
-/**
- * @uses \Translate\Controller\Admin\TranslateController
- */
 class TranslateControllerTest extends IntegrationTestCase {
 
 	/**
@@ -26,6 +25,25 @@ class TranslateControllerTest extends IntegrationTestCase {
 		'plugin.Translate.TranslateTerms',
 		'plugin.Translate.TranslateApiTranslations',
 	];
+
+	public function testControllerNamesIncludesLoadedPluginOutsidePluginsDirectory(): void {
+		$path = TMP . 'review_external_plugin' . DS;
+		mkdir($path . 'src/Controller', 0770, true);
+		file_put_contents($path . 'src/Controller/ReviewWidgetsController.php', '<?php');
+		$this->loadPlugins([new BasePlugin(['name' => 'ReviewExternal', 'path' => $path, 'bootstrap' => false, 'routes' => false])]);
+		try {
+			$this->session(['TranslateProject' => ['id' => 1]]);
+			$this->get('/admin/translate/translate/controller-names');
+			$this->assertResponseCode(200);
+			$this->assertArrayHasKey('ReviewWidgets', $this->viewVariable('controllerNames')['ReviewExternal']);
+		} finally {
+			Plugin::getCollection()->remove('ReviewExternal');
+			unlink($path . 'src/Controller/ReviewWidgetsController.php');
+			rmdir($path . 'src/Controller');
+			rmdir($path . 'src');
+			rmdir($path);
+		}
+	}
 
 	/**
 	 * @return void
@@ -256,6 +274,15 @@ class TranslateControllerTest extends IntegrationTestCase {
 
 		$this->assertResponseCode(302);
 		$this->assertRedirect(['action' => 'index']);
+	}
+
+	public function testHardResetClearsCatalogAndPreservesProjects(): void {
+		$this->post('/admin/translate/translate/reset?hard-reset=1');
+		$this->assertRedirect();
+		foreach (['TranslateTerms', 'TranslateApiTranslations', 'TranslateStrings', 'TranslateLocales', 'TranslateDomains'] as $alias) {
+			$this->assertSame(0, $this->getTableLocator()->get('Translate.' . $alias)->find()->count());
+		}
+		$this->assertSame(1, $this->getTableLocator()->get('Translate.TranslateProjects')->find()->count());
 	}
 
 }

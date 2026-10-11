@@ -154,11 +154,12 @@ class I18nExtractCommand extends CoreI18nExtractCommand {
 			$overwriteAll = true;
 		}
 
-		$paths = $this->_paths;
-		$paths[] = realpath(APP) . DIRECTORY_SEPARATOR;
-		usort($paths, function ($a, $b) {
-			return strlen($a) - strlen($b);
-		});
+		$project = $this->fetchTable('Translate.TranslateProjects')->get($this->_projectId);
+		$projectRoot = $project->get('path') ?: ROOT;
+		if (!str_starts_with($projectRoot, DS)) {
+			$projectRoot = ROOT . DS . $projectRoot;
+		}
+		$projectRoot = rtrim(realpath($projectRoot) ?: $projectRoot, DS) . DS;
 
 		foreach ($this->_translations as $domain => $translations) {
 			foreach ($translations as $msgid => $contexts) {
@@ -167,10 +168,10 @@ class I18nExtractCommand extends CoreI18nExtractCommand {
 					$occurrences = [];
 					foreach ($files as $file => $lines) {
 						$lines = array_unique($lines);
-						$occurrences[] = $file . ':' . implode(';', $lines);
+						$referenceFile = str_starts_with($file, $projectRoot) ? substr($file, strlen($projectRoot)) : $file;
+						$occurrences[] = $referenceFile . ':' . implode(';', $lines);
 					}
 					$occurrences = implode("\n", $occurrences);
-					$occurrences = str_replace($paths, '', $occurrences);
 					$references = str_replace(DIRECTORY_SEPARATOR, '/', $occurrences);
 
 					$this->_save(

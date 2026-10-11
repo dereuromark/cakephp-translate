@@ -6,9 +6,6 @@ use Cake\Console\TestSuite\ConsoleIntegrationTestTrait;
 use Cake\Core\Plugin;
 use Cake\TestSuite\TestCase;
 
-/**
- * @uses \Translate\Command\I18nExtractCommand
- */
 class I18nExtractCommandTest extends TestCase {
 
 	use ConsoleIntegrationTestTrait;

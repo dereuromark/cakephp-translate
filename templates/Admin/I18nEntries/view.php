@@ -1,6 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
+ * @var bool $hasCompositeKey
  * @var string $tableName
  * @var string $baseTableName
  * @var \Cake\Datasource\EntityInterface $entry
@@ -91,7 +92,7 @@
 			<div class="card-footer">
 				<?= $this->Html->link(
 					'<i class="fas fa-edit"></i> ' . __d('translate', 'Edit'),
-					['action' => 'edit', $tableName, $entry->id],
+					['action' => 'edit', $tableName, $entry->id, $hasCompositeKey ? $entry->locale : null],
 					['class' => 'btn btn-primary', 'escapeTitle' => false],
 				) ?>
 				<?= $this->Html->link(
@@ -172,9 +173,10 @@
 							$entry->auto
 								? '<i class="fas fa-user"></i> ' . __d('translate', 'Mark as Manual')
 								: '<i class="fas fa-robot"></i> ' . __d('translate', 'Mark as Auto'),
-							['action' => 'batchUpdateAuto', $tableName, '?' => ['entry_ids' => [$entry->id], 'auto' => !$entry->auto]],
+							['action' => 'batchUpdateAuto', $tableName],
 							[
 								'class' => 'btn btn-outline-' . ($entry->auto ? 'warning' : 'info'),
+								'data' => ['entry_ids' => [$hasCompositeKey ? json_encode([$entry->id, $entry->locale]) : $entry->id], 'auto' => !$entry->auto],
 								'escapeTitle' => false,
 								'form' => [
 									'class' => 'd-grid',
@@ -184,7 +186,7 @@
 					<?php } ?>
 					<?= $this->Form->postButton(
 						'<i class="fas fa-trash"></i> ' . __d('translate', 'Delete'),
-						['action' => 'delete', $tableName, $entry->id],
+						['action' => 'delete', $tableName, $entry->id, $hasCompositeKey ? $entry->locale : null],
 						[
 							'class' => 'btn btn-outline-danger',
 							'escapeTitle' => false,

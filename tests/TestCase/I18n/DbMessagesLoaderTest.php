@@ -57,10 +57,10 @@ class DbMessagesLoaderTest extends TestCase {
 	 */
 	public function testDefault() {
 		I18n::config('default', function ($domain, $locale) {
-			return new DbMessagesLoader(
+			return (new DbMessagesLoader(
 				$domain,
 				$locale,
-			);
+			))();
 		});
 		I18n::setLocale('de');
 
@@ -224,10 +224,10 @@ class DbMessagesLoaderTest extends TestCase {
 		}, 'de');
 		*/
 		I18n::config('dom', function ($domain, $locale) {
-			return new DbMessagesLoader(
+			return (new DbMessagesLoader(
 				$domain,
 				$locale,
-			);
+			))();
 		});
 		I18n::setLocale('de');
 

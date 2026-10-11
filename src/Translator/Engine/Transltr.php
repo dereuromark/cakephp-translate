@@ -22,12 +22,20 @@ class Transltr implements EngineInterface {
 	 * @return string|null
 	 */
 	public function translate(string $text, string $to, string $from): ?string {
+		if (!function_exists('curl_init')) {
+			return null;
+		}
 		$text = urlencode($text);
 		/** @var non-empty-string $url */
 		$url = sprintf(static::URL, $text, $to, $from);
 
 		try {
 			$handler = curl_init();
+			if ($handler === false) {
+				throw new RuntimeException('Cannot initialize Transltr translation request.');
+			}
+			curl_setopt($handler, CURLOPT_CONNECTTIMEOUT, 5);
+			curl_setopt($handler, CURLOPT_TIMEOUT, 15);
 			curl_setopt($handler, CURLOPT_RETURNTRANSFER, true);
 
 			curl_setopt($handler, CURLOPT_URL, $url);

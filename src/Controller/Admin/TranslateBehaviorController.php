@@ -624,6 +624,25 @@ class TranslateBehaviorController extends TranslateAppController {
 AUTOFIELD;
 		}
 
+		$connection = ConnectionManager::get('default');
+		if (!$connection instanceof Connection) {
+			throw new BadRequestException('Generating migrations requires a database connection.');
+		}
+		$schema = $connection->getSchemaCollection()->describe($baseTableName);
+		$idColumn = $schema->getColumn('id');
+		if ($schema->getPrimaryKey() !== ['id'] || $idColumn === null || !is_string($idColumn['type'] ?? null)) {
+			throw new BadRequestException('Generating translations requires a single id primary key.');
+		}
+		$idType = $idColumn['type'];
+		$idOptions = ['null' => false];
+		if (!empty($idColumn['length'])) {
+			$idOptions['limit'] = $idColumn['length'];
+		}
+		if (isset($idColumn['unsigned'])) {
+			$idOptions['signed'] = !$idColumn['unsigned'];
+		}
+		$idOptionsCode = var_export($idOptions, true);
+
 		return <<<PHP
 <?php
 declare(strict_types=1);
@@ -655,11 +674,7 @@ class {$className} extends BaseMigration
                 'limit' => 255,
                 'null' => false,
             ])
-            ->addColumn('foreign_key', 'integer', [
-                'default' => null,
-                'limit' => 10,
-                'null' => false,
-            ])
+            ->addColumn('foreign_key', '{$idType}', {$idOptionsCode})
             ->addColumn('field', 'string', [
                 'default' => null,
                 'limit' => 255,

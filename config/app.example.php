@@ -9,8 +9,9 @@ return [
 		'plurals' => 2,
 		'defaultLocale' => null, // E.g. `en` or `en_US`
 		'layout' => null, // Defaults to own layout
+		// 'onlineRepoUrl' => 'https://github.com/example/app/blob/main/',
 		'editor' => false, // Code editor on references,
-		'showCodeReferences' => false, // Enable to show also in frontend the code snippets where the translation is used
+		'showCodeReferences' => null, // null: backend only; true: backend and frontend; false: hide links everywhere
 
 		'engine' => Google::class, // Translation API engine class (or array of fallback engine classes)
 		'flags' => null, // Flag image format for the language switcher; set to 'gif' to use .gif flag icons

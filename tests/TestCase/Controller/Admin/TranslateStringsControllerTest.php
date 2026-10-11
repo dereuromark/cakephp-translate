@@ -456,4 +456,32 @@ msgstr "Hallo"',
 		}
 	}
 
+	public function testClearingTranslationRemovesTheCompletedTerm(): void {
+		$this->post('/admin/translate/translate-strings/translate/1', ['content_en_us' => '']);
+		$this->assertRedirect();
+		$terms = $this->getTableLocator()->get('Translate.TranslateTerms');
+		$this->assertSame(0, $terms->find()->where(['translate_string_id' => 1, 'translate_locale_id' => 1])->count());
+	}
+
+	public function testDumpUsesLocaleCodeDirectory(): void {
+		$root = TMP . 'locale-export-' . uniqid();
+		mkdir($root, 0770, true);
+		$projects = $this->getTableLocator()->get('Translate.TranslateProjects');
+		$project = $projects->get(1);
+		$project->path = $root;
+		$projects->saveOrFail($project);
+		$domains = $this->getTableLocator()->get('Translate.TranslateDomains');
+		$domain = $domains->get(1);
+		$domain->name = 'default';
+		$domains->saveOrFail($domain);
+		try {
+			$this->post('/admin/translate/translate-strings/dump', ['domains' => ['1_default']]);
+			$this->assertResponseCode(200);
+			$this->assertFileExists($root . '/resources/locales/en_US/default.po');
+			$this->assertFileDoesNotExist($root . '/resources/locales/en/default.po');
+		} finally {
+			(new Folder($root))->delete();
+		}
+	}
+
 }

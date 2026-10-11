@@ -13,6 +13,7 @@ use Cake\Core\Configure;
 <div class="code-excerpt">
 	<pre>
 <?php
+$lines = array_values(array_filter($lines, static fn ($line) => ctype_digit((string)$line) && (int)$line > 0));
 $max = count($fileArray);
 foreach ($lines as $k => $line) {
 	$line--;
@@ -37,10 +38,10 @@ foreach ($lines as $k => $line) {
 
 <?php if (Configure::read('Translate.onlineRepoUrl')) { ?>
 	<?php
-	$url = Configure::read('Translate.onlineRepoUrl') . $referencePath;
+	$url = rtrim(Configure::read('Translate.onlineRepoUrl'), '/') . '/' . implode('/', array_map('rawurlencode', explode('/', $referencePath)));
 	if (count($lines) > 1) {
 		$url .= '#L' . array_shift($lines) . '-L' . array_pop($lines);
-	} else {
+	} elseif ($lines) {
 		$url .= '#L' . array_shift($lines);
 	}
 	?>

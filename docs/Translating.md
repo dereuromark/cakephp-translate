@@ -43,3 +43,7 @@ The admin interface can display references and offers source editing in developm
 The `/translate` interface is separate from the admin backend. Public projects can expose a collaborative translation form through your application’s authentication and authorization rules. Hidden or inactive projects require the configured admin gate. Only strings from the selected project may be edited. Set `Translate.showCodeReferences` to literal `true` to expose source excerpts through this interface.
 
 The admin **Clear all translation data** operation affects all projects. The normal Reset selection applies to the selected project. Clearing catalog data does not reset database identity sequences.
+
+## Export directory names
+
+Both the backend and CLI dump catalogs into the stored locale directory, such as `resources/locales/de_DE/default.po`. Earlier backend exports used the ISO code (`de`). Review existing catalogs when adopting the corrected backend export: keep the directory that matches your application's selected locale, and remove obsolete exports deliberately.

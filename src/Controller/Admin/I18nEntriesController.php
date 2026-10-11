@@ -8,6 +8,7 @@ use Cake\Database\Connection;
 use Cake\Database\Schema\TableSchemaInterface;
 use Cake\Datasource\ConnectionManager;
 use Cake\Datasource\EntityInterface;
+use Cake\Event\EventInterface;
 use Cake\Http\Exception\NotFoundException;
 use Cake\ORM\Entity;
 use Cake\ORM\Locator\LocatorAwareTrait;
@@ -49,6 +50,29 @@ class I18nEntriesController extends TranslateAppController {
 	protected array $paginate = [
 		'limit' => 50,
 	];
+
+	/**
+	 * @param \Cake\Event\EventInterface<\Cake\Controller\Controller> $event
+	 * @return void
+	 */
+	public function beforeFilter(EventInterface $event): void {
+		parent::beforeFilter($event);
+		if ($event->isStopped() || !$this->components()->has('FormProtection')) {
+			return;
+		}
+		$action = $this->request->getParam('action');
+		$fields = match ($action) {
+			'batch', 'batchUpdateAuto', 'autoTranslate' => ['entry_ids'],
+			'autoTranslateBatch' => ['record_ids', 'locales'],
+			default => [],
+		};
+		/** @var \Cake\Controller\Component\FormProtectionComponent $formProtection */
+		$formProtection = $this->components()->get('FormProtection');
+		$formProtection->setConfig('unlockedFields', array_unique(array_merge(
+			(array)$formProtection->getConfig('unlockedFields'),
+			$fields,
+		)));
+	}
 
 	/**
 	 * Index - list all translation tables with entry counts
@@ -209,7 +233,7 @@ class I18nEntriesController extends TranslateAppController {
 		foreach ($baseRecordsArray as $record) {
 			$baseFieldStatus[$record->id] = [];
 			foreach ($translatedFields as $field) {
-				$baseFieldStatus[$record->id][$field] = !empty($record->get($field));
+				$baseFieldStatus[$record->id][$field] = $record->get($field) !== null && $record->get($field) !== '';
 			}
 		}
 
@@ -237,7 +261,7 @@ class I18nEntriesController extends TranslateAppController {
 				// Check which fields have content
 				foreach ($translatedFields as $field) {
 					$value = $translation->get($field);
-					$translationStatus[$id][$locale]['fields'][$field] = !empty($value);
+					$translationStatus[$id][$locale]['fields'][$field] = $value !== null && $value !== '';
 				}
 			}
 		}
@@ -256,10 +280,10 @@ class I18nEntriesController extends TranslateAppController {
 	 * View all translations for a base record
 	 *
 	 * @param string $tableName Translation table name
-	 * @param int $id Base record ID
+	 * @param string|int $id Base record ID
 	 * @return \Cake\Http\Response|null
 	 */
-	public function viewRecord(string $tableName, int $id) {
+	public function viewRecord(string $tableName, string|int $id) {
 		if (!$this->validateTranslationTableName($tableName)) {
 			throw new NotFoundException(__d('translate', 'Invalid translation table.'));
 		}
@@ -310,11 +334,11 @@ class I18nEntriesController extends TranslateAppController {
 	 * Add a translation for a base record
 	 *
 	 * @param string $tableName Translation table name
-	 * @param int $id Base record ID
+	 * @param string|int $id Base record ID
 	 * @param string $locale Locale code
 	 * @return \Cake\Http\Response|null
 	 */
-	public function addTranslation(string $tableName, int $id, string $locale) {
+	public function addTranslation(string $tableName, string|int $id, string $locale) {
 		if (!$this->validateTranslationTableName($tableName)) {
 			throw new NotFoundException(__d('translate', 'Invalid translation table.'));
 		}
@@ -379,11 +403,11 @@ class I18nEntriesController extends TranslateAppController {
 	 * Edit a translation for a base record
 	 *
 	 * @param string $tableName Translation table name
-	 * @param int $id Base record ID
+	 * @param string|int $id Base record ID
 	 * @param string $locale Locale code
 	 * @return \Cake\Http\Response|null
 	 */
-	public function editTranslation(string $tableName, int $id, string $locale) {
+	public function editTranslation(string $tableName, string|int $id, string $locale) {
 		if (!$this->validateTranslationTableName($tableName)) {
 			throw new NotFoundException(__d('translate', 'Invalid translation table.'));
 		}
@@ -458,10 +482,10 @@ class I18nEntriesController extends TranslateAppController {
 	 * Auto-translate a single record to specified locales
 	 *
 	 * @param string $tableName Translation table name
-	 * @param int $id Base record ID
+	 * @param string|int $id Base record ID
 	 * @return \Cake\Http\Response|null
 	 */
-	public function autoTranslateRecord(string $tableName, int $id) {
+	public function autoTranslateRecord(string $tableName, string|int $id) {
 		$this->request->allowMethod(['post']);
 
 		if (!$this->validateTranslationTableName($tableName)) {
@@ -525,12 +549,12 @@ class I18nEntriesController extends TranslateAppController {
 					continue;
 				}
 				$sourceText = $baseRecord->get($field);
-				if (empty($sourceText)) {
+				if ($sourceText === null || $sourceText === '') {
 					continue;
 				}
 
 				$translatedText = $service->translate($sourceText, $locale, $sourceLocale);
-				if ($translatedText) {
+				if ($translatedText !== null && $translatedText !== '') {
 					$translation->set($field, $translatedText);
 					$hasChanges = true;
 				}
@@ -657,12 +681,12 @@ class I18nEntriesController extends TranslateAppController {
 						continue;
 					}
 					$sourceText = $baseRecord->get($field);
-					if (empty($sourceText)) {
+					if ($sourceText === null || $sourceText === '') {
 						continue;
 					}
 
 					$translatedText = $service->translate($sourceText, $locale, $sourceLocale);
-					if ($translatedText) {
+					if ($translatedText !== null && $translatedText !== '') {
 						$translation->set($field, $translatedText);
 						$hasChanges = true;
 					}
@@ -696,16 +720,17 @@ class I18nEntriesController extends TranslateAppController {
 	 * View a single translation entry
 	 *
 	 * @param string $tableName Translation table name
-	 * @param int $id Entry ID
+	 * @param string|int $id Entry ID
+	 * @param string|null $locale
 	 * @return \Cake\Http\Response|null
 	 */
-	public function view(string $tableName, int $id) {
+	public function view(string $tableName, string|int $id, ?string $locale = null) {
 		if (!$this->validateTranslationTableName($tableName)) {
 			throw new NotFoundException(__d('translate', 'Invalid translation table.'));
 		}
 
 		$table = $this->getTranslationTable($tableName);
-		$entry = $table->get($id);
+		$entry = $this->getEntry($table, $id, $locale);
 
 		$baseTableName = $this->getBaseTableName($tableName);
 		$connection = $this->getConnection();
@@ -720,7 +745,7 @@ class I18nEntriesController extends TranslateAppController {
 		$foreignKey = $entry->get($foreignKeyColumn);
 		if ($foreignKey) {
 			try {
-				$baseTable = $this->fetchTable(Inflector::camelize($baseTableName));
+				$baseTable = $this->getTranslationTable($baseTableName);
 				$baseRecord = $baseTable->get($foreignKey);
 			} catch (Exception) {
 				// Base record not found or table doesn't exist
@@ -746,16 +771,17 @@ class I18nEntriesController extends TranslateAppController {
 	 * Edit a translation entry
 	 *
 	 * @param string $tableName Translation table name
-	 * @param int $id Entry ID
+	 * @param string|int $id Entry ID
+	 * @param string|null $locale
 	 * @return \Cake\Http\Response|null
 	 */
-	public function edit(string $tableName, int $id) {
+	public function edit(string $tableName, string|int $id, ?string $locale = null) {
 		if (!$this->validateTranslationTableName($tableName)) {
 			throw new NotFoundException(__d('translate', 'Invalid translation table.'));
 		}
 
 		$table = $this->getTranslationTable($tableName);
-		$entry = $table->get($id);
+		$entry = $this->getEntry($table, $id, $locale);
 
 		$connection = $this->getConnection();
 		$schema = $connection->getSchemaCollection()->describe($tableName);
@@ -803,7 +829,7 @@ class I18nEntriesController extends TranslateAppController {
 		/** @var string|null $field */
 		$field = $entry->get('field');
 		if ($strategy === 'eav' && $foreignKey && $field) {
-			$sourceText = $this->getSourceText($baseTableName, (int)$foreignKey, $field);
+			$sourceText = $this->getSourceText($baseTableName, $foreignKey, $field);
 		}
 
 		// Get glossary suggestions
@@ -825,10 +851,11 @@ class I18nEntriesController extends TranslateAppController {
 	 * Delete a translation entry
 	 *
 	 * @param string $tableName Translation table name
-	 * @param int $id Entry ID
+	 * @param string|int $id Entry ID
+	 * @param string|null $locale
 	 * @return \Cake\Http\Response|null
 	 */
-	public function delete(string $tableName, int $id) {
+	public function delete(string $tableName, string|int $id, ?string $locale = null) {
 		$this->request->allowMethod(['post', 'delete']);
 
 		if (!$this->validateTranslationTableName($tableName)) {
@@ -836,7 +863,7 @@ class I18nEntriesController extends TranslateAppController {
 		}
 
 		$table = $this->getTranslationTable($tableName);
-		$entry = $table->get($id);
+		$entry = $this->getEntry($table, $id, $locale);
 
 		if ($table->delete($entry)) {
 			$this->Flash->success(__d('translate', 'The translation has been deleted.'));
@@ -902,7 +929,7 @@ class I18nEntriesController extends TranslateAppController {
 		$query = $table->find();
 
 		if (!empty($entryIds)) {
-			$query->where(['id IN' => $entryIds]);
+			$query->where($this->getEntryConditions($table, (array)$entryIds));
 		} elseif ($this->request->getData('translate_all')) {
 			// Only translate entries that are marked as auto or have empty content
 			if ($hasAutoField && $strategy === 'eav') {
@@ -936,10 +963,10 @@ class I18nEntriesController extends TranslateAppController {
 			/** @var string|null $field */
 			$field = $entry->get('field');
 			if ($strategy === 'eav' && $foreignKey && $field) {
-				$sourceText = $this->getSourceText($baseTableName, (int)$foreignKey, $field);
+				$sourceText = $this->getSourceText($baseTableName, $foreignKey, $field);
 			}
 
-			if (!$sourceText) {
+			if ($sourceText === null || $sourceText === '') {
 				$failed++;
 
 				continue;
@@ -956,7 +983,7 @@ class I18nEntriesController extends TranslateAppController {
 
 			$result = $service->translateWithMemory($sourceText, $locale, (string)$sourceLocale);
 
-			if ($result['translation']) {
+			if ($result['translation'] !== null && $result['translation'] !== '') {
 				$entry->set('content', $result['translation']);
 				if ($hasAutoField) {
 					// Memory translations are considered more reliable, but still mark as auto
@@ -1025,7 +1052,7 @@ class I18nEntriesController extends TranslateAppController {
 		$table = $this->getTranslationTable($tableName);
 		$updated = $table->updateAll(
 			['auto' => $autoValue],
-			['id IN' => $entryIds],
+			$this->getEntryConditions($table, (array)$entryIds),
 		);
 
 		$this->Flash->success(__d('translate', '{0} entries updated.', $updated));
@@ -1064,6 +1091,46 @@ class I18nEntriesController extends TranslateAppController {
 			'className' => Table::class,
 			'table' => $tableName,
 		]);
+	}
+
+	/**
+	 * @param \Cake\ORM\Table $table
+	 * @param string|int $id
+	 * @param string|null $locale
+	 * @return \Cake\Datasource\EntityInterface
+	 */
+	protected function getEntry(Table $table, string|int $id, ?string $locale): EntityInterface {
+		if (is_array($table->getPrimaryKey())) {
+			if ($locale === null || $locale === '') {
+				throw new NotFoundException(__d('translate', 'A locale is required for this translation entry.'));
+			}
+
+			return $table->find()->where(['id' => $id, 'locale' => $locale])->firstOrFail();
+		}
+
+		return $table->get($id);
+	}
+
+	/**
+	 * @param \Cake\ORM\Table $table
+	 * @param array $entryIds
+	 * @return array
+	 */
+	protected function getEntryConditions(Table $table, array $entryIds): array {
+		if (!is_array($table->getPrimaryKey())) {
+			return ['id IN' => $entryIds];
+		}
+
+		$conditions = [];
+		foreach ($entryIds as $entryId) {
+			$key = is_string($entryId) ? json_decode($entryId, true) : null;
+			if (!is_array($key) || count($key) !== 2 || !isset($key[0], $key[1]) || !is_scalar($key[0]) || !is_string($key[1])) {
+				throw new NotFoundException(__d('translate', 'Select a translation entry with its locale.'));
+			}
+			$conditions[] = ['id' => $key[0], 'locale' => $key[1]];
+		}
+
+		return ['OR' => $conditions];
 	}
 
 	/**
@@ -1118,7 +1185,7 @@ class I18nEntriesController extends TranslateAppController {
 		$hasAutoField = $schema->hasColumn('auto');
 
 		// Get all base table IDs
-		$baseTable = $this->fetchTable(Inflector::camelize($baseTableName));
+		$baseTable = $this->getTranslationTable($baseTableName);
 		$baseIds = $baseTable->find()->select(['id'])->all()->extract('id')->toArray();
 
 		// Get existing translation entries
@@ -1395,13 +1462,13 @@ class I18nEntriesController extends TranslateAppController {
 	 * Get source text from base table
 	 *
 	 * @param string $baseTableName Base table name
-	 * @param int $foreignKey Foreign key
+	 * @param string|int $foreignKey Foreign key
 	 * @param string $field Field name
 	 * @return string|null
 	 */
-	protected function getSourceText(string $baseTableName, int $foreignKey, string $field): ?string {
+	protected function getSourceText(string $baseTableName, string|int $foreignKey, string $field): ?string {
 		try {
-			$baseTable = $this->fetchTable(Inflector::camelize($baseTableName));
+			$baseTable = $this->getTranslationTable($baseTableName);
 			$record = $baseTable->get($foreignKey);
 
 			return $record->get($field);

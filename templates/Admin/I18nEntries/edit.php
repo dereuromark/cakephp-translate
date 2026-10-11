@@ -145,7 +145,7 @@ $cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
 					<?= __d('translate', 'Use machine translation to fill in the translation. This will overwrite the current content.') ?>
 				</p>
 				<?= $this->Form->create(null, ['url' => ['action' => 'autoTranslate', $tableName]]) ?>
-				<?= $this->Form->hidden('entry_ids[]', ['value' => $entry->id]) ?>
+				<?= $this->Form->hidden('entry_ids[]', ['value' => $strategy === 'shadow_table' ? json_encode([$entry->id, $entry->locale]) : $entry->id]) ?>
 				<div class="mb-3">
 					<?= $this->Form->control('source_locale', [
 						'type' => 'select',

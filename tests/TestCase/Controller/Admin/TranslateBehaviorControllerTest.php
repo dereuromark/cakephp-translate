@@ -269,7 +269,7 @@ class TranslateBehaviorControllerTest extends IntegrationTestCase {
 
 		$connection->execute('DROP TABLE IF EXISTS test_posts_translations');
 		$adapterName = $isSqlite ? 'sqlite' : 'mysql';
-		$adapter = AdapterFactory::instance()->getAdapter($adapterName, ['connection' => $connection]);
+		$adapter = AdapterFactory::instance()->getAdapter($adapterName, ['connection' => $connection, 'database' => $connection->config()['database'] ?? null]);
 		eval(substr($migrationCode, strlen('<?php')));
 		$migration = new AddTranslationsForTestPosts();
 		$migration->setAdapter($adapter);
@@ -277,6 +277,7 @@ class TranslateBehaviorControllerTest extends IntegrationTestCase {
 		$schema = $connection->getSchemaCollection()->describe('test_posts_translations');
 		$this->assertSame(['id', 'locale'], $schema->getPrimaryKey());
 		$this->assertFalse($schema->hasColumn('foreign_key'));
+		$this->assertTrue($schema->getColumn('title')['null']);
 		$connection->insert('test_posts', ['id' => 1, 'title' => 'Hello', 'content' => 'Original']);
 		$connection->insert('test_posts_translations', ['id' => 1, 'locale' => 'de', 'title' => 'Hallo']);
 		$connection->insert('test_posts_translations', ['id' => 1, 'locale' => 'fr', 'title' => 'Bonjour']);
@@ -544,6 +545,30 @@ class TranslateBehaviorControllerTest extends IntegrationTestCase {
 
 		$this->assertResponseCode(302);
 		$this->assertFlashMessage('Missing required data');
+	}
+
+	public function testEavMigrationPreservesStringForeignKeys(): void {
+		$connection = ConnectionManager::get('test');
+		$connection->execute('CREATE TABLE review_uuid_articles (id VARCHAR(36) PRIMARY KEY, title VARCHAR(255))');
+		try {
+			$this->post('/admin/translate/translate-behavior/generate/review_uuid_articles', ['fields' => ['title'], 'strategy' => 'eav']);
+			$this->assertResponseCode(200);
+			$code = $this->viewVariable('migrationCode');
+			$this->assertIsString($code);
+			eval(substr($code, strlen('<?php')));
+			$class = $this->viewVariable('migrationName');
+			$migration = new $class();
+			$adapterName = $connection->getDriver() instanceof Sqlite ? 'sqlite' : 'mysql';
+			$migration->setAdapter(AdapterFactory::instance()->getAdapter($adapterName, ['connection' => $connection, 'database' => $connection->config()['database'] ?? null]));
+			$migration->change();
+			$id = 'e1f812be-7598-49c2-8fd0-eef67d9a1421';
+			$connection->insert('review_uuid_articles_translations', ['foreign_key' => $id, 'locale' => 'de', 'model' => 'ReviewUuidArticles', 'field' => 'title', 'content' => 'Hallo']);
+			$row = $connection->execute('SELECT foreign_key FROM review_uuid_articles_translations')->fetch('assoc');
+			$this->assertSame($id, $row['foreign_key']);
+		} finally {
+			$connection->execute('DROP TABLE IF EXISTS review_uuid_articles_translations');
+			$connection->execute('DROP TABLE IF EXISTS review_uuid_articles');
+		}
 	}
 
 }

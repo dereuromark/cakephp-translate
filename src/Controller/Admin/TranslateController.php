@@ -550,8 +550,12 @@ class TranslateController extends TranslateAppController {
 			$projectPath = $project->path ?? null;
 		}
 
-		// Scan project path if available
-		if ($projectPath && is_dir($projectPath)) {
+		if ($projectPath && !str_starts_with($projectPath, DS)) {
+			$projectPath = ROOT . DS . $projectPath;
+		}
+		$projectPath = rtrim($projectPath ?: ROOT, DS) . DS;
+
+		if (is_dir($projectPath)) {
 			$appControllerPath = $projectPath . 'src' . DIRECTORY_SEPARATOR . 'Controller' . DIRECTORY_SEPARATOR;
 			if (is_dir($appControllerPath)) {
 				$names = $this->scanControllerDirectory($appControllerPath);

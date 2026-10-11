@@ -51,6 +51,9 @@ class Application extends BaseApplication {
 	 * @return void
 	 */
 	public function routes(RouteBuilder $routes): void {
+		$routes->plugin('Translate', ['path' => '/translate'], function (RouteBuilder $routes) {
+			$routes->fallbacks(DashedRoute::class);
+		});
 		$routes->prefix('Admin', function (RouteBuilder $routes) {
 			$routes->plugin('Translate', ['path' => '/translate'], function (RouteBuilder $routes) {
 				$routes->connect('/', ['controller' => 'Translate', 'action' => 'index'], ['routeClass' => DashedRoute::class]);

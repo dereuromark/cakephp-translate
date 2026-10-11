@@ -75,8 +75,15 @@ class GoogleTranslate {
 			$fieldsString .= $key . '=' . $value . '&';
 		}
 		$fieldsString = rtrim($fieldsString, '&');
-		// Open connection
+		if (!function_exists('curl_init')) {
+			throw new Exception('The cURL extension is required for Google translation.');
+		}
 		$ch = curl_init();
+		if ($ch === false) {
+			throw new Exception('Cannot initialize Google translation request.');
+		}
+		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 15);
 		// Set the url, number of POST vars, POST data
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_POST, (bool)count($fields));
@@ -86,7 +93,6 @@ class GoogleTranslate {
 		curl_setopt($ch, CURLOPT_USERAGENT, 'AndroidTranslate/5.3.0.RC02.130475354-53000263 5.1 phone TRANSLATE_OPM5_TEST_1');
 		// Execute post
 		$result = curl_exec($ch);
-		// Close connection
 
 		return (string)$result;
 	}

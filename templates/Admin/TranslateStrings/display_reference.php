@@ -91,7 +91,7 @@ foreach ($lines as $k => $line) {
 
 <?php if (Configure::read('Translate.onlineRepoUrl')) { ?>
 	<?php
-	$url = Configure::read('Translate.onlineRepoUrl') . $reference;
+	$url = rtrim(Configure::read('Translate.onlineRepoUrl'), '/') . '/' . implode('/', array_map('rawurlencode', explode('/', $referencePath)));
 	if (count($lines) > 1) {
 		$url .= '#L' . array_shift($lines) . '-L' . array_pop($lines);
 	} else {

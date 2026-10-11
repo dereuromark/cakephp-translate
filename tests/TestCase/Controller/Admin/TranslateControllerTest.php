@@ -258,4 +258,13 @@ class TranslateControllerTest extends IntegrationTestCase {
 		$this->assertRedirect(['action' => 'index']);
 	}
 
+	public function testHardResetClearsCatalogAndPreservesProjects(): void {
+		$this->post('/admin/translate/translate/reset?hard-reset=1');
+		$this->assertRedirect();
+		foreach (['TranslateTerms', 'TranslateApiTranslations', 'TranslateStrings', 'TranslateLocales', 'TranslateDomains'] as $alias) {
+			$this->assertSame(0, $this->getTableLocator()->get('Translate.' . $alias)->find()->count());
+		}
+		$this->assertSame(1, $this->getTableLocator()->get('Translate.TranslateProjects')->find()->count());
+	}
+
 }

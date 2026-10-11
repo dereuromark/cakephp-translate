@@ -1025,6 +1025,8 @@ class TranslateStringsController extends TranslateAppController {
 		$command = null;
 		$returnCode = null;
 		$dryRunResults = null;
+		$defaultPaths = ['src', 'templates'];
+		$isPlugin = $project->type === TranslateProject::TYPE_PLUGIN;
 
 		if ($this->request->is('post')) {
 			$paths = $this->request->getData('paths');
@@ -1079,6 +1081,7 @@ class TranslateStringsController extends TranslateAppController {
 			$normalizedOutput = $this->normalizePathForContainment($outputPath);
 			if ($appPathReal === '' || $normalizedOutput !== $appPathReal && !str_starts_with($normalizedOutput, rtrim($appPathReal, DS) . DS)) {
 				$this->Flash->error(__d('translate', 'Output path must be inside the project: {0}', $outputPath));
+				$this->set(compact('appPath', 'localePath', 'defaultPaths', 'output', 'command', 'returnCode', 'isPlugin', 'dryRunResults'));
 
 				return;
 			}

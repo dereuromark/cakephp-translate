@@ -2,10 +2,13 @@
 
 namespace Translate\Test\TestCase\Controller\Admin;
 
+use AddTranslationsForTestPosts;
 use Cake\Core\Configure;
 use Cake\Database\Driver\Sqlite;
 use Cake\Datasource\ConnectionManager;
 use Cake\Http\Exception\NotFoundException;
+use Cake\ORM\Table;
+use Migrations\Db\Adapter\AdapterFactory;
 use Translate\Test\TestCase\IntegrationTestCase;
 
 /**
@@ -264,7 +267,27 @@ class TranslateBehaviorControllerTest extends IntegrationTestCase {
 
 		$this->assertEquals('AddTranslationsForTestPosts', $this->viewVariable('migrationName'));
 
-		// Cleanup
+		$connection->execute('DROP TABLE IF EXISTS test_posts_translations');
+		$adapterName = $isSqlite ? 'sqlite' : 'mysql';
+		$adapter = AdapterFactory::instance()->getAdapter($adapterName, ['connection' => $connection]);
+		eval(substr($migrationCode, strlen('<?php')));
+		$migration = new AddTranslationsForTestPosts();
+		$migration->setAdapter($adapter);
+		$migration->change();
+		$schema = $connection->getSchemaCollection()->describe('test_posts_translations');
+		$this->assertSame(['id', 'locale'], $schema->getPrimaryKey());
+		$this->assertFalse($schema->hasColumn('foreign_key'));
+		$connection->insert('test_posts', ['id' => 1, 'title' => 'Hello', 'content' => 'Original']);
+		$connection->insert('test_posts_translations', ['id' => 1, 'locale' => 'de', 'title' => 'Hallo']);
+		$connection->insert('test_posts_translations', ['id' => 1, 'locale' => 'fr', 'title' => 'Bonjour']);
+		$table = new Table(['table' => 'test_posts', 'alias' => 'TestPosts', 'connection' => $connection]);
+		$table->addBehavior('Translate', ['fields' => ['title', 'content']]);
+		$behavior = $table->getBehavior('Translate');
+		$behavior->setLocale('de');
+		$this->assertSame('Hallo', $table->get(1)->title);
+		$behavior->setLocale('fr');
+		$this->assertSame('Bonjour', $table->get(1)->title);
+		$connection->execute('DROP TABLE IF EXISTS test_posts_translations');
 		$connection->execute('DROP TABLE IF EXISTS test_posts');
 	}
 

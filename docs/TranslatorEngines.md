@@ -43,3 +43,5 @@ Configure the class:
 ```
 
 Return null when no translation is available. Handle provider errors inside the engine and log useful diagnostics without exposing credentials.
+
+The Google and Transltr providers require the PHP cURL extension. Requests have a 5-second connection timeout and a 15-second total timeout. The bundled `GoogleTranslate` helper retains its GPL license notice; see [its source](https://github.com/dereuromark/cakephp-translate/blob/master/src/Translator/Engine/GoogleTranslate.php).

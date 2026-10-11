@@ -50,7 +50,7 @@
 
 				<div class="btn-group">
 					<?= $this->Form->postButton(
-						'<i class="fas fa-exclamation-triangle"></i> ' . __d('translate', 'Hard reset Translate (fully truncate all tables)'),
+						'<i class="fas fa-exclamation-triangle"></i> ' . __d('translate', 'Clear all translation data (all projects)'),
 						['?' => ['hard-reset' => '1']],
 						[
 							'class' => 'btn btn-danger',

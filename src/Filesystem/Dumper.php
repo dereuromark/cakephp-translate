@@ -19,7 +19,7 @@ class Dumper {
 		if ($folder === null) {
 			$folder = LOCALE;
 		}
-		$folder .= $lang . DS;
+		$folder = rtrim($folder, '/\\') . DS . $lang . DS;
 		if (!is_dir($folder)) {
 			mkdir($folder, 0770, true);
 		}
@@ -43,22 +43,13 @@ class Dumper {
 		$noComments = Configure::read('Translate.noComments') ?: false;
 
 		$po = new PoParser();
-		$newHeaders = [
-			'"Project-Id-Version: \n"',
-			'"POT-Creation-Date: \n"',
-			'"PO-Revision-Date: \n"',
-			'"MIME-Version: 1.0\n"',
-			'"Content-Type: text/plain; charset=utf-8\n"',
-			'"Content-Transfer-Encoding: 8bit\n"',
-			'"Plural-Forms: nplurals=' . $max . '; plural=' . $pluralExpression . ';\n"',
-		];
-
-		$po->setHeaders($newHeaders);
+		$headers = "MIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\n"
+			. "Content-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=$max; plural=$pluralExpression;\n";
 
 		$entries = [
 			'' => [
 				'msgid' => '',
-				'msgstr' => '',
+				'msgstr' => $headers,
 			],
 		];
 		foreach ($translations as $translation) {
@@ -97,12 +88,12 @@ class Dumper {
 				}
 
 				// Comments (translator comments)
-				if ($translation->translate_string->comments) {
-					$entry['tcomment'] = $translation->translate_string->comments;
+				if (($translation->translate_string->comment ?? $translation->translate_string->comments)) {
+					$entry['tcomment'] = $translation->translate_string->comment ?? $translation->translate_string->comments;
 				}
 			}
 
-			$entries[$translation->translate_string->name] = $entry;
+			$entries[] = $entry;
 		}
 		$po->setEntries($entries);
 

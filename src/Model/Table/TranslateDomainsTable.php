@@ -117,11 +117,11 @@ class TranslateDomainsTable extends Table {
 	 */
 	public function statistics($id, ?array $languages = null) {
 		if ($languages === null) {
-			$languages = $this->TranslateStrings->TranslateTerms->TranslateLocales->find('list', ['contain' => []])->toArray();
+			$languages = $this->TranslateStrings->TranslateTerms->TranslateLocales->find('list', ...['contain' => []])->toArray();
 		}
 
 		$count = [];
-		$count['domains'] = $this->find('list', ['fields' => [$this->getAlias() . '.id'], 'conditions' => [$this->getAlias() . '.translate_project_id IS' => $id, $this->getAlias() . '.active' => true]])->toArray();
+		$count['domains'] = $this->find('list', ...['fields' => [$this->getAlias() . '.id'], 'conditions' => [$this->getAlias() . '.translate_project_id IS' => $id, $this->getAlias() . '.active' => true]])->toArray();
 		// recursive = 0;
 		//$this->TranslateStrings->bindModel(['belongsTo' => $this->TranslateStrings->habtmJoin], false);
 		$count['strings'] = $this->TranslateStrings->find()->where(['TranslateDomains.translate_project_id IS' => $id, 'TranslateDomains.active' => true])->contain(['TranslateDomains'])->count();

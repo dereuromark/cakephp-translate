@@ -84,6 +84,9 @@ class TranslateAppController extends AppController {
 	 */
 	public function beforeFilter(EventInterface $event): void {
 		parent::beforeFilter($event);
+		if ($event->isStopped()) {
+			return;
+		}
 
 		$prefix = $this->request->getParam('prefix');
 		$controller = $this->request->getParam('controller');
@@ -166,6 +169,10 @@ class TranslateAppController extends AppController {
 	 * @return void
 	 */
 	public function beforeRender(EventInterface $event): void {
+		parent::beforeRender($event);
+		if ($event->isStopped()) {
+			return;
+		}
 		// Only set default layout if one hasn't been explicitly set
 		if ($this->viewBuilder()->getLayout() === null) {
 			$layout = Configure::read('Translate.layout', 'Translate.simple');

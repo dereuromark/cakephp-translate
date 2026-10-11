@@ -42,7 +42,7 @@ class TranslateDomainsController extends TranslateAppController {
 	 * @return \Cake\Http\Response|null|void
 	 */
 	public function view($id = null) {
-		$translateDomain = $this->TranslateDomains->get($id, [
+		$translateDomain = $this->TranslateDomains->get($id, ...[
 			'contain' => ['TranslateProjects', 'TranslateStrings'],
 		]);
 
@@ -88,7 +88,7 @@ class TranslateDomainsController extends TranslateAppController {
 	 * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
 	 */
 	public function edit($id = null) {
-		$translateDomain = $this->TranslateDomains->get($id, [
+		$translateDomain = $this->TranslateDomains->get($id, ...[
 			'contain' => ['TranslateStrings'],
 		]);
 

@@ -180,7 +180,7 @@ class TranslateLocalesTable extends Table {
 
 		$options = array_merge($defaults, $options);
 
-		return $this->find($type, $options);
+		return $this->find($type, ...$options);
 	}
 
 	/**
@@ -190,7 +190,7 @@ class TranslateLocalesTable extends Table {
 	 */
 	public function getExtractableAsList($translateProjectId) {
 		return $this->getExtractable($translateProjectId)
-			->find('list', ['keyField' => 'iso2', 'valueField' => 'id'])
+			->find('list', ...['keyField' => 'iso2', 'valueField' => 'id'])
 			->toArray();
 	}
 
@@ -217,7 +217,7 @@ class TranslateLocalesTable extends Table {
 			$query->where(['active' => true]);
 		}
 
-		return $query->find('list', ['keyField' => 'locale', 'valueField' => 'name'])->toArray();
+		return $query->find('list', ...['keyField' => 'locale', 'valueField' => 'name'])->toArray();
 	}
 
 	/**

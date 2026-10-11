@@ -14,6 +14,7 @@ use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Locale;
 use Translate\Model\Filter\TranslateStringsCollection;
 use Translate\Translator\Translator;
 
@@ -179,7 +180,7 @@ class TranslateStringsTable extends Table {
 		if ($languages === null) {
 			$languages = $this->TranslateTerms->TranslateLocales->find()
 				->where(['translate_project_id IS' => $id])
-				->find('list', ['keyField' => 'id', 'valueField' => 'locale'])->toArray();
+				->find('list', ...['keyField' => 'id', 'valueField' => 'locale'])->toArray();
 		}
 
 		$options = [
@@ -313,7 +314,7 @@ class TranslateStringsTable extends Table {
 		}
 
 		$translation += [
-			'last_imported' => $this->lastImported,
+			'last_import' => $this->lastImported,
 			'is_html' => $this->containsHtml($translation),
 			'translate_domain_id' => $domainId,
 		];
@@ -376,8 +377,11 @@ class TranslateStringsTable extends Table {
 				continue;
 			}
 
-			// Get API suggestions
-			$translations = $translator->suggest($translateString->name, $translateLocale->locale, $baseLocale);
+			$targetLanguage = $translateLocale->iso2 ?: Locale::getPrimaryLanguage($translateLocale->locale);
+			$sourceLanguage = Locale::getPrimaryLanguage($baseLocale);
+			$translations = $targetLanguage && $sourceLanguage
+				? $translator->suggest($translateString->name, $targetLanguage, $sourceLanguage)
+				: [];
 
 			// Get Translation Memory suggestions
 			$memorySuggestions = $this->getSuggestionsFromMemory(

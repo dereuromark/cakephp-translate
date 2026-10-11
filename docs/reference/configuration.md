@@ -17,8 +17,6 @@ Merge settings under `Translate` in `config/app.php` or `config/app_local.php`. 
 | `noComments` | Omit references, flags and comments when dumping PO files. |
 | `plurals`, `pluralExpression` | Gettext plural count and expression written into exported catalogs. These must match the target language. |
 | `engine` | Engine class or ordered list of classes implementing `EngineInterface`. |
-| `languagesTable` | Optional Languages association, such as `Data.Languages`. |
-| `usersTable` | Optional Users association for translation attribution. |
 | `defaultLocale` | Default locale used by translation forms. |
 | `layout` | Override the backend layout; the built-in layout is `Translate.simple`. |
 | `editor`, `showCodeReferences` | Enable reference editing or source excerpts where supported by the backend. |
@@ -32,6 +30,6 @@ The schema stores `content` and `plural_2`. Languages needing additional plural 
 
 ## Optional integrations
 
-Queue can process large imports in the background. Data provides a Languages table when configured. AuditStash records translation changes when installed and enabled. BootstrapUI supplies an alternative form helper when installed; the built-in layout loads its CSS and JavaScript from CDNs. See [Layout](../contribute/layout.md) for local assets and CSP considerations.
+Queue can process large imports in the background. Data provides an optional Languages association when that plugin is loaded. The legacy `languagesTable` and `usersTable` example keys are not read by the current plugin. AuditStash records translation changes when installed and enabled. BootstrapUI supplies an alternative form helper when installed; the built-in layout loads its CSS and JavaScript from CDNs. See [Layout](../contribute/layout.md) for local assets and CSP considerations.
 
 The plugin inherits the host application’s AppController. Its admin gate supplements application authentication and callbacks; it does not replace them.

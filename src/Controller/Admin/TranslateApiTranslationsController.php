@@ -2,7 +2,7 @@
 
 namespace Translate\Controller\Admin;
 
-use App\Controller\AppController;
+use Translate\Controller\TranslateAppController;
 
 /**
  * TranslateApiTranslations Controller
@@ -10,7 +10,7 @@ use App\Controller\AppController;
  * @property \Translate\Model\Table\TranslateApiTranslationsTable $TranslateApiTranslations
  * @method \Cake\Datasource\ResultSetInterface<\Translate\Model\Entity\TranslateApiTranslation> paginate(\Cake\Datasource\RepositoryInterface|\Cake\Datasource\QueryInterface|string|null $object = null, array $settings = [])
  */
-class TranslateApiTranslationsController extends AppController {
+class TranslateApiTranslationsController extends TranslateAppController {
 
 	/**
 	 * Index method
@@ -32,7 +32,7 @@ class TranslateApiTranslationsController extends AppController {
 	 * @return \Cake\Http\Response|null|void
 	 */
 	public function view($id = null) {
-		$translateApiTranslation = $this->TranslateApiTranslations->get($id, [
+		$translateApiTranslation = $this->TranslateApiTranslations->get($id, ...[
 			'contain' => [],
 		]);
 
@@ -70,7 +70,7 @@ class TranslateApiTranslationsController extends AppController {
 	 * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
 	 */
 	public function edit($id = null) {
-		$translateApiTranslation = $this->TranslateApiTranslations->get($id, [
+		$translateApiTranslation = $this->TranslateApiTranslations->get($id, ...[
 			'contain' => [],
 		]);
 		if ($this->request->is(['patch', 'post', 'put'])) {

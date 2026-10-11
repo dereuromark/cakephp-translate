@@ -278,7 +278,7 @@ class TranslateTermsTable extends Table {
 			$options['conditions']['TranslateStrings.translate_domain_id IN'] = $domainId;
 		}
 
-		return $this->find('all', $options);
+		return $this->find('all', ...$options);
 	}
 
 	/**
@@ -306,7 +306,7 @@ class TranslateTermsTable extends Table {
 	public function getTranslated($stringId) {
 		$options = ['conditions' => [$this->getAlias() . '.translate_string_id' => $stringId]];
 
-		return $this->find('all', $options);
+		return $this->find('all', ...$options);
 	}
 
 	/**

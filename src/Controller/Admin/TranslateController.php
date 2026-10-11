@@ -217,7 +217,7 @@ class TranslateController extends TranslateAppController {
 	 */
 	public function reset() {
 		if ($this->Translation->isPosted()) {
-			$selection = (array)$this->request->getData('Form.sel');
+			$selection = (array)$this->request->getData('selection', $this->request->getData('Form.sel'));
 			if ($this->request->getQuery('hard-reset')) {
 				$this->Translation->hardReset();
 				$this->Flash->success('Hard reset done.');
@@ -346,9 +346,15 @@ class TranslateController extends TranslateAppController {
 		$this->Flash->success(__d('translate', 'Language switched to {0}', $language->name));
 
 		// Redirect back to previous page or index
-		$redirect = $this->request->getQuery('redirect') ?: ['action' => 'index'];
+		$redirect = $this->request->getQuery('redirect');
+		if (is_string($redirect) && str_starts_with($redirect, '/')
+			&& !str_starts_with($redirect, '//') && !str_contains($redirect, '\\')
+			&& !preg_match('/[\x00-\x20\x7f]/', $redirect)
+		) {
+			return $this->redirect($redirect);
+		}
 
-		return $this->redirect($redirect);
+		return $this->redirect(['action' => 'index']);
 	}
 
 	/**

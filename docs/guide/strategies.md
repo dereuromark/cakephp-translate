@@ -15,11 +15,11 @@ use Cake\I18n\I18n;
 use Translate\I18n\DbMessagesLoader;
 
 I18n::config('default', function ($domain, $locale) {
-    return new DbMessagesLoader($domain, $locale);
+    return (new DbMessagesLoader($domain, $locale))();
 });
 ```
 
-Register each additional domain separately. The default loader uses the default application project; pass a project ID as the constructor’s third argument to select another project. Match the locale code to your stored locale.
+Register each additional domain separately. The default loader uses the default application project; pass the named `projectId` constructor argument to select another project. Match the locale code to your stored locale.
 
 The loader implements CakePHP’s package-loading API available from CakePHP 5.2.4. Use exported PO files on earlier supported CakePHP versions. Database changes must also reach your deployment environment; deploying source code alone does not deploy translations.
 

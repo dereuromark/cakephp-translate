@@ -2,14 +2,14 @@
 
 Machine translation is optional. You can import, edit and export catalogs without calling a remote API.
 
-Configure `Translate.engine` with a class implementing `EngineInterface`, or an ordered array of classes. `translate()` uses the first non-null result; `suggest()` collects results from all configured engines. Results, including null results, are cached in the database per engine, input text and language pair. Changing provider configuration does not automatically refresh an existing cached suggestion.
+Configure `Translate.engine` with a class implementing `EngineInterface`, or an ordered array of classes. `translate()` uses the first non-null result; `suggest()` collects results from all configured engines. Successful results are cached in the database per engine, input text and language pair. Null results are retried on a later lookup. Changing provider configuration does not automatically refresh an existing cached suggestion.
 
 ## Included engines
 
 | Engine | Integration |
 | --- | --- |
 | `Translate\Translator\Engine\Google` | Unofficial Google endpoint used by default. Availability and quotas are not guaranteed. |
-| `Translate\Translator\Engine\GoogleTranslate` | Alternative Google integration; inspect its configuration before use. |
+| `Translate\Translator\Engine\GoogleTranslate` | Internal helper used by `Google`; this is not an `EngineInterface` class and cannot be configured as an engine. |
 | `Translate\Translator\Engine\Yandex` | Legacy Yandex SDK integration using `Yandex.key`; requires `yandex/translate-api`. |
 | `Translate\Translator\Engine\Transltr` | Legacy Transltr endpoint; service availability is not guaranteed. |
 

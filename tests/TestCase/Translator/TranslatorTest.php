@@ -15,13 +15,13 @@ class TranslatorTest extends TestCase {
 	 */
 	protected $Translator;
 
+	protected array $fixtures = ['plugin.Translate.TranslateApiTranslations'];
+
 	/**
 	 * @return void
 	 */
 	public function setUp(): void {
 		parent::setUp();
-
-		$this->skipIf(true);
 
 		Configure::write('Translate.engine', Test::class);
 
@@ -47,7 +47,7 @@ class TranslatorTest extends TestCase {
 		$is = $this->Translator->suggest($text, 'de', 'en');
 
 		$expected = [
-			'App\Translator\Engine\Test' => 'retaV',
+			Test::class => 'retaV',
 		];
 		$this->assertSame($expected, $is);
 	}
@@ -63,8 +63,8 @@ class TranslatorTest extends TestCase {
 		$is = $this->Translator->suggest($text, 'de', 'en');
 
 		$expected = [
-			'App\Translator\Engine\Test' => 'retaV',
-			'App\Translator\Engine\TestMore' => 'vater',
+			Test::class => 'retaV',
+			TestMore::class => 'vater',
 		];
 		$this->assertSame($expected, $is);
 	}

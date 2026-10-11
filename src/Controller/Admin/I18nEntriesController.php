@@ -515,8 +515,15 @@ class I18nEntriesController extends TranslateAppController {
 				]);
 			}
 
+			$hadManualContent = !$translation->get('auto') && array_filter(
+				$translatedFields,
+				fn ($field) => $translation->get($field) !== null && $translation->get($field) !== '',
+			);
 			$hasChanges = false;
 			foreach ($translatedFields as $field) {
+				if (!$translation->get('auto') && $translation->get($field) !== null && $translation->get($field) !== '') {
+					continue;
+				}
 				$sourceText = $baseRecord->get($field);
 				if (empty($sourceText)) {
 					continue;
@@ -531,7 +538,7 @@ class I18nEntriesController extends TranslateAppController {
 
 			if ($hasChanges) {
 				if ($hasAutoField) {
-					$translation->set('auto', true);
+					$translation->set('auto', !$hadManualContent);
 				}
 
 				if ($translationTable->save($translation)) {
@@ -640,8 +647,15 @@ class I18nEntriesController extends TranslateAppController {
 					]);
 				}
 
+				$hadManualContent = !$translation->get('auto') && array_filter(
+					$translatedFields,
+					fn ($field) => $translation->get($field) !== null && $translation->get($field) !== '',
+				);
 				$hasChanges = false;
 				foreach ($translatedFields as $field) {
+					if (!$translation->get('auto') && $translation->get($field) !== null && $translation->get($field) !== '') {
+						continue;
+					}
 					$sourceText = $baseRecord->get($field);
 					if (empty($sourceText)) {
 						continue;
@@ -656,7 +670,7 @@ class I18nEntriesController extends TranslateAppController {
 
 				if ($hasChanges) {
 					if ($hasAutoField) {
-						$translation->set('auto', true);
+						$translation->set('auto', !$hadManualContent);
 					}
 
 					if ($translationTable->save($translation)) {
@@ -913,6 +927,9 @@ class I18nEntriesController extends TranslateAppController {
 		$failed = 0;
 
 		foreach ($entries as $entry) {
+			if (!$entry->get('auto') && $entry->get('content') !== null && $entry->get('content') !== '') {
+				continue;
+			}
 			// Get source text
 			$sourceText = null;
 			$foreignKey = $entry->get($foreignKeyColumn);
@@ -1183,7 +1200,7 @@ class I18nEntriesController extends TranslateAppController {
 			}
 
 			$schema = $connection->getSchemaCollection()->describe($tableName);
-			$rowCount = $connection->execute("SELECT COUNT(*) as count FROM `{$tableName}`")->fetch('assoc')['count'] ?? 0;
+			$rowCount = $connection->execute('SELECT COUNT(*) as count FROM ' . $connection->getDriver()->quoteIdentifier($tableName) . '')->fetch('assoc')['count'] ?? 0;
 			$strategy = $this->detectTranslationStrategy($schema);
 			$hasAutoField = $schema->hasColumn('auto');
 
@@ -1191,7 +1208,7 @@ class I18nEntriesController extends TranslateAppController {
 			$autoCount = 0;
 			$manualCount = 0;
 			if ($hasAutoField) {
-				$autoCount = $connection->execute("SELECT COUNT(*) as count FROM `{$tableName}` WHERE auto = 1")->fetch('assoc')['count'] ?? 0;
+				$autoCount = $connection->execute('SELECT COUNT(*) as count FROM ' . $connection->getDriver()->quoteIdentifier($tableName) . ' WHERE auto = :auto', ['auto' => true], ['auto' => 'boolean'])->fetch('assoc')['count'] ?? 0;
 				$manualCount = (int)$rowCount - (int)$autoCount;
 			}
 
@@ -1199,11 +1216,11 @@ class I18nEntriesController extends TranslateAppController {
 			$baseCount = 0;
 			$baseExists = in_array($baseTableName, $allTables, true);
 			if ($baseExists) {
-				$baseCount = $connection->execute("SELECT COUNT(*) as count FROM `{$baseTableName}`")->fetch('assoc')['count'] ?? 0;
+				$baseCount = $connection->execute('SELECT COUNT(*) as count FROM ' . $connection->getDriver()->quoteIdentifier($baseTableName) . '')->fetch('assoc')['count'] ?? 0;
 			}
 
 			// Get unique locales for this table
-			$localesResult = $connection->execute("SELECT DISTINCT locale FROM `{$tableName}`")->fetchAll('assoc');
+			$localesResult = $connection->execute('SELECT DISTINCT locale FROM ' . $connection->getDriver()->quoteIdentifier($tableName) . '')->fetchAll('assoc');
 			$tableLocales = array_column($localesResult, 'locale');
 			$localeCount = count($tableLocales);
 
@@ -1242,7 +1259,7 @@ class I18nEntriesController extends TranslateAppController {
 
 		foreach ($translationTables as $info) {
 			$tableName = $info['name'];
-			$result = $connection->execute("SELECT DISTINCT locale FROM `{$tableName}`")->fetchAll('assoc');
+			$result = $connection->execute('SELECT DISTINCT locale FROM ' . $connection->getDriver()->quoteIdentifier($tableName) . '')->fetchAll('assoc');
 			foreach ($result as $row) {
 				if ($row['locale'] && !in_array($row['locale'], $locales, true)) {
 					$locales[] = $row['locale'];
@@ -1369,7 +1386,7 @@ class I18nEntriesController extends TranslateAppController {
 	 * @return array<string>
 	 */
 	protected function getLocalesForTable(Connection $connection, string $tableName): array {
-		$result = $connection->execute("SELECT DISTINCT locale FROM `{$tableName}` ORDER BY locale")->fetchAll('assoc');
+		$result = $connection->execute('SELECT DISTINCT locale FROM ' . $connection->getDriver()->quoteIdentifier($tableName) . ' ORDER BY locale')->fetchAll('assoc');
 
 		return array_column($result, 'locale');
 	}

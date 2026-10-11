@@ -11,7 +11,7 @@ Composer declares the supported PHP and CakePHP versions. For older applications
 Load Translate with its bootstrap and routes:
 
 ```sh
-bin/cake plugin load Translate -b -r
+bin/cake plugin load Translate
 ```
 
 Load Migrations if your application has not already loaded it, then create the plugin tables:

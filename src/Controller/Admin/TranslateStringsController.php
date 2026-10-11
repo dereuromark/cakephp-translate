@@ -129,7 +129,7 @@ class TranslateStringsController extends TranslateAppController {
 	 * @return \Cake\Http\Response|null|void
 	 */
 	public function view($id = null) {
-		$translateString = $this->TranslateStrings->get($id, [
+		$translateString = $this->TranslateStrings->get($id, ...[
 			'contain' => ['TranslateDomains' => 'TranslateProjects', 'TranslateTerms' => 'TranslateLocales'],
 		]);
 
@@ -178,7 +178,7 @@ class TranslateStringsController extends TranslateAppController {
 	 * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
 	 */
 	public function edit($id = null) {
-		$translateString = $this->TranslateStrings->get($id, [
+		$translateString = $this->TranslateStrings->get($id, ...[
 			'contain' => ['TranslateDomains'],
 		]);
 
@@ -234,7 +234,7 @@ class TranslateStringsController extends TranslateAppController {
 	 */
 	public function delete($id = null) {
 		$this->request->allowMethod(['post', 'delete']);
-		$translateString = $this->TranslateStrings->get($id, [
+		$translateString = $this->TranslateStrings->get($id, ...[
 			'contain' => ['TranslateDomains'],
 		]);
 
@@ -461,7 +461,7 @@ class TranslateStringsController extends TranslateAppController {
 
 		$translateLocales = $this->TranslateStrings->TranslateTerms->TranslateLocales->getExtractableAsList($projectId);
 		/** @var \Translate\Model\Entity\TranslateDomain[] $domains */
-		$domains = $this->TranslateStrings->TranslateDomains->getActive()->toArray();
+		$domains = $this->TranslateStrings->TranslateDomains->getActive()->where(['TranslateDomains.translate_project_id' => $projectId])->toArray();
 
 		$map = [];
 		foreach ($translateLocales as $code => $id) {
@@ -478,7 +478,7 @@ class TranslateStringsController extends TranslateAppController {
 			foreach ($postedDomains as $domain) {
 				[$lang, $domain] = explode('_', $domain, 2);
 
-				$langId = $this->TranslateStrings->TranslateTerms->TranslateLocales->find()->where(['iso2' => $lang])->firstOrFail()->id;
+				$langId = $this->TranslateStrings->TranslateTerms->TranslateLocales->find()->where(['iso2' => $lang, 'translate_project_id' => $projectId])->firstOrFail()->id;
 				$domainId = $this->TranslateStrings->TranslateDomains->find()->where(['name' => $domain, 'translate_project_id IS' => $projectId])->firstOrFail()->id;
 				/** @var array<\Translate\Model\Entity\TranslateTerm> $translations */
 				$translations = $this->TranslateStrings->TranslateTerms->getTranslations($langId, $domainId)->toArray();
@@ -540,7 +540,7 @@ class TranslateStringsController extends TranslateAppController {
 			return $this->redirect(['controller' => 'Translate', 'action' => 'index']);
 		}
 
-		$translateString = $this->TranslateStrings->get($id, ['contain' => ['TranslateDomains' => 'TranslateProjects']]);
+		$translateString = $this->TranslateStrings->get($id, ...['contain' => ['TranslateDomains' => 'TranslateProjects']]);
 
 		if ($translateString->translate_domain->translate_project_id !== $this->Translation->currentProjectId()) {
 			throw new NotFoundException(__d('translate', 'String not found.'));
@@ -678,7 +678,7 @@ class TranslateStringsController extends TranslateAppController {
 			$this->viewBuilder()->setLayout('ajax');
 		}
 
-		$translateString = $this->TranslateStrings->get($id, ['contain' => ['TranslateDomains' => 'TranslateProjects']]);
+		$translateString = $this->TranslateStrings->get($id, ...['contain' => ['TranslateDomains' => 'TranslateProjects']]);
 
 		if ($translateString->translate_domain->translate_project_id !== $this->Translation->currentProjectId()) {
 			throw new NotFoundException(__d('translate', 'String not found.'));
@@ -1050,7 +1050,7 @@ class TranslateStringsController extends TranslateAppController {
 				if ($resolved === false || !is_dir($resolved)) {
 					continue;
 				}
-				if ($appPathReal !== '' && !str_starts_with($resolved, $appPathReal)) {
+				if ($appPathReal !== '' && $resolved !== $appPathReal && !str_starts_with($resolved, rtrim($appPathReal, DS) . DS)) {
 					continue;
 				}
 				$validPaths[] = $resolved;
@@ -1077,7 +1077,7 @@ class TranslateStringsController extends TranslateAppController {
 			// We can't realpath() it yet (the directory may not exist), so collapse manually
 			// then verify the prefix (Issue #13).
 			$normalizedOutput = $this->normalizePathForContainment($outputPath);
-			if ($appPathReal === '' || !str_starts_with($normalizedOutput, $appPathReal)) {
+			if ($appPathReal === '' || $normalizedOutput !== $appPathReal && !str_starts_with($normalizedOutput, rtrim($appPathReal, DS) . DS)) {
 				$this->Flash->error(__d('translate', 'Output path must be inside the project: {0}', $outputPath));
 
 				return;

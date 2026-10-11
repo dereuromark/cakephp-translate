@@ -66,7 +66,7 @@ class I18nExtractCommand extends CoreI18nExtractCommand {
 			$this->_getPaths($io);
 		}
 
-		$this->_projectId = $this->findProjectId($plugin);
+		$this->_projectId ??= $this->findProjectId($plugin);
 
 		if ($plugin || $args->hasOption('extract-core')) {
 			$this->_extractCore = strtolower((string)$args->getOption('extract-core')) !== 'no';
@@ -230,17 +230,21 @@ class I18nExtractCommand extends CoreI18nExtractCommand {
 		/** @var \Translate\Model\Entity\TranslateProject|null $project */
 		$project = $this->fetchTable('Translate.TranslateProjects')
 			->find()
-			->where(['type' => TranslateProject::TYPE_APP, 'default' => true])
+			->where($plugin !== ''
+				? ['type' => TranslateProject::TYPE_PLUGIN, 'name' => $plugin]
+				: ['type' => TranslateProject::TYPE_APP, 'default' => true])
 			->first();
 		if (!$project) {
 			/** @var \Translate\Model\Entity\TranslateProject $project */
 			$project = $this->fetchTable('Translate.TranslateProjects')
 				->newEntity([
 					'name' => $plugin ?: 'App',
+					'type' => $plugin !== '' ? TranslateProject::TYPE_PLUGIN : TranslateProject::TYPE_APP,
+					'default' => $plugin === '',
 					'status' => TranslateProject::STATUS_HIDDEN,
 				]);
 			$this->fetchTable('Translate.TranslateProjects')
-				->save($project);
+				->saveOrFail($project);
 		}
 
 		return $project->id;

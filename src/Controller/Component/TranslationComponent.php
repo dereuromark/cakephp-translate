@@ -85,23 +85,17 @@ class TranslationComponent extends Component {
 		$connection = ConnectionManager::get('default');
 
 		$tables = [
-			'translate_domains',
-			'translate_strings',
-			'translate_locales',
 			'translate_terms',
 			'translate_api_translations',
+			'translate_strings',
+			'translate_locales',
+			'translate_domains',
 		];
-
-		$tableTruncates = 'TRUNCATE TABLE ' . implode(';' . PHP_EOL . 'TRUNCATE TABLE ', $tables) . ';';
-
-		$sql = <<<SQL
-SET FOREIGN_KEY_CHECKS = 0;
-
-$tableTruncates
-
-SET FOREIGN_KEY_CHECKS = 1;
-SQL;
-		$connection->execute($sql);
+		$connection->transactional(function () use ($connection, $tables): void {
+			foreach ($tables as $table) {
+				$connection->delete($table, []);
+			}
+		});
 	}
 
 	/**

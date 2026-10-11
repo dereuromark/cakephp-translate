@@ -1,6 +1,6 @@
 # I18nEntries - TranslateBehavior CRUD
 
-This feature adds a comprehensive CRUD interface for managing translations stored in CakePHP's TranslateBehavior tables.
+This page describes the CRUD interface for managing translations stored in CakePHP's TranslateBehavior tables.
 
 ## Overview
 
@@ -65,17 +65,7 @@ $table->addColumn('auto', 'boolean', [
 
 ### Routes
 
-Add the following routes to access the I18nEntries controller:
-
-```php
-// In config/routes.php or your plugin routes
-$routes->prefix('Admin', function (RouteBuilder $routes) {
-    $routes->plugin('Translate', function (RouteBuilder $routes) {
-        $routes->connect('/i18n-entries', ['controller' => 'I18nEntries', 'action' => 'index']);
-        $routes->connect('/i18n-entries/:action/*', ['controller' => 'I18nEntries']);
-    });
-});
-```
+Loading Translate with routes registers these actions through the Admin prefix. No additional route block is needed.
 
 ### Available Actions
 
@@ -118,10 +108,7 @@ The feature uses the standard Translate plugin configuration for translation eng
 ```php
 // In config/app.php or config/app_local.php
 'Translate' => [
-    'engine' => 'Google', // or 'Yandex', etc.
-    'Google' => [
-        'apiKey' => 'your-api-key',
-    ],
+    'engine' => \Translate\Translator\Engine\Google::class,
 ],
 ```
 

@@ -209,7 +209,7 @@ $fieldsFormatted .= "        ]";
     parent::initialize($config);
 
     $this->addBehavior('Translate', [
-        'fields' => <?= $fieldsFormatted ?>,
+        'fields' => <?= h($fieldsFormatted) ?>,
     ]);
 }</code></pre>
 						</li>

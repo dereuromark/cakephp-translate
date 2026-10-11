@@ -2,6 +2,8 @@
 
 namespace Translate\Translator\Engine;
 
+use Cake\Log\Log;
+use Exception;
 use Translate\Translator\EngineInterface;
 
 class Google implements EngineInterface {
@@ -14,7 +16,12 @@ class Google implements EngineInterface {
 	 * @return string|null
 	 */
 	public function translate(string $text, string $to, string $from): ?string {
-		$result = GoogleTranslate::translate($from, $to, $text);
+		$result = '';
+		try {
+			$result = GoogleTranslate::translate($from, $to, $text);
+		} catch (Exception $e) {
+			Log::warning('Google translation failed', ['exception' => $e]);
+		}
 		if ($result === '') {
 			return null;
 		}

@@ -38,7 +38,7 @@ class TranslateLocalesController extends TranslateAppController {
 
 		$creator = new Creator();
 		$existingFolders = $creator->findLocaleFolders($path);
-		$languages = $this->TranslateLocales->find('list', ['keyField' => 'locale'])
+		$languages = $this->TranslateLocales->find('list', ...['keyField' => 'locale'])
 			->where(['translate_project_id IS' => $this->Translation->currentProjectId()])
 			->toArray();
 
@@ -87,7 +87,7 @@ class TranslateLocalesController extends TranslateAppController {
 
 		$creator = new Creator();
 		$folders = $creator->findLocaleFolders($path);
-		$existingLanguages = $this->TranslateLocales->find('list', ['keyField' => 'locale'])
+		$existingLanguages = $this->TranslateLocales->find('list', ...['keyField' => 'locale'])
 			->where(['translate_project_id IS' => $this->Translation->currentProjectId()])
 			->toArray();
 
@@ -166,7 +166,7 @@ class TranslateLocalesController extends TranslateAppController {
 	 * @return \Cake\Http\Response|null|void
 	 */
 	public function view($id = null) {
-		$translateLocale = $this->TranslateLocales->get($id, [
+		$translateLocale = $this->TranslateLocales->get($id, ...[
 			'contain' => ['TranslateTerms'],
 		]);
 
@@ -211,7 +211,7 @@ class TranslateLocalesController extends TranslateAppController {
 	 * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
 	 */
 	public function edit($id = null) {
-		$translateLocale = $this->TranslateLocales->get($id, [
+		$translateLocale = $this->TranslateLocales->get($id, ...[
 			'contain' => [],
 		]);
 

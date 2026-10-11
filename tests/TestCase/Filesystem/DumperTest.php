@@ -3,6 +3,7 @@
 namespace Translate\Test\TestCase\Filesystem;
 
 use Cake\Core\Configure;
+use Cake\I18n\Parser\PoFileParser;
 use Cake\TestSuite\TestCase;
 use Translate\Filesystem\Dumper;
 use Translate\Model\Entity\TranslateString;
@@ -262,6 +263,23 @@ class DumperTest extends TestCase {
 		$this->assertStringContainsString('msgid_plural "{0} items"', $content);
 		$this->assertStringContainsString('msgstr[0]', $content);
 		$this->assertStringContainsString('msgstr[1]', $content);
+	}
+
+	public function testHeadersAndRepeatedMessagesKeepContexts(): void {
+		$terms = [];
+		foreach (['button' => 'Öffnen', 'status' => 'Offen'] as $context => $content) {
+			$terms[] = new TranslateTerm([
+				'content' => $content,
+				'translate_string' => new TranslateString(['name' => 'Open', 'context' => $context]),
+			]);
+		}
+		(new Dumper())->dump($terms, 'test', 'de', TMP);
+		$content = file_get_contents(TMP . 'de/test.po');
+		$this->assertStringContainsString('Content-Type: text/plain; charset=UTF-8', $content);
+		$this->assertStringContainsString('Plural-Forms: nplurals=2; plural=n != 1;', $content);
+		$parsed = (new PoFileParser())->parse(TMP . 'de/test.po');
+		$this->assertSame('Öffnen', $parsed['Open']['_context']['button']);
+		$this->assertSame('Offen', $parsed['Open']['_context']['status']);
 	}
 
 }

@@ -282,6 +282,12 @@ class DumperTest extends TestCase {
 		$this->assertSame('Offen', $parsed['Open']['_context']['status']);
 	}
 
+	public function testLocaleAndDomainCannotEscapeOutputDirectory(): void {
+		$this->assertFalse((new Dumper())->dump([], 'test', '../../outside', TMP));
+		$this->assertFalse((new Dumper())->dump([], '../outside', 'de', TMP));
+		$this->assertFalse((new Dumper())->dump([], 'test', '..\\outside', TMP));
+	}
+
 	public function testDirectoryCreationFailureReturnsFalse(): void {
 		$file = tempnam(TMP, 'dump_blocker_');
 		try {

@@ -1,6 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
+ * @var bool $hasCompositeKey
  * @var string $tableName
  * @var string $baseTableName
  * @var iterable $entries
@@ -176,7 +177,7 @@ $cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
 								<tr>
 									<td>
 										<input type="checkbox" name="entry_ids[]"
-											   value="<?= h($strategy === 'shadow_table' ? json_encode([$entry->id, $entry->locale]) : $entry->id) ?>" class="form-check-input entry-checkbox">
+											   value="<?= h($hasCompositeKey ? json_encode([$entry->id, $entry->locale]) : $entry->id) ?>" class="form-check-input entry-checkbox">
 									</td>
 									<td><?= h($entry->id) ?></td>
 									<td>
@@ -228,17 +229,17 @@ $cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
 									<td class="actions">
 										<?= $this->Html->link(
 											'<i class="fas fa-eye"></i>',
-											['action' => 'view', $tableName, $entry->id, $strategy === 'shadow_table' ? $entry->locale : null],
+											['action' => 'view', $tableName, $entry->id, $hasCompositeKey ? $entry->locale : null],
 											['class' => 'btn btn-sm btn-outline-primary', 'escapeTitle' => false, 'title' => __d('translate', 'View')],
 										) ?>
 										<?= $this->Html->link(
 											'<i class="fas fa-edit"></i>',
-											['action' => 'edit', $tableName, $entry->id, $strategy === 'shadow_table' ? $entry->locale : null],
+											['action' => 'edit', $tableName, $entry->id, $hasCompositeKey ? $entry->locale : null],
 											['class' => 'btn btn-sm btn-outline-secondary', 'escapeTitle' => false, 'title' => __d('translate', 'Edit')],
 										) ?>
 										<?= $this->Form->postButton(
 											'<i class="fas fa-trash"></i>',
-											['action' => 'delete', $tableName, $entry->id, $strategy === 'shadow_table' ? $entry->locale : null],
+											['action' => 'delete', $tableName, $entry->id, $hasCompositeKey ? $entry->locale : null],
 											[
 												'class' => 'btn btn-sm btn-outline-danger',
 												'escapeTitle' => false,

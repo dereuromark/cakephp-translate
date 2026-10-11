@@ -17,6 +17,38 @@ class Writer {
 	 * @return void
 	 */
 	public function write(string $filePath, array $entries, array $headers = []): void {
+		$directory = dirname($filePath);
+		if (!$filePath || !is_dir($directory) || is_link($filePath) || (file_exists($filePath) && !is_file($filePath))) {
+			throw new Exception('Unable to open file for writing: ' . $filePath);
+		}
+		$temporary = @tempnam($directory, '.translate_');
+		if ($temporary === false || realpath(dirname($temporary)) !== realpath($directory)) {
+			if ($temporary !== false) {
+				unlink($temporary);
+			}
+
+			throw new Exception('Unable to create temporary output file.');
+		}
+		try {
+			$this->writeFile($temporary, $entries, $headers);
+			$permissions = file_exists($filePath) ? fileperms($filePath) & 0777 : 0666 & ~umask();
+			if (!@chmod($temporary, $permissions) || !@rename($temporary, $filePath)) {
+				throw new Exception('Unable to replace output file.');
+			}
+		} finally {
+			if (file_exists($temporary)) {
+				unlink($temporary);
+			}
+		}
+	}
+
+	/**
+	 * @param string $filePath
+	 * @param array $entries
+	 * @param array $headers
+	 * @return void
+	 */
+	protected function writeFile(string $filePath, array $entries, array $headers): void {
 		$handle = $this->openFile($filePath);
 
 		try {

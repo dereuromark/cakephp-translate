@@ -516,10 +516,10 @@ class TranslateStringsController extends TranslateAppController {
 			return $this->redirect(['controller' => 'TranslateDomains', 'action' => 'index']);
 		} elseif (!$this->Translation->isPosted()) {
 			$domainArray = [];
-			foreach ($translateLocales as $code => $id) {
+			foreach ($translateLocales as $locale) {
 				/** @var \Translate\Model\Entity\TranslateDomain $domain */
 				foreach ($domains as $domain) {
-					$domainArray[] = $code . '_' . $domain->name;
+					$domainArray[] = $locale->id . '_' . $domain->name;
 				}
 			}
 			$this->request = $this->request->withData('domains', $domainArray);
@@ -1246,6 +1246,7 @@ class TranslateStringsController extends TranslateAppController {
 				} elseif ($returnCode === Command::CODE_SUCCESS) {
 					// Copy files from temp to final output directory
 					$copiedFiles = [];
+					$skippedFiles = 0;
 					foreach ($potFiles as $potFile) {
 						$filename = basename($potFile);
 						// For plugins, only copy the plugin's domain POT file
@@ -1254,6 +1255,7 @@ class TranslateStringsController extends TranslateAppController {
 						}
 						$destFile = $outputPath . DS . $filename;
 						if (file_exists($destFile) && $overwrite !== 'yes') {
+							$skippedFiles++;
 							$output .= 'Skipped existing file: ' . $filename . "\n";
 
 							continue;
@@ -1312,6 +1314,8 @@ class TranslateStringsController extends TranslateAppController {
 								$this->Flash->success(__d('translate', 'Import completed: {0} of {1} strings imported to database.', $importCount, $importTotal));
 							}
 						}
+					} elseif ($skippedFiles) {
+						$this->Flash->info(__d('translate', 'Extraction completed. Existing POT files were preserved. Enable overwrite to replace them.'));
 					} else {
 						$this->Flash->warning(__d('translate', 'Extraction completed but no POT files were generated. Check if your code uses __d(\'{0}\', ...) calls.', $pluginDomain ?? 'default'));
 					}

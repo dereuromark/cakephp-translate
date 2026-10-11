@@ -25,6 +25,7 @@ class TranslateController extends TranslateAppController {
 	 */
 	public function initialize(): void {
 		parent::initialize();
+		$this->Translation->setConfig('projectSessionKey', 'TranslatePublicProject.id');
 
 		$this->loadComponent('Search.Search', [
 			'actions' => ['terms'],
@@ -44,7 +45,7 @@ class TranslateController extends TranslateAppController {
 				$public = $projects->find()->where(['status' => TranslateProject::STATUS_PUBLIC])->orderBy(['id' => 'ASC'])->first();
 				if ($public) {
 					$projectId = $public->get('id');
-					$this->request->getSession()->write('TranslateProject.id', $projectId);
+					$this->request->getSession()->write('TranslatePublicProject.id', $projectId);
 				}
 			}
 		}
@@ -461,7 +462,7 @@ class TranslateController extends TranslateAppController {
 		$this->assertProjectAccess($projectId);
 		$translateProject = $translateProjectsTable->get($projectId);
 
-		$this->request->getSession()->write('TranslateProject.id', $translateProject->id);
+		$this->request->getSession()->write('TranslatePublicProject.id', $translateProject->id);
 		$this->Flash->success(__d('translate', 'Project switched to {0}', $translateProject->name));
 
 		return $this->redirect(['action' => 'index']);

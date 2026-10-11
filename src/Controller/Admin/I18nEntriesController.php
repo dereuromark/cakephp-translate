@@ -62,7 +62,7 @@ class I18nEntriesController extends TranslateAppController {
 		}
 		$action = $this->request->getParam('action');
 		$fields = match ($action) {
-			'batch', 'batchUpdateAuto', 'autoTranslate' => ['entry_ids'],
+			'batch', 'batchUpdateAuto', 'autoTranslate', 'view', 'edit' => ['entry_ids'],
 			'autoTranslateBatch' => ['record_ids', 'locales'],
 			default => [],
 		};
@@ -142,6 +142,7 @@ class I18nEntriesController extends TranslateAppController {
 
 		// For EAV strategy or when base table doesn't exist, show translation entries directly
 		$table = $this->getTranslationTable($tableName);
+		$hasCompositeKey = is_array($table->getPrimaryKey());
 		$query = $table->find();
 
 		// Apply filters
@@ -178,7 +179,7 @@ class I18nEntriesController extends TranslateAppController {
 		$query->orderBy(['id' => 'DESC']);
 		$entries = $this->paginate($query);
 
-		$this->set(compact('tableName', 'baseTableName', 'entries', 'strategy', 'translatedFields', 'locales', 'hasAutoField', 'foreignKeyColumn'));
+		$this->set(compact('hasCompositeKey', 'tableName', 'baseTableName', 'entries', 'strategy', 'translatedFields', 'locales', 'hasAutoField', 'foreignKeyColumn'));
 		$this->set('showBaseRecords', false);
 
 		return null;
@@ -730,6 +731,7 @@ class I18nEntriesController extends TranslateAppController {
 		}
 
 		$table = $this->getTranslationTable($tableName);
+		$hasCompositeKey = is_array($table->getPrimaryKey());
 		$entry = $this->getEntry($table, $id, $locale);
 
 		$baseTableName = $this->getBaseTableName($tableName);
@@ -762,7 +764,7 @@ class I18nEntriesController extends TranslateAppController {
 			$glossarySuggestions = $this->getGlossarySuggestions($content, $locale);
 		}
 
-		$this->set(compact('tableName', 'baseTableName', 'entry', 'strategy', 'translatedFields', 'hasAutoField', 'baseRecord', 'glossarySuggestions', 'foreignKeyColumn'));
+		$this->set(compact('hasCompositeKey', 'tableName', 'baseTableName', 'entry', 'strategy', 'translatedFields', 'hasAutoField', 'baseRecord', 'glossarySuggestions', 'foreignKeyColumn'));
 
 		return null;
 	}
@@ -781,6 +783,7 @@ class I18nEntriesController extends TranslateAppController {
 		}
 
 		$table = $this->getTranslationTable($tableName);
+		$hasCompositeKey = is_array($table->getPrimaryKey());
 		$entry = $this->getEntry($table, $id, $locale);
 
 		$connection = $this->getConnection();
@@ -842,7 +845,7 @@ class I18nEntriesController extends TranslateAppController {
 
 		$locales = $this->getLocalesForTable($connection, $tableName);
 
-		$this->set(compact('tableName', 'baseTableName', 'entry', 'strategy', 'translatedFields', 'hasAutoField', 'locales', 'sourceText', 'glossarySuggestions', 'foreignKeyColumn'));
+		$this->set(compact('hasCompositeKey', 'tableName', 'baseTableName', 'entry', 'strategy', 'translatedFields', 'hasAutoField', 'locales', 'sourceText', 'glossarySuggestions', 'foreignKeyColumn'));
 
 		return null;
 	}

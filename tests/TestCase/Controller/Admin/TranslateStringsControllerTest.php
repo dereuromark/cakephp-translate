@@ -180,10 +180,15 @@ Template/Account/foo.ctp:15', $translateString->references);
 	 * @return void
 	 */
 	public function testDump() {
+		$domains = $this->getTableLocator()->get('Translate.TranslateDomains');
+		$domain = $domains->get(1);
+		$domain->name = 'default';
+		$domains->saveOrFail($domain);
 		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateStrings', 'action' => 'dump']);
 
 		$this->assertResponseCode(200);
 		$this->assertNoRedirect();
+		$this->assertResponseRegExp('/<input(?=[^>]*value="1_default")(?=[^>]*checked)[^>]*>/');
 	}
 
 	/**

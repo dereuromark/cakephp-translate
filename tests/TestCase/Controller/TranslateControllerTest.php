@@ -18,7 +18,7 @@ class TranslateControllerTest extends IntegrationTestCase {
 
 	public function testHiddenProjectRequiresAccess(): void {
 		Configure::delete('Translate.adminAccess');
-		$this->session(['TranslateProject' => ['id' => 1]]);
+		$this->session(['TranslatePublicProject' => ['id' => 1]]);
 		$this->get('/translate/translate/index');
 		$this->assertResponseCode(403);
 	}
@@ -50,7 +50,7 @@ class TranslateControllerTest extends IntegrationTestCase {
 		]);
 		$projects->saveOrFail($project);
 		Configure::delete('Translate.adminAccess');
-		$this->session(['TranslateProject' => ['id' => $project->id]]);
+		$this->session(['TranslatePublicProject' => ['id' => $project->id]]);
 		$this->get('/translate/translate/translate/default/1');
 		$this->assertResponseCode(404);
 	}
@@ -60,9 +60,11 @@ class TranslateControllerTest extends IntegrationTestCase {
 		$project = $projects->newEntity(['name' => 'Public catalog', 'type' => TranslateProject::TYPE_APP, 'default' => false, 'status' => TranslateProject::STATUS_PUBLIC]);
 		$projects->saveOrFail($project);
 		Configure::delete('Translate.adminAccess');
+		$this->session(['TranslateProject' => ['id' => 1]]);
 		$this->get('/translate');
 		$this->assertResponseCode(200);
-		$this->assertSession($project->id, 'TranslateProject.id');
+		$this->assertSession(1, 'TranslateProject.id');
+		$this->assertSession($project->id, 'TranslatePublicProject.id');
 	}
 
 	public function testPublicIndexRecoversFromDeletedProject(): void {
@@ -71,10 +73,10 @@ class TranslateControllerTest extends IntegrationTestCase {
 		$project->status = TranslateProject::STATUS_PUBLIC;
 		$projects->saveOrFail($project);
 		Configure::delete('Translate.adminAccess');
-		$this->session(['TranslateProject' => ['id' => 999]]);
+		$this->session(['TranslatePublicProject' => ['id' => 999]]);
 		$this->get('/translate');
 		$this->assertResponseCode(200);
-		$this->assertSession(1, 'TranslateProject.id');
+		$this->assertSession(1, 'TranslatePublicProject.id');
 	}
 
 }

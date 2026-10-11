@@ -40,7 +40,7 @@ The admin interface can display references and offers source editing in developm
 
 ## Public translation interface
 
-The `/translate` interface is separate from the admin backend. Public projects can expose a collaborative translation form through your application’s authentication and authorization rules. Hidden or inactive projects require the configured admin gate. Only strings from the selected project may be edited. Set `Translate.showCodeReferences` to literal `true` to expose source excerpts through this interface.
+The `/translate` interface is separate from the admin backend. Public projects expose a collaborative translation form. Your AppController's authentication and callbacks still apply; the plugin skips an additional Authorization policy check for public projects. Contributors can replace or clear translations, including their plural forms. The public and admin interfaces keep separate project selections. Hidden or inactive projects require the configured admin gate. Only strings from the selected project may be edited. Set `Translate.showCodeReferences` to a truthy value to expose source excerpts through this interface.
 
 The admin **Clear all translation data** operation affects all projects. The normal Reset selection applies to the selected project. Clearing catalog data does not reset database identity sequences.
 

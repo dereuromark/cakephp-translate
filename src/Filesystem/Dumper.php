@@ -17,6 +17,11 @@ class Dumper {
 	 * @return bool
 	 */
 	public function dump(array $translations, string $domain, string $lang, ?string $folder = null) {
+		foreach ([$lang, $domain] as $segment) {
+			if ($segment === '' || $segment === '.' || $segment === '..' || preg_match('/[\\\\\/\x00-\x1f\x7f]/', $segment)) {
+				return false;
+			}
+		}
 		if ($folder === null) {
 			$folder = LOCALE;
 		}

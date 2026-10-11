@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-10-11 18:44+0000\n"
+"POT-Creation-Date: 2026-10-11 19:01+0000\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -318,6 +318,9 @@ msgid "Import partially completed: {0} of {1} strings imported. Errors: {2}"
 msgstr ""
 
 msgid "Import completed: {0} of {1} strings imported to database."
+msgstr ""
+
+msgid "Extraction completed. Existing POT files were preserved. Enable overwrite to replace them."
 msgstr ""
 
 msgid "Extraction completed but no POT files were generated. Check if your code uses __d('{0}', ...) calls."

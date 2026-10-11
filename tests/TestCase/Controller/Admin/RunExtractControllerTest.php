@@ -44,6 +44,7 @@ class RunExtractControllerTest extends IntegrationTestCase {
 			'separate domains' => [false, true, false],
 			'combined domains' => [true, true, false],
 			'preserve existing' => [false, false, false],
+			'preserve combined' => [true, false, false],
 			'preview combined' => [true, false, true],
 		];
 	}
@@ -62,6 +63,9 @@ class RunExtractControllerTest extends IntegrationTestCase {
 		$this->assertResponseOk();
 		$this->assertSame(0, $this->viewVariable('returnCode'));
 		$this->assertSame($before, glob(sys_get_temp_dir() . '/translate_extract_*'));
+		if (!$dryRun && !$overwrite && $merge) {
+			$this->assertFlashMessageContains('Existing POT files were preserved');
+		}
 		if ($dryRun || !$overwrite) {
 			$this->assertSame('existing content', file_get_contents($file));
 		} else {
@@ -70,7 +74,9 @@ class RunExtractControllerTest extends IntegrationTestCase {
 		if ($dryRun) {
 			$this->assertStringContainsString('Domain greeting', $this->viewVariable('dryRunResults')['default.pot']['content']);
 		} elseif ($merge) {
-			$this->assertStringContainsString('Domain greeting', file_get_contents($file));
+			if ($overwrite) {
+				$this->assertStringContainsString('Domain greeting', file_get_contents($file));
+			}
 			$this->assertFileDoesNotExist($this->projectPath . '/resources/locales/example.pot');
 		} else {
 			$this->assertFileExists($this->projectPath . '/resources/locales/example.pot');

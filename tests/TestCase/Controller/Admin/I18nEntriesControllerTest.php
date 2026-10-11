@@ -9,9 +9,15 @@ use Cake\Datasource\ConnectionManager;
 use Cake\Event\EventInterface;
 use Cake\Event\EventManager;
 use Cake\Form\FormProtector;
+use Cake\Http\ServerRequest;
 use Cake\ORM\Behavior\Translate\ShadowTableStrategy;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Security;
+use Cake\View\Helper\FormHelper;
+use Cake\View\View;
+use Closure;
+use DOMDocument;
+use ReflectionProperty;
 use TestApp\Translator\Engine\Test;
 use Tools\ToolsPlugin;
 use Translate\Test\TestCase\IntegrationTestCase;
@@ -23,10 +29,29 @@ class I18nEntriesControllerTest extends IntegrationTestCase {
 		'plugin.Translate.TranslateApiTranslations',
 	];
 
+	/**
+	 * @var array<\Closure>
+	 */
+	protected array $listeners = [];
+
+	protected ?string $originalSalt;
+
+	protected mixed $originalDebug;
+
+	protected mixed $originalEngine;
+
+	protected function listen(Closure $listener): void {
+		$this->listeners[] = $listener;
+		EventManager::instance()->on('Controller.initialize', $listener);
+	}
+
 	protected function setUp(): void {
 		parent::setUp();
+		$this->originalSalt = (new ReflectionProperty(Security::class, '_salt'))->getValue();
+		$this->originalDebug = Configure::read('debug');
+		$this->originalEngine = Configure::read('Translate.engine');
 		Configure::write('Translate.engine', Test::class);
-		EventManager::instance()->on('Controller.initialize', function (): void {
+		$this->listen(function (): void {
 			if (!Plugin::isLoaded('Tools')) {
 				Plugin::getCollection()->add(new ToolsPlugin());
 			}
@@ -37,13 +62,13 @@ class I18nEntriesControllerTest extends IntegrationTestCase {
 		$connection->execute('DROP TABLE IF EXISTS review_articles_translations');
 		$connection->execute('DROP TABLE IF EXISTS review_articles');
 		$connection->execute('CREATE TABLE review_articles (id INTEGER PRIMARY KEY, title VARCHAR(255), content TEXT)');
-		$connection->execute('CREATE TABLE review_articles_translations (id INTEGER NOT NULL, locale VARCHAR(6) NOT NULL, title VARCHAR(255), content TEXT, auto BOOLEAN NOT NULL DEFAULT 0, PRIMARY KEY (id, locale))');
-		$connection->execute('CREATE TABLE review_orphans_translations (id INTEGER NOT NULL, locale VARCHAR(6) NOT NULL, title VARCHAR(255), auto BOOLEAN NOT NULL DEFAULT 0, PRIMARY KEY (id, locale))');
+		$connection->execute('CREATE TABLE review_articles_translations (id INTEGER NOT NULL, locale VARCHAR(6) NOT NULL, title VARCHAR(255), content TEXT, auto BOOLEAN NOT NULL DEFAULT FALSE, PRIMARY KEY (id, locale))');
+		$connection->execute('CREATE TABLE review_orphans_translations (id INTEGER NOT NULL, locale VARCHAR(6) NOT NULL, title VARCHAR(255), auto BOOLEAN NOT NULL DEFAULT FALSE, PRIMARY KEY (id, locale))');
 		$connection->execute('CREATE TABLE review_articles_i18n (id INTEGER PRIMARY KEY, locale VARCHAR(6), model VARCHAR(100), foreign_key INTEGER, field VARCHAR(100), content TEXT, auto BOOLEAN)');
-		$connection->insert('review_orphans_translations', ['id' => 1, 'locale' => 'de', 'title' => 'German', 'auto' => 1]);
-		$connection->insert('review_orphans_translations', ['id' => 1, 'locale' => 'fr', 'title' => 'French', 'auto' => 1]);
+		$connection->insert('review_orphans_translations', ['id' => 1, 'locale' => 'de', 'title' => 'German', 'auto' => 1], ['auto' => 'boolean']);
+		$connection->insert('review_orphans_translations', ['id' => 1, 'locale' => 'fr', 'title' => 'French', 'auto' => 1], ['auto' => 'boolean']);
 		$connection->insert('review_articles', ['id' => 1, 'title' => 'Title', 'content' => 'Content']);
-		$connection->insert('review_articles_translations', ['id' => 1, 'locale' => 'de', 'title' => 'Manual title', 'content' => null, 'auto' => 0]);
+		$connection->insert('review_articles_translations', ['id' => 1, 'locale' => 'de', 'title' => 'Manual title', 'content' => null, 'auto' => 0], ['auto' => 'boolean']);
 	}
 
 	protected function tearDown(): void {
@@ -52,9 +77,12 @@ class I18nEntriesControllerTest extends IntegrationTestCase {
 		$connection->execute('DROP TABLE IF EXISTS review_articles_i18n');
 		$connection->execute('DROP TABLE IF EXISTS review_articles_translations');
 		$connection->execute('DROP TABLE IF EXISTS review_articles');
-		Configure::delete('Translate.engine');
-		Configure::write('debug', true);
-		EventManager::instance()->off('Controller.initialize');
+		Configure::write('Translate.engine', $this->originalEngine);
+		Configure::write('debug', $this->originalDebug);
+		(new ReflectionProperty(Security::class, '_salt'))->setValue(null, $this->originalSalt);
+		foreach ($this->listeners as $listener) {
+			EventManager::instance()->off('Controller.initialize', $listener);
+		}
 		parent::tearDown();
 	}
 
@@ -126,7 +154,7 @@ class I18nEntriesControllerTest extends IntegrationTestCase {
 		$table->addBehavior('Translate', ['fields' => ['title'], 'strategyClass' => ShadowTableStrategy::class, 'translationTable' => 'ReviewArticlesTranslations']);
 		$table->getBehavior('Translate')->setLocale('de');
 		$this->assertSame('Manual title', $table->get(1)->get('title'));
-		ConnectionManager::get('test')->insert('review_articles_i18n', ['id' => 1, 'locale' => 'de', 'model' => 'ReviewArticles', 'foreign_key' => 1, 'field' => 'title', 'content' => 'Current', 'auto' => 1]);
+		ConnectionManager::get('test')->insert('review_articles_i18n', ['id' => 1, 'locale' => 'de', 'model' => 'ReviewArticles', 'foreign_key' => 1, 'field' => 'title', 'content' => 'Current', 'auto' => 1], ['auto' => 'boolean']);
 		$this->get('/admin/translate/i18n-entries/edit/review_articles_i18n/1');
 		$this->assertResponseOk();
 		$this->assertSame('Title', $this->viewVariable('sourceText'));
@@ -153,7 +181,7 @@ class I18nEntriesControllerTest extends IntegrationTestCase {
 	protected function useFormProtection(bool $token = true): void {
 		Configure::write('debug', false);
 		Security::setSalt('translation-entry-test-salt');
-		EventManager::instance()->on('Controller.initialize', function (EventInterface $event): void {
+		$this->listen(function (EventInterface $event): void {
 			$event->getSubject()->loadComponent('FormProtection');
 		});
 		if ($token) {
@@ -180,7 +208,7 @@ class I18nEntriesControllerTest extends IntegrationTestCase {
 	public function testZeroEavTranslationIsKept(): void {
 		$connection = ConnectionManager::get('test');
 		$connection->execute("UPDATE review_articles SET title = '0'");
-		$connection->insert('review_articles_i18n', ['id' => 1, 'locale' => 'de', 'model' => 'ReviewArticles', 'foreign_key' => 1, 'field' => 'title', 'content' => null, 'auto' => 1]);
+		$connection->insert('review_articles_i18n', ['id' => 1, 'locale' => 'de', 'model' => 'ReviewArticles', 'foreign_key' => 1, 'field' => 'title', 'content' => null, 'auto' => 1], ['auto' => 'boolean']);
 		$this->post('/admin/translate/i18n-entries/auto-translate/review_articles_i18n', ['entry_ids' => [1], 'source_locale' => 'en']);
 		$this->assertRedirect();
 		$row = $connection->execute('SELECT content FROM review_articles_i18n')->fetch('assoc');
@@ -205,10 +233,91 @@ class I18nEntriesControllerTest extends IntegrationTestCase {
 		$connection->execute('CREATE TABLE review_articles_i18n (id INTEGER PRIMARY KEY, locale VARCHAR(6), model VARCHAR(100), foreign_key VARCHAR(36), field VARCHAR(100), content TEXT, auto BOOLEAN)');
 		$id = 'b56372b1-dcae-4d01-8010-9a2d124426db';
 		$connection->insert('review_articles', ['id' => $id, 'title' => 'Uuid source']);
-		$connection->insert('review_articles_i18n', ['id' => 1, 'locale' => 'de', 'model' => 'ReviewArticles', 'foreign_key' => $id, 'field' => 'title', 'content' => 'Current', 'auto' => 1]);
+		$connection->insert('review_articles_i18n', ['id' => 1, 'locale' => 'de', 'model' => 'ReviewArticles', 'foreign_key' => $id, 'field' => 'title', 'content' => 'Current', 'auto' => 1], ['auto' => 'boolean']);
 		$this->get('/admin/translate/i18n-entries/edit/review_articles_i18n/1');
 		$this->assertResponseOk();
 		$this->assertSame('Uuid source', $this->viewVariable('sourceText'));
+	}
+
+	public function testProtectedViewUnlocksHiddenSelection(): void {
+		$this->useFormProtection(false);
+		$this->get('/admin/translate/i18n-entries/view/review_orphans_translations/1/de');
+		$this->assertResponseOk();
+		$this->assertResponseContains('name="_Token[unlocked]" value="entry_ids"');
+	}
+
+	public function testProtectedEditUnlocksHiddenSelection(): void {
+		ConnectionManager::get('test')->insert('review_articles_i18n', ['id' => 1, 'locale' => 'de', 'model' => 'ReviewArticles', 'foreign_key' => 1, 'field' => 'title', 'content' => null, 'auto' => true], ['auto' => 'boolean']);
+		$this->useFormProtection(false);
+		$this->get('/admin/translate/i18n-entries/edit/review_articles_i18n/1');
+		$this->assertResponseOk();
+		$this->assertResponseContains('name="_Token[unlocked]" value="entry_ids"');
+	}
+
+	protected function hiddenFormData(string $url, array $data, bool $postButton = false): array {
+		$request = (new ServerRequest())->withAttribute('formTokenData', ['unlockedFields' => ['entry_ids']]);
+		$form = new FormHelper(new View($request));
+		if ($postButton) {
+			$html = $form->postButton('Update', $url, ['data' => $data]);
+		} else {
+			$html = $form->create(null, ['url' => $url]);
+			$html .= $form->hidden('entry_ids[]', ['value' => $data['entry_ids'][0]]);
+			$html .= $form->hidden('source_locale', ['value' => 'en']);
+			$html .= $form->end();
+		}
+		$document = new DOMDocument();
+		$document->loadHTML($html);
+		$encoded = [];
+		foreach ($document->getElementsByTagName('input') as $input) {
+			$encoded[] = urlencode($input->getAttribute('name')) . '=' . urlencode($input->getAttribute('value'));
+		}
+		parse_str(implode('&', $encoded), $result);
+
+		return $result;
+	}
+
+	public function testProtectedViewButtonSubmitsHiddenArray(): void {
+		$this->useFormProtection(false);
+		$url = '/admin/translate/i18n-entries/batch-update-auto/review_orphans_translations';
+		$data = $this->hiddenFormData($url, ['entry_ids' => [json_encode([1, 'de'])], 'auto' => false], true);
+		$this->post($url, $data);
+		$this->assertRedirect();
+		$rows = ConnectionManager::get('test')->execute('SELECT locale, auto FROM review_orphans_translations ORDER BY locale')->fetchAll('assoc');
+		$this->assertFalse((bool)$rows[0]['auto']);
+		$this->assertTrue((bool)$rows[1]['auto']);
+	}
+
+	public function testProtectedEditTranslationSubmitsHiddenArray(): void {
+		ConnectionManager::get('test')->insert('review_articles_i18n', ['id' => 1, 'locale' => 'de', 'model' => 'ReviewArticles', 'foreign_key' => 1, 'field' => 'title', 'content' => null, 'auto' => true], ['auto' => 'boolean']);
+		$this->useFormProtection(false);
+		$url = '/admin/translate/i18n-entries/auto-translate/review_articles_i18n';
+		$data = $this->hiddenFormData($url, ['entry_ids' => [1]]);
+		$this->post($url, $data);
+		$this->assertRedirect();
+		$this->assertSame('eltiT', ConnectionManager::get('test')->execute('SELECT content FROM review_articles_i18n')->fetch('assoc')['content']);
+	}
+
+	public function testSinglePrimaryKeyShadowSelectionUsesScalar(): void {
+		$connection = ConnectionManager::get('test');
+		$connection->execute('DROP TABLE review_orphans_translations');
+		$connection->execute('CREATE TABLE review_orphans_translations (id INTEGER PRIMARY KEY, locale VARCHAR(6), title VARCHAR(255), auto BOOLEAN)');
+		$connection->insert('review_orphans_translations', ['id' => 1, 'locale' => 'de', 'title' => 'German', 'auto' => true], ['auto' => 'boolean']);
+		$this->get('/admin/translate/i18n-entries/entries/review_orphans_translations');
+		$this->assertResponseOk();
+		$this->assertFalse($this->viewVariable('hasCompositeKey'));
+		$this->assertResponseContains('value="1" class="form-check-input entry-checkbox"');
+	}
+
+	public function testCompositeEavSelectionIncludesLocale(): void {
+		$connection = ConnectionManager::get('test');
+		$connection->execute('DROP TABLE review_articles_i18n');
+		$connection->execute('CREATE TABLE review_articles_i18n (id INTEGER NOT NULL, locale VARCHAR(6) NOT NULL, model VARCHAR(100), foreign_key INTEGER, field VARCHAR(100), content TEXT, auto BOOLEAN, PRIMARY KEY (id, locale))');
+		$connection->insert('review_articles_i18n', ['id' => 1, 'locale' => 'de', 'model' => 'ReviewArticles', 'foreign_key' => 1, 'field' => 'title', 'content' => 'German', 'auto' => true], ['auto' => 'boolean']);
+		$this->get('/admin/translate/i18n-entries/entries/review_articles_i18n');
+		$this->assertResponseOk();
+		$this->assertTrue($this->viewVariable('hasCompositeKey'));
+		$this->assertResponseContains('value="[1,&quot;de&quot;]"');
+		$this->assertResponseContains('/view/review_articles_i18n/1/de');
 	}
 
 }

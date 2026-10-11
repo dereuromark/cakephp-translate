@@ -36,6 +36,34 @@ class WriterTest extends TestCase {
 		}
 	}
 
+	public function testFailedWritePreservesExistingCatalog(): void {
+		$file = tempnam(TMP, 'writer_');
+		file_put_contents($file, 'existing catalog');
+		$before = glob(TMP . '.translate_*');
+		$writer = new class extends Writer {
+			/**
+             * @return void
+             */
+			protected function writeToHandle($handle, string $content): void {
+				parent::writeToHandle($handle, $content);
+
+				throw new Exception('Simulated write failure');
+			}
+		};
+		try {
+			try {
+				$writer->write($file, [['msgid' => 'Message', 'msgstr' => 'Translation']]);
+				$this->fail('Expected write failure');
+			} catch (Exception $e) {
+				$this->assertSame('Simulated write failure', $e->getMessage());
+			}
+			$this->assertSame('existing catalog', file_get_contents($file));
+			$this->assertSame($before, glob(TMP . '.translate_*'));
+		} finally {
+			unlink($file);
+		}
+	}
+
 	public function testWriteFailureThrows(): void {
 		$this->expectException(Exception::class);
 		$this->expectExceptionMessage('Unable to open file');

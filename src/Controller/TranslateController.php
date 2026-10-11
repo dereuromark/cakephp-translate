@@ -146,6 +146,7 @@ class TranslateController extends TranslateAppController {
 				->count();
 
 			$translatedStrings = $translateStringsTable->find()
+				->select(['TranslateStrings.id'])
 				->where(['translate_domain_id' => $domainEntity->id])
 				->innerJoinWith('TranslateTerms', function ($q) {
 					return $q->where([
@@ -253,14 +254,15 @@ class TranslateController extends TranslateAppController {
 				->count();
 
 			$translatedStrings = $translateStringsTable->find()
+				->select(['TranslateStrings.id'])
 				->where(['translate_domain_id' => $domainEntity->id])
-				->matching('TranslateTerms', function ($q) {
+				->innerJoinWith('TranslateTerms', function ($q) {
 					return $q->where([
 						'TranslateTerms.content IS NOT' => null,
 						'TranslateTerms.content !=' => '',
 					]);
 				})
-				->groupBy(['TranslateStrings.id'])
+				->distinct(['TranslateStrings.id'])
 				->count();
 
 			$domainStats[$domainEntity->id] = [

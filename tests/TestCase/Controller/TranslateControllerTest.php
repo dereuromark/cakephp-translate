@@ -123,6 +123,25 @@ class TranslateControllerTest extends IntegrationTestCase {
 		$this->assertSession(777, 'TranslateProject.id');
 	}
 
+	public function testDomainProgressCountsStringsOnceAcrossLocales(): void {
+		[$projectId, $stringId] = $this->createPublicCatalog();
+		$locales = $this->fetchTable('Translate.TranslateLocales');
+		$german = $locales->find()->where(['translate_project_id' => $projectId])->firstOrFail();
+		$french = $locales->saveOrFail($locales->newEntity(['name' => 'French', 'locale' => 'fr_FR', 'iso2' => 'fr', 'translate_project_id' => $projectId, 'active' => true]));
+		$terms = $this->fetchTable('Translate.TranslateTerms');
+		foreach ([$german->id, $french->id] as $localeId) {
+			$terms->saveOrFail($terms->newEntity(['translate_string_id' => $stringId, 'translate_locale_id' => $localeId, 'content' => 'Translated']));
+		}
+		Configure::delete('Translate.adminAccess');
+		$this->session(['TranslatePublicProject' => ['id' => $projectId]]);
+		$this->get('/translate/translate/translate/public_catalog/' . $stringId);
+		$this->assertResponseOk();
+		$stats = array_values($this->viewVariable('domainStats'));
+		$this->assertSame(1, $stats[0]['total']);
+		$this->assertSame(1, $stats[0]['translated']);
+		$this->assertSame(100, $stats[0]['percentage']);
+	}
+
 	public static function authorizedSelections(): array {
 		return [
 			'hidden overview' => [TranslateProject::STATUS_HIDDEN, '/translate'],

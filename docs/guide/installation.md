@@ -8,7 +8,7 @@ composer require dereuromark/cakephp-translate cakephp/migrations
 
 Composer declares the supported PHP and CakePHP versions. For older applications, see the [version map](https://github.com/dereuromark/cakephp-translate/wiki#cakephp-version-map).
 
-Load Translate with its bootstrap:
+Load Translate with its bootstrap and routes:
 
 ```sh
 bin/cake plugin load Translate
@@ -19,20 +19,6 @@ Load Migrations if your application has not already loaded it, then create the p
 ```sh
 bin/cake plugin load Migrations
 bin/cake migrations migrate -p Translate
-```
-
-Add backend routes in `config/routes.php`. The plugin does not ship a routes file:
-
-```php
-use Cake\Routing\Route\DashedRoute;
-use Cake\Routing\RouteBuilder;
-
-$routes->prefix('Admin', function (RouteBuilder $routes): void {
-    $routes->plugin('Translate', ['path' => '/translate'], function (RouteBuilder $routes): void {
-        $routes->connect('/', ['controller' => 'Translate', 'action' => 'index']);
-        $routes->fallbacks(DashedRoute::class);
-    });
-});
 ```
 
 The plugin’s entities use CakePHP Tools. Composer installs this dependency; loading Tools routes is unnecessary for the translation backend.

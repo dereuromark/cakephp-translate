@@ -93,7 +93,7 @@ The auto-translate feature uses the configured translation engine (Google Transl
 
 1. Gets the source text from the base table
 2. Translates to the target locale
-3. Saves the translation with `auto = true`
+3. Marks a new machine translation as `auto = true`. Filling empty fields in a row that already contains manual content preserves its manual classification.
 
 Only entries with `auto = true` or empty content are translated to protect manual edits.
 

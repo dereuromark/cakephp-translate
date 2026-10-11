@@ -55,4 +55,26 @@ class TranslateControllerTest extends IntegrationTestCase {
 		$this->assertResponseCode(404);
 	}
 
+	public function testPublicIndexSelectsPublicProjectWhenDefaultIsHidden(): void {
+		$projects = $this->getTableLocator()->get('Translate.TranslateProjects');
+		$project = $projects->newEntity(['name' => 'Public catalog', 'type' => TranslateProject::TYPE_APP, 'default' => false, 'status' => TranslateProject::STATUS_PUBLIC]);
+		$projects->saveOrFail($project);
+		Configure::delete('Translate.adminAccess');
+		$this->get('/translate');
+		$this->assertResponseCode(200);
+		$this->assertSession($project->id, 'TranslateProject.id');
+	}
+
+	public function testPublicIndexRecoversFromDeletedProject(): void {
+		$projects = $this->getTableLocator()->get('Translate.TranslateProjects');
+		$project = $projects->get(1);
+		$project->status = TranslateProject::STATUS_PUBLIC;
+		$projects->saveOrFail($project);
+		Configure::delete('Translate.adminAccess');
+		$this->session(['TranslateProject' => ['id' => 999]]);
+		$this->get('/translate');
+		$this->assertResponseCode(200);
+		$this->assertSession(1, 'TranslateProject.id');
+	}
+
 }

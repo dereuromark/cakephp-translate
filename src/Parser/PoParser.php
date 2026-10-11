@@ -193,11 +193,11 @@ class PoParser {
 
 				break;
 			case '#':
-				$this->currentEntry['tcomment'] = $data['value'];
+				$this->currentEntry['tcomment'] .= ($this->currentEntry['tcomment'] !== '' ? "\n" : '') . $data['value'];
 
 				break;
 			case '#.':
-				$this->currentEntry['ccomment'] = $data['value'];
+				$this->currentEntry['ccomment'] .= ($this->currentEntry['ccomment'] !== '' ? "\n" : '') . $data['value'];
 
 				break;
 			case '#|':

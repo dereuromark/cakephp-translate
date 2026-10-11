@@ -718,7 +718,7 @@ PHP;
 			$field = $fieldsMap[$fieldName];
 			$type = $field['type'];
 			$length = $field['length'];
-			$null = $field['null'] ? 'true' : 'false';
+			$null = 'true';
 
 			$columnDef = "            ->addColumn('{$fieldName}', '{$type}', [\n";
 			$columnDef .= "                'default' => null,\n";
@@ -800,16 +800,6 @@ class {$className} extends BaseMigration
                 [
                     'locale',
                 ],
-            )
-            ->addIndex(
-                [
-                    'id',
-                    'locale',
-                ],
-                [
-                    'name' => 'id_locale',
-                    'unique' => true,
-                ]
             )
             ->create();
     }

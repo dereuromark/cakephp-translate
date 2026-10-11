@@ -16,7 +16,7 @@ The command extends CakePHP’s extractor and writes discovered strings into bac
 bin/cake i18n dump_from_db
 ```
 
-The command writes PO files from active translations. `--paths` accepts comma-separated output directories and `--plugin` selects a plugin project. Review generated files before committing them.
+The command writes PO files for active domains and the selected project’s locales, including inactive locales. Output directories use the stored locale code, such as `de_DE`. `--paths` accepts comma-separated output directories and `--plugin` selects a plugin project. Review generated files before committing them.
 
 ## Validate PO and POT files
 

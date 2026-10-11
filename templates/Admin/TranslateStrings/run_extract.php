@@ -94,8 +94,10 @@ $this->assign('title', __d('translate', 'Run i18n Extract (Experimental)'));
 			<div class="col-md-4">
 				<?= $this->Form->control('merge', [
 					'type' => 'checkbox',
-					'label' => __d('translate', 'Merge with existing'),
-					'default' => true,
+					'label' => __d('translate', 'Combine domains into default.pot'),
+					'default' => !$isPlugin,
+					'disabled' => $isPlugin,
+					'help' => __d('translate', 'Combine domain strings for application projects. Plugin projects keep their own domain.'),
 				]) ?>
 			</div>
 			<div class="col-md-4">

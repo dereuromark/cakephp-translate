@@ -196,4 +196,11 @@ class TranslateStringsTableTest extends TestCase {
 		$this->assertNotFalse($result, print_r($entity->getErrors(), true));
 	}
 
+	public function testBlankTranslationDoesNotCountAsComplete(): void {
+		$terms = $this->TranslateStrings->TranslateTerms;
+		$terms->updateAll(['content' => ''], ['id' => 1]);
+		$this->assertSame(['en_US' => 0], $this->TranslateStrings->coverage(1));
+		$this->assertSame(1, $this->TranslateStrings->getNext(null, 1)->firstOrFail()->id);
+	}
+
 }

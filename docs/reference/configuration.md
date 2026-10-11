@@ -19,7 +19,9 @@ Merge settings under `Translate` in `config/app.php` or `config/app_local.php`. 
 | `engine` | Engine class or ordered list of classes implementing `EngineInterface`. |
 | `defaultLocale` | Default locale used by translation forms. |
 | `layout` | Override the backend layout; the built-in layout is `Translate.simple`. |
-| `editor`, `showCodeReferences` | Enable reference editing or source excerpts where supported by the backend. |
+| `editor` | Enable reference editing in the backend where supported. |
+| `showCodeReferences` | `true` shows source links in both interfaces; `false` hides links; `null` shows links only in the backend. |
+| `onlineRepoUrl` | Source repository URL prefix used by the reference viewer, such as `https://github.com/example/app/blob/main/`. |
 | `flags` | Flag-image format used by the language switcher. |
 | `iconMap` | Admin icon-name mapping merged into `Icon.map`. |
 | `shadowTableSuffix` | Suffix used when generating TranslateBehavior shadow tables; defaults to `_translations`. |
@@ -30,6 +32,6 @@ The schema stores `content` and `plural_2`. Languages needing additional plural 
 
 ## Optional integrations
 
-Queue can process large imports in the background. Data provides an optional Languages association when that plugin is loaded. The legacy `languagesTable` and `usersTable` example keys are not read by the current plugin. AuditStash records translation changes when installed and enabled. BootstrapUI supplies an alternative form helper when installed; the built-in layout loads its CSS and JavaScript from CDNs. See [Layout](../contribute/layout.md) for local assets and CSP considerations.
+The plugin does not currently ship a Queue import job. Data provides an optional Languages association when that plugin is loaded. The legacy `languagesTable` and `usersTable` example keys are not read by the current plugin. AuditStash records translation changes when installed and enabled. BootstrapUI supplies an alternative form helper when installed; the built-in layout loads its CSS and JavaScript from CDNs. See [Layout](../contribute/layout.md) for local assets and CSP considerations.
 
 The plugin inherits the host application’s AppController. Its admin gate supplements application authentication and callbacks; it does not replace them.

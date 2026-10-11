@@ -46,7 +46,7 @@ $currentLocale = $this->request->getSession()->read('Config.language') ?: Config
 		$isActive = $language->locale === $currentLocale;
 		?>
 		<a
-			href="<?= $this->Url->build(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'Translate', 'action' => 'switchLanguage', '?' => ['locale' => $language->locale, 'redirect' => $this->request->getRequestTarget()]]) ?>"
+			href="<?= $this->Url->build(['prefix' => $this->getRequest()->getParam('prefix'), 'plugin' => 'Translate', 'controller' => 'Translate', 'action' => 'switchLanguage', '?' => ['locale' => $language->locale, 'redirect' => $this->request->getRequestTarget()]]) ?>"
 			class="language-link <?= $isActive ? 'active' : '' ?>"
 			title="<?= h($language->locale) ?>"
 			data-bs-toggle="tooltip"

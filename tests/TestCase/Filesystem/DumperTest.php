@@ -282,4 +282,31 @@ class DumperTest extends TestCase {
 		$this->assertSame('Offen', $parsed['Open']['_context']['status']);
 	}
 
+	public function testDirectoryCreationFailureReturnsFalse(): void {
+		$file = tempnam(TMP, 'dump_blocker_');
+		try {
+			$this->assertFalse((new Dumper())->dump([], 'test', 'de', $file));
+		} finally {
+			unlink($file);
+		}
+	}
+
+	public function testOutputFileOpenFailureReturnsFalse(): void {
+		mkdir(TMP . 'de/test.po', 0770, true);
+		try {
+			$this->assertFalse((new Dumper())->dump([], 'test', 'de', TMP));
+		} finally {
+			rmdir(TMP . 'de/test.po');
+		}
+	}
+
+	public function testOutputWriteFailureReturnsFalse(): void {
+		if (!file_exists('/dev/full')) {
+			$this->markTestSkipped('/dev/full is unavailable.');
+		}
+		mkdir(TMP . 'de', 0770, true);
+		symlink('/dev/full', TMP . 'de/test.po');
+		$this->assertFalse((new Dumper())->dump([], 'test', 'de', TMP));
+	}
+
 }

@@ -37,6 +37,17 @@ class TranslateController extends TranslateAppController {
 			return;
 		}
 		$projectId = $this->Translation->currentProjectId();
+		if ($this->request->getParam('action') === 'index') {
+			$projects = $this->fetchTable('Translate.TranslateProjects');
+			$current = $projectId ? $projects->find()->where(['id' => $projectId])->first() : null;
+			if (!$current || $current->get('status') !== TranslateProject::STATUS_PUBLIC) {
+				$public = $projects->find()->where(['status' => TranslateProject::STATUS_PUBLIC])->orderBy(['id' => 'ASC'])->first();
+				if ($public) {
+					$projectId = $public->get('id');
+					$this->request->getSession()->write('TranslateProject.id', $projectId);
+				}
+			}
+		}
 		if ($projectId && $this->request->getParam('action') !== 'switchProject') {
 			$this->assertProjectAccess($projectId);
 		}
@@ -46,6 +57,11 @@ class TranslateController extends TranslateAppController {
 		$project = $this->fetchTable('Translate.TranslateProjects')->get($projectId);
 		if ($project->status !== TranslateProject::STATUS_PUBLIC) {
 			$this->enforceAdminAccess();
+
+			return;
+		}
+		if ($this->components()->has('Authorization') && method_exists($this->components()->get('Authorization'), 'skipAuthorization')) {
+			$this->components()->get('Authorization')->skipAuthorization();
 		}
 	}
 
@@ -257,7 +273,7 @@ class TranslateController extends TranslateAppController {
 
 				// If no more in this domain, try any domain
 				if (!$next) {
-					$next = $translateStringsTable->getNext(null, null)
+					$next = $translateStringsTable->getNext(null, null)->innerJoinWith('TranslateDomains', fn ($query) => $query->where(['TranslateDomains.translate_project_id' => $projectId]))
 						->contain(['TranslateDomains'])
 						->where(['TranslateStrings.id >' => $id])
 						->orderBy(['TranslateStrings.id' => 'ASC'])
@@ -278,6 +294,13 @@ class TranslateController extends TranslateAppController {
 			foreach ($translateLocales as $translateLocale) {
 				$key = strtolower($translateLocale->locale);
 				$term = $this->request->getData('content_' . $key);
+				if ($term === '') {
+					if (isset($translateTerms[$translateLocale->id])) {
+						$success = $translateStringsTable->TranslateTerms->delete($translateTerms[$translateLocale->id]) && $success;
+					}
+
+					continue;
+				}
 				if ($term !== null) {
 					if (!isset($translateTerms[$translateLocale->id])) {
 						$translateTerm = $translateStringsTable->TranslateTerms->newEmptyEntity();
@@ -316,7 +339,7 @@ class TranslateController extends TranslateAppController {
 
 					// If no more in this domain, try any domain
 					if (!$next) {
-						$next = $translateStringsTable->getNext(null, null)
+						$next = $translateStringsTable->getNext(null, null)->innerJoinWith('TranslateDomains', fn ($query) => $query->where(['TranslateDomains.translate_project_id' => $projectId]))
 							->contain(['TranslateDomains'])
 							->where(['TranslateStrings.id >' => $id])
 							->orderBy(['TranslateStrings.id' => 'ASC'])
@@ -356,7 +379,7 @@ class TranslateController extends TranslateAppController {
 	 * @return void
 	 */
 	public function displayReference(int $id, int $reference) {
-		if (Configure::read('Translate.showCodeReferences') !== true) {
+		if (!Configure::read('Translate.showCodeReferences')) {
 			throw new NotFoundException('Code references are disabled.');
 		}
 		$this->viewBuilder()->setLayout('ajax');

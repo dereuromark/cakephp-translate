@@ -9,9 +9,11 @@ use Cake\Console\ConsoleOutput;
 use Cake\Core\Configure;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Utility\Inflector;
+use RuntimeException;
 use Throwable;
 use Translate\Controller\TranslateAppController;
 use Translate\Filesystem\Dumper;
+use Translate\Model\Entity\TranslateLocale;
 use Translate\Model\Entity\TranslateProject;
 use Translate\Service\ExtractService;
 use Translate\Service\PoAnalyzerService;
@@ -459,14 +461,17 @@ class TranslateStringsController extends TranslateAppController {
 		}
 		$path = rtrim($path, DS) . DS . 'resources' . DS . 'locales' . DS;
 
-		$translateLocales = $this->TranslateStrings->TranslateTerms->TranslateLocales->getExtractableAsList($projectId);
+		$translateLocales = $this->TranslateStrings->TranslateTerms->TranslateLocales->getExtractable($projectId)->toArray();
 		/** @var \Translate\Model\Entity\TranslateDomain[] $domains */
 		$domains = $this->TranslateStrings->TranslateDomains->getActive()->where(['TranslateDomains.translate_project_id' => $projectId])->toArray();
 
 		$map = [];
-		foreach ($translateLocales as $code => $id) {
+		foreach ($translateLocales as $locale) {
+			if (!$locale instanceof TranslateLocale) {
+				throw new RuntimeException('Expected a translation locale.');
+			}
 			foreach ($domains as $domain) {
-				$map[$code][$code . '_' . $domain->name] = $domain->name;
+				$map[$locale->locale][$locale->id . '_' . $domain->name] = $domain->name;
 			}
 		}
 
@@ -478,7 +483,10 @@ class TranslateStringsController extends TranslateAppController {
 			foreach ($postedDomains as $domain) {
 				[$lang, $domain] = explode('_', $domain, 2);
 
-				$langId = $this->TranslateStrings->TranslateTerms->TranslateLocales->find()->where(['iso2' => $lang, 'translate_project_id' => $projectId])->firstOrFail()->id;
+				$localeFilter = ctype_digit($lang) ? ['id' => (int)$lang] : ['iso2' => $lang];
+				$locale = $this->TranslateStrings->TranslateTerms->TranslateLocales->find()->where($localeFilter + ['translate_project_id' => $projectId])->firstOrFail();
+				$langId = $locale->id;
+				$lang = $locale->locale;
 				$domainId = $this->TranslateStrings->TranslateDomains->find()->where(['name' => $domain, 'translate_project_id IS' => $projectId])->firstOrFail()->id;
 				/** @var array<\Translate\Model\Entity\TranslateTerm> $translations */
 				$translations = $this->TranslateStrings->TranslateTerms->getTranslations($langId, $domainId)->toArray();
@@ -530,7 +538,7 @@ class TranslateStringsController extends TranslateAppController {
 	 */
 	public function translate($id = null) {
 		if (!$id) {
-			$next = $this->TranslateStrings->getNext(null, null)->first();
+			$next = $this->TranslateStrings->getNext(null, null)->innerJoinWith('TranslateDomains', fn ($query) => $query->where(['TranslateDomains.translate_project_id' => $this->Translation->currentProjectId()]))->first();
 			if (!empty($next['id'])) {
 				return $this->redirect([$next['id']]);
 			}
@@ -573,7 +581,7 @@ class TranslateStringsController extends TranslateAppController {
 
 				// If no more in this domain, try any domain
 				if (!$next) {
-					$next = $this->TranslateStrings->getNext(null, null)
+					$next = $this->TranslateStrings->getNext(null, null)->innerJoinWith('TranslateDomains', fn ($query) => $query->where(['TranslateDomains.translate_project_id' => $this->Translation->currentProjectId()]))
 						->contain(['TranslateDomains'])
 						->where(['TranslateStrings.id >' => $id])
 						->orderBy(['TranslateStrings.id' => 'ASC'])
@@ -594,6 +602,13 @@ class TranslateStringsController extends TranslateAppController {
 			foreach ($translateLocales as $translateLocale) {
 				$key = strtolower($translateLocale->locale);
 				$term = $this->request->getData('content_' . $key);
+				if ($term === '') {
+					if (isset($translateTerms[$translateLocale->id])) {
+						$success = $this->TranslateStrings->TranslateTerms->delete($translateTerms[$translateLocale->id]) && $success;
+					}
+
+					continue;
+				}
 				if ($term !== null) {
 					if (!isset($translateTerms[$translateLocale->id])) {
 						$translateTerm = $this->TranslateStrings->TranslateTerms->newEmptyEntity();
@@ -632,7 +647,7 @@ class TranslateStringsController extends TranslateAppController {
 
 					// If no more in this domain, try any domain
 					if (!$next) {
-						$next = $this->TranslateStrings->getNext(null, null)
+						$next = $this->TranslateStrings->getNext(null, null)->innerJoinWith('TranslateDomains', fn ($query) => $query->where(['TranslateDomains.translate_project_id' => $this->Translation->currentProjectId()]))
 							->contain(['TranslateDomains'])
 							->where(['TranslateStrings.id >' => $id])
 							->orderBy(['TranslateStrings.id' => 'ASC'])
@@ -1027,6 +1042,7 @@ class TranslateStringsController extends TranslateAppController {
 		$dryRunResults = null;
 		$defaultPaths = ['src', 'templates'];
 		$isPlugin = $project->type === TranslateProject::TYPE_PLUGIN;
+		$pluginDomain = $isPlugin ? Inflector::underscore($project->name) : null;
 
 		if ($this->request->is('post')) {
 			$paths = $this->request->getData('paths');
@@ -1064,7 +1080,7 @@ class TranslateStringsController extends TranslateAppController {
 
 				$defaultPaths = ['src', 'templates'];
 				$isPlugin = $project->type === TranslateProject::TYPE_PLUGIN;
-				$this->set(compact('appPath', 'localePath', 'defaultPaths', 'output', 'command', 'returnCode', 'isPlugin', 'dryRunResults'));
+				$this->set(compact('appPath', 'localePath', 'defaultPaths', 'output', 'command', 'returnCode', 'isPlugin', 'dryRunResults', 'pluginDomain'));
 
 				return;
 			}
@@ -1078,15 +1094,28 @@ class TranslateStringsController extends TranslateAppController {
 			// Containment: outputPath must live under appPath even after `..` collapsing.
 			// We can't realpath() it yet (the directory may not exist), so collapse manually
 			// then verify the prefix (Issue #13).
+			$relativeOutput = substr($outputPath, strlen($appPath));
+			if ($outputPath === $appPath || str_starts_with($outputPath, $appPath . DS)) {
+				$outputPath = $appPathReal . $relativeOutput;
+			}
 			$normalizedOutput = $this->normalizePathForContainment($outputPath);
-			if ($appPathReal === '' || $normalizedOutput !== $appPathReal && !str_starts_with($normalizedOutput, rtrim($appPathReal, DS) . DS)) {
+			$existingOutput = $normalizedOutput;
+			while (!file_exists($existingOutput) && !is_link($existingOutput) && dirname($existingOutput) !== $existingOutput) {
+				$existingOutput = dirname($existingOutput);
+			}
+			$resolvedOutput = realpath($existingOutput);
+			if ($resolvedOutput !== false) {
+				$normalizedOutput = $resolvedOutput . substr($normalizedOutput, strlen($existingOutput));
+			}
+
+			if ($appPathReal === '' || $resolvedOutput === false || $normalizedOutput !== $appPathReal && !str_starts_with($normalizedOutput, rtrim($appPathReal, DS) . DS)) {
 				$this->Flash->error(__d('translate', 'Output path must be inside the project: {0}', $outputPath));
-				$this->set(compact('appPath', 'localePath', 'defaultPaths', 'output', 'command', 'returnCode', 'isPlugin', 'dryRunResults'));
+				$this->set(compact('appPath', 'localePath', 'defaultPaths', 'output', 'command', 'returnCode', 'isPlugin', 'dryRunResults', 'pluginDomain'));
 
 				return;
 			}
 			$outputPath = $normalizedOutput;
-			$merge = $this->request->getData('merge') ? 'yes' : 'no';
+			$merge = !$isPlugin && $this->request->getData('merge') ? 'yes' : 'no';
 			$overwrite = $this->request->getData('overwrite') ? 'yes' : 'no';
 			$extractCore = $this->request->getData('extract_core') ? 'yes' : 'no';
 			$dryRun = (bool)$this->request->getData('dry_run');
@@ -1095,15 +1124,9 @@ class TranslateStringsController extends TranslateAppController {
 			$isPlugin = $project->type === TranslateProject::TYPE_PLUGIN;
 			$pluginDomain = $isPlugin ? Inflector::underscore($project->name) : null;
 
-			// Always extract to temp directory first (avoids weird behavior differences)
-			$tempDir = sys_get_temp_dir() . DS . 'translate_extract_' . uniqid();
-			mkdir($tempDir, 0755, true);
-			$actualOutputPath = $tempDir;
-			$merge = 'no'; // Always fresh extraction to temp
-
 			// Ensure final output directory exists for non-dry run
 			if (!$dryRun) {
-				if (!is_dir($outputPath) && !mkdir($outputPath, 0755, true)) {
+				if (!is_dir($outputPath) && !@mkdir($outputPath, 0755, true)) {
 					$this->Flash->error(__d('translate', 'Failed to create output directory: {0}', $outputPath));
 					$defaultPaths = ['src', 'templates'];
 					$isPlugin = $project->type === TranslateProject::TYPE_PLUGIN;
@@ -1127,46 +1150,47 @@ class TranslateStringsController extends TranslateAppController {
 			// Build command arguments for display
 			$pathsArg = implode(',', $paths);
 			$command = sprintf(
-				'bin/cake i18n extract --paths %s --output %s --merge %s --overwrite %s --extract-core %s',
+				'bin/cake i18n extract --paths %s --output %s --merge %s %s --extract-core %s',
 				escapeshellarg($pathsArg),
 				escapeshellarg(rtrim($outputPath, DS)),
 				escapeshellarg($merge),
-				escapeshellarg($overwrite),
+				$overwrite === 'yes' ? '--overwrite' : '',
 				escapeshellarg($extractCore),
 			);
 
-			// Run command directly via PHP instead of shell
-			$args = [
-				'--paths',
-				$pathsArg,
-				'--output',
-				rtrim($actualOutputPath, DS),
-				'--merge',
-				$merge,
-				'--overwrite',
-				$overwrite,
-				'--extract-core',
-				$extractCore,
-			];
-
-			// Debug: list files before extraction in final output dir
-			$filesBefore = glob($outputPath . DS . '*.pot') ?: [];
-
-			// Debug: show exact args
-			$debugArgs = $args;
-
-			// Capture output using temp files (ConsoleOutput doesn't work with php://temp streams)
-			$outputFile = sys_get_temp_dir() . DS . 'translate_out_' . uniqid() . '.txt';
-			$errorFile = sys_get_temp_dir() . DS . 'translate_err_' . uniqid() . '.txt';
-			touch($outputFile);
-			touch($errorFile);
-
-			$io = new ConsoleIo(
-				new ConsoleOutput($outputFile),
-				new ConsoleOutput($errorFile),
-			);
-
+			$tempDir = sys_get_temp_dir() . DS . 'translate_extract_' . uniqid();
+			$outputFile = $tempDir . DS . 'stdout.txt';
+			$errorFile = $tempDir . DS . 'stderr.txt';
 			try {
+				if (!@mkdir($tempDir, 0755, true)) {
+					throw new RuntimeException('Failed to create extraction directory.');
+				}
+				// Run command directly via PHP instead of shell
+				$args = [
+					'--paths',
+					$pathsArg,
+					'--output',
+					rtrim($tempDir, DS),
+					'--merge',
+					$merge,
+					'--extract-core',
+					$extractCore,
+				];
+
+				$args[] = '--overwrite';
+
+				// Debug: list files before extraction in final output dir
+				$filesBefore = glob($outputPath . DS . '*.pot') ?: [];
+
+				// Debug: show exact args
+				$debugArgs = $args;
+
+				// Capture command output in files.
+				$io = new ConsoleIo(
+					new ConsoleOutput($outputFile),
+					new ConsoleOutput($errorFile),
+				);
+
 				$extractCommand = new I18nExtractCommand();
 				$returnCode = $extractCommand->run($args, $io);
 
@@ -1229,9 +1253,18 @@ class TranslateStringsController extends TranslateAppController {
 							continue;
 						}
 						$destFile = $outputPath . DS . $filename;
-						if (copy($potFile, $destFile)) {
-							$copiedFiles[] = $destFile;
+						if (file_exists($destFile) && $overwrite !== 'yes') {
+							$output .= 'Skipped existing file: ' . $filename . "\n";
+
+							continue;
 						}
+						if (is_link($destFile)) {
+							throw new RuntimeException('Output file must not be a symbolic link: ' . $filename);
+						}
+						if (!@copy($potFile, $destFile)) {
+							throw new RuntimeException('Failed to copy extracted file: ' . $filename);
+						}
+						$copiedFiles[] = $destFile;
 					}
 
 					// Show info about copied files
@@ -1298,7 +1331,7 @@ class TranslateStringsController extends TranslateAppController {
 					unlink($errorFile);
 				}
 
-				// Clean up temp directory for dry run
+				// Clean up the extraction directory.
 				if (is_dir($tempDir)) {
 					$files = glob($tempDir . DS . '*') ?: [];
 					foreach ($files as $file) {

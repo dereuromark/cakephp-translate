@@ -43,12 +43,12 @@ Open **Strings** and its **Extract** action at `/admin/translate/translate-strin
 
 Find `Welcome` in **Strings**, open its translation form and enter `Willkommen` for German. Keep placeholder validation enabled when translating messages with placeholders.
 
-Use **Dump** at `/admin/translate/translate-strings/dump` to export the active locale and domain. Review the generated `resources/locales/de/default.po` file before committing it with your application.
+Use **Dump** at `/admin/translate/translate-strings/dump` to export the active locale and domain. Review the generated `resources/locales/de_DE/default.po` file before committing it with your application.
 
 To render German translations, set the locale before rendering the template:
 
 ```php
-\Cake\I18n\I18n::setLocale('de');
+\Cake\I18n\I18n::setLocale('de_DE');
 ```
 
 Clear the application’s translation cache after replacing catalogs. CakePHP’s [internationalization guide](https://book.cakephp.org/5/en/core-libraries/internationalization-and-localization.html) covers locale selection and cache configuration.

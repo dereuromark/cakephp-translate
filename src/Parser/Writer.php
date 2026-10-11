@@ -19,23 +19,27 @@ class Writer {
 	public function write(string $filePath, array $entries, array $headers = []): void {
 		$handle = $this->openFile($filePath);
 
-		foreach ($headers as $header) {
-			fwrite($handle, $header . "\n");
-		}
-		if ($headers) {
-			fwrite($handle, "\n");
-		}
+		try {
+			foreach ($headers as $header) {
+				$this->writeToHandle($handle, $header . "\n");
+			}
+			if ($headers) {
+				$this->writeToHandle($handle, "\n");
+			}
 
-		$entriesCount = count($entries);
-		$counter = 0;
-		foreach ($entries as $entry) {
-			$entryStr = $this->getEntryStr($entry, $counter, $entriesCount);
-			fwrite($handle, $entryStr);
-
-			$counter++;
+			$entriesCount = count($entries);
+			$counter = 0;
+			foreach ($entries as $entry) {
+				$entryStr = $this->getEntryStr($entry, $counter, $entriesCount);
+				$this->writeToHandle($handle, $entryStr);
+				$counter++;
+			}
+			if (!@fflush($handle)) {
+				throw new Exception('Unable to flush output file.');
+			}
+		} finally {
+			fclose($handle);
 		}
-
-		fclose($handle);
 	}
 
 	/**
@@ -48,12 +52,23 @@ class Writer {
 			throw new Exception('Output file not defined.');
 		}
 
-		$handle = fopen($filePath, 'wb');
+		$handle = @fopen($filePath, 'wb');
 		if ($handle === false) {
 			throw new Exception("Unable to open file for writing: {$filePath}");
 		}
 
 		return $handle;
+	}
+
+	/**
+	 * @param resource $handle
+	 * @param string $content
+	 * @return void
+	 */
+	protected function writeToHandle($handle, string $content): void {
+		if (@fwrite($handle, $content) !== strlen($content)) {
+			throw new Exception('Unable to write output file.');
+		}
 	}
 
 	/**
@@ -94,11 +109,15 @@ class Writer {
 		$result = '';
 
 		if (isset($entry['tcomment']) && $entry['tcomment'] !== '') {
-			$result .= '# ' . $entry['tcomment'] . "\n";
+			foreach (preg_split('/\r\n|\r|\n/', $entry['tcomment']) ?: [] as $line) {
+				$result .= '# ' . $line . "\n";
+			}
 		}
 
 		if (isset($entry['ccomment']) && $entry['ccomment'] !== '') {
-			$result .= '#. ' . $entry['ccomment'] . "\n";
+			foreach (preg_split('/\r\n|\r|\n/', $entry['ccomment']) ?: [] as $line) {
+				$result .= '#. ' . $line . "\n";
+			}
 		}
 
 		return $result;
@@ -234,6 +253,7 @@ class Writer {
 			"$slash" => "$slash$slash",
 			"$quote" => "$slash$quote",
 			"\t" => '\t',
+			"\r" => '\r',
 		];
 
 		$string = str_replace(array_keys($replaces), array_values($replaces), $string);

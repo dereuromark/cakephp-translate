@@ -7,3 +7,7 @@ tmp/
 .idea/
 config/Migrations/schema-dump-default.lock
 .phpcs.cache
+
+/docs/node_modules/
+/docs/.vitepress/cache/
+/docs/.vitepress/dist/

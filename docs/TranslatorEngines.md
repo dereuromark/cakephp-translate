@@ -1,17 +1,45 @@
-# CakePHP Translate Plugin
+# Translator engines
 
-## Translator Engines
+Machine translation is optional. You can import, edit and export catalogs without calling a remote API.
 
-### Google
-Has a rate limit, so use it sparely.
-Better to implement a paid version of it.
+Configure `Translate.engine` with a class implementing `EngineInterface`, or an ordered array of classes. `translate()` uses the first non-null result; `suggest()` collects results from all configured engines. Results, including null results, are cached in the database per engine, input text and language pair. Changing provider configuration does not automatically refresh an existing cached suggestion.
 
-### Yandex
-[translate.yandex.com](http://translate.yandex.com/):
+## Included engines
 
-Daily request limit is 1,000,000 characters. The monthly limit is 10,000,000 characters. 
+| Engine | Integration |
+| --- | --- |
+| `Translate\Translator\Engine\Google` | Unofficial Google endpoint used by default. Availability and quotas are not guaranteed. |
+| `Translate\Translator\Engine\GoogleTranslate` | Alternative Google integration; inspect its configuration before use. |
+| `Translate\Translator\Engine\Yandex` | Legacy Yandex SDK integration using `Yandex.key`; requires `yandex/translate-api`. |
+| `Translate\Translator\Engine\Transltr` | Legacy Transltr endpoint; service availability is not guaranteed. |
 
-### Transltr
-[transltr.org](http://transltr.org/Developers): Free
+Do not rely on historical free-service quota claims. Verify current provider terms and configure an engine suitable for your deployment. Text submitted for machine translation is sent to that provider.
 
-This does not work well with multiple words.
+## Custom engine
+
+Create `src/Translator/Engine/MyEngine.php`:
+
+```php
+namespace App\Translator\Engine;
+
+use Translate\Translator\EngineInterface;
+
+class MyEngine implements EngineInterface
+{
+    public function translate(string $text, string $to, string $from): ?string
+    {
+        // Replace this with your provider call and return its translated text.
+        return null;
+    }
+}
+```
+
+Configure the class:
+
+```php
+'Translate' => [
+    'engine' => \App\Translator\Engine\MyEngine::class,
+],
+```
+
+Return null when no translation is available. Handle provider errors inside the engine and log useful diagnostics without exposing credentials.

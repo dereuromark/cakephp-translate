@@ -21,14 +21,16 @@
 			"role": "Author"
 		}
 	],
-	"homepage": "https://github.com/dereuromark/cakephp-translate",
+	"homepage": "https://dereuromark.github.io/cakephp-translate/",
 	"support": {
-		"source": "https://github.com/dereuromark/cakephp-translate"
+		"source": "https://github.com/dereuromark/cakephp-translate",
+		"docs": "https://dereuromark.github.io/cakephp-translate/"
 	},
 	"require": {
 		"php": ">=8.2",
 		"cakephp/cakephp": "^5.1.6",
-		"friendsofcake/search": "^7.0"
+		"friendsofcake/search": "^7.0",
+		"dereuromark/cakephp-tools": "^3.0"
 	},
 	"require-dev": {
 		"dereuromark/cakephp-i18n-lint": "^0.1.1",

@@ -21,7 +21,7 @@ bin/cake plugin load Migrations
 bin/cake migrations migrate -p Translate
 ```
 
-The plugin’s entities use CakePHP Tools. Composer installs this dependency; loading Tools routes is unnecessary for the translation backend.
+Tools is a runtime dependency because Translate entities extend its entity class and use its enum support. Composer installs Tools and autoloads those classes. You do not need to load the Tools plugin or its routes. If your application already loads Tools, Translate uses its pagination element; otherwise it uses the pagination element included with Translate.
 
 Use `quoteIdentifiers => true` in the application datasource configuration: the schema contains names such as `default` and `primary`. Keep translation strings and contexts case-sensitive so messages that differ only in case remain distinct.
 

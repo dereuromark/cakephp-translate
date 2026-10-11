@@ -40,6 +40,10 @@ class I18nEntriesControllerTest extends IntegrationTestCase {
 
 	protected mixed $originalEngine;
 
+	protected bool $toolsInitiallyLoaded;
+
+	protected mixed $originalLoadTools;
+
 	protected function listen(Closure $listener): void {
 		$this->listeners[] = $listener;
 		EventManager::instance()->on('Controller.initialize', $listener);
@@ -47,12 +51,14 @@ class I18nEntriesControllerTest extends IntegrationTestCase {
 
 	protected function setUp(): void {
 		parent::setUp();
+		$this->toolsInitiallyLoaded = Plugin::isLoaded('Tools');
+		$this->originalLoadTools = Configure::read('TestApp.loadTools');
 		$this->originalSalt = (new ReflectionProperty(Security::class, '_salt'))->getValue();
 		$this->originalDebug = Configure::read('debug');
 		$this->originalEngine = Configure::read('Translate.engine');
 		Configure::write('Translate.engine', Test::class);
 		$this->listen(function (): void {
-			if (!Plugin::isLoaded('Tools')) {
+			if (Configure::read('TestApp.loadTools', true) && !Plugin::isLoaded('Tools')) {
 				Plugin::getCollection()->add(new ToolsPlugin());
 			}
 		});
@@ -82,6 +88,16 @@ class I18nEntriesControllerTest extends IntegrationTestCase {
 		(new ReflectionProperty(Security::class, '_salt'))->setValue(null, $this->originalSalt);
 		foreach ($this->listeners as $listener) {
 			EventManager::instance()->off('Controller.initialize', $listener);
+		}
+		if ($this->originalLoadTools === null) {
+			Configure::delete('TestApp.loadTools');
+		} else {
+			Configure::write('TestApp.loadTools', $this->originalLoadTools);
+		}
+		if ($this->toolsInitiallyLoaded && !Plugin::isLoaded('Tools')) {
+			Plugin::getCollection()->add(new ToolsPlugin());
+		} elseif (!$this->toolsInitiallyLoaded) {
+			Plugin::getCollection()->remove('Tools');
 		}
 		parent::tearDown();
 	}
@@ -318,6 +334,38 @@ class I18nEntriesControllerTest extends IntegrationTestCase {
 		$this->assertTrue($this->viewVariable('hasCompositeKey'));
 		$this->assertResponseContains('value="[1,&quot;de&quot;]"');
 		$this->assertResponseContains('/view/review_articles_i18n/1/de');
+	}
+
+	public function testOrphanEntriesRenderWithoutToolsLoaded(): void {
+		Configure::write('TestApp.loadTools', false);
+		Plugin::getCollection()->remove('Tools');
+		$this->get('/admin/translate/i18n-entries/entries/review_orphans_translations');
+		$this->assertResponseOk();
+		$this->assertFalse(Plugin::isLoaded('Tools'));
+		$this->assertResponseContains('pagination-info');
+	}
+
+	public function testBaseEntriesRenderWithoutToolsLoaded(): void {
+		Configure::write('TestApp.loadTools', false);
+		Plugin::getCollection()->remove('Tools');
+		$this->get('/admin/translate/i18n-entries/entries/review_articles_translations');
+		$this->assertResponseOk();
+		$this->assertFalse(Plugin::isLoaded('Tools'));
+		$this->assertResponseContains('pagination-info');
+	}
+
+	public function testOrphanEntriesUseToolsPaginationWhenLoaded(): void {
+		$this->get('/admin/translate/i18n-entries/entries/review_orphans_translations');
+		$this->assertResponseOk();
+		$this->assertTrue(Plugin::isLoaded('Tools'));
+		$this->assertResponseContains('paging-description');
+	}
+
+	public function testBaseEntriesUseToolsPaginationWhenLoaded(): void {
+		$this->get('/admin/translate/i18n-entries/entries/review_articles_translations');
+		$this->assertResponseOk();
+		$this->assertTrue(Plugin::isLoaded('Tools'));
+		$this->assertResponseContains('paging-description');
 	}
 
 }

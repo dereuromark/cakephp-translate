@@ -12,6 +12,8 @@
  * @var string $foreignKeyColumn
  */
 
+use Cake\Core\Plugin;
+
 $this->Html->script('https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js', ['block' => true]);
 $this->Html->css('https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css', ['block' => true]);
 $cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
@@ -258,7 +260,13 @@ $cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
 				</div>
 			</div>
 			<div class="card-footer">
-				<?= $this->element('Tools.pagination') ?>
+				<?php
+				if (Plugin::isLoaded('Tools')) {
+					echo $this->element('Tools.pagination');
+				} else {
+					echo $this->element('pagination');
+				}
+				?>
 			</div>
 		</div>
 	</div>

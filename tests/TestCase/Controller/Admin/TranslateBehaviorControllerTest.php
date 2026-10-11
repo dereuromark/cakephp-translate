@@ -463,7 +463,7 @@ class TranslateBehaviorControllerTest extends IntegrationTestCase {
 			$this->assertRedirect(['action' => 'generate', 'test_articles']);
 			$this->assertFlashElement('flash/success');
 
-			$session = $this->_requestSession;
+			$session = $this->requestSession;
 			$flash = $session->read('Flash.flash');
 			$this->assertNotEmpty($flash);
 			$this->assertStringContainsString('Migration file created successfully', $flash[0]['message']);

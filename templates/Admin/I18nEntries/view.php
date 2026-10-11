@@ -93,12 +93,12 @@
 				<?= $this->Html->link(
 					'<i class="fas fa-edit"></i> ' . __d('translate', 'Edit'),
 					['action' => 'edit', $tableName, $entry->id, $hasCompositeKey ? $entry->locale : null],
-					['class' => 'btn btn-primary', 'escapeTitle' => false],
+					['class' => 'btn btn-primary', 'escape' => false, 'escapeAttributes' => true],
 				) ?>
 				<?= $this->Html->link(
 					'<i class="fas fa-arrow-left"></i> ' . __d('translate', 'Back'),
 					['action' => 'entries', $tableName],
-					['class' => 'btn btn-outline-secondary', 'escapeTitle' => false],
+					['class' => 'btn btn-outline-secondary', 'escape' => false, 'escapeAttributes' => true],
 				) ?>
 			</div>
 		</div>
@@ -177,7 +177,7 @@
 							[
 								'class' => 'btn btn-outline-' . ($entry->auto ? 'warning' : 'info'),
 								'data' => ['entry_ids' => [$hasCompositeKey ? json_encode([$entry->id, $entry->locale]) : $entry->id], 'auto' => !$entry->auto],
-								'escapeTitle' => false,
+								'escape' => false, 'escapeAttributes' => true,
 								'form' => [
 									'class' => 'd-grid',
 								],
@@ -189,7 +189,7 @@
 						['action' => 'delete', $tableName, $entry->id, $hasCompositeKey ? $entry->locale : null],
 						[
 							'class' => 'btn btn-outline-danger',
-							'escapeTitle' => false,
+							'escape' => false, 'escapeAttributes' => true,
 							'form' => [
 								'class' => 'd-grid',
 								'data-confirm-message' => __d('translate', 'Are you sure you want to delete this entry?'),

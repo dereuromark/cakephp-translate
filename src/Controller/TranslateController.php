@@ -7,6 +7,10 @@ use Cake\Event\EventInterface;
 use Cake\Http\Exception\ForbiddenException;
 use Cake\Http\Exception\NotFoundException;
 use Translate\Model\Entity\TranslateProject;
+use Translate\Model\Table\TranslateDomainsTable;
+use Translate\Model\Table\TranslateLocalesTable;
+use Translate\Model\Table\TranslateProjectsTable;
+use Translate\Model\Table\TranslateStringsTable;
 use Translate\Utility\ReferenceResolver;
 
 /**
@@ -42,7 +46,7 @@ class TranslateController extends TranslateAppController {
 			return;
 		}
 		$projectId = $this->Translation->currentProjectId();
-		$projects = $this->fetchTable('Translate.TranslateProjects');
+		$projects = $this->fetchTranslateTable('Translate.TranslateProjects', TranslateProjectsTable::class);
 		$current = $projectId ? $projects->find()->where(['id' => $projectId])->first() : null;
 		$accessDenied = null;
 		if ($current) {
@@ -71,7 +75,7 @@ class TranslateController extends TranslateAppController {
 	}
 
 	protected function assertProjectAccess(int $projectId): void {
-		$project = $this->fetchTable('Translate.TranslateProjects')->get($projectId);
+		$project = $this->fetchTranslateTable('Translate.TranslateProjects', TranslateProjectsTable::class)->get($projectId);
 		if ($project->status !== TranslateProject::STATUS_PUBLIC) {
 			$this->enforceAdminAccess();
 
@@ -90,7 +94,7 @@ class TranslateController extends TranslateAppController {
 	public function index() {
 		$id = $this->Translation->currentProjectId();
 
-		$translateLocalesTable = $this->fetchTable('Translate.TranslateLocales');
+		$translateLocalesTable = $this->fetchTranslateTable('Translate.TranslateLocales', TranslateLocalesTable::class);
 		/** @var array<\Translate\Model\Entity\TranslateLocale> $languages */
 		$languages = $translateLocalesTable->find('all')
 			->where(['translate_project_id IS' => $id, 'active' => true])
@@ -100,7 +104,7 @@ class TranslateController extends TranslateAppController {
 		$coverage = $id ? $this->TranslateDomains->TranslateStrings->coverage($id) : 0;
 
 		// Calculate translated counts per locale
-		$translateStringsTable = $this->fetchTable('Translate.TranslateStrings');
+		$translateStringsTable = $this->fetchTranslateTable('Translate.TranslateStrings', TranslateStringsTable::class);
 		$totalStrings = is_array($count) ? $count['strings'] : 0;
 		$localeStats = [];
 		foreach ($languages as $language) {
@@ -132,7 +136,7 @@ class TranslateController extends TranslateAppController {
 		}
 
 		// Get domain statistics
-		$translateStringsTable = $this->fetchTable('Translate.TranslateStrings');
+		$translateStringsTable = $this->fetchTranslateTable('Translate.TranslateStrings', TranslateStringsTable::class);
 		/** @var array<\Translate\Model\Entity\TranslateDomain> $domains */
 		$domains = $this->TranslateDomains->find()
 			->where(['translate_project_id IS' => $id, 'active' => true])
@@ -175,7 +179,7 @@ class TranslateController extends TranslateAppController {
 	 */
 	public function terms() {
 		$projectId = $this->Translation->currentProjectId();
-		$translateStringsTable = $this->fetchTable('Translate.TranslateStrings');
+		$translateStringsTable = $this->fetchTranslateTable('Translate.TranslateStrings', TranslateStringsTable::class);
 
 		$query = $translateStringsTable->find('search', search: $this->request->getQuery());
 		$query->contain([
@@ -212,7 +216,7 @@ class TranslateController extends TranslateAppController {
 	 * @return \Cake\Http\Response|null|void
 	 */
 	public function translate(?string $domain = null, ?int $id = null) {
-		$translateStringsTable = $this->fetchTable('Translate.TranslateStrings');
+		$translateStringsTable = $this->fetchTranslateTable('Translate.TranslateStrings', TranslateStringsTable::class);
 		$projectId = $this->Translation->currentProjectId();
 
 		if (!$domain || !$id) {
@@ -239,7 +243,7 @@ class TranslateController extends TranslateAppController {
 			->toArray();
 
 		// Get all domains for current project with statistics
-		$domainsTable = $this->fetchTable('Translate.TranslateDomains');
+		$domainsTable = $this->fetchTranslateTable('Translate.TranslateDomains', TranslateDomainsTable::class);
 		/** @var \Translate\Model\Entity\TranslateDomain[] $domains */
 		$domains = $domainsTable->find()
 			->where(['translate_project_id IS' => $projectId, 'active' => true])
@@ -404,7 +408,7 @@ class TranslateController extends TranslateAppController {
 		}
 		$this->viewBuilder()->setLayout('ajax');
 
-		$translateString = $this->fetchTable('Translate.TranslateStrings')->get($id, ...['contain' => ['TranslateDomains' => 'TranslateProjects']]);
+		$translateString = $this->fetchTranslateTable('Translate.TranslateStrings', TranslateStringsTable::class)->get($id, ...['contain' => ['TranslateDomains' => 'TranslateProjects']]);
 
 		$projectId = $this->Translation->currentProjectId();
 		if ($translateString->translate_domain->translate_project_id !== $projectId) {
@@ -438,7 +442,7 @@ class TranslateController extends TranslateAppController {
 		}
 
 		// Validate locale exists and is active
-		$language = $this->fetchTable('Translate.TranslateLocales')
+		$language = $this->fetchTranslateTable('Translate.TranslateLocales', TranslateLocalesTable::class)
 			->find()
 			->where([
 				'locale' => $locale,
@@ -476,7 +480,7 @@ class TranslateController extends TranslateAppController {
 	public function switchProject() {
 		$this->request->allowMethod(['post']);
 		$projectId = (int)$this->request->getData('project_switch');
-		$translateProjectsTable = $this->fetchTable('Translate.TranslateProjects');
+		$translateProjectsTable = $this->fetchTranslateTable('Translate.TranslateProjects', TranslateProjectsTable::class);
 		$this->assertProjectAccess($projectId);
 		$translateProject = $translateProjectsTable->get($projectId);
 

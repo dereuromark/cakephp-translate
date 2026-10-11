@@ -33,17 +33,17 @@ $totalColor = $this->Translation->getColor($totalCoverage);
 								<?= $this->Html->link(
 									'<i class="fas fa-edit"></i>',
 									['controller' => 'TranslateProjects', 'action' => 'edit', $currentProject->id],
-									['escapeTitle' => false, 'class' => 'btn btn-outline-primary btn-sm', 'title' => __d('translate', 'Edit Project')],
+									['escape' => false, 'escapeAttributes' => true, 'class' => 'btn btn-outline-primary btn-sm', 'title' => __d('translate', 'Edit Project')],
 								) ?>
 								<?= $this->Html->link(
 									'<i class="fas fa-list"></i>',
 									['controller' => 'TranslateProjects', 'action' => 'index'],
-									['escapeTitle' => false, 'class' => 'btn btn-outline-secondary btn-sm', 'title' => __d('translate', 'All Projects')],
+									['escape' => false, 'escapeAttributes' => true, 'class' => 'btn btn-outline-secondary btn-sm', 'title' => __d('translate', 'All Projects')],
 								) ?>
 								<?= $this->Html->link(
 									'<i class="fas fa-language"></i>',
 									['controller' => 'TranslateStrings', 'action' => 'translate'],
-									['escapeTitle' => false, 'class' => 'btn btn-success btn-sm', 'title' => __d('translate', 'Start Translating')],
+									['escape' => false, 'escapeAttributes' => true, 'class' => 'btn btn-success btn-sm', 'title' => __d('translate', 'Start Translating')],
 								) ?>
 							</div>
 						<?php } else { ?>
@@ -51,7 +51,7 @@ $totalColor = $this->Translation->getColor($totalCoverage);
 							<?= $this->Html->link(
 								'<i class="fas fa-plus-circle"></i> ' . __d('translate', 'Create'),
 								['controller' => 'TranslateProjects', 'action' => 'add'],
-								['escapeTitle' => false, 'class' => 'btn btn-success btn-sm ms-2'],
+								['escape' => false, 'escapeAttributes' => true, 'class' => 'btn btn-success btn-sm ms-2'],
 							) ?>
 						<?php } ?>
 					</div>
@@ -126,7 +126,7 @@ $totalColor = $this->Translation->getColor($totalCoverage);
 				<?= $this->Html->link(
 					'<i class="fas fa-tasks"></i> ' . __d('translate', 'Batch Confirm'),
 					['controller' => 'TranslateTerms', 'action' => 'pending'],
-					['escapeTitle' => false, 'class' => 'btn btn-sm btn-dark'],
+					['escape' => false, 'escapeAttributes' => true, 'class' => 'btn btn-sm btn-dark'],
 				) ?>
 			</div>
 			<div class="card-body p-2">
@@ -212,7 +212,7 @@ $totalColor = $this->Translation->getColor($totalCoverage);
 								<?= $this->Html->link(
 									'<i class="fas fa-edit"></i>',
 									['controller' => 'TranslateStrings', 'action' => 'translate', $string->id],
-									['escapeTitle' => false, 'class' => 'btn btn-sm btn-outline-primary', 'title' => __d('translate', 'Translate')],
+									['escape' => false, 'escapeAttributes' => true, 'class' => 'btn btn-sm btn-outline-primary', 'title' => __d('translate', 'Translate')],
 								) ?>
 							</div>
 						</div>
@@ -329,7 +329,7 @@ $totalColor = $this->Translation->getColor($totalCoverage);
 								<?= $this->Html->link(
 									'<i class="fas fa-edit"></i>',
 									['controller' => 'TranslateTerms', 'action' => 'edit', $term->id],
-									['escapeTitle' => false, 'class' => 'btn btn-sm btn-outline-primary', 'title' => __d('translate', 'Edit')],
+									['escape' => false, 'escapeAttributes' => true, 'class' => 'btn btn-sm btn-outline-primary', 'title' => __d('translate', 'Edit')],
 								) ?>
 							</div>
 						</div>
@@ -513,7 +513,7 @@ $totalColor = $this->Translation->getColor($totalCoverage);
 								<?= $this->Html->link(
 									'<i class="fas fa-language"></i>',
 									['controller' => 'TranslateStrings', 'action' => 'translate', $string->id],
-									['escapeTitle' => false, 'class' => 'btn btn-sm btn-success', 'title' => __d('translate', 'Translate')],
+									['escape' => false, 'escapeAttributes' => true, 'class' => 'btn btn-sm btn-success', 'title' => __d('translate', 'Translate')],
 								) ?>
 							</div>
 						</div>
@@ -623,7 +623,7 @@ $totalColor = $this->Translation->getColor($totalCoverage);
 										<?= $this->Html->link(
 											'<i class="fas fa-external-link-alt"></i> ' . __d('translate', 'View in AuditStash'),
 											['plugin' => 'AuditStash', 'controller' => 'AuditLogs', 'action' => 'view', $log->id],
-											['escapeTitle' => false, 'class' => 'btn btn-sm btn-outline-primary'],
+											['escape' => false, 'escapeAttributes' => true, 'class' => 'btn btn-sm btn-outline-primary'],
 										) ?>
 									</td>
 								</tr>
@@ -791,7 +791,7 @@ $totalColor = $this->Translation->getColor($totalCoverage);
 								<?= $this->Html->link(
 									'<i class="fas fa-question-circle"></i>',
 									'https://github.com/lorenzo/audit-stash',
-									['escapeTitle' => false, 'target' => '_blank', 'class' => 'text-muted', 'title' => __d('translate', 'AuditStash Plugin')],
+									['escape' => false, 'escapeAttributes' => true, 'target' => '_blank', 'class' => 'text-muted', 'title' => __d('translate', 'AuditStash Plugin')],
 								) ?>
 							</td>
 							<td class="text-end">
@@ -820,7 +820,7 @@ $totalColor = $this->Translation->getColor($totalCoverage);
 								<?= $this->Html->link(
 									'<i class="fas fa-question-circle"></i>',
 									'https://github.com/FriendsOfCake/search',
-									['escapeTitle' => false, 'target' => '_blank', 'class' => 'text-muted', 'title' => __d('translate', 'FriendsOfCake/Search Plugin')],
+									['escape' => false, 'escapeAttributes' => true, 'target' => '_blank', 'class' => 'text-muted', 'title' => __d('translate', 'FriendsOfCake/Search Plugin')],
 								) ?>
 							</td>
 							<td class="text-end">
@@ -882,32 +882,32 @@ $totalColor = $this->Translation->getColor($totalCoverage);
 						<?= $this->Html->link(
 							'<i class="fas fa-chart-bar"></i> ' . __d('translate', 'Detailed Statistics'),
 							['action' => 'stats'],
-							['escapeTitle' => false, 'class' => 'list-group-item list-group-item-action'],
+							['escape' => false, 'escapeAttributes' => true, 'class' => 'list-group-item list-group-item-action'],
 						) ?>
 						<?= $this->Html->link(
 							'<i class="fas fa-file-import"></i> ' . __d('translate', 'Import from PO/POT files'),
 							['controller' => 'TranslateStrings', 'action' => 'extract'],
-							['escapeTitle' => false, 'class' => 'list-group-item list-group-item-action'],
+							['escape' => false, 'escapeAttributes' => true, 'class' => 'list-group-item list-group-item-action'],
 						) ?>
 						<?= $this->Html->link(
 							'<i class="fas fa-file-export"></i> ' . __d('translate', 'Export to PO files'),
 							['controller' => 'TranslateStrings', 'action' => 'dump'],
-							['escapeTitle' => false, 'class' => 'list-group-item list-group-item-action'],
+							['escape' => false, 'escapeAttributes' => true, 'class' => 'list-group-item list-group-item-action'],
 						) ?>
 						<?= $this->Html->link(
 							'<i class="fas fa-folder-open"></i> ' . __d('translate', 'Import locales from filesystem'),
 							['controller' => 'TranslateLocales', 'action' => 'fromLocale'],
-							['escapeTitle' => false, 'class' => 'list-group-item list-group-item-action'],
+							['escape' => false, 'escapeAttributes' => true, 'class' => 'list-group-item list-group-item-action'],
 						) ?>
 						<?= $this->Html->link(
 							'<i class="fas fa-language"></i> ' . __d('translate', 'TranslateBehavior & Shadow Tables'),
 							['controller' => 'TranslateBehavior', 'action' => 'index'],
-							['escapeTitle' => false, 'class' => 'list-group-item list-group-item-action'],
+							['escape' => false, 'escapeAttributes' => true, 'class' => 'list-group-item list-group-item-action'],
 						) ?>
 						<?= $this->Html->link(
 							'<i class="fas fa-unlink"></i> ' . __d('translate', 'Orphaned Strings'),
 							['controller' => 'TranslateStrings', 'action' => 'orphaned'],
-							['escapeTitle' => false, 'class' => 'list-group-item list-group-item-action'],
+							['escape' => false, 'escapeAttributes' => true, 'class' => 'list-group-item list-group-item-action'],
 						) ?>
 						<?= $this->Html->link(
 							'<i class="fas fa-search"></i> ' . __d('translate', 'Detected Domains'),
@@ -917,13 +917,13 @@ $totalColor = $this->Translation->getColor($totalCoverage);
 						<?= $this->Html->link(
 							'<i class="fas fa-info-circle"></i> ' . __d('translate', 'Best Practices'),
 							['action' => 'bestPractice'],
-							['escapeTitle' => false, 'class' => 'list-group-item list-group-item-action'],
+							['escape' => false, 'escapeAttributes' => true, 'class' => 'list-group-item list-group-item-action'],
 						) ?>
 						<?php if (Configure::read('debug')) { ?>
 							<?= $this->Html->link(
 								'<i class="fas fa-exclamation-triangle text-danger"></i> ' . __d('translate', 'Reset Project Data'),
 								['controller' => 'Translate', 'action' => 'reset'],
-								['escapeTitle' => false, 'class' => 'list-group-item list-group-item-action list-group-item-danger'],
+								['escape' => false, 'escapeAttributes' => true, 'class' => 'list-group-item list-group-item-action list-group-item-danger'],
 							) ?>
 						<?php } ?>
 					</div>

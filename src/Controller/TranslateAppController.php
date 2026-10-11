@@ -11,6 +11,8 @@ use Cake\I18n\I18n;
 use Cake\Log\Log;
 use Closure;
 use Throwable;
+use Translate\Model\Table\TranslateProjectsTable;
+use Translate\Model\TypedTableLocatorTrait;
 
 /**
  * Authorization for the admin namespace.
@@ -35,6 +37,8 @@ use Throwable;
  * @property \Translate\Controller\Component\TranslationComponent $Translation
  */
 class TranslateAppController extends AppController {
+
+	use TypedTableLocatorTrait;
 
 	/**
 	 * Admin actions that legitimately require dynamic form-field names (multi-row
@@ -121,7 +125,7 @@ class TranslateAppController extends AppController {
 
 		$projectSessionKey = $this->Translation->getConfig('projectSessionKey', 'TranslateProject.id');
 		if (!$isHomepage && !$isProjectsController && !$this->request->getSession()->check($projectSessionKey)) {
-			$translateProjects = $this->fetchTable('Translate.TranslateProjects');
+			$translateProjects = $this->fetchTranslateTable('Translate.TranslateProjects', TranslateProjectsTable::class);
 			$id = $translateProjects->getDefaultProjectId();
 			if ($id) {
 				$this->request->getSession()->write($projectSessionKey, $id);
@@ -187,13 +191,13 @@ class TranslateAppController extends AppController {
 		}
 
 		if (class_exists(FormHelper::class)) {
-			$this->viewBuilder()->addHelper('BootstrapUi.Form');
+			$this->viewBuilder()->addHelper('BootstrapUI.Form');
 		}
 
 		// Make current project available to all views
 		$projectId = $this->request->getSession()->read($this->Translation->getConfig('projectSessionKey', 'TranslateProject.id'));
 		if ($projectId) {
-			$translateProjects = $this->fetchTable('Translate.TranslateProjects');
+			$translateProjects = $this->fetchTranslateTable('Translate.TranslateProjects', TranslateProjectsTable::class);
 			$currentProject = $translateProjects->find()
 				->where(['id' => $projectId])
 				->first();

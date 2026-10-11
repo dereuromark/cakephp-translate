@@ -55,17 +55,17 @@ $shortenPath = function (string $abs) use ($projectPath): string {
 				<?= $this->Html->link(
 					'<i class="fas fa-home"></i> ' . __d('translate', 'Overview'),
 					['controller' => 'Translate', 'action' => 'index'],
-					['escapeTitle' => false, 'class' => 'list-group-item list-group-item-action'],
+					['escape' => false, 'escapeAttributes' => true, 'class' => 'list-group-item list-group-item-action'],
 				) ?>
 				<?= $this->Html->link(
 					'<i class="fas fa-folder"></i> ' . __d('translate', 'Translate Domains'),
 					['controller' => 'TranslateDomains', 'action' => 'index'],
-					['escapeTitle' => false, 'class' => 'list-group-item list-group-item-action'],
+					['escape' => false, 'escapeAttributes' => true, 'class' => 'list-group-item list-group-item-action'],
 				) ?>
 				<?= $this->Html->link(
 					'<i class="fas fa-flask"></i> ' . __d('translate', 'Run i18n Extract'),
 					['controller' => 'TranslateStrings', 'action' => 'extract'],
-					['escapeTitle' => false, 'class' => 'list-group-item list-group-item-action'],
+					['escape' => false, 'escapeAttributes' => true, 'class' => 'list-group-item list-group-item-action'],
 				) ?>
 			</div>
 		</div>
@@ -156,7 +156,7 @@ $shortenPath = function (string $abs) use ($projectPath): string {
 												<?php if ($po) { ?>
 													<i class="fas fa-check text-success" title="<?= h($po) ?>"></i>
 												<?php } else { ?>
-													<i class="fas fa-times text-danger" title="<?= __d('translate', 'Missing app-level {0}.po — falls back to default domain', $domain) ?>"></i>
+													<i class="fas fa-times text-danger" title="<?= h(__d('translate', 'Missing app-level {0}.po — falls back to default domain', $domain)) ?>"></i>
 												<?php } ?>
 											</td>
 										<?php } ?>
@@ -174,7 +174,7 @@ $shortenPath = function (string $abs) use ($projectPath): string {
 														<?= $this->Html->link(
 															'<i class="fas fa-flask"></i> ' . __d('translate', 'Run i18n Extract'),
 															['controller' => 'TranslateStrings', 'action' => 'runExtract'],
-															['escapeTitle' => false, 'class' => 'btn btn-sm btn-outline-primary'],
+															['escape' => false, 'escapeAttributes' => true, 'class' => 'btn btn-sm btn-outline-primary'],
 														) ?>
 													</div>
 													<?php break;
@@ -185,22 +185,22 @@ $shortenPath = function (string $abs) use ($projectPath): string {
 													</div>
 													<div class="mt-1">
 														<?= $this->Html->link(
-															'<i class="fas fa-file-import"></i> ' . __d('translate', 'Import {0}.pot', $domain),
+															'<i class="fas fa-file-import"></i> ' . h(__d('translate', 'Import {0}.pot', $domain)),
 															['controller' => 'TranslateStrings', 'action' => 'extract', '?' => ['domain' => $domain]],
-															['escapeTitle' => false, 'class' => 'btn btn-sm btn-outline-info'],
+															['escape' => false, 'escapeAttributes' => true, 'class' => 'btn btn-sm btn-outline-info'],
 														) ?>
 													</div>
 													<?php break;
 												case 'dump': ?>
 													<span class="badge bg-warning text-dark"><?= __d('translate', 'Stage 3: Dump') ?></span>
 													<div class="small text-warning mt-1">
-														<?= __d('translate', '{0} string(s) in DB but no app-level {1}.po — dump to filesystem so the app can load it.', $info['importedStringCount'], $domain) ?>
+														<?= h(__d('translate', '{0} string(s) in DB but no app-level {1}.po — dump to filesystem so the app can load it.', $info['importedStringCount'], $domain)) ?>
 													</div>
 													<div class="mt-1">
 														<?= $this->Html->link(
 															'<i class="fas fa-file-export"></i> ' . __d('translate', 'Dump translations'),
 															['controller' => 'TranslateStrings', 'action' => 'dump'],
-															['escapeTitle' => false, 'class' => 'btn btn-sm btn-outline-warning'],
+															['escape' => false, 'escapeAttributes' => true, 'class' => 'btn btn-sm btn-outline-warning'],
 														) ?>
 													</div>
 													<?php break;
@@ -218,7 +218,7 @@ $shortenPath = function (string $abs) use ($projectPath): string {
 														<?= $this->Html->link(
 															'<i class="fas fa-flask"></i> ' . __d('translate', 'Re-extract'),
 															['controller' => 'TranslateStrings', 'action' => 'runExtract'],
-															['escapeTitle' => false, 'class' => 'btn btn-sm btn-outline-secondary'],
+															['escape' => false, 'escapeAttributes' => true, 'class' => 'btn btn-sm btn-outline-secondary'],
 														) ?>
 													</div>
 													<?php break;

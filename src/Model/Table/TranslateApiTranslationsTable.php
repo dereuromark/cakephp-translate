@@ -8,8 +8,8 @@ use Cake\Validation\Validator;
 /**
  * TranslateApiTranslations Model
  *
- * @extends \Cake\ORM\Table<array{Nullable: \Translate\Model\Behavior\NullableBehavior}>
- * @method \Translate\Model\Entity\TranslateApiTranslation get(mixed $primaryKey, array|string $finder = 'all', \Psr\SimpleCache\CacheInterface|string|null $cache = null, \Closure|string|null $cacheKey = null, mixed ...$args)
+ * @extends \Cake\ORM\Table<array{Nullable: \Translate\Model\Behavior\NullableBehavior}, \Translate\Model\Entity\TranslateApiTranslation>
+ * @method \Translate\Model\Entity\TranslateApiTranslation get(mixed $primaryKey, string $finder = 'all', \Psr\SimpleCache\CacheInterface|string|null $cache = null, \Closure|string|null $cacheKey = null, mixed ...$args)
  * @method \Translate\Model\Entity\TranslateApiTranslation newEntity(array $data, array $options = [])
  * @method array<\Translate\Model\Entity\TranslateApiTranslation> newEntities(array $data, array $options = [])
  * @method \Translate\Model\Entity\TranslateApiTranslation|false save(\Cake\Datasource\EntityInterface $entity, array $options = [])

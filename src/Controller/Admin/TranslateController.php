@@ -11,6 +11,9 @@ use DirectoryIterator;
 use Exception;
 use Translate\Controller\TranslateAppController;
 use Translate\Lib\ConvertLib;
+use Translate\Model\Table\TranslateLocalesTable;
+use Translate\Model\Table\TranslateStringsTable;
+use Translate\Model\Table\TranslateTermsTable;
 use Translate\Service\DomainScannerService;
 use Translate\Translator\Translator;
 
@@ -44,7 +47,7 @@ class TranslateController extends TranslateAppController {
 	public function index() {
 		$id = $this->Translation->currentProjectId();
 
-		$translateLocalesTable = $this->fetchTable('Translate.TranslateLocales');
+		$translateLocalesTable = $this->fetchTranslateTable('Translate.TranslateLocales', TranslateLocalesTable::class);
 		/** @var array<\Translate\Model\Entity\TranslateLocale> $languages */
 		$languages = $translateLocalesTable->find('all')
 			->where([
@@ -58,7 +61,7 @@ class TranslateController extends TranslateAppController {
 		$projectSwitchArray = $this->TranslateDomains->TranslateProjects->find('list')->toArray();
 
 		// Calculate translated counts per locale for coverage table
-		$translateStringsTable = $this->fetchTable('Translate.TranslateStrings');
+		$translateStringsTable = $this->fetchTranslateTable('Translate.TranslateStrings', TranslateStringsTable::class);
 		$totalStrings = is_array($count) ? $count['strings'] : 0;
 		$localeStats = [];
 		foreach ($languages as $language) {
@@ -325,7 +328,7 @@ class TranslateController extends TranslateAppController {
 
 		// Validate locale exists, is active, and belongs to current project
 		/** @var \Translate\Model\Entity\TranslateLocale|null $language */
-		$language = $this->fetchTable('Translate.TranslateLocales')
+		$language = $this->fetchTranslateTable('Translate.TranslateLocales', TranslateLocalesTable::class)
 			->find()
 			->where([
 				'locale' => $locale,
@@ -396,9 +399,9 @@ class TranslateController extends TranslateAppController {
 			return $this->redirect(['action' => 'index']);
 		}
 
-		$translateLocalesTable = $this->fetchTable('Translate.TranslateLocales');
-		$translateStringsTable = $this->fetchTable('Translate.TranslateStrings');
-		$translateTermsTable = $this->fetchTable('Translate.TranslateTerms');
+		$translateLocalesTable = $this->fetchTranslateTable('Translate.TranslateLocales', TranslateLocalesTable::class);
+		$translateStringsTable = $this->fetchTranslateTable('Translate.TranslateStrings', TranslateStringsTable::class);
+		$translateTermsTable = $this->fetchTranslateTable('Translate.TranslateTerms', TranslateTermsTable::class);
 
 		// Get active locales for the project
 		/** @var array<\Translate\Model\Entity\TranslateLocale> $locales */

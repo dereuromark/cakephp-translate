@@ -24,7 +24,7 @@ $this->start('script');
 <?php $this->end(); ?>
 ```
 
-BootstrapUI’s Form helper is selected when its class is available. Installing that package does not provide your CSP policy or replace the layout’s CDN resources.
+BootstrapUI’s Form helper is selected when its class is available. This branch requires a CakePHP 6-compatible BootstrapUI version; the current CakePHP 5 releases cannot be used. Installing that package does not provide your CSP policy or replace the layout’s CDN resources.
 
 ## Language switcher and alternative views
 

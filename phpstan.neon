@@ -1,5 +1,8 @@
 parameters:
 	level: 8
+	excludePaths:
+		# Optional BootstrapUI adapter awaits a CakePHP 6-compatible upstream version.
+		- src/View/Helper/FormHelper.php
 	paths:
 		- src/
 	bootstrapFiles:

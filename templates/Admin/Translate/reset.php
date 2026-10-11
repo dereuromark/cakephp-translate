@@ -12,7 +12,7 @@
 				<h3 class="card-title"><i class="fas fa-bars"></i> <?= __d('translate', 'Actions') ?></h3>
 			</div>
 			<div class="list-group list-group-flush">
-				<?= $this->Html->link('<i class="fas fa-tachometer-alt"></i> ' . __d('translate', 'Overview'), ['action' => 'index'], ['escapeTitle' => false, 'class' => 'list-group-item list-group-item-action']) ?>
+				<?= $this->Html->link('<i class="fas fa-tachometer-alt"></i> ' . __d('translate', 'Overview'), ['action' => 'index'], ['escape' => false, 'escapeAttributes' => true, 'class' => 'list-group-item list-group-item-action']) ?>
 			</div>
 		</div>
 	</aside>
@@ -38,7 +38,7 @@
 				</fieldset>
 
 				<div class="form-group">
-					<?= $this->Form->button('<i class="fas fa-redo"></i> ' . __d('translate', 'Reset'), ['class' => 'btn btn-warning', 'escapeTitle' => false]) ?>
+					<?= $this->Form->button('<i class="fas fa-redo"></i> ' . __d('translate', 'Reset'), ['class' => 'btn btn-warning', 'escape' => false, 'escapeAttributes' => true]) ?>
 				</div>
 				<?= $this->Form->end() ?>
 
@@ -54,7 +54,7 @@
 						['?' => ['hard-reset' => '1']],
 						[
 							'class' => 'btn btn-danger',
-							'escapeTitle' => false,
+							'escape' => false, 'escapeAttributes' => true,
 							'form' => [
 								'class' => 'd-inline',
 								'data-confirm-message' => __d('translate', 'Sure?'),

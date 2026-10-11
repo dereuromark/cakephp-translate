@@ -20,22 +20,22 @@ use Cake\Core\Plugin;
 				<?= $this->Html->link(
 					'<i class="fas fa-home"></i> ' . __d('translate', 'Overview'),
 					['controller' => 'Translate', 'action' => 'index'],
-					['escapeTitle' => false, 'class' => 'list-group-item list-group-item-action'],
+					['escape' => false, 'escapeAttributes' => true, 'class' => 'list-group-item list-group-item-action'],
 				) ?>
 				<?= $this->Html->link(
 					'<i class="fas fa-plus-circle"></i> ' . __d('translate', 'New Translate String'),
 					['action' => 'add'],
-					['escapeTitle' => false, 'class' => 'list-group-item list-group-item-action'],
+					['escape' => false, 'escapeAttributes' => true, 'class' => 'list-group-item list-group-item-action'],
 				) ?>
 				<?= $this->Html->link(
 					'<i class="fas fa-search-plus"></i> ' . __d('translate', 'Analyze PO File'),
 					['action' => 'analyze'],
-					['escapeTitle' => false, 'class' => 'list-group-item list-group-item-action'],
+					['escape' => false, 'escapeAttributes' => true, 'class' => 'list-group-item list-group-item-action'],
 				) ?>
 				<?= $this->Html->link(
 					'<i class="fas fa-unlink"></i> ' . __d('translate', 'Orphaned Strings'),
 					['action' => 'orphaned'],
-					['escapeTitle' => false, 'class' => 'list-group-item list-group-item-action'],
+					['escape' => false, 'escapeAttributes' => true, 'class' => 'list-group-item list-group-item-action'],
 				) ?>
 			</div>
 		</div>
@@ -77,13 +77,13 @@ use Cake\Core\Plugin;
 						<div class="btn-group">
 							<?= $this->Form->button(
 								'<i class="fas fa-filter"></i> ' . __d('translate', 'Filter'),
-								['type' => 'submit', 'class' => 'btn btn-primary', 'escapeTitle' => false],
+								['type' => 'submit', 'class' => 'btn btn-primary', 'escape' => false, 'escapeAttributes' => true],
 							) ?>
 							<?php if (!empty($_isSearch)) { ?>
 								<?= $this->Html->link(
 									'<i class="fas fa-times"></i> ' . __d('translate', 'Reset'),
 									['action' => 'index'],
-									['class' => 'btn btn-outline-secondary', 'escapeTitle' => false],
+									['class' => 'btn btn-outline-secondary', 'escape' => false, 'escapeAttributes' => true],
 								) ?>
 							<?php } ?>
 						</div>
@@ -187,23 +187,23 @@ use Cake\Core\Plugin;
 										<?= $this->Html->link(
 											$this->Icon->render('translate'),
 											['action' => 'translate', $translateString['id']],
-											['escapeTitle' => false, 'class' => 'btn btn-outline-primary', 'title' => __d('translate', 'Translate'), 'data-bs-toggle' => 'tooltip'],
+											['escape' => false, 'escapeAttributes' => true, 'class' => 'btn btn-outline-primary', 'title' => __d('translate', 'Translate'), 'data-bs-toggle' => 'tooltip'],
 										); ?>
 										<?= $this->Html->link(
 											$this->Icon->render('view'),
 											['action' => 'view', $translateString->id],
-											['escapeTitle' => false, 'class' => 'btn btn-outline-info', 'title' => __d('translate', 'View'), 'data-bs-toggle' => 'tooltip'],
+											['escape' => false, 'escapeAttributes' => true, 'class' => 'btn btn-outline-info', 'title' => __d('translate', 'View'), 'data-bs-toggle' => 'tooltip'],
 										); ?>
 										<?= $this->Html->link(
 											$this->Icon->render('edit'),
 											['action' => 'edit', $translateString->id],
-											['escapeTitle' => false, 'class' => 'btn btn-outline-secondary', 'title' => __d('translate', 'Edit'), 'data-bs-toggle' => 'tooltip'],
+											['escape' => false, 'escapeAttributes' => true, 'class' => 'btn btn-outline-secondary', 'title' => __d('translate', 'Edit'), 'data-bs-toggle' => 'tooltip'],
 										); ?>
 										<?= $this->Form->postButton(
 											$this->Icon->render('delete'),
 											['action' => 'delete', $translateString->id],
 											[
-												'escapeTitle' => false,
+												'escape' => false, 'escapeAttributes' => true,
 												'class' => 'btn btn-outline-danger',
 												'title' => __d('translate', 'Delete'),
 												'data-bs-toggle' => 'tooltip',

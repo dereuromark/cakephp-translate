@@ -16,7 +16,7 @@
 				<?= $this->Html->link(
 					'<i class="fas fa-list"></i> ' . __d('translate', 'List Translate Domains'),
 					['action' => 'index'],
-					['escapeTitle' => false, 'class' => 'list-group-item list-group-item-action'],
+					['escape' => false, 'escapeAttributes' => true, 'class' => 'list-group-item list-group-item-action'],
 				) ?>
 			</div>
 		</div>
@@ -107,12 +107,12 @@
 				<div class="mt-4 d-flex gap-2">
 					<?= $this->Form->button(
 						'<i class="fas fa-save"></i> ' . __d('translate', 'Submit'),
-						['class' => 'btn btn-primary', 'escapeTitle' => false],
+						['class' => 'btn btn-primary', 'escape' => false, 'escapeAttributes' => true],
 					) ?>
 					<?= $this->Html->link(
 						'<i class="fas fa-times"></i> ' . __d('translate', 'Cancel'),
 						['action' => 'index'],
-						['class' => 'btn btn-outline-secondary', 'escapeTitle' => false],
+						['class' => 'btn btn-outline-secondary', 'escape' => false, 'escapeAttributes' => true],
 					) ?>
 				</div>
 				<?= $this->Form->end() ?>

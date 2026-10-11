@@ -13,7 +13,7 @@
 			<div class="card-body p-0">
 				<ul class="list-group list-group-flush">
 					<li class="list-group-item">
-						<?= $this->Html->link('<i class="fa fa-list"></i> ' . __d('translate', 'List API Translations'), ['action' => 'index'], ['escapeTitle' => false, 'class' => '']) ?>
+						<?= $this->Html->link('<i class="fa fa-list"></i> ' . __d('translate', 'List API Translations'), ['action' => 'index'], ['escape' => false, 'escapeAttributes' => true, 'class' => '']) ?>
 					</li>
 				</ul>
 			</div>
@@ -36,7 +36,7 @@
 				?>
 			</div>
 			<div class="card-footer">
-				<?= $this->Form->button('<i class="fa fa-save"></i> ' . __d('translate', 'Submit'), ['escapeTitle' => false, 'class' => 'btn btn-primary']) ?>
+				<?= $this->Form->button('<i class="fa fa-save"></i> ' . __d('translate', 'Submit'), ['escape' => false, 'escapeAttributes' => true, 'class' => 'btn btn-primary']) ?>
 			</div>
 			<?= $this->Form->end() ?>
 		</div>

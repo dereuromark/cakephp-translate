@@ -27,31 +27,31 @@
 		"docs": "https://dereuromark.github.io/cakephp-translate/"
 	},
 	"require": {
-		"php": ">=8.2",
-		"cakephp/cakephp": "^5.1.6",
-		"friendsofcake/search": "^7.0"
+		"php": ">=8.5",
+		"cakephp/cakephp": "^6.0@dev",
+		"friendsofcake/search": "dev-cake6"
 	},
 	"require-dev": {
-		"dereuromark/cakephp-i18n-lint": "^0.1.1",
+		"dereuromark/cakephp-i18n-lint": "dev-cake6",
 		"ext-json": "*",
-		"cakephp/migrations": "^5.0.0",
-		"friendsofcake/bootstrap-ui": "^5.1.1",
-		"dereuromark/cakephp-queue": "^8.0",
-		"dereuromark/cakephp-data": "@stable",
-		"dereuromark/cakephp-shim": "^3.8.2",
-		"dereuromark/cakephp-tools": "^3.0",
+		"cakephp/migrations": "dev-fix/6.x-cakephp-compatibility",
+		"dereuromark/cakephp-queue": "dev-cake6",
+		"dereuromark/cakephp-data": "dev-cake6",
+		"dereuromark/cakephp-shim": "dev-cake6",
+		"dereuromark/cakephp-tools": "dev-cake6",
 		"fig-r/psr2r-sniffer": "dev-master",
-		"phpunit/phpunit": "^11.5 || ^12.0 || ^13.0",
+		"phpunit/phpunit": "^13.0",
 		"sepia/po-parser": "^6.0.1",
 		"yandex/translate-api": "dev-master",
-		"dereuromark/cakephp-audit-stash": "^2.0.0"
+		"dereuromark/cakephp-audit-stash": "dev-cake6"
 	},
 	"suggest": {
 		"dereuromark/cakephp-audit-stash": "For comprehensive audit logging of translation changes (strings and terms)",
 		"dereuromark/cakephp-queue": "For application-defined background processing; no Queue import job ships with Translate",
-		"yandex/translate-api": "Free Translation API Alternative"
+		"yandex/translate-api": "Free Translation API Alternative",
+		"friendsofcake/bootstrap-ui": "Optional form helper integration; requires a CakePHP 6-compatible version."
 	},
-	"minimum-stability": "stable",
+	"minimum-stability": "dev",
 	"prefer-stable": true,
 	"autoload": {
 		"psr-4": {
@@ -76,7 +76,7 @@
 		"cs-check": "phpcs --colors --parallel=16",
 		"cs-fix": "phpcbf --colors --parallel=16",
 		"stan": "phpstan analyze",
-		"stan-setup": "cp composer.json composer.backup && composer require --dev phpstan/phpstan:^2.0.0 cakedc/cakephp-phpstan phpstan/extension-installer && mv composer.backup composer.json",
+		"stan-setup": "cp composer.json composer.backup && composer require --dev phpstan/phpstan:^2.0.0 && mv composer.backup composer.json",
 		"lowest": "validate-prefer-lowest",
 		"lowest-setup": "composer update --prefer-lowest --prefer-stable --prefer-dist --no-interaction && cp composer.json composer.backup && composer require --dev dereuromark/composer-prefer-lowest && mv composer.backup composer.json",
 		"test": "vendor/bin/phpunit",

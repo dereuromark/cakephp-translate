@@ -53,7 +53,7 @@ class I18nEntriesControllerTest extends IntegrationTestCase {
 		parent::setUp();
 		$this->toolsInitiallyLoaded = Plugin::isLoaded('Tools');
 		$this->originalLoadTools = Configure::read('TestApp.loadTools');
-		$this->originalSalt = (new ReflectionProperty(Security::class, '_salt'))->getValue();
+		$this->originalSalt = (new ReflectionProperty(Security::class, 'salt'))->getValue();
 		$this->originalDebug = Configure::read('debug');
 		$this->originalEngine = Configure::read('Translate.engine');
 		Configure::write('Translate.engine', Test::class);
@@ -85,7 +85,7 @@ class I18nEntriesControllerTest extends IntegrationTestCase {
 		$connection->execute('DROP TABLE IF EXISTS review_articles');
 		Configure::write('Translate.engine', $this->originalEngine);
 		Configure::write('debug', $this->originalDebug);
-		(new ReflectionProperty(Security::class, '_salt'))->setValue(null, $this->originalSalt);
+		(new ReflectionProperty(Security::class, 'salt'))->setValue(null, $this->originalSalt);
 		foreach ($this->listeners as $listener) {
 			EventManager::instance()->off('Controller.initialize', $listener);
 		}

@@ -16,6 +16,7 @@ use Cake\ORM\Table;
 use Cake\Utility\Inflector;
 use Exception;
 use Translate\Controller\TranslateAppController;
+use Translate\Model\Table\TranslateTermsTable;
 use Translate\Service\I18nTranslatorService;
 
 /**
@@ -1492,7 +1493,7 @@ class I18nEntriesController extends TranslateAppController {
 
 		try {
 			/** @var \Translate\Model\Table\TranslateTermsTable $termsTable */
-			$termsTable = $this->fetchTable('Translate.TranslateTerms');
+			$termsTable = $this->fetchTranslateTable('Translate.TranslateTerms', TranslateTermsTable::class);
 
 			// Extract words/phrases from text
 			$words = preg_split('/\s+/', $text);

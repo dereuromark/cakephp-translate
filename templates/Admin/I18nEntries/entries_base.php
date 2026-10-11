@@ -71,7 +71,7 @@ $cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
 						<?= $this->Form->button('<i class="fas fa-filter"></i> ' . __d('translate', 'Filter'), [
 							'type' => 'submit',
 							'class' => 'btn btn-primary',
-							'escapeTitle' => false,
+							'escape' => false, 'escapeAttributes' => true,
 						]) ?>
 					</div>
 				<?= $this->Form->end() ?>
@@ -185,7 +185,7 @@ $cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
 												echo $this->Html->link(
 													'<i class="fas fa-edit"></i>',
 													['action' => 'editTranslation', $tableName, $record->id, $locale],
-													['class' => 'btn btn-sm btn-outline-secondary', 'escapeTitle' => false, 'title' => __d('translate', 'Edit {0}', $locale)],
+													['class' => 'btn btn-sm btn-outline-secondary', 'escape' => false, 'escapeAttributes' => true, 'title' => __d('translate', 'Edit {0}', $locale)],
 												);
 											} else {
 												// No translation exists
@@ -194,7 +194,7 @@ $cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
 												echo $this->Html->link(
 													'<i class="fas fa-plus"></i>',
 													['action' => 'addTranslation', $tableName, $record->id, $locale],
-													['class' => 'btn btn-sm btn-outline-success', 'escapeTitle' => false, 'title' => __d('translate', 'Add {0}', $locale)],
+													['class' => 'btn btn-sm btn-outline-success', 'escape' => false, 'escapeAttributes' => true, 'title' => __d('translate', 'Add {0}', $locale)],
 												);
 											}
 											?>
@@ -204,7 +204,7 @@ $cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
 										<?= $this->Html->link(
 											'<i class="fas fa-eye"></i>',
 											['action' => 'viewRecord', $tableName, $record->id],
-											['class' => 'btn btn-sm btn-outline-primary', 'escapeTitle' => false, 'title' => __d('translate', 'View All')],
+											['class' => 'btn btn-sm btn-outline-primary', 'escape' => false, 'escapeAttributes' => true, 'title' => __d('translate', 'View All')],
 										) ?>
 									</td>
 								</tr>

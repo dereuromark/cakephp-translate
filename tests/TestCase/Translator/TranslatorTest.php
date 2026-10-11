@@ -4,9 +4,11 @@ namespace Translate\Test\TestCase\Translator;
 
 use Cake\Core\Configure;
 use Cake\TestSuite\TestCase;
+use RuntimeException;
 use TestApp\Translator\Engine\Retry;
 use TestApp\Translator\Engine\Test;
 use TestApp\Translator\Engine\TestMore;
+use Translate\Model\Table\TranslateApiTranslationsTable;
 use Translate\Translator\Translator;
 
 class TranslatorTest extends TestCase {
@@ -92,6 +94,15 @@ class TranslatorTest extends TestCase {
 		$translator = new Translator(['engine' => Retry::class]);
 		$this->assertSame('Recovered', $translator->translate('Legacy failure', 'de', 'en'));
 		$this->assertSame('Recovered', $cache->retrieve('Legacy failure', 'de', 'en', Retry::class)->value);
+	}
+
+	public function testCacheWriteFailureKeepsTheProviderResult(): void {
+		$cache = $this->getMockBuilder(TranslateApiTranslationsTable::class)->onlyMethods(['retrieve', 'store'])->getMock();
+		$cache->expects($this->once())->method('retrieve')->willReturn(null);
+		$cache->expects($this->once())->method('store')->willThrowException(new RuntimeException('Cache write failed'));
+		$this->getTableLocator()->set('Translate.TranslateApiTranslations', $cache);
+		$translator = new Translator(['engine' => Test::class]);
+		$this->assertSame('olleH', $translator->translate('Hello', 'de', 'en'));
 	}
 
 }

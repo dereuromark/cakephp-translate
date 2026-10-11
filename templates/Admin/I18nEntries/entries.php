@@ -191,7 +191,7 @@ $cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
 											<?php
 											$content = $entry->content ?? '';
 											if (strlen($content) > 100) {
-												echo h(substr($content, 0, 97)) . '...';
+												echo h(mb_substr($content, 0, 97)) . '...';
 											} else {
 												echo h($content);
 											}
@@ -204,7 +204,7 @@ $cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
 												<?php
 												$value = $entry->$field ?? '';
 												if (strlen($value) > 80) {
-													echo h(substr($value, 0, 77)) . '...';
+													echo h(mb_substr($value, 0, 77)) . '...';
 												} else {
 													echo h($value);
 												}

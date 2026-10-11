@@ -4,7 +4,9 @@ namespace Translate\Translator;
 
 use Cake\Core\Configure;
 use Cake\Core\InstanceConfigTrait;
+use Cake\Log\Log;
 use Cake\ORM\TableRegistry;
+use Exception;
 use RuntimeException;
 use Translate\Model\Table\TranslateApiTranslationsTable;
 use Translate\Translator\Engine\Google;
@@ -63,7 +65,7 @@ class Translator {
 
 			$result = $engine->translate($text, $to, $from);
 			if ($result !== null) {
-				$this->_cache->store($text, $result, $to, $from, $engineName);
+				$this->storeResult($text, $result, $to, $from, $engineName);
 			}
 			if ($result === null) {
 				continue;
@@ -101,7 +103,7 @@ class Translator {
 
 			$result = $engine->translate($text, $to, $from);
 			if ($result !== null) {
-				$this->_cache->store($text, $result, $to, $from, $engineName);
+				$this->storeResult($text, $result, $to, $from, $engineName);
 			}
 			if ($result !== null) {
 				return $result;
@@ -109,6 +111,22 @@ class Translator {
 		}
 
 		return null;
+	}
+
+	/**
+	 * @param string $text
+	 * @param string $result
+	 * @param string $to
+	 * @param string $from
+	 * @param string $engineName
+	 * @return void
+	 */
+	protected function storeResult(string $text, string $result, string $to, string $from, string $engineName): void {
+		try {
+			$this->_cache->store($text, $result, $to, $from, $engineName);
+		} catch (Exception $e) {
+			Log::warning('Cannot cache translation result', ['exception' => $e]);
+		}
 	}
 
 	/**

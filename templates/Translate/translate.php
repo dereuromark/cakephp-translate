@@ -134,7 +134,7 @@ $cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
 <?php echo $this->Form->end(); ?>
 <br/>
 <?php
-$sep = explode(PHP_EOL, $translateString->references);
+$sep = explode(PHP_EOL, $translateString->references ?? '');
 $references = [];
 foreach ($sep as $s) {
 	$s = trim($s);

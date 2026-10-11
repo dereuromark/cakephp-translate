@@ -7,8 +7,6 @@ use Translate\Test\TestCase\IntegrationTestCase;
 
 /**
  * Translate\Controller\Admin\TranslateApiTranslationsController Test Case
- *
- * @uses \Translate\Controller\Admin\TranslateApiTranslationsController
  */
 class TranslateApiTranslationsControllerTest extends IntegrationTestCase {
 

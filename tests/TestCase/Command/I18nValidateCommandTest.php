@@ -6,9 +6,6 @@ use Cake\Console\TestSuite\ConsoleIntegrationTestTrait;
 use Cake\Core\Plugin;
 use Cake\TestSuite\TestCase;
 
-/**
- * @uses \Translate\Command\I18nValidateCommand
- */
 class I18nValidateCommandTest extends TestCase {
 
 	use ConsoleIntegrationTestTrait;

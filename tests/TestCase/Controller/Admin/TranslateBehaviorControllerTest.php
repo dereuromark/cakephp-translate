@@ -14,8 +14,6 @@ use Translate\Test\TestCase\IntegrationTestCase;
 
 /**
  * Translate\Controller\Admin\TranslateBehaviorController Test Case
- *
- * @uses \Translate\Controller\Admin\TranslateBehaviorController
  */
 class TranslateBehaviorControllerTest extends IntegrationTestCase {
 

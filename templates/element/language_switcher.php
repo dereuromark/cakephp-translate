@@ -5,7 +5,8 @@
 
 use Cake\Core\Configure;
 
-$projectId = $this->request->getSession()->read('TranslateProject.id');
+$projectSessionKey = $this->getRequest()->getParam('prefix') === 'Admin' ? 'TranslateProject.id' : 'TranslatePublicProject.id';
+$projectId = $this->request->getSession()->read($projectSessionKey);
 if (!$projectId) {
 	return;
 }

@@ -6,8 +6,6 @@ use Translate\Test\TestCase\IntegrationTestCase;
 
 /**
  * Translate\Controller\Admin\TranslateLocalesController Test Case
- *
- * @uses \Translate\Controller\Admin\TranslateLocalesController
  */
 class TranslateLocalesControllerTest extends IntegrationTestCase {
 

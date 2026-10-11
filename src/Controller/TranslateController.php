@@ -4,6 +4,7 @@ namespace Translate\Controller;
 
 use Cake\Core\Configure;
 use Cake\Event\EventInterface;
+use Cake\Http\Exception\ForbiddenException;
 use Cake\Http\Exception\NotFoundException;
 use Translate\Model\Entity\TranslateProject;
 use Translate\Utility\ReferenceResolver;
@@ -37,19 +38,34 @@ class TranslateController extends TranslateAppController {
 		if ($event->isStopped()) {
 			return;
 		}
+		if ($this->request->getParam('action') === 'switchProject') {
+			return;
+		}
 		$projectId = $this->Translation->currentProjectId();
-		if ($this->request->getParam('action') === 'index') {
-			$projects = $this->fetchTable('Translate.TranslateProjects');
-			$current = $projectId ? $projects->find()->where(['id' => $projectId])->first() : null;
-			if (!$current || $current->get('status') !== TranslateProject::STATUS_PUBLIC) {
-				$public = $projects->find()->where(['status' => TranslateProject::STATUS_PUBLIC])->orderBy(['id' => 'ASC'])->first();
-				if ($public) {
-					$projectId = $public->get('id');
-					$this->request->getSession()->write('TranslatePublicProject.id', $projectId);
-				}
+		$projects = $this->fetchTable('Translate.TranslateProjects');
+		$current = $projectId ? $projects->find()->where(['id' => $projectId])->first() : null;
+		$accessDenied = null;
+		if ($current) {
+			try {
+				$this->assertProjectAccess($projectId);
+
+				return;
+			} catch (ForbiddenException $exception) {
+				$accessDenied = $exception;
 			}
 		}
-		if ($projectId && $this->request->getParam('action') !== 'switchProject') {
+		$public = $projects->find()->where(['status' => TranslateProject::STATUS_PUBLIC])->orderBy(['id' => 'ASC'])->first();
+		if ($public) {
+			$projectId = $public->get('id');
+			$this->request->getSession()->write($this->Translation->getConfig('projectSessionKey', 'TranslateProject.id'), $projectId);
+			$this->assertProjectAccess($projectId);
+
+			return;
+		}
+		if ($accessDenied !== null) {
+			throw $accessDenied;
+		}
+		if ($projectId) {
 			$this->assertProjectAccess($projectId);
 		}
 	}

@@ -10,8 +10,6 @@ use Translate\Test\TestCase\IntegrationTestCase;
 
 /**
  * Translate\Controller\Admin\TranslateStringsController Test Case
- *
- * @uses \Translate\Controller\Admin\TranslateStringsController
  */
 class TranslateStringsControllerTest extends IntegrationTestCase {
 

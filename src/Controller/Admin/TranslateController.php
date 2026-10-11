@@ -553,6 +553,7 @@ class TranslateController extends TranslateAppController {
 		if ($projectPath && !str_starts_with($projectPath, DS)) {
 			$projectPath = ROOT . DS . $projectPath;
 		}
+		$scanLoadedPlugins = !$projectPath || !is_dir($projectPath);
 		$projectPath = rtrim($projectPath ?: ROOT, DS) . DS;
 
 		if (is_dir($projectPath)) {
@@ -582,8 +583,9 @@ class TranslateController extends TranslateAppController {
 					}
 				}
 			}
-		} else {
-			// Fallback: scan loaded plugins
+		}
+		if ($scanLoadedPlugins) {
+			// Include plugins installed outside the project's plugins directory.
 			foreach (Plugin::loaded() as $plugin) {
 				try {
 					$pluginPath = Plugin::classPath($plugin) . 'Controller' . DIRECTORY_SEPARATOR;

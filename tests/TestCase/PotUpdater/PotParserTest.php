@@ -5,9 +5,6 @@ namespace Translate\Test\TestCase\PotUpdater;
 use PHPUnit\Framework\TestCase;
 use Translate\PotUpdater\PotParser;
 
-/**
- * @uses \Translate\Utility\PotParser
- */
 class PotParserTest extends TestCase {
 
 	/**

@@ -312,7 +312,13 @@ class DumperTest extends TestCase {
 		}
 		mkdir(TMP . 'de', 0770, true);
 		symlink('/dev/full', TMP . 'de/test.po');
-		$this->assertFalse((new Dumper())->dump([], 'test', 'de', TMP));
+		try {
+			$this->assertFalse((new Dumper())->dump([], 'test', 'de', TMP));
+		} finally {
+			if (is_link(TMP . 'de/test.po')) {
+				unlink(TMP . 'de/test.po');
+			}
+		}
 	}
 
 }

@@ -4,6 +4,7 @@ namespace Translate\Test\TestCase\Controller\Admin;
 
 use AddTranslationsForTestPosts;
 use Cake\Core\Configure;
+use Cake\Database\Driver\Postgres;
 use Cake\Database\Driver\Sqlite;
 use Cake\Datasource\ConnectionManager;
 use Cake\Http\Exception\NotFoundException;
@@ -268,7 +269,7 @@ class TranslateBehaviorControllerTest extends IntegrationTestCase {
 		$this->assertEquals('AddTranslationsForTestPosts', $this->viewVariable('migrationName'));
 
 		$connection->execute('DROP TABLE IF EXISTS test_posts_translations');
-		$adapterName = $isSqlite ? 'sqlite' : 'mysql';
+		$adapterName = $isSqlite ? 'sqlite' : ($connection->getDriver() instanceof Postgres ? 'pgsql' : 'mysql');
 		$adapter = AdapterFactory::instance()->getAdapter($adapterName, ['connection' => $connection, 'database' => $connection->config()['database'] ?? null]);
 		eval(substr($migrationCode, strlen('<?php')));
 		$migration = new AddTranslationsForTestPosts();
@@ -558,7 +559,7 @@ class TranslateBehaviorControllerTest extends IntegrationTestCase {
 			eval(substr($code, strlen('<?php')));
 			$class = $this->viewVariable('migrationName');
 			$migration = new $class();
-			$adapterName = $connection->getDriver() instanceof Sqlite ? 'sqlite' : 'mysql';
+			$adapterName = $connection->getDriver() instanceof Sqlite ? 'sqlite' : ($connection->getDriver() instanceof Postgres ? 'pgsql' : 'mysql');
 			$migration->setAdapter(AdapterFactory::instance()->getAdapter($adapterName, ['connection' => $connection, 'database' => $connection->config()['database'] ?? null]));
 			$migration->change();
 			$id = 'e1f812be-7598-49c2-8fd0-eef67d9a1421';

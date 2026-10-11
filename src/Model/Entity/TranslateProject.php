@@ -2,7 +2,7 @@
 
 namespace Translate\Model\Entity;
 
-use Tools\Model\Entity\Entity;
+use Cake\ORM\Entity;
 
 /**
  * TranslateProject Entity
@@ -46,7 +46,7 @@ class TranslateProject extends Entity {
 			static::STATUS_PUBLIC => __d('translate', 'Public Project'),
 		];
 
-		return parent::enum($value, $options);
+		return static::enum($value, $options);
 	}
 
 	/**
@@ -76,7 +76,7 @@ class TranslateProject extends Entity {
 			static::TYPE_OTHER => __d('translate', 'Other Project'),
 		];
 
-		return parent::enum($value, $options);
+		return static::enum($value, $options);
 	}
 
 	/**
@@ -94,5 +94,22 @@ class TranslateProject extends Entity {
 	 * @var int
 	 */
 	public const TYPE_OTHER = 9;
+
+	/**
+	 * @param array<int|string>|string|int|null $value Key, list of keys, or null for all options
+	 * @param array<int|string, mixed> $options
+	 *
+	 * @return array<int|string, mixed>|string|null
+	 */
+	protected static function enum($value, array $options) {
+		if ($value === null) {
+			return $options;
+		}
+		if (is_array($value)) {
+			return array_intersect_key($options, array_flip($value));
+		}
+
+		return $options[$value] ?? null;
+	}
 
 }

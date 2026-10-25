@@ -272,8 +272,8 @@ class PotUpdater {
 
 		$this->info('');
 
-		$hasDiff = $summary['added'] > 0 || $summary['removed'] > 0 ||
-			($summary['changed'] > 0 && !$this->options['ignoreReferences']);
+		$hasDiff = $summary['added'] > 0 || $summary['removed'] > 0
+			|| ($summary['changed'] > 0 && !$this->options['ignoreReferences']);
 
 		if ($hasDiff) {
 			$this->warn('Status: OUT OF DATE');

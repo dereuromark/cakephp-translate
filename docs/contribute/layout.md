@@ -4,7 +4,7 @@
 
 If your application’s Content Security Policy blocks those resources, provide local assets and a compatible layout. Copy `templates/layout/simple.php` from the plugin to `templates/plugin/Translate/layout/simple.php` in your application to override it. You can instead configure `Translate.layout` with your application layout.
 
-The layout reads the request’s `cspNonce` attribute for supported script tags. A nonce alone does not permit external stylesheets or inline style blocks; adjust your policy and template together.
+The plugin templates read the `cspScriptNonce` request attribute set by CakePHP’s `CspMiddleware` (with `scriptNonce` enabled) and put it on every script tag, including the CDN scripts. A `cspNonce` attribute from a custom middleware is still supported as a fallback. With `styleNonce` enabled, the `cspStyleNonce` attribute is added to the stylesheet links and inline style blocks. Inline `style` attributes are not covered by a nonce; adjust your policy for those. Scripts loaded through CakePHP’s `HtmlHelper::script()` (such as Choices.js on the entries page) only get `cspScriptNonce`, so an application that sets only the legacy `cspNonce` attribute needs the core `CspMiddleware` for those scripts.
 
 ## View blocks
 

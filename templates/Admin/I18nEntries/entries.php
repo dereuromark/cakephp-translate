@@ -16,7 +16,7 @@ use Cake\Core\Plugin;
 
 $this->Html->script('https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js', ['block' => true]);
 $this->Html->css('https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css', ['block' => true]);
-$cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
+$cspNonce = (string)($this->getRequest()->getAttribute('cspScriptNonce') ?? $this->getRequest()->getAttribute('cspNonce', ''));
 ?>
 <nav aria-label="breadcrumb">
 	<ol class="breadcrumb">

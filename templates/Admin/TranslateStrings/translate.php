@@ -7,7 +7,7 @@
  * @var array $braceMatches
  * @var array $sprintfMatches
  */
-$cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
+$cspNonce = (string)($this->getRequest()->getAttribute('cspScriptNonce') ?? $this->getRequest()->getAttribute('cspNonce', ''));
 ?>
 <div class="row">
 	<aside class="col-md-3 col-sm-4 col-12">

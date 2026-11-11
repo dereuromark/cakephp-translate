@@ -8,6 +8,7 @@
 $controller = $this->request->getParam('controller');
 $action = $this->request->getParam('action');
 $isHomepage = ($controller === 'Translate' && $action === 'index');
+$cspNonce = (string)($this->getRequest()->getAttribute('cspScriptNonce') ?? $this->getRequest()->getAttribute('cspNonce', ''));
 ?>
 
 <?php if ($isHomepage && !empty($projectSwitchArray)) { ?>
@@ -37,11 +38,20 @@ $isHomepage = ($controller === 'Translate' && $action === 'index');
 			'label' => false,
 			'class' => 'form-select form-select-sm',
 			'style' => 'min-width: 200px;',
-			'onchange' => 'if (this.value !== "-1") { this.form.submit(); }',
+			'data-auto-submit' => '1',
 		]);
 		echo $this->Form->end();
 		?>
 	</div>
+	<script<?= $cspNonce !== '' ? ' nonce="' . h($cspNonce) . '"' : '' ?>>
+		document.querySelectorAll('.project-switch-wrapper select[data-auto-submit]').forEach(function (select) {
+			select.addEventListener('change', function () {
+				if (select.value !== '-1') {
+					select.form.submit();
+				}
+			});
+		});
+	</script>
 <?php } elseif (!empty($currentProject)) { ?>
 	<!-- Current Project Display (All other pages) -->
 	<div class="current-project-display d-flex align-items-center gap-2 text-white">

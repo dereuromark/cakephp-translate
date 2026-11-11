@@ -6,7 +6,7 @@
  * @var array $suggestions
  * @var array $domainStats
  */
-$cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
+$cspNonce = (string)($this->getRequest()->getAttribute('cspScriptNonce') ?? $this->getRequest()->getAttribute('cspNonce', ''));
 ?>
 <!-- Domain Navigation -->
 <div class="mb-4">

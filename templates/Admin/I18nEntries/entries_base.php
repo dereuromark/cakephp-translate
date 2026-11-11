@@ -15,7 +15,7 @@
  */
 
 use Cake\Core\Plugin;
-$cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
+$cspNonce = (string)($this->getRequest()->getAttribute('cspScriptNonce') ?? $this->getRequest()->getAttribute('cspNonce', ''));
 ?>
 <nav aria-label="breadcrumb">
 	<ol class="breadcrumb">
@@ -264,10 +264,10 @@ document.addEventListener('DOMContentLoaded', function() {
 function confirmBatch() {
 	const selected = document.querySelectorAll('.record-checkbox:checked').length;
 	if (selected === 0) {
-		alert('<?= __d('translate', 'Please select at least one record.') ?>');
+		alert(<?= json_encode(__d('translate', 'Please select at least one record.'), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>);
 		return false;
 	}
-	return confirm('<?= __d('translate', 'Auto-translate {0} selected record(s)?') ?>'.replace('{0}', selected));
+	return confirm(<?= json_encode(__d('translate', 'Auto-translate {0} selected record(s)?'), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>.replace('{0}', selected));
 }
 </script>
 

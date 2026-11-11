@@ -2,6 +2,8 @@
 /**
  * @var \App\View\AppView $this
  */
+
+$cspStyleNonce = (string)$this->getRequest()->getAttribute('cspStyleNonce', '');
 ?>
 <!DOCTYPE html>
 <html>
@@ -11,7 +13,7 @@
 	<?= $this->fetch('meta') ?>
 	<?= $this->fetch('css') ?>
 
-	<style>
+	<style<?= $cspStyleNonce !== '' ? ' nonce="' . h($cspStyleNonce) . '"' : '' ?>>
 		body {
 			font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 			font-size: 0.875rem;

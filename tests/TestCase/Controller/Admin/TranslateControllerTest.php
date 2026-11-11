@@ -73,6 +73,27 @@ class TranslateControllerTest extends IntegrationTestCase {
 	}
 
 	/**
+	 * CakePHP's CspMiddleware stores the nonces as `cspScriptNonce` and `cspStyleNonce`.
+	 *
+	 * @return void
+	 */
+	public function testIndexUsesCoreCspNonces(): void {
+		$this->disableErrorHandlerMiddleware();
+		$this->withRequestAttributes(['cspScriptNonce' => 'script-nonce', 'cspStyleNonce' => 'style-nonce']);
+
+		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'Translate', 'action' => 'index']);
+
+		$this->assertResponseCode(200);
+		$this->assertResponseContains('<script nonce="script-nonce" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/');
+		$this->assertResponseContains('<style nonce="style-nonce">');
+		$this->assertResponseContains('data-auto-submit="1"');
+		$this->assertResponseNotContains('onchange=');
+		$this->assertResponseNotRegExp('/<script(?![^>]*nonce="script-nonce")/');
+		$this->assertResponseNotRegExp('/<style(?![^>]*nonce="style-nonce")/');
+		$this->assertResponseNotRegExp('/<link(?![^>]*nonce="style-nonce")[^>]*rel="stylesheet"/');
+	}
+
+	/**
 	 * Test index displays correct statistics
 	 *
 	 * @return void

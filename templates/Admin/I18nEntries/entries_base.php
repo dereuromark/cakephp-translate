@@ -15,7 +15,7 @@
  */
 
 use Cake\Core\Plugin;
-$cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
+$cspNonce = (string)($this->getRequest()->getAttribute('cspScriptNonce') ?? $this->getRequest()->getAttribute('cspNonce', ''));
 ?>
 <nav aria-label="breadcrumb">
 	<ol class="breadcrumb">

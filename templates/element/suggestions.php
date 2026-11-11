@@ -10,7 +10,8 @@ if (!$suggestions) {
 	return;
 }
 
-$cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
+$cspNonce = (string)($this->getRequest()->getAttribute('cspScriptNonce') ?? $this->getRequest()->getAttribute('cspNonce', ''));
+$cspStyleNonce = (string)$this->getRequest()->getAttribute('cspStyleNonce', '');
 $suggestionsArray = [];
 foreach ($suggestions as $engine => $suggestion) {
 	$engineName = substr($engine, strrpos($engine, '\\') + 1);
@@ -50,7 +51,7 @@ $target = 'content-' . $key;
 	</div>
 </div>
 
-<style>
+<style<?= $cspStyleNonce !== '' ? ' nonce="' . h($cspStyleNonce) . '"' : '' ?>>
 	span.suggest {
 		cursor: pointer;
 	}

@@ -11,7 +11,7 @@ use Cake\Core\Configure;
 
 $this->assign('title', __d('translate', 'Analyze PO File'));
 $isPreselected = $this->request->getQuery('file') !== null;
-$cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
+$cspNonce = (string)($this->getRequest()->getAttribute('cspScriptNonce') ?? $this->getRequest()->getAttribute('cspNonce', ''));
 ?>
 
 <nav class="actions col-sm-4 col-12">

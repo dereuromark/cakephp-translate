@@ -9,6 +9,7 @@ if (!$activeLanguages) {
 	return;
 }
 
+$cspStyleNonce = (string)$this->getRequest()->getAttribute('cspStyleNonce', '');
 ?>
 
 <div class="language-switcher d-flex align-items-center gap-2 flex-wrap">
@@ -41,7 +42,7 @@ if (!$activeLanguages) {
 	<?php endforeach; ?>
 </div>
 
-<style>
+<style<?= $cspStyleNonce !== '' ? ' nonce="' . h($cspStyleNonce) . '"' : '' ?>>
 	.language-switcher {
 		font-size: 0.875rem;
 	}

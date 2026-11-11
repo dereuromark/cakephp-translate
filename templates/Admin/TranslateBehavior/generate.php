@@ -11,7 +11,7 @@
  * @var array|null $availableTables
  * @var string $shadowTableSuffix
  */
-$cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
+$cspNonce = (string)($this->getRequest()->getAttribute('cspScriptNonce') ?? $this->getRequest()->getAttribute('cspNonce', ''));
 ?>
 
 <?php if (!isset($tableName)) { ?>

@@ -213,6 +213,38 @@ Template/Account/foo.ctp:15', $translateString->references);
 	}
 
 	/**
+	 * @return void
+	 */
+	public function testTranslateUsesCspScriptNonce(): void {
+		$this->disableErrorHandlerMiddleware();
+		Configure::write('Translate.engine', [Test::class, TestMore::class]);
+		$this->withRequestAttributes(['cspScriptNonce' => 'core-nonce']);
+
+		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateStrings', 'action' => 'translate', 1]);
+
+		$this->assertResponseCode(200);
+		$this->assertResponseContains('<script nonce="core-nonce">');
+		$this->assertResponseNotRegExp('/<script(?![^>]*nonce="core-nonce")/');
+	}
+
+	/**
+	 * A custom middleware may still provide the nonce as `cspNonce`.
+	 *
+	 * @return void
+	 */
+	public function testTranslateFallsBackToCspNonce(): void {
+		$this->disableErrorHandlerMiddleware();
+		Configure::write('Translate.engine', [Test::class, TestMore::class]);
+		$this->withRequestAttributes(['cspNonce' => 'custom-nonce']);
+
+		$this->get(['prefix' => 'Admin', 'plugin' => 'Translate', 'controller' => 'TranslateStrings', 'action' => 'translate', 1]);
+
+		$this->assertResponseCode(200);
+		$this->assertResponseContains('<script nonce="custom-nonce">');
+		$this->assertResponseNotRegExp('/<script(?![^>]*nonce="custom-nonce")/');
+	}
+
+	/**
 	 * Test add method
 	 *
 	 * @return void

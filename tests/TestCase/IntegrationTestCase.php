@@ -3,8 +3,14 @@
 namespace Translate\Test\TestCase;
 
 use Cake\Core\Configure;
+use Cake\Event\EventInterface;
+use Cake\Event\EventManager;
+use Cake\Http\MiddlewareQueue;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
 /**
  * Base Integration Test Case for controller tests
@@ -34,6 +40,25 @@ abstract class IntegrationTestCase extends TestCase {
 		Configure::delete('Translate.adminAccess');
 
 		parent::tearDown();
+	}
+
+	/**
+	 * Adds a middleware that sets request attributes, like a CSP middleware would.
+	 *
+	 * @param array<string, string> $attributes
+	 *
+	 * @return void
+	 */
+	protected function withRequestAttributes(array $attributes): void {
+		EventManager::instance()->on('Server.buildMiddleware', function (EventInterface $event, MiddlewareQueue $queue) use ($attributes): void {
+			$queue->prepend(function (ServerRequestInterface $request, RequestHandlerInterface $handler) use ($attributes): ResponseInterface {
+				foreach ($attributes as $name => $value) {
+					$request = $request->withAttribute($name, $value);
+				}
+
+				return $handler->handle($request);
+			});
+		});
 	}
 
 }

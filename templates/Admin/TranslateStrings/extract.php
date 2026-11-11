@@ -8,7 +8,7 @@
  * @var array<string> $preselectedPo
  * @var string $preselectDomain
  */
-$cspNonce = (string)$this->getRequest()->getAttribute('cspNonce', '');
+$cspNonce = (string)($this->getRequest()->getAttribute('cspScriptNonce') ?? $this->getRequest()->getAttribute('cspNonce', ''));
 $preselectedPot = $preselectedPot ?? [];
 $preselectedPo = $preselectedPo ?? [];
 $preselectDomain = $preselectDomain ?? '';

@@ -37,7 +37,7 @@ $isHomepage = ($controller === 'Translate' && $action === 'index');
 			'label' => false,
 			'class' => 'form-select form-select-sm',
 			'style' => 'min-width: 200px;',
-			'onchange' => 'if (this.value !== "-1") { this.form.submit(); }',
+			'data-auto-submit' => '1',
 		]);
 		echo $this->Form->end();
 		?>

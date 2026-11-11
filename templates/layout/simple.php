@@ -317,15 +317,6 @@ $styleNonceAttr = $cspStyleNonce !== '' ? ' nonce="' . h($cspStyleNonce) . '"' :
 				}
 			});
 
-			// CSP-safe replacement for inline onchange on the project switch
-			document.querySelectorAll('select[data-auto-submit]').forEach(function (select) {
-				select.addEventListener('change', function () {
-					if (select.value !== '-1') {
-						select.form.submit();
-					}
-				});
-			});
-
 			// Confirmation dialogs for postButton forms (CSP-safe replacement for postLink + confirm)
 			document.querySelectorAll('form[data-confirm-message]').forEach(function(form) {
 				form.addEventListener('submit', function(e) {

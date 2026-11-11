@@ -284,7 +284,7 @@ function deselectAll() {
 function copyToClipboard() {
 	const code = document.querySelector('pre code').textContent;
 	navigator.clipboard.writeText(code).then(() => {
-		alert('<?= __d('translate', 'Migration code copied to clipboard!') ?>');
+		alert(<?= json_encode(__d('translate', 'Migration code copied to clipboard!'), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>);
 	}).catch(err => {
 		console.error('Failed to copy:', err);
 	});

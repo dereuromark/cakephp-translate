@@ -286,11 +286,11 @@ function copyFix(btn, elementId) {
 		navigator.clipboard.writeText(text).then(function() {
 			btn.classList.remove('btn-outline-success');
 			btn.classList.add('btn-success');
-			btn.innerHTML = '<i class="fas fa-check"></i> <?= __d('translate', 'Copied!') ?>';
+			btn.innerHTML = <?= json_encode('<i class="fas fa-check"></i> ' . h(__d('translate', 'Copied!')), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>;
 			setTimeout(function() {
 				btn.classList.remove('btn-success');
 				btn.classList.add('btn-outline-success');
-				btn.innerHTML = '<i class="fas fa-copy"></i> <?= __d('translate', 'Copy') ?>';
+				btn.innerHTML = <?= json_encode('<i class="fas fa-copy"></i> ' . h(__d('translate', 'Copy')), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>;
 			}, 2000);
 		});
 	} else {
@@ -301,9 +301,9 @@ function copyFix(btn, elementId) {
 		textarea.select();
 		document.execCommand('copy');
 		document.body.removeChild(textarea);
-		btn.innerHTML = '<i class="fas fa-check"></i> <?= __d('translate', 'Copied!') ?>';
+		btn.innerHTML = <?= json_encode('<i class="fas fa-check"></i> ' . h(__d('translate', 'Copied!')), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>;
 		setTimeout(function() {
-			btn.innerHTML = '<i class="fas fa-copy"></i> <?= __d('translate', 'Copy') ?>';
+			btn.innerHTML = <?= json_encode('<i class="fas fa-copy"></i> ' . h(__d('translate', 'Copy')), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>;
 		}, 2000);
 	}
 }

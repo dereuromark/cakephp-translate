@@ -87,6 +87,7 @@ class TranslateControllerTest extends IntegrationTestCase {
 		$this->assertResponseContains('<script nonce="script-nonce" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/');
 		$this->assertResponseContains('<style nonce="style-nonce">');
 		$this->assertResponseContains('data-auto-submit="1"');
+		$this->assertResponseRegExp('/<script nonce="script-nonce">\s*document\.querySelectorAll\(\'\.project-switch-wrapper select\[data-auto-submit\]\'\)/');
 		$this->assertResponseNotContains('onchange=');
 		$this->assertResponseNotRegExp('/<script(?![^>]*nonce="script-nonce")/');
 		$this->assertResponseNotRegExp('/<style(?![^>]*nonce="style-nonce")/');
